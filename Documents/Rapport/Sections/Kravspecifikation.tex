@@ -2,28 +2,77 @@
 
 Ovennævnte fokusområder tilfører projektet en vis værdi, dog har nogle opgaver højere prioritering end andre. Opgaverne vil derfor blive inddelt i primære og sekundære opgaver, for at klargøre hvor, der i projektet vil blive lagt fokus.
 
-\subsection{Primære opgaver}
+\subsection{Obligatoriske Krav}
 
 \begin{itemize}[noitemsep]
-  \item At afsende og modtage DTMF-toner i stille et rum ved lav afstand
-  \item Udvikling af en 1-til-1 chat-klient, der benytter sig af DTMF-datatransmission
-  \item Systemet skal være funktionelt ved negligérbar støj
-  \item En passende protokol til datatransmissionen skal udarbejdes
-  \begin{itemize}[noitemsep]
-    \item Der skal udvikles en form for fejlkontrol, eksempelvis et CRC
-    \item Data skal opdeles i frames af en fornuftig længde.
-  \end{itemize}
-  \item Signalet skal filtreres og fortolkes af modtager
-  \item Korrupt data må ikke nå applikationslaget
+	\item COS/EMP
+	\begin{itemize}[noitemsep]
+	\item Task-baseret OS med schedulering
+	\item SPI-Kommunikation mellem microcontroller og FPGA
+	\end{itemize}
+	\item REG
+	\begin{itemize}[noitemsep]
+	\item System analyse og modellering af systemets enkelte elementer
+	\item Closed-loop controller
+	\end{itemize}
+	\item DIG
+	\begin{itemize}[noitemsep]
+	\item SPI-protokol til FPGA
+	\item PWM driver til FPGA
+	\item Motor position skal bestemmes af FPGA
+	\end{itemize}
 \end{itemize}
+
+\subsection{Primære opgaver}
+	\begin{itemize}
+	\item Skal pege på et bestemt punkt på himlen givet ved astronomiske koordinater omregnet til angulære koordinater.
+	\item Manuelt input af koordinater
+	
+	\item COS/EMP
+	\begin{itemize}[noitemsep]
+	\item Feedback på LCD med nuværende position i astronomiske koordinater
+	\item Input fra knapper på EMP board
+	\item UART-forbindelse til en terminal på en computer
+	\item UART-protokol
+	\end{itemize}
+	\item REG
+	\begin{itemize}[noitemsep]
+	\item PID-controller
+	\item Intet overshoot eller steady state fejl
+	\item 0-180 grader på 5 sekunder
+	\item skal ramme koordinater inden for 1 grad
+	\end{itemize}
+	\item DIG
+	\begin{itemize}[noitemsep]
+	\item FPGA'en skal udelukkende være en slave som microcontrolleren kan spørge om oplysninger og ændre tilstand på
+	\item Sikkerhed der forhindrer motoren i at køre den forkerte vej (retning og ticks skal stemme overens)
+	\item Sikkerhed der forhindrer Pan/Tilt-systemet i at gå ud over sine mekaniske begrænsninger
+	\end{itemize}		
+	\end{itemize}
 
 \subsection{Sekundære opgaver}
 
 \begin{itemize}[noitemsep]
-\item Systemet kan udbygges til at tage højde for vinkling og afstand mellem afsender og modtager, ved dynamisk og statisk placering
-\item Undersøgelse af genklangs indflydelse på signalet
-\item Chatten skal kunne sende flere forskellige datatyper, eksempelvis lyd eller billeder
-\item I tilfælde af en videreudvikling der tillader flere modtagere, skal der arbejdes med adressering i protokollen
-\item Optimering af transmissionshastighed
-\item Der kan laves beregninger på systemets SNR (tolerancen, målinger og beregninger)
-\end{itemize}
+	\item Udledning af koordinater (applikation)
+	\begin{itemize}[noitemsep]
+	\item ligninger for himmellegemer
+	\item Live oplysninger fra internettet
+	\end{itemize}
+	\item Jog funktion
+	\item Bluetooth til UART
+	\item Montering af kamera
+	
+	\item COS/EMP
+	\begin{itemize}[noitemsep]
+	\item Overvågning af systemet igennem UART
+	\end{itemize}
+	\item REG
+	\begin{itemize}[noitemsep]
+	\item Selvkalibrerende PID controller
+	\item Et nogenlunde præcist open loop system
+	\end{itemize}
+	\item DIG
+	\begin{itemize}[noitemsep]
+	\item FPGA'en skal omregne koordinaterne til grader
+	\end{itemize}		
+	\end{itemize}
