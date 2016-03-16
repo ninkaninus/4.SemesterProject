@@ -7,56 +7,55 @@ Ovennævnte fokusområder tilfører projektet en vis værdi, dog har nogle opgav
 \begin{itemize}[noitemsep]
 	\item COS/EMP
 	\begin{itemize}[noitemsep]
-	\item Task-baseret OS med schedulering
-	\item SPI-Kommunikation mellem microcontroller og FPGA
+		\item Task-baseret OS med schedulering
+		\item SPI-Kommunikation mellem microcontroller og FPGA
 	\end{itemize}
 	\item REG
 	\begin{itemize}[noitemsep]
-	\item System analyse og modellering af systemets enkelte elementer
-	\item Closed-loop controller
+		\item System analyse og modellering af systemets enkelte elementer
+		\item Closed-loop controller
 	\end{itemize}
 	\item DIG
 	\begin{itemize}[noitemsep]
-	\item SPI-protokol til FPGA
-	\item PWM driver til FPGA
-	\item Motor position skal bestemmes af FPGA
+		\item SPI-protokol til FPGA
+		\item PWM driver til FPGA
+		\item Motor position skal bestemmes af FPGA
 	\end{itemize}
 \end{itemize}
 
 \subsection{Primære opgaver}
-	\begin{itemize}
+\begin{itemize}
 	\item Skal pege på et bestemt punkt på himlen givet ved astronomiske koordinater omregnet til angulære koordinater.
 	\item Manuelt input af koordinater
-	
 	\item COS/EMP
 	\begin{itemize}[noitemsep]
-	\item Feedback på LCD med nuværende position i astronomiske koordinater
-	\item Input fra knapper på EMP board
-	\item UART-forbindelse til en terminal på en computer
-	\item UART-protokol
+		\item Feedback på LCD med nuværende position i astronomiske koordinater
+		\item Input fra knapper på EMP board
+		\item UART-forbindelse til en terminal på en computer
+		\item UART-protokol
 	\end{itemize}
 	\item REG
 	\begin{itemize}[noitemsep]
-	\item PID-controller
-	\item Intet overshoot eller steady state fejl
-	\item 0-180 grader på 5 sekunder
-	\item skal ramme koordinater inden for 1 grad
+		\item PID-controller
+		\item Intet overshoot eller steady state fejl
+		\item 0-180 grader på 5 sekunder
+		\item skal ramme koordinater inden for 1 grad
 	\end{itemize}
 	\item DIG
 	\begin{itemize}[noitemsep]
-	\item FPGA'en skal udelukkende være en slave som microcontrolleren kan spørge om oplysninger og ændre tilstand på
-	\item Sikkerhed der forhindrer motoren i at køre den forkerte vej (retning og ticks skal stemme overens)
-	\item Sikkerhed der forhindrer Pan/Tilt-systemet i at gå ud over sine mekaniske begrænsninger
+		\item FPGA'en skal udelukkende være en slave som microcontrolleren kan spørge om oplysninger og ændre tilstand på
+		\item Sikkerhed der forhindrer motoren i at køre den forkerte vej (retning og ticks skal stemme overens)
+		\item Sikkerhed der forhindrer Pan/Tilt-systemet i at gå ud over sine mekaniske begrænsninger
 	\end{itemize}		
-	\end{itemize}
+\end{itemize}
 
 \subsection{Sekundære opgaver}
 
 \begin{itemize}[noitemsep]
 	\item Udledning af koordinater (applikation)
 	\begin{itemize}[noitemsep]
-	\item ligninger for himmellegemer
-	\item Live oplysninger fra internettet
+		\item ligninger for himmellegemer
+		\item Live oplysninger fra internettet
 	\end{itemize}
 	\item Jog funktion
 	\item Bluetooth til UART
@@ -64,15 +63,15 @@ Ovennævnte fokusområder tilfører projektet en vis værdi, dog har nogle opgav
 	
 	\item COS/EMP
 	\begin{itemize}[noitemsep]
-	\item Overvågning af systemet igennem UART
+		\item Overvågning af systemet igennem UART
 	\end{itemize}
 	\item REG
 	\begin{itemize}[noitemsep]
-	\item Selvkalibrerende PID controller
-	\item Et nogenlunde præcist open loop system
+		\item Selvkalibrerende PID controller
+		\item Et nogenlunde præcist open loop system
 	\end{itemize}
 	\item DIG
 	\begin{itemize}[noitemsep]
-	\item FPGA'en skal omregne koordinaterne til grader
+		\item FPGA'en skal omregne koordinaterne til grader
 	\end{itemize}		
-	\end{itemize}
+\end{itemize}
