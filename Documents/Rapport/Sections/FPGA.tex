@@ -35,3 +35,11 @@ T_{slice}=\dfrac{T_{PWM}}{256}=156ns
 \end{equation}
 
 En clock-periode med FPGA'ens krystal på 50 MHz er $20ns$ lang, så hvis man tæller en variabel op hver 8. clock-periode til den når 256, så får man en samlet periodetid på $20ns*8*256=40.96 \mu s=24.414kHz$. Denne variabel sammenlignes så med den lagrede 8 bits duty cycle værdi, for at afgøre om signalet på udgangen skal være højt eller lavt.
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[scale=0.5]{Billeder/PWM.png}
+	\end{center}
+\label{fig:PWM_timing}
+\caption{Ramperne på den øverste graf repræsenterer variablen der tælles op fra 0 til 255. På den nederste graf ses det resulterende PWM-signal}
+\end{figure}
