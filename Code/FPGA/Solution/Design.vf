@@ -7,7 +7,7 @@
 // \   \   \/     Version : 14.7
 //  \   \         Application : sch2hdl
 //  /   /         Filename : Design.vf
-// /___/   /\     Timestamp : 03/31/2016 19:23:10
+// /___/   /\     Timestamp : 03/31/2016 20:00:17
 // \   \  /  \ 
 //  \___\/\___\ 
 //
@@ -25,7 +25,7 @@ module Design(clk,
               SPI_Clk, 
               SPI_MOSI, 
               SPI_SS, 
-              pwm, 
+              led, 
               SPI_MISO);
 
     input clk;
@@ -33,7 +33,7 @@ module Design(clk,
     input SPI_Clk;
     input SPI_MOSI;
     input SPI_SS;
-   output [7:0] pwm;
+   output [7:0] led;
    output SPI_MISO;
    
    wire XLXN_8;
@@ -48,7 +48,7 @@ module Design(clk,
                .mosi(SPI_MOSI), 
                .spi_clk(XLXN_8), 
                .ss(XLXN_11), 
-               .dataOut(pwm[7:0]), 
+               .dataOut(led[7:0]), 
                .miso(SPI_MISO));
    Edge_synchroniser  XLXI_6 (.reset(reset), 
                              .slow_clk(SPI_SS), 

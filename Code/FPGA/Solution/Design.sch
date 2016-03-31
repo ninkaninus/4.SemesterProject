@@ -11,16 +11,17 @@
         <signal name="reset" />
         <signal name="XLXN_8" />
         <signal name="SPI_MISO" />
-        <signal name="pwm(7:0)" />
+        <signal name="led(7:0)" />
         <signal name="SPI_MOSI" />
         <signal name="XLXN_9" />
         <signal name="SPI_SS" />
         <signal name="XLXN_11" />
+        <signal name="XLXN_12" />
         <port polarity="Input" name="clk" />
         <port polarity="Input" name="SPI_Clk" />
         <port polarity="Input" name="reset" />
         <port polarity="Output" name="SPI_MISO" />
-        <port polarity="Output" name="pwm(7:0)" />
+        <port polarity="Output" name="led(7:0)" />
         <port polarity="Input" name="SPI_MOSI" />
         <port polarity="Input" name="SPI_SS" />
         <blockdef name="Edge_synchroniser">
@@ -55,7 +56,7 @@
             <blockpin signalname="SPI_MOSI" name="mosi" />
             <blockpin signalname="XLXN_11" name="ss" />
             <blockpin signalname="SPI_MISO" name="miso" />
-            <blockpin signalname="pwm(7:0)" name="dataOut(7:0)" />
+            <blockpin signalname="led(7:0)" name="dataOut(7:0)" />
             <blockpin signalname="XLXN_8" name="spi_clk" />
         </block>
         <block symbolname="Edge_synchroniser" name="XLXI_6">
@@ -102,14 +103,15 @@
             <wire x2="2112" y1="944" y2="944" x1="2080" />
         </branch>
         <iomarker fontsize="28" x="2112" y="944" name="SPI_MISO" orien="R0" />
-        <branch name="pwm(7:0)">
-            <wire x2="2144" y1="1072" y2="1072" x1="2080" />
+        <branch name="led(7:0)">
+            <wire x2="2096" y1="1072" y2="1072" x1="2080" />
+            <wire x2="2144" y1="1056" y2="1056" x1="2096" />
+            <wire x2="2096" y1="1056" y2="1072" x1="2096" />
         </branch>
         <branch name="SPI_MOSI">
             <wire x2="1696" y1="1008" y2="1008" x1="1632" />
         </branch>
         <iomarker fontsize="28" x="1632" y="1008" name="SPI_MOSI" orien="R180" />
-        <iomarker fontsize="28" x="2144" y="1072" name="pwm(7:0)" orien="R0" />
         <instance x="992" y="1456" name="XLXI_6" orien="R0">
         </instance>
         <branch name="SPI_SS">
@@ -122,5 +124,6 @@
             <wire x2="1696" y1="1072" y2="1072" x1="1536" />
         </branch>
         <iomarker fontsize="28" x="912" y="1008" name="reset" orien="R180" />
+        <iomarker fontsize="28" x="2144" y="1056" name="led(7:0)" orien="R0" />
     </sheet>
 </drawing>
