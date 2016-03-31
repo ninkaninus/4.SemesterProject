@@ -1,0 +1,6 @@
+[Inputs]
+pwm
+=sw[1:0]=
+[Outputs]
+=motor[1:0]=
+[BiDir]

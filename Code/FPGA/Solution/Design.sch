@@ -6,7 +6,6 @@
         <trait edittrait="all:0" />
     </attr>
     <netlist>
-        <signal name="clk" />
         <signal name="SPI_Clk" />
         <signal name="reset" />
         <signal name="XLXN_8" />
@@ -19,15 +18,25 @@
         <signal name="XLXN_13" />
         <signal name="enable" />
         <signal name="XLXN_15(7:0)" />
-        <signal name="pwm" />
-        <port polarity="Input" name="clk" />
+        <signal name="XLXN_17" />
+        <signal name="XLXN_18" />
+        <signal name="sw(1:0)" />
+        <signal name="motor(1:0)" />
+        <signal name="clk" />
+        <signal name="XLXN_22(1:0)" />
+        <signal name="XLXN_24" />
+        <signal name="XLXN_27" />
+        <signal name="XLXN_28" />
+        <signal name="XLXN_29" />
         <port polarity="Input" name="SPI_Clk" />
         <port polarity="Input" name="reset" />
         <port polarity="Output" name="SPI_MISO" />
         <port polarity="Input" name="SPI_MOSI" />
         <port polarity="Input" name="SPI_SS" />
         <port polarity="Input" name="enable" />
-        <port polarity="Output" name="pwm" />
+        <port polarity="Input" name="sw(1:0)" />
+        <port polarity="Output" name="motor(1:0)" />
+        <port polarity="Input" name="clk" />
         <blockdef name="Edge_synchroniser">
             <timestamp>2016-3-31T12:13:3</timestamp>
             <rect width="256" x="64" y="-192" height="192" />
@@ -57,6 +66,15 @@
             <line x2="0" y1="-32" y2="-32" x1="64" />
             <rect width="256" x="64" y="-192" height="256" />
         </blockdef>
+        <blockdef name="Motor_Interface">
+            <timestamp>2016-3-31T20:50:37</timestamp>
+            <rect width="64" x="0" y="20" height="24" />
+            <line x2="0" y1="32" y2="32" x1="64" />
+            <line x2="0" y1="-96" y2="-96" x1="64" />
+            <rect width="64" x="320" y="-108" height="24" />
+            <line x2="384" y1="-96" y2="-96" x1="320" />
+            <rect width="256" x="64" y="-128" height="192" />
+        </blockdef>
         <block symbolname="Edge_synchroniser" name="XLXI_3">
             <blockpin signalname="reset" name="reset" />
             <blockpin signalname="clk" name="sys_clk" />
@@ -83,33 +101,25 @@
             <blockpin signalname="clk" name="clk" />
             <blockpin signalname="enable" name="enable" />
             <blockpin signalname="XLXN_15(7:0)" name="data(7:0)" />
-            <blockpin signalname="pwm" name="pwm" />
+            <blockpin signalname="XLXN_17" name="pwm" />
+        </block>
+        <block symbolname="Motor_Interface" name="XLXI_9">
+            <blockpin signalname="XLXN_17" name="pwm" />
+            <blockpin signalname="motor(1:0)" name="motor(1:0)" />
+            <blockpin signalname="sw(1:0)" name="motor_State(1:0)" />
         </block>
     </netlist>
     <sheet sheetnum="1" width="3520" height="2720">
-        <branch name="clk">
-            <wire x2="800" y1="1072" y2="1072" x1="704" />
-            <wire x2="992" y1="1072" y2="1072" x1="800" />
-            <wire x2="800" y1="1072" y2="1360" x1="800" />
-            <wire x2="992" y1="1360" y2="1360" x1="800" />
-            <wire x2="1696" y1="528" y2="528" x1="800" />
-            <wire x2="800" y1="528" y2="944" x1="800" />
-            <wire x2="1696" y1="944" y2="944" x1="800" />
-            <wire x2="800" y1="944" y2="1072" x1="800" />
-        </branch>
         <iomarker fontsize="28" x="960" y="1136" name="SPI_Clk" orien="R180" />
         <iomarker fontsize="28" x="704" y="1072" name="clk" orien="R180" />
         <branch name="SPI_Clk">
             <wire x2="992" y1="1136" y2="1136" x1="960" />
         </branch>
         <branch name="reset">
-            <wire x2="944" y1="1008" y2="1008" x1="912" />
-            <wire x2="976" y1="1008" y2="1008" x1="944" />
+            <wire x2="976" y1="1008" y2="1008" x1="912" />
             <wire x2="992" y1="1008" y2="1008" x1="976" />
-            <wire x2="944" y1="1008" y2="1056" x1="944" />
-            <wire x2="976" y1="1056" y2="1056" x1="944" />
-            <wire x2="976" y1="1056" y2="1296" x1="976" />
-            <wire x2="992" y1="1296" y2="1296" x1="976" />
+            <wire x2="976" y1="1008" y2="1296" x1="976" />
+            <wire x2="1040" y1="1296" y2="1296" x1="976" />
         </branch>
         <instance x="992" y="1168" name="XLXI_3" orien="R0">
         </instance>
@@ -121,23 +131,20 @@
             <wire x2="1696" y1="1136" y2="1136" x1="1408" />
         </branch>
         <branch name="SPI_MISO">
-            <wire x2="2096" y1="944" y2="944" x1="2080" />
-            <wire x2="2176" y1="944" y2="944" x1="2096" />
+            <wire x2="2176" y1="944" y2="944" x1="2080" />
         </branch>
         <branch name="SPI_MOSI">
             <wire x2="1696" y1="1008" y2="1008" x1="1632" />
         </branch>
         <iomarker fontsize="28" x="1632" y="1008" name="SPI_MOSI" orien="R180" />
-        <instance x="992" y="1456" name="XLXI_6" orien="R0">
-        </instance>
         <branch name="SPI_SS">
-            <wire x2="992" y1="1424" y2="1424" x1="768" />
+            <wire x2="1040" y1="1424" y2="1424" x1="768" />
         </branch>
         <iomarker fontsize="28" x="768" y="1424" name="SPI_SS" orien="R180" />
         <branch name="XLXN_11">
-            <wire x2="1536" y1="1296" y2="1296" x1="1376" />
-            <wire x2="1536" y1="1072" y2="1296" x1="1536" />
-            <wire x2="1696" y1="1072" y2="1072" x1="1536" />
+            <wire x2="1616" y1="1296" y2="1296" x1="1424" />
+            <wire x2="1616" y1="1072" y2="1296" x1="1616" />
+            <wire x2="1696" y1="1072" y2="1072" x1="1616" />
         </branch>
         <iomarker fontsize="28" x="912" y="1008" name="reset" orien="R180" />
         <instance x="1696" y="688" name="XLXI_7" orien="R0">
@@ -154,10 +161,37 @@
             <wire x2="2096" y1="1072" y2="1072" x1="2080" />
         </branch>
         <iomarker fontsize="28" x="2176" y="944" name="SPI_MISO" orien="R0" />
-        <branch name="pwm">
+        <iomarker fontsize="28" x="2832" y="528" name="motor(1:0)" orien="R0" />
+        <branch name="XLXN_17">
             <wire x2="2096" y1="720" y2="720" x1="2080" />
-            <wire x2="2176" y1="720" y2="720" x1="2096" />
+            <wire x2="2336" y1="592" y2="592" x1="2096" />
+            <wire x2="2096" y1="592" y2="720" x1="2096" />
         </branch>
-        <iomarker fontsize="28" x="2176" y="720" name="pwm" orien="R0" />
+        <branch name="clk">
+            <wire x2="800" y1="1072" y2="1072" x1="704" />
+            <wire x2="992" y1="1072" y2="1072" x1="800" />
+            <wire x2="800" y1="1072" y2="1360" x1="800" />
+            <wire x2="1040" y1="1360" y2="1360" x1="800" />
+            <wire x2="1696" y1="528" y2="528" x1="800" />
+            <wire x2="800" y1="528" y2="896" x1="800" />
+            <wire x2="1696" y1="896" y2="896" x1="800" />
+            <wire x2="1696" y1="896" y2="944" x1="1696" />
+            <wire x2="800" y1="896" y2="1072" x1="800" />
+        </branch>
+        <instance x="2336" y="688" name="XLXI_9" orien="R0">
+        </instance>
+        <branch name="motor(1:0)">
+            <wire x2="2752" y1="592" y2="592" x1="2720" />
+            <wire x2="2752" y1="528" y2="592" x1="2752" />
+            <wire x2="2832" y1="528" y2="528" x1="2752" />
+        </branch>
+        <iomarker fontsize="28" x="2240" y="784" name="sw(1:0)" orien="R180" />
+        <branch name="sw(1:0)">
+            <wire x2="2288" y1="784" y2="784" x1="2240" />
+            <wire x2="2336" y1="720" y2="720" x1="2288" />
+            <wire x2="2288" y1="720" y2="784" x1="2288" />
+        </branch>
+        <instance x="1040" y="1456" name="XLXI_6" orien="R0">
+        </instance>
     </sheet>
 </drawing>

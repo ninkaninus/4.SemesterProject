@@ -7,7 +7,7 @@
 // \   \   \/     Version : 14.7
 //  \   \         Application : sch2hdl
 //  /   /         Filename : Design.vf
-// /___/   /\     Timestamp : 03/31/2016 20:44:56
+// /___/   /\     Timestamp : 03/31/2016 22:35:30
 // \   \  /  \ 
 //  \___\/\___\ 
 //
@@ -26,7 +26,8 @@ module Design(clk,
               SPI_Clk, 
               SPI_MOSI, 
               SPI_SS, 
-              pwm, 
+              sw, 
+              motor, 
               SPI_MISO);
 
     input clk;
@@ -35,12 +36,14 @@ module Design(clk,
     input SPI_Clk;
     input SPI_MOSI;
     input SPI_SS;
-   output pwm;
+    input [1:0] sw;
+   output [1:0] motor;
    output SPI_MISO;
    
    wire XLXN_8;
    wire XLXN_11;
    wire [7:0] XLXN_15;
+   wire XLXN_17;
    
    Edge_synchroniser  XLXI_3 (.reset(reset), 
                              .slow_clk(SPI_Clk), 
@@ -61,5 +64,9 @@ module Design(clk,
    pwm_driver  XLXI_7 (.clk(clk), 
                       .data(XLXN_15[7:0]), 
                       .enable(enable), 
-                      .pwm(pwm));
+                      .pwm(XLXN_17));
+   Motor_Controller  XLXI_8 (.clk(clk), 
+                            .pwm(XLXN_17), 
+                            .sw(sw[1:0]), 
+                            .motor(motor[1:0]));
 endmodule
