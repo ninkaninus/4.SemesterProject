@@ -3,5 +3,5 @@ clk
 enable
 =data[7:0]=
 [Outputs]
-=pwm[7:0]=
+pwm
 [BiDir]

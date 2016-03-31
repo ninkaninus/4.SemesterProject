@@ -34,7 +34,7 @@ entity pwm_driver is
     Port ( clk : in  STD_LOGIC;
            enable : in  STD_LOGIC;
            data : in  STD_LOGIC_VECTOR (7 downto 0);
-           pwm : out  STD_LOGIC_VECTOR (7 downto 0));
+           pwm : out  STD_LOGIC);
 end pwm_driver;
 
 architecture Behavioral of pwm_driver is
@@ -78,11 +78,11 @@ end process;
 pulse_gen: process(current_value,iterator)
 begin
 	if current_value = X"FF" then
-		pwm <= X"FF";
+		pwm <= '1';
 	elsif current_value > iterator then
-		pwm <= X"FF";
+		pwm <= '1';
 	else
-		pwm <= X"00";
+		pwm <= '0';
 	end if;
 end process;	
 

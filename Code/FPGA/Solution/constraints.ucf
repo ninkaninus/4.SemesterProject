@@ -28,7 +28,7 @@ NET "clk"   LOC = "B8"; # Bank = 0, Pin name = IP_L13P_0/GCLK8, Type = GCLK, Sch
 #NET "Enable<3>" LOC = "F15"; # Bank = 1, Pin name = IO_L21P_1, Type = I/O, Sch name = AN3
 
 # Leds
-#NET "pwm<0>"  LOC = "J14"; # Bank = 1, Pin name = IO_L14N_1/A3/RHCLK7, Type = RHCLK/DUAL, Sch name = JD10/LD0
+#NET "pwm"  LOC = "J14"; # Bank = 1, Pin name = IO_L14N_1/A3/RHCLK7, Type = RHCLK/DUAL, Sch name = JD10/LD0
 #NET "pwm<1>"  LOC = "J15"; # Bank = 1, Pin name = IO_L14P_1/A4/RHCLK6, Type = RHCLK/DUAL, Sch name = JD9/LD1
 #NET "pwm<2>"  LOC = "K15"; # Bank = 1, Pin name = IO_L12P_1/A8/RHCLK2, Type = RHCLK/DUAL, Sch name = JD8/LD2
 #NET "pwm<3>"  LOC = "K14"; # Bank = 1, Pin name = IO_L12N_1/A7/RHCLK3/TRDY1, Type = RHCLK/DUAL, Sch name = JD7/LD3
@@ -42,7 +42,7 @@ NET "clk"   LOC = "B8"; # Bank = 0, Pin name = IP_L13P_0/GCLK8, Type = GCLK, Sch
 #NET "Led<7>" LOC = "P4";  # Bank = 3, Pin name = N.C., Type = N.C., Sch name = LD7? other than s3e500
 
 # Switches
-#NET "reset<0>" LOC = "G18"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = SW0
+NET "enable" LOC = "G18"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = SW0
 #NET "data<1>" LOC = "H18"; # Bank = 1, Pin name = IP/VREF_1, Type = VREF, Sch name = SW1
 #NET "data<2>" LOC = "K18"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = SW2
 #NET "data<3>" LOC = "K17"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = SW3
@@ -64,28 +64,28 @@ NET "SPI_SS"	 LOC = "L15"; #JA1
 NET "SPI_MOSI"	 LOC = "K12"; #JA2
 NET "SPI_MISO"	 LOC = "L17"; #JA3
 NET "SPI_Clk"	 LOC = "M15"; #JA4
-#NET "SPI_SS"	 LOC = "K13"; #JA7
+#NET "pwm"	 LOC = "K13"; #JA7
 #NET "SPI_MOSI"	 LOC = "L16"; #JA8
 #NET "SPI_MISO"	 LOC = "M14"; #JA9
 #NET "SPI_Clk"	 LOC = "M16"; #JA10
 
 #JB1
 
-NET "led<0>"	 LOC = "M13"; #JB1
-NET "led<1>"	 LOC = "R18"; #JB2
-NET "led<2>"	 LOC = "R15"; #JB3
-NET "led<3>"	 LOC = "T17"; #JB4
-#NET "SPI_SS"	 LOC = "P17"; #JB7
-#NET "SPI_MOSI"	 LOC = "R16"; #JB8
+#NET "led<0>"	 LOC = "M13"; #JB1
+#NET "led<1>"	 LOC = "R18"; #JB2
+#NET "led<2>"	 LOC = "R15"; #JB3
+#NET "led<3>"	 LOC = "T17"; #JB4
+NET "pwm"	 LOC = "P17"; #JB7
+#NET "pwm"	 LOC = "R16"; #JB8
 #NET "SPI_MISO"	 LOC = "T18"; #JB9
 #NET "SPI_Clk"	 LOC = "U18"; #JB10
 
 #JC1
 
-NET "led<4>"	 LOC = "G15"; #JC1
-NET "led<5>"	 LOC = "J16"; #JC2
-NET "led<6>"	 LOC = "G13"; #JC3
-NET "led<7>"	 LOC = "H16"; #JC4
+#NET "led<4>"	 LOC = "G15"; #JC1
+#NET "led<5>"	 LOC = "J16"; #JC2
+#NET "led<6>"	 LOC = "G13"; #JC3
+#NET "led<7>"	 LOC = "H16"; #JC4
 #NET "SPI_SS"	 LOC = "H15"; #JC7
 #NET "SPI_MOSI"	 LOC = "F14"; #JC8
 #NET "SPI_MISO"	 LOC = "G16"; #JC9
