@@ -1,0 +1,8 @@
+[Inputs]
+clk
+mosi
+ss
+[Outputs]
+miso
+=dataOut[7:0]=
+[BiDir]

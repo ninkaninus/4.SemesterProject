@@ -1,0 +1,41 @@
+////////////////////////////////////////////////////////////////////////////////
+// Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
+////////////////////////////////////////////////////////////////////////////////
+//   ____  ____ 
+//  /   /\/   / 
+// /___/  \  /    Vendor: Xilinx 
+// \   \   \/     Version : 14.7
+//  \   \         Application : sch2hdl
+//  /   /         Filename : Design.vf
+// /___/   /\     Timestamp : 03/31/2016 02:46:51
+// \   \  /  \ 
+//  \___\/\___\ 
+//
+//Command: sch2hdl -intstyle ise -family spartan3e -verilog D:/Github/4.SemesterProject/Code/FPGA/Solution/Design.vf -w D:/Github/4.SemesterProject/Code/FPGA/Solution/Design.sch
+//Design Name: Design
+//Device: spartan3e
+//Purpose:
+//    This verilog netlist is translated from an ECS schematic.It can be 
+//    synthesized and simulated, but it should not be modified. 
+//
+`timescale 1ns / 1ps
+
+module Design(SPI_Clk, 
+              SPI_MOSI, 
+              SPI_SS, 
+              pwm, 
+              SPI_MISO);
+
+    input SPI_Clk;
+    input SPI_MOSI;
+    input SPI_SS;
+   output [7:0] pwm;
+   output SPI_MISO;
+   
+   
+   SPI  XLXI_2 (.clk(SPI_Clk), 
+               .mosi(SPI_MOSI), 
+               .ss(SPI_SS), 
+               .dataOut(pwm[7:0]), 
+               .miso(SPI_MISO));
+endmodule
