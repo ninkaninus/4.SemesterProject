@@ -57,7 +57,7 @@ void SSI_init()
 	//Protocol mode
 	SSI0_CR0_R = (0x7<<0);
 	//Enable SSI
-	SSI0_CR1_R |= (1<<1) | (1<<0); //Enable ssi (bit 1) | Enable loopback (bit 0)
+	SSI0_CR1_R |= (1<<1) | (0<<0); //Enable ssi (bit 1) | Enable loopback (bit 0)
 	//SSI0_IM_R |= SSI_IM_RXIM;
 }
 

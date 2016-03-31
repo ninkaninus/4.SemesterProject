@@ -39,8 +39,8 @@ int main(void)
 	enable_global_int();
 
 	while(1) {
-		SPI_write('Q');
-		uart0_putc(SPI_read());
+		//SPI_write('Q');
+		//uart0_putc(SPI_read());
 	}
 
 	return (0);

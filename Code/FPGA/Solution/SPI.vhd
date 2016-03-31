@@ -31,6 +31,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity SPI is
     Port ( clk : in  STD_LOGIC;
+			  spi_clk : in STD_LOGIC;
            mosi : in  STD_LOGIC;
            miso : out  STD_LOGIC;
            ss : in  STD_LOGIC;
@@ -46,15 +47,27 @@ begin
 	counter : process(clk)
 	begin
 		if rising_edge(clk) then
-			if iterator = 8 then 
+			if(ss = '1') then
 				iterator <= 0;
+				--data <= "00000000";
 				dataOut <= data;
-			else
-				iterator <= iterator+1;
-				data <= data(6 downto 0) & mosi;
+			elsif(spi_clk = '1') then
+				if iterator = 8 then 
+					iterator <= 1;
+				else
+					iterator <= iterator+1;
+				end if;
+			data <= data(6 downto 0) & mosi;
 			end if;
 		end if;
 	end process;
+
+--	latchOutData : process(iterator, data)
+--	begin
+--		if(iterator = 8) then
+--			dataOut <= data;
+--		end if;
+--	end process;
 
 end Behavioral;
 

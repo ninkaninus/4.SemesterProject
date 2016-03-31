@@ -130,7 +130,8 @@ void UART0_rx_isr()
 {
 	do
 	{
-		//INT8U received = UART0_DR_R;
+		INT8U received = UART0_DR_R;
+		SPI_write(received);
 		//put_queue(Q_INPUT,received,0);
 		//queue_put(&uart0_rx_queue, UART0_DR_R);
 	} while (RX_FIFO_NOT_EMPTY);

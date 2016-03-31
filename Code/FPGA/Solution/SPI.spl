@@ -1,5 +1,6 @@
 [Inputs]
 clk
+spi_clk
 mosi
 ss
 [Outputs]
