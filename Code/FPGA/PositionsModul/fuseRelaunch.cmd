@@ -1,0 +1,1 @@
+-intstyle "ise" -incremental -o "C:/Users/ChrisM/Desktop/Smartgit/SmartGit_4.Semester/Code/FPGA/PositionsModul/test_isim_beh.exe" -prj "C:/Users/ChrisM/Desktop/Smartgit/SmartGit_4.Semester/Code/FPGA/PositionsModul/test_beh.prj" "work.test" 

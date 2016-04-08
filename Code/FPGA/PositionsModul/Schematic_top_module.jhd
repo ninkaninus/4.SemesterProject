@@ -1,0 +1,5 @@
+MODULE Schematic_top_module
+	SUBMODULE PositionsModul
+		INSTANCE XLXI_1
+	SUBMODULE MultiplexDisplay
+		INSTANCE XLXI_2
