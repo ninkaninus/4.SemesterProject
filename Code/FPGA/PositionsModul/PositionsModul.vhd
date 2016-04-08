@@ -6,7 +6,6 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity PositionsModul is
 	port(Clk 	  :	in STD_LOGIC;
-		  Position :	out STD_LOGIC_VECTOR (7 downto 0);
 		  Encoder1 :	in STD_LOGIC;
 		  Encoder2 :	in STD_LOGIC;
 		  Bcd		  :	out STD_LOGIC_VECTOR (15 downto 0));
@@ -16,15 +15,12 @@ end PositionsModul;
 architecture Behavioral of PositionsModul is
 Signal AB			: STD_LOGIC_VECTOR (1 downto 0) := "00";
 Signal BC			: STD_LOGIC_VECTOR (1 downto 0) := "00";
-Signal EncoderCounts	:	STD_LOGIC_VECTOR (15 downto 0) := x"0000";
 signal Ciffer_et	:		integer range 0 to 15 := 0;
 signal Ciffer_ti	:		integer range 0 to 15 := 0;
 signal Ciffer_hun	:		integer range 0 to 15 := 0;
 signal Ciffer_tu	:		integer range 0 to 15 := 0;
 begin
 
-	position <= EncoderCounts(15 downto 8);
-	--Bcd <= EncoderCounts(15 downto 0);
 	Bcd <= Conv_std_logic_vector(Ciffer_tu,4) & 
 			 Conv_std_logic_vector(Ciffer_hun,4) &
 			 Conv_std_logic_vector(Ciffer_ti,4)&

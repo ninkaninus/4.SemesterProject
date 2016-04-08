@@ -7,11 +7,11 @@
 -- \   \   \/     Version : 14.7
 --  \   \         Application : sch2hdl
 --  /   /         Filename : Schematic_top_module.vhf
--- /___/   /\     Timestamp : 04/07/2016 12:36:59
+-- /___/   /\     Timestamp : 04/08/2016 10:39:50
 -- \   \  /  \ 
 --  \___\/\___\ 
 --
---Command: sch2hdl -intstyle ise -family spartan3e -flat -suppress -vhdl C:/Users/ChrisM/Desktop/Smartgit/SmartGit_4.Semester/Code/FPGA/PositionsModul/Schematic_top_module.vhf -w C:/Users/ChrisM/Desktop/Smartgit/SmartGit_4.Semester/Code/FPGA/PositionsModul/Schematic_top_module.sch
+--Command: sch2hdl -intstyle ise -family spartan3e -flat -suppress -vhdl F:/SmartGit/Code/FPGA/PositionsModul/Schematic_top_module.vhf -w F:/SmartGit/Code/FPGA/PositionsModul/Schematic_top_module.sch
 --Design Name: Schematic_top_module
 --Device: spartan3e
 --Purpose:
@@ -30,7 +30,6 @@ entity Schematic_top_module is
           Encoder1 : in    std_logic; 
           Encoder2 : in    std_logic; 
           An       : out   std_logic_vector (3 downto 0); 
-          Position : out   std_logic_vector (7 downto 0); 
           Seg      : out   std_logic_vector (1 to 8));
 end Schematic_top_module;
 
@@ -40,7 +39,6 @@ architecture BEHAVIORAL of Schematic_top_module is
       port ( Clk      : in    std_logic; 
              Encoder1 : in    std_logic; 
              Encoder2 : in    std_logic; 
-             Position : out   std_logic_vector (7 downto 0); 
              Bcd      : out   std_logic_vector (15 downto 0));
    end component;
    
@@ -56,8 +54,7 @@ begin
       port map (Clk=>Clk,
                 Encoder1=>Encoder1,
                 Encoder2=>Encoder2,
-                Bcd(15 downto 0)=>XLXN_11(15 downto 0),
-                Position(7 downto 0)=>Position(7 downto 0));
+                Bcd(15 downto 0)=>XLXN_11(15 downto 0));
    
    XLXI_2 : MultiplexDisplay
       port map (Bcd(15 downto 0)=>XLXN_11(15 downto 0),

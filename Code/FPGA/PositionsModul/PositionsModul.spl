@@ -3,6 +3,5 @@ Clk
 Encoder1
 Encoder2
 [Outputs]
-=Position[7:0]=
 =Bcd[15:0]=
 [BiDir]

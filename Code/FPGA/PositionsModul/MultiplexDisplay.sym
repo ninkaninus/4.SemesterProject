@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <symbol version="7" name="MultiplexDisplay">
     <symboltype>BLOCK</symboltype>
-    <timestamp>2016-4-7T9:47:5</timestamp>
+    <timestamp>2016-4-8T8:39:5</timestamp>
     <pin polarity="Input" x="0" y="-160" name="Clk_50MHz" />
     <pin polarity="Input" x="0" y="-96" name="Bcd(15:0)" />
     <pin polarity="Output" x="384" y="32" name="Seg(1:8)" />
