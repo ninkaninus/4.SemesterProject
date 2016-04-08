@@ -7,7 +7,7 @@
 // \   \   \/     Version : 14.7
 //  \   \         Application : sch2hdl
 //  /   /         Filename : Design.vf
-// /___/   /\     Timestamp : 03/31/2016 22:35:30
+// /___/   /\     Timestamp : 04/07/2016 18:01:15
 // \   \  /  \ 
 //  \___\/\___\ 
 //
@@ -20,53 +20,43 @@
 //
 `timescale 1ns / 1ps
 
-module Design(clk, 
-              enable, 
-              reset, 
+module Design(btn, 
+              clk, 
+              data, 
               SPI_Clk, 
               SPI_MOSI, 
               SPI_SS, 
-              sw, 
               motor, 
               SPI_MISO);
 
+    input [1:0] btn;
     input clk;
-    input enable;
-    input reset;
+    input [7:0] data;
     input SPI_Clk;
     input SPI_MOSI;
     input SPI_SS;
-    input [1:0] sw;
    output [1:0] motor;
    output SPI_MISO;
    
-   wire XLXN_8;
-   wire XLXN_11;
-   wire [7:0] XLXN_15;
    wire XLXN_17;
+   wire [7:0] XLXN_49;
+   wire XLXN_67;
    
-   Edge_synchroniser  XLXI_3 (.reset(reset), 
-                             .slow_clk(SPI_Clk), 
-                             .sys_clk(clk), 
-                             .fall_out(), 
-                             .rise_out(XLXN_8));
-   SPI  XLXI_5 (.clk(clk), 
-               .mosi(SPI_MOSI), 
-               .spi_clk(XLXN_8), 
-               .ss(XLXN_11), 
-               .dataOut(XLXN_15[7:0]), 
-               .miso(SPI_MISO));
-   Edge_synchroniser  XLXI_6 (.reset(reset), 
-                             .slow_clk(SPI_SS), 
-                             .sys_clk(clk), 
-                             .fall_out(), 
-                             .rise_out(XLXN_11));
+   assign XLXN_67 = 1;
    pwm_driver  XLXI_7 (.clk(clk), 
-                      .data(XLXN_15[7:0]), 
-                      .enable(enable), 
+                      .data(XLXN_49[7:0]), 
+                      .enable(XLXN_67), 
                       .pwm(XLXN_17));
-   Motor_Controller  XLXI_8 (.clk(clk), 
-                            .pwm(XLXN_17), 
-                            .sw(sw[1:0]), 
-                            .motor(motor[1:0]));
+   Motor_Interface  XLXI_9 (.motor_State(btn[1:0]), 
+                           .pwm(XLXN_17), 
+                           .motor(motor[1:0]));
+   SPI  XLXI_10 (.clk(clk), 
+                .dataToSend(data[7:0]), 
+                .dataToSendRdy(), 
+                .mosi(SPI_MOSI), 
+                .sclk(SPI_Clk), 
+                .ss(SPI_SS), 
+                .dataReceived(XLXN_49[7:0]), 
+                .dataReceivedRdy(), 
+                .miso(SPI_MISO));
 endmodule

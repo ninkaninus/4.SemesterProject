@@ -1,9 +1,12 @@
 [Inputs]
 clk
-spi_clk
 mosi
 ss
+sclk
+dataToSendRdy
+=dataToSend[7:0]=
 [Outputs]
 miso
-=dataOut[7:0]=
+dataReceivedRdy
+=dataReceived[7:0]=
 [BiDir]

@@ -1,6 +1,0 @@
-[Inputs]
-pwm
-=motor_State[1:0]=
-[Outputs]
-=motor[1:0]=
-[BiDir]

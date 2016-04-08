@@ -31,43 +31,59 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity SPI is
     Port ( clk : in  STD_LOGIC;
-			  spi_clk : in STD_LOGIC;
            mosi : in  STD_LOGIC;
            miso : out  STD_LOGIC;
-           ss : in  STD_LOGIC;
-			  dataOut : out STD_LOGIC_VECTOR (7 downto 0));
+			  ss : in STD_LOGIC;
+			  sclk : in STD_LOGIC;
+			  dataReceivedRdy : out STD_LOGIC;
+			  dataToSendRdy : in STD_LOGIC;
+			  dataReceived : out STD_LOGIC_VECTOR (7 downto 0);
+			  dataToSend : in STD_LOGIC_VECTOR (7 downto 0));
 end SPI;
 
 architecture Behavioral of SPI is
-signal iterator : integer range 0 to 8 := 0;
-signal data : STD_LOGIC_VECTOR (7 downto 0);
+signal Rbuf : STD_LOGIC_VECTOR( 7 downto 0) := "00000000";
+signal Tbuf : STD_LOGIC_VECTOR( 7 downto 0) := "00000000";
+signal Rcount : integer range 0 to 7 := 0;
+signal Tcount : integer range 0 to 7 := 0;
+
+signal SClk_edge : STD_LOGIC_VECTOR(2 downto 0) := "HL0";
+signal SS_edge : STD_LOGIC_VECTOR( 2 downto 0) := "1LH";
 
 begin
 
-	counter : process(clk)
+	miso <= Tbuf( Tcount) when SS='0' else 'Z';
+
+	SPI_in : process(clk)
 	begin
 		if rising_edge(clk) then
-			if(ss = '1') then
-				iterator <= 0;
-				--data <= "00000000";
-				dataOut <= data;
-			elsif(spi_clk = '1') then
-				if iterator = 8 then 
-					iterator <= 1;
-				else
-					iterator <= iterator+1;
+		
+			SClk_edge <= SClk_edge (1 downto 0) & sclk;
+			SS_edge <= SS_edge (1 downto 0) & ss;
+		
+			if SClk_edge = "011" then
+				Rbuf(Rcount) <= mosi;
+				
+				if Rcount > 0 then
+					Rcount <= Rcount-1;
 				end if;
-			data <= data(6 downto 0) & mosi;
+				if Tcount > 0 then
+					Tcount <= Tcount-1;
+				end if;
 			end if;
+			
+			if SS_edge = "110" then
+				Tbuf <= dataToSend;
+				Rcount <= 7;
+				Tcount <= 7;
+			end if;
+			
+			if SS_edge = "011" then
+				dataReceived <= Rbuf;
+			end if;
+			
 		end if;
 	end process;
-
---	latchOutData : process(iterator, data)
---	begin
---		if(iterator = 8) then
---			dataOut <= data;
---		end if;
---	end process;
 
 end Behavioral;
 

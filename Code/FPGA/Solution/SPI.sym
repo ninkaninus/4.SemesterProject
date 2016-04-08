@@ -1,28 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <symbol version="7" name="SPI">
     <symboltype>BLOCK</symboltype>
-    <timestamp>2016-3-31T13:36:57</timestamp>
+    <timestamp>2016-4-7T15:44:8</timestamp>
     <pin polarity="Input" x="0" y="-160" name="clk" />
     <pin polarity="Input" x="0" y="-96" name="mosi" />
-    <pin polarity="Input" x="0" y="-32" name="ss" />
+    <pin polarity="Input" x="0" y="608" name="ss" />
+    <pin polarity="Input" x="0" y="672" name="sclk" />
+    <pin polarity="Input" x="0" y="480" name="dataToSendRdy" />
+    <pin polarity="Input" x="384" y="176" name="dataToSend(7:0)" />
     <pin polarity="Output" x="384" y="-160" name="miso" />
-    <pin polarity="Output" x="384" y="-32" name="dataOut(7:0)" />
-    <pin polarity="Input" x="0" y="32" name="spi_clk" />
+    <pin polarity="Output" x="384" y="96" name="dataReceivedRdy" />
+    <pin polarity="Output" x="0" y="544" name="dataReceived(7:0)" />
     <graph>
         <attrtext style="alignment:BCENTER;fontsize:56;fontname:Arial" attrname="SymbolName" x="192" y="-200" type="symbol" />
         <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-160" type="pin clk" />
         <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-96" type="pin mosi" />
-        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="-32" type="pin ss" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="608" type="pin ss" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="672" type="pin sclk" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="76" y="480" type="pin dataToSendRdy" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="296" y="176" type="pin dataToSend(7:0)" />
         <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="312" y="-160" type="pin miso" />
-        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="312" y="-32" type="pin dataOut(7:0)" />
-        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="32" type="pin spi_clk" />
-        <line x2="0" y1="32" y2="32" x1="64" />
+        <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="304" y="100" type="pin dataReceivedRdy" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="544" type="pin dataReceived(7:0)" />
+        <line x2="0" y1="672" y2="672" x1="64" />
+        <line x2="0" y1="608" y2="608" x1="64" />
+        <line x2="0" y1="480" y2="480" x1="64" />
+        <rect width="64" x="0" y="532" height="24" />
+        <line x2="0" y1="544" y2="544" x1="64" />
         <line x2="0" y1="-160" y2="-160" x1="64" />
         <line x2="0" y1="-96" y2="-96" x1="64" />
-        <line x2="0" y1="-32" y2="-32" x1="64" />
         <line x2="384" y1="-160" y2="-160" x1="320" />
-        <rect width="64" x="320" y="-44" height="24" />
-        <line x2="384" y1="-32" y2="-32" x1="320" />
-        <rect width="256" x="64" y="-192" height="256" />
+        <line x2="384" y1="96" y2="96" x1="320" />
+        <line x2="384" y1="176" y2="176" x1="320" />
+        <rect width="64" x="320" y="164" height="24" />
+        <rect width="256" x="64" y="-192" height="896" />
     </graph>
 </symbol>

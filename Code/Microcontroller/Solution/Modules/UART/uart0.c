@@ -23,6 +23,7 @@
 #include "tm4c123gh6pm.h"
 #include <EMP/emp_type.h>
 #include <UART/uart0.h>
+#include <SPI/SPI.h>
 //#include <Tasking/tmodel.h>
 //#include <Tasking/messages.h>
 //#include <Queue/Queue.h>
@@ -132,6 +133,10 @@ void UART0_rx_isr()
 	{
 		INT8U received = UART0_DR_R;
 		SPI_write(received);
+
+		//SPI_write(0);
+
+		//uart0_putc(SPI_read());
 		//put_queue(Q_INPUT,received,0);
 		//queue_put(&uart0_rx_queue, UART0_DR_R);
 	} while (RX_FIFO_NOT_EMPTY);

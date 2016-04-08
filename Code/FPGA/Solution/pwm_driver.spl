@@ -1,7 +1,0 @@
-[Inputs]
-clk
-enable
-=data[7:0]=
-[Outputs]
-pwm
-[BiDir]

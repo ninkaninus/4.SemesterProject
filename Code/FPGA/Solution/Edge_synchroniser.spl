@@ -1,8 +1,0 @@
-[Inputs]
-reset
-sys_clk
-slow_clk
-[Outputs]
-rise_out
-fall_out
-[BiDir]
