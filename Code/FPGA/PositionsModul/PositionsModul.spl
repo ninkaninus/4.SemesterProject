@@ -1,0 +1,7 @@
+[Inputs]
+Clk
+Encoder1
+Encoder2
+[Outputs]
+=Bcd[15:0]=
+[BiDir]
