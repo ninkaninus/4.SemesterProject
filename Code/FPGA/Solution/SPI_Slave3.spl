@@ -1,0 +1,11 @@
+[Inputs]
+Clk
+SClk
+SS
+MOSI
+[Outputs]
+MISO
+WE
+=AdrBus[3:0]=
+[BiDir]
+=DataBus[11:0]=
