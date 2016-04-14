@@ -41,15 +41,17 @@ architecture Behavioral of SPI_Slave3 is
    signal UdBuf:  std_logic_vector( 0 to (8*Nb)-1) := (others=>'L');	
    alias  Adr:    std_logic_vector( 3 downto 0) is InBuf( 0 to 3); 
 
-	type States is (Wait_for_SS_low, 
-	                Wait_for_Adr,
-						 Wait_state1,
-						 Load_UdBuf,
-						 Wait_for_Databits,
-						 Set_WE0,
-						 Set_WE1,
-						 Wait_for_SS_high);
+	type States is (Wait_for_SS_low, --Wait for the SS line to turn low and initiate a transfer
+	                Wait_for_Adr, --Wait for the four address bits to have been transfered
+						 Wait_state1, --Allow the device some time to transfer the data
+						 Load_UdBuf, --Load in data from the device selected by the address
+						 Wait_for_Databits, --Wait for all the data to have been transfered 
+						 Set_WE0, --Read in the data, because write enable is off
+						 Set_WE1, --Set write enable high again
+						 Wait_for_SS_high); --Wait for SS to turn high again and end the data transfer
+						 
 	signal State: States := Wait_for_SS_low;
+	
 begin
 	-- SClk_Count <= conv_std_logic_vector( SClk_cnt, SClk_Count'length); --alternativ 
 	
@@ -95,31 +97,54 @@ begin
 		if falling_edge( Clk) then
 			WE_net <= '1';
 			case State is
+				--Wait for the select line to go low, set UdBuf so that the first 4 bits does not cause any confusion during address transfer
 				when Wait_for_SS_low => 
-						 
-	
-
+					UdBuf <= (others => '0');
+					if(xSS = "10") then
+						UdBuf(0 to 3) <= DataIn(3 downto 0);
+						State <= Wait_for_adr;
+					end if;
+				
+				--Wait for the address to be transfered, once transfered then put it out on the address bus
 	         when Wait_for_Adr =>
-							
-							
+					if Sclk_Cnt = 3 and xSClk = "01" then
+						State <= Wait_state1;
+						AdrBus <= Adr;
+					end if;
+				
+				--Wait an extra cycle to allow the connected modules to react to the address
 				when Wait_state1 =>            -- Extra wait state 
-							               
-							
+					State <= Load_UdBuf;	               
+				
+				--Load the output buffer with the data from the databus. 
+				--Reversing the bit order since we are communicating with MSB first, but UdBuf is clocked out from the other end.
 				when Load_UdBuf =>
-						
-							
+					UdBuf(4 to 15) <= DataIn(11 downto 0);
+					State <= Wait_for_Databits;
+				
+				--Wait for the rest of the data to be clocked in
 				when Wait_for_Databits =>
-							
-
-							
+					if Sclk_Cnt = 15 and xSClk = "01" then
+						State <= Set_WE0;
+						DataOut	<= InBuf(4 to 15);
+					end if;
+				
+				--WE goes low to enable the slave to clock out the data to the databus
 				when Set_WE0 =>
-							
-							
+					WE_net <= '0';	
+					State <= Set_WE1;
+				
+				--WE goes high so data kan be loaded onto the databus again from the devices
 				when Set_WE1 =>
-							
-							
+					WE_net <= '1';
+					State <= Wait_for_SS_high;
+				
+				--Wait for the datasignal to go high again
 				when Wait_for_SS_high =>
-				         				
+					--		=> (others => '0');
+					if xSS = "01" then
+						State <= Wait_for_SS_low;
+					end if;
 			end case;
 		end if;
 	end process;

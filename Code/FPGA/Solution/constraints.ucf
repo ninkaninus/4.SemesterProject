@@ -42,20 +42,20 @@ NET "Enable<3>" LOC = "F15"; # Bank = 1, Pin name = IO_L21P_1, Type = I/O, Sch n
 #NET "Led<7>" LOC = "P4";  # Bank = 3, Pin name = N.C., Type = N.C., Sch name = LD7? other than s3e500
 
 # Switches
-NET "data<0>" LOC = "G18"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = SW0
-NET "data<1>" LOC = "H18"; # Bank = 1, Pin name = IP/VREF_1, Type = VREF, Sch name = SW1
-NET "data<2>" LOC = "K18"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = SW2
-NET "data<3>" LOC = "K17"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = SW3
-NET "data<4>" LOC = "L14"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = SW4
-NET "data<5>" LOC = "L13"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = SW5
-NET "data<6>" LOC = "N17"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = SW6
-NET "data<7>" LOC = "R17"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = SW7
+#NET "data<0>" LOC = "G18"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = SW0
+#NET "data<1>" LOC = "H18"; # Bank = 1, Pin name = IP/VREF_1, Type = VREF, Sch name = SW1
+#NET "data<2>" LOC = "K18"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = SW2
+#NET "data<3>" LOC = "K17"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = SW3
+#NET "data<4>" LOC = "L14"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = SW4
+#NET "data<5>" LOC = "L13"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = SW5
+#NET "data<6>" LOC = "N17"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = SW6
+#NET "data<7>" LOC = "R17"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = SW7
 
 # Buttons
 
 #NET "reset" LOC = "B18"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = BTN0
-NET "btn<0>" LOC = "D18"; # Bank = 1, Pin name = IP/VREF_1, Type = VREF, Sch name = BTN1
-NET "btn<1>" LOC = "E18"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = BTN2
+#NET "btn<0>" LOC = "D18"; # Bank = 1, Pin name = IP/VREF_1, Type = VREF, Sch name = BTN1
+#NET "btn<1>" LOC = "E18"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = BTN2
 #NET "btn<3>" LOC = "H13"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = BTN3
 
 # JA1
@@ -71,8 +71,8 @@ NET "SPI_Clk"	 LOC = "M15"; #JA4
 
 #JB1
 
-NET "encoder<0>"	 LOC = "M13"; #JB1
-NET "encoder<1>"	 LOC = "R18"; #JB2
+NET "encoder1"	 LOC = "M13"; #JB1
+NET "encoder2"	 LOC = "R18"; #JB2
 #NET "led<2>"	 LOC = "R15"; #JB3
 #NET "led<3>"	 LOC = "T17"; #JB4
 NET "motor<0>"	 LOC = "P17"; #JB7

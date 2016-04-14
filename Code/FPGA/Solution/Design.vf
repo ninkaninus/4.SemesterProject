@@ -7,11 +7,11 @@
 // \   \   \/     Version : 14.7
 //  \   \         Application : sch2hdl
 //  /   /         Filename : Design.vf
-// /___/   /\     Timestamp : 04/07/2016 18:01:15
+// /___/   /\     Timestamp : 04/15/2016 01:30:24
 // \   \  /  \ 
 //  \___\/\___\ 
 //
-//Command: sch2hdl -intstyle ise -family spartan3e -verilog D:/Github/4.SemesterProject/Code/FPGA/Solution/Design.vf -w D:/Github/4.SemesterProject/Code/FPGA/Solution/Design.sch
+//Command: sch2hdl -sympath D:/Github/4.SemesterProject/Code/FPGA/Solution/ipcore_dir -intstyle ise -family spartan3e -verilog D:/Github/4.SemesterProject/Code/FPGA/Solution/Design.vf -w D:/Github/4.SemesterProject/Code/FPGA/Solution/Design.sch
 //Design Name: Design
 //Device: spartan3e
 //Purpose:
@@ -20,43 +20,62 @@
 //
 `timescale 1ns / 1ps
 
-module Design(btn, 
-              clk, 
-              data, 
+module Design(clk, 
+              encoder1, 
+              encoder2, 
               SPI_Clk, 
               SPI_MOSI, 
               SPI_SS, 
+              Enable, 
               motor, 
+              seg, 
               SPI_MISO);
 
-    input [1:0] btn;
     input clk;
-    input [7:0] data;
+    input encoder1;
+    input encoder2;
     input SPI_Clk;
     input SPI_MOSI;
     input SPI_SS;
+   output [3:0] Enable;
    output [1:0] motor;
+   output [0:7] seg;
    output SPI_MISO;
    
-   wire XLXN_17;
-   wire [7:0] XLXN_49;
-   wire XLXN_67;
+   wire [11:0] DataBus;
+   wire XLXN_89;
+   wire [15:0] XLXN_138;
+   wire [3:0] XLXN_143;
+   wire XLXN_144;
    
-   assign XLXN_67 = 1;
-   pwm_driver  XLXI_7 (.clk(clk), 
-                      .data(XLXN_49[7:0]), 
-                      .enable(XLXN_67), 
-                      .pwm(XLXN_17));
-   Motor_Interface  XLXI_9 (.motor_State(btn[1:0]), 
-                           .pwm(XLXN_17), 
-                           .motor(motor[1:0]));
-   SPI  XLXI_10 (.clk(clk), 
-                .dataToSend(data[7:0]), 
-                .dataToSendRdy(), 
-                .mosi(SPI_MOSI), 
-                .sclk(SPI_Clk), 
-                .ss(SPI_SS), 
-                .dataReceived(XLXN_49[7:0]), 
-                .dataReceivedRdy(), 
-                .miso(SPI_MISO));
+   SPI_Slave3  XLXI_21 (.Clk(clk), 
+                       .MOSI(SPI_MOSI), 
+                       .SClk(SPI_Clk), 
+                       .SS(SPI_SS), 
+                       .AdrBus(XLXN_143[3:0]), 
+                       .MISO(SPI_MISO), 
+                       .WE(XLXN_144), 
+                       .DataBus(DataBus[11:0]));
+   MultiplexDisplay  XLXI_23 (.Bcd(XLXN_138[15:0]), 
+                             .Clk_50MHz(clk), 
+                             .An(Enable[3:0]), 
+                             .Seg(seg[0:7]));
+   PositionsModul  XLXI_24 (.AdrBus(XLXN_143[3:0]), 
+                           .Clk(clk), 
+                           .DataBus(DataBus[11:0]), 
+                           .Encoder1(encoder1), 
+                           .Encoder2(encoder2), 
+                           .WE(XLXN_144), 
+                           .Bcd(XLXN_138[15:0]));
+   Motor_Interface  XLXI_25 (.AdrBus(XLXN_143[3:0]), 
+                            .clk(clk), 
+                            .DataBus(DataBus[1:0]), 
+                            .pwm(XLXN_89), 
+                            .WE(XLXN_144), 
+                            .motor(motor[1:0]));
+   pwm_driver  XLXI_26 (.AdrBus(XLXN_143[3:0]), 
+                       .clk(clk), 
+                       .DataBus(DataBus[7:0]), 
+                       .WE(XLXN_144), 
+                       .pwm(XLXN_89));
 endmodule

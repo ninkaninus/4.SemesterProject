@@ -1,1 +1,1 @@
-sch2hdl,-intstyle,ise,-family,spartan3e,-verilog,D:/Github/4.SemesterProject/Code/FPGA/Solution/Design.vf,-w,D:/Github/4.SemesterProject/Code/FPGA/Solution/Design.sch
+sch2hdl,-sympath,D:/Github/4.SemesterProject/Code/FPGA/Solution/ipcore_dir,-intstyle,ise,-family,spartan3e,-verilog,D:/Github/4.SemesterProject/Code/FPGA/Solution/Design.vf,-w,D:/Github/4.SemesterProject/Code/FPGA/Solution/Design.sch
