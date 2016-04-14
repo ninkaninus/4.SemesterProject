@@ -33,7 +33,8 @@ use IEEE.NUMERIC_STD.ALL;
 entity pwm_driver is
     Port ( clk : in  STD_LOGIC;
            enable : in  STD_LOGIC;
-           data : in  STD_LOGIC_VECTOR (7 downto 0);
+           DataBus : in  STD_LOGIC_VECTOR (7 downto 0);
+			  AdrBus : in STD_LOGIC_VECTOR (3 downto 0);
            pwm : out  STD_LOGIC);
 end pwm_driver;
 

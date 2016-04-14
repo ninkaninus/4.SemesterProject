@@ -8,7 +8,7 @@ library WORK;
 use WORK.Projekt_Data.all;
 
 entity SPI_Slave3 is
---	 generic ( Nb: natural := 2);  -- Number of bytes
+	 generic ( Nb: natural := 2);  -- Number of bytes
     Port ( Clk : 		in    STD_LOGIC;  -- FPGA 50 MHz clk
            -- The SPI interface
 			  SClk : 	in    STD_LOGIC;
