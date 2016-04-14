@@ -37,10 +37,36 @@ T_{slice}=\dfrac{T_{PWM}}{256}=156ns
 
 En clock-periode med FPGA'ens krystal på 50 MHz er $20ns$ lang, så hvis man tæller en variabel op hver 8. clock-periode til den når 256, så får man en samlet periodetid på $20ns*8*256=40.96 \mu s=24.414kHz$. Denne variabel sammenlignes så med den lagrede 8 bits duty cycle værdi, for at afgøre om signalet på udgangen skal være højt eller lavt.
 
-\begin{figure}[h]
+\begin{figure}[H]
 	\begin{center}
 		\includegraphics[scale=0.5]{Billeder/PWM_Timing.png}
 	\end{center}
 \label{fig:PWM_timing}
 \caption{Ramperne på den øverste graf repræsenterer variablen der tælles op fra 0 til 255. På den nederste graf ses det resulterende PWM-signal}
 \end{figure}
+
+\subsubsection{Positions modul}
+
+For at kunne ramme et punkt på himlen, bliver microcontrolleren nødt til at vide hvilken position pan-tilt systemet står i.
+For at kende denne position, er der to hall sensorer på EMG30 motoren.
+Disse sensorer sidder 90 grader forskudt, når motoren har kørt en omgang (Den indre rotor) har hall sensorerne sendt høj 3 gange hver.
+Hver gang en hall sensor går fra høj til lav, eller lav til høj, vil et register i FPGA'en inkrementere et register med 1.\\
+
+For at kunne finde ud af hvilken vej motoren kører, kigges der på hvordan hall sensorerne går høj og lav i forhold til hinanden.
+
+\begin{figure}[H]
+	\begin{center}
+		\includegraphics[scale=0.5]{Billeder/Hall_sensorer.png}
+	\end{center}
+\label{fig:Hall_Sensorer}
+\caption{Her ses et billede af hvordan hall sensorerne går høj og lav i forhold til hinanden}
+\end{figure}
+
+Rotation.
+Når hall sensor 1 er høj, og hall sensor 2 er høj\\
+Hvis så hall sensor 2 bliver lav først, så er det en rotation med uret.\\
+Og hvis hall sensor 1 bliver lav først, så er det mod uret.\\
+
+Når hall sensor 1 er lav, og hall sensor 2 er lav\\
+Hvis hall sensor 2 så bliver høj først, så er det en rotation med uret.\\
+Hvis hall sensor 1 bliver høj først, så er det en rotation mod uret.\\
