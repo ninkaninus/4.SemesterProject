@@ -51,11 +51,11 @@ void SSI_init()
 	//Microcontroller as master
 	SSI0_CR1_R = 0x00000000;
 	//SSI Clock Source
-	SSI0_CC_R = 0x00;
+	SSI0_CC_R = 0x00; // System Clock (Se side 981)
 	//Prescale Divisor
-	SSI0_CPSR_R = 8; //Stod til 10, skal det ikke være 8 for at få 2 Mbps?
-	//Protocol mode
-	SSI0_CR0_R = (0x7<<0);
+	SSI0_CPSR_R = 8; //Stod til 10, skal det ikke være 8 for at få 2 Mbps? Jo jonas, du har ret.
+	//SSI Data Size select (Bit 3:0),SSI Frame Format Select (bit 5:4), SSI Serial Clock Polarity (Bit 6), SSI Serial Clock Phase (Bit 7), SSI Serial Clock Rate (Bit 15:8) 31:16 reserved
+	SSI0_CR0_R = (0xF<<0); // Se side 966 - 977
 	//Enable SSI
 	SSI0_CR1_R |= (1<<1) | (0<<0); //Enable ssi (bit 1) | Enable loopback (bit 0)
 	//SSI0_IM_R |= SSI_IM_RXIM;
