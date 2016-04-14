@@ -1,3 +1,7 @@
 \section{Test}
 
-For at finde ud af hvordan der kan bestemmes ting laver man tests :o
+\subsection{Step Respons}
+
+For at lave en black box model af motoren, skal step responsen for omdrejningerne i forhold til spændingen over motorterminalerne findes. Det vil, med andre ord, sige at ændringen i motoromdrejningerne over tid skal måles ved en konstant spænding. Da motoren allerede er udstyret med en encoder, er det muligt at måle omdrejningshastigheden fra de to hall sensorer ved hjælp af en logic analyzer. Denne analyzer gør det muligt at se hvor lang tid der går imellem pulserne fra hall sensorerne, og på den måde udregne vinkelhastigheden derfra. Hver hall sensor giver 3 pulser på en omgang - det svarer til $\pi/3$ radianer fra en rising edge til en falling edge.
+
+Logic analyzeren tilsluttes de to hall sensorer, og måler motorens respons i det øjeblik en konstant spænding på 12V sættes over motorterminalerne. Testen udføres 3 gange for at kunne sammenligne resultaterne. 

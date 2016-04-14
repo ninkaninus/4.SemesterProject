@@ -1,0 +1,296 @@
+#:C139   
+#Xilinx FPGA Editor Command Log File
+#Editor Version:
+#:V   NT M2.1 P.20131013
+#Current Working Directory:
+#:D   C:\Users\Kristian\Documents\Github\Repositories\4. Semester Projekt\Code\FPGA\pwm_driver
+#Date/Time:
+#:T   Tue Mar 08 13:34:37 2016
+#------------------------------
+	#Reading pwm_driver.ncd...
+	#Loading device for application Rf_Device from file '3s500e.nph' in environment C:\Kristian\Programmer\Xilinx\14.7\ISE_DS\ISE\.
+	#   "pwm_driver" is an NCD, version 3.2, device xc3s500e, package fg320, speed -4
+	#Design creation date: 2016.03.08.12.11.19
+	#Building chip graphics...
+	#Loading speed info...
+	#1
+setattr main edit-mode no-logic-changes
+	#2
+hilite -c turquoise
+	#WARNING:FPGAEditor:48 - Nothing to hilite -- there is nothing selected.
+	#3
+select -k comp 'pwm<0>'
+	#4
+hilite -c tomato
+	#5
+unselect comp 'pwm<0>'
+	#6
+select -k net 'clk_divider<16>'
+	#7
+hilite -c thistle
+	#8
+unselect -all
+	#9
+select -k net 'clk_divider<17>'
+	#10
+hilite -c tomato
+	#11
+unselect net 'clk_divider<17>'
+	#12
+select -k net 'current_value<0>'
+	#13
+unselect net 'current_value<0>'
+	#14
+select -k net 'current_value<1>'
+	#15
+unselect net 'current_value<1>'
+	#16
+select -k net 'current_value<2>'
+	#17
+unselect net 'current_value<2>'
+	#18
+select -k net 'current_value<3>'
+	#19
+unselect net 'current_value<3>'
+	#20
+select -k net 'current_value<4>'
+	#21
+unselect net 'current_value<4>'
+	#22
+select -k net 'current_value<5>'
+	#23
+unselect net 'current_value<5>'
+	#24
+select -k net 'current_value<6>'
+	#25
+unselect net 'current_value<6>'
+	#26
+select -k net 'current_value<7>'
+	#27
+unselect net 'current_value<7>'
+	#28
+select -k net 'enable_IBUF'
+	#29
+unselect net 'enable_IBUF'
+	#30
+select -k net 'GLOBAL_LOGIC1'
+	#31
+unselect net 'GLOBAL_LOGIC1'
+	#32
+select -k net 'enable_IBUF'
+	#33
+unselect net 'enable_IBUF'
+	#34
+select -k net 'GLOBAL_LOGIC1'
+	#35
+unselect net 'GLOBAL_LOGIC1'
+	#36
+select -k net 'enable_IBUF'
+	#37
+unselect net 'enable_IBUF'
+	#38
+select -k net 'GLOBAL_LOGIC1'
+	#39
+unselect net 'GLOBAL_LOGIC1'
+	#40
+select -k net 'enable_IBUF'
+	#41
+unselect net 'enable_IBUF'
+	#42
+select -k net 'current_value<7>'
+	#43
+unselect net 'current_value<7>'
+	#44
+select -k net 'enable_IBUF'
+	#45
+unselect net 'enable_IBUF'
+	#46
+select -k net 'GLOBAL_LOGIC1'
+	#47
+unselect net 'GLOBAL_LOGIC1'
+	#48
+select -k net 'iterator<0>'
+	#49
+unselect net 'iterator<0>'
+	#50
+select -k net 'iterator<1>'
+	#51
+unselect net 'iterator<1>'
+	#52
+select -k net 'iterator<0>'
+	#53
+unselect net 'iterator<0>'
+	#54
+select -k net 'iterator<1>'
+	#55
+unselect net 'iterator<1>'
+	#56
+select -k net 'iterator<2>'
+	#57
+unselect net 'iterator<2>'
+	#58
+select -k net 'iterator<3>'
+	#59
+unselect net 'iterator<3>'
+	#60
+select -k net 'iterator<4>'
+	#61
+unselect net 'iterator<4>'
+	#62
+select -k net 'iterator<5>'
+	#63
+unselect net 'iterator<5>'
+	#64
+select -k net 'iterator<6>'
+	#65
+unselect net 'iterator<6>'
+	#66
+select -k net 'iterator<5>'
+	#67
+unselect net 'iterator<5>'
+	#68
+select -k net 'iterator<4>'
+	#69
+unselect net 'iterator<4>'
+	#70
+select -k net 'iterator<3>'
+	#71
+unselect net 'iterator<3>'
+	#72
+select -k net 'iterator<4>'
+	#73
+unselect net 'iterator<4>'
+	#74
+select -k net 'iterator<5>'
+	#75
+unselect net 'iterator<5>'
+	#76
+select -k net 'iterator<6>'
+	#77
+unselect net 'iterator<6>'
+	#78
+select -k net 'iterator<7>'
+	#79
+unselect net 'iterator<7>'
+	#80
+select -k net 'iterator_and0000'
+	#81
+unselect net 'iterator_and0000'
+	#82
+select -k net 'iterator_and00004'
+	#83
+unselect net 'iterator_and00004'
+	#84
+select -k net 'iterator_and00009/O'
+	#85
+unselect net 'iterator_and00009/O'
+	#86
+select -k net 'iterator_cmp_eq0000'
+	#87
+unselect net 'iterator_cmp_eq0000'
+	#88
+select -k net 'iterator_cmp_eq0000_wg_cy<1>'
+	#89
+unselect net 'iterator_cmp_eq0000_wg_cy<1>'
+	#90
+select -k net 'iterator_cmp_eq0000'
+	#91
+unselect net 'iterator_cmp_eq0000'
+	#92
+select -k net 'iterator_cmp_eq0000_wg_cy<1>'
+	#93
+unselect net 'iterator_cmp_eq0000_wg_cy<1>'
+	#94
+select -k net 'iterator_cmp_eq0000_wg_cy<1>/ProtoComp0.GNDF.0'
+	#95
+unselect net 'iterator_cmp_eq0000_wg_cy<1>/ProtoComp0.GNDF.0'
+	#96
+select -k net 'iterator_cmp_eq0000_wg_cy<3>'
+	#97
+unselect net 'iterator_cmp_eq0000_wg_cy<3>'
+	#98
+select -k net 'Mcompar_pwm_cmp_gt0000_cy<1>'
+	#99
+unselect net 'Mcompar_pwm_cmp_gt0000_cy<1>'
+	#100
+select -k net 'Mcompar_pwm_cmp_gt0000_cy<3>'
+	#101
+unselect net 'Mcompar_pwm_cmp_gt0000_cy<3>'
+	#102
+select -k net 'Mcompar_pwm_cmp_gt0000_cy<5>'
+	#103
+unselect net 'Mcompar_pwm_cmp_gt0000_cy<5>'
+	#104
+select -k net 'Mcompar_pwm_cmp_gt0000_cy<7>'
+	#105
+unselect net 'Mcompar_pwm_cmp_gt0000_cy<7>'
+	#106
+select -k net 'Mcount_clk_divider_cy<1>'
+	#107
+unselect net 'Mcount_clk_divider_cy<1>'
+	#108
+select -k net 'Mcount_clk_divider_cy<3>'
+	#109
+unselect net 'Mcount_clk_divider_cy<3>'
+	#110
+select -k net 'Mcount_clk_divider_cy<5>'
+	#111
+unselect net 'Mcount_clk_divider_cy<5>'
+	#112
+select -k net 'Mcount_clk_divider_cy<7>'
+	#113
+unselect net 'Mcount_clk_divider_cy<7>'
+	#114
+select -k net 'Mcount_clk_divider_cy<9>'
+	#115
+unselect net 'Mcount_clk_divider_cy<9>'
+	#116
+select -k net 'Mcount_clk_divider_cy<11>'
+	#117
+unselect net 'Mcount_clk_divider_cy<11>'
+	#118
+select -k net 'Mcount_clk_divider_cy<13>'
+	#119
+unselect net 'Mcount_clk_divider_cy<13>'
+	#120
+select -k net 'Mcount_clk_divider_cy<15>'
+	#121
+unselect net 'Mcount_clk_divider_cy<15>'
+	#122
+select -k net 'Mcount_iterator_cy<1>'
+	#123
+unselect net 'Mcount_iterator_cy<1>'
+	#124
+select -k net 'Mcount_iterator_cy<3>'
+	#125
+unselect net 'Mcount_iterator_cy<3>'
+	#126
+select -k net 'Mcount_iterator_cy<5>'
+	#127
+unselect net 'Mcount_iterator_cy<5>'
+	#128
+select -k net 'N01'
+	#129
+unselect net 'N01'
+	#130
+select -k net 'pwm<1>9'
+	#131
+unselect net 'pwm<1>9'
+	#132
+select -k net 'pwm_1_OBUF'
+	#133
+unselect net 'pwm_1_OBUF'
+	#134
+select -k net 'pwm<1>9'
+	#135
+unselect net 'pwm<1>9'
+	#136
+select -k net 'pwm_1_OBUF'
+	#137
+unselect net 'pwm_1_OBUF'
+	#138
+select -k net 'pwm<1>9'
+	#139
+unselect net 'pwm<1>9'
+	#140
+select -k net 'pwm_1_OBUF'

@@ -44,11 +44,17 @@ Ligning \ref{eq:DE_motor_1} og \ref{DE_motor_2} kan tilsammen beskrive motoren o
 Hvis man laplace-transformerer de to ligninger kan man finde overføringsfunktionen $\dfrac{\omega(s)}{V_{a}(s)}$ ved at substituere for $I(s)$. Forholdet kan findes hvis man antager at startbetingelserne $\omega_{0}$ og $i_{0}$ er lig med nul, og at der ikke er noget \textit{disturbance moment} $T_{d}$.
 
 \begin{equation}
-G(s)=\dfrac{\omega(s)}{V_{a}(s)}=\dfrac{K_{m}}{(Js+b)(L_{a}s+R_{a})+K_{m}K_{e}}
+G(s)=\dfrac{\omega(s)}{V_{a}(s)}=\dfrac{K_{m}}{(L_{a}s+R_{a})(Js+b)+K_{m}K_{e}}
 \end{equation}
 
-Hvis man sammenligner med standardligningen for et 2. ordens system er det muligt at udlede den naturlige frekvens $\omega_{n}$ og damping ratio $\zeta$.
+Det er muligt at forsimple systemet ved at se bort fra den elektriske del af motoren's transiente forløb. Det kan lade sig gøre fordi tidskonstanten $\frac{L_{a}}{R_{a}}$ er meget mindre end tidskonstanten for den mekaniske del $\frac{J}{b}$. I s-domænet vil det svare til at polen fra den elektriske del af motoren, befinder sig meget længere til venstre for $j\omega$-aksen end polen fra den mekaniske del. Hvis man ser bort fra den ene af polerne, kan man nu approksimere hele systemet som et 1.-ordens system, og det er en del simplere at arbejde med.
 
 \begin{equation}
+G(s)=\dfrac{\omega(s)}{V_{a}(s)}=\dfrac{K_{m}}{R_{a}(Js+b)+K_{m}K_{e}}
+\end{equation}
 
+Man har nu to muligheder for at realisere sit system: Man kan lave en \textit{White Box Model}, hvor man, gennem forsøg, finder frem til alle konstanterne i motoren og derigennem bestemmer en passende controller. Man kan også lave en \textit{Black Box Model}, hvor man måler step responsen for motorens omdrejningshastighed i forhold til spændingen over motorterminalerne. Ud fra denne respons kan man så aflæse en tidskonstant og et dc-gain, og det er alt der behøves for at kunne beskrive et 1.-ordens system.
+
+\begin{equation}
+G(s)=\dfrac{\omega(s)}{V_{a}(s)}=\dfrac{K}{\tau*s+1}
 \end{equation}
