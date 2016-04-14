@@ -8,6 +8,9 @@ library WORK;
 use WORK.Projekt_Data.all;
 
 entity Blok1 is
+	 
+	 generic ( Nb: natural := 2);  -- Number of bytes	
+	 
     Port ( Clk : 		in  	STD_LOGIC;
            AdrBus : 	in  	STD_LOGIC_VECTOR (3 downto 0);
            WE : 		in  	STD_LOGIC;

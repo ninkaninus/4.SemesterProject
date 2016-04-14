@@ -8,7 +8,9 @@ library WORK;
 use WORK.Projekt_Data.all;
 
 entity SPI_Slave3 is
-	 generic ( Nb: natural := 2);  -- Number of bytes
+	 generic (  Adr_Width: natural := 4; --Width in bits of the address bus
+					Nb: Natural := 2);  --Number of bytes
+					
     Port ( Clk : 		in    STD_LOGIC;  -- FPGA 50 MHz clk
            -- The SPI interface
 			  SClk : 	in    STD_LOGIC;
@@ -16,7 +18,7 @@ entity SPI_Slave3 is
            MOSI : 	in    STD_LOGIC;
            MISO : 	out   STD_LOGIC;
 			  -- The internal AdrBus, DataBus and Write Enable
-           AdrBus :	out   STD_LOGIC_VECTOR (3 downto 0);
+           AdrBus :	out   STD_LOGIC_VECTOR ((Adr_Width - 1) downto 0);
            WE : 		out   STD_LOGIC;
            DataBus : inout STD_LOGIC_VECTOR (11 downto 0));
 end SPI_Slave3;

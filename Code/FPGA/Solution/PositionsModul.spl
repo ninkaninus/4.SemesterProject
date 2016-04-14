@@ -1,0 +1,10 @@
+[Inputs]
+Clk
+Encoder1
+Encoder2
+WE
+=AdrBus[2:0]=
+=DataBus[11:0]=
+[Outputs]
+=Bcd[15:0]=
+[BiDir]

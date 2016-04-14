@@ -1,0 +1,8 @@
+[Inputs]
+clk
+WE
+=DataBus[7:0]=
+=AdrBus[2:0]=
+[Outputs]
+pwm
+[BiDir]

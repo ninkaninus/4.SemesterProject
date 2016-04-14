@@ -31,10 +31,14 @@ use IEEE.NUMERIC_STD.ALL;
 --use UNISIM.VComponents.all;
 
 entity pwm_driver is
+	
+	 generic (  Adr_Width: natural := 3; --Width in bits of the address bus
+					Address: Natural := 0);  --Address of the device
+
     Port ( clk : in  STD_LOGIC;
-           enable : in  STD_LOGIC;
            DataBus : in  STD_LOGIC_VECTOR (7 downto 0);
-			  AdrBus : in STD_LOGIC_VECTOR (3 downto 0);
+			  AdrBus :	in   STD_LOGIC_VECTOR ((Adr_Width - 1) downto 0);
+			  WE : 		in  	STD_LOGIC;
            pwm : out  STD_LOGIC);
 end pwm_driver;
 
@@ -43,6 +47,7 @@ architecture Behavioral of pwm_driver is
 signal clk_divider: integer range 0 to 195000 := 0;
 signal current_value: unsigned (7 downto 0) := "00000000";
 signal iterator: unsigned (7 downto 0) := "00000000";
+signal DataIn : STD_LOGIC_VECTOR (7 downto 0);
 
 begin
 
@@ -67,11 +72,15 @@ begin
 	end if;
 end process;
 
+DataIn <= DataBus;
+
 latch_data: process(clk)
 begin
 	if rising_edge(clk) then	
-		if enable = '1' then
-			current_value <= unsigned(data);
+		if unsigned(AdrBus) = Address then
+			if WE='0' then
+				current_value <= unsigned(DataIn);
+			end if;
 		end if;
 	end if;
 end process;

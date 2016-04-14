@@ -1,0 +1,9 @@
+[Inputs]
+clk
+pwm
+WE
+=AdrBus[2:0]=
+=DataBus[1:0]=
+[Outputs]
+=motor[1:0]=
+[BiDir]

@@ -71,8 +71,8 @@ NET "SPI_Clk"	 LOC = "M15"; #JA4
 
 #JB1
 
-#NET "led<0>"	 LOC = "M13"; #JB1
-#NET "led<1>"	 LOC = "R18"; #JB2
+NET "encoder<0>"	 LOC = "M13"; #JB1
+NET "encoder<1>"	 LOC = "R18"; #JB2
 #NET "led<2>"	 LOC = "R15"; #JB3
 #NET "led<3>"	 LOC = "T17"; #JB4
 NET "motor<0>"	 LOC = "P17"; #JB7

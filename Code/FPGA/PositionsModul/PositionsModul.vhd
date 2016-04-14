@@ -5,16 +5,23 @@ use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity PositionsModul is
+	
+	generic (  Adr_Width: natural := 3; --Width in bits of the address bus
+				  Address: Natural := 0);  --Address of the device
+
 	port(Clk 	  :	in STD_LOGIC;
 		  Encoder1 :	in STD_LOGIC;
 		  Encoder2 :	in STD_LOGIC;
+		  AdrBus   :	in   STD_LOGIC_VECTOR ((Adr_Width - 1) downto 0);
+        DataBus  :   in STD_LOGIC_VECTOR (11 downto 0);
+		  WE       : 	in  	STD_LOGIC;
 		  Bcd		  :	out STD_LOGIC_VECTOR (15 downto 0));
 		  
 end PositionsModul;
 
 architecture Behavioral of PositionsModul is
-Signal AB			: STD_LOGIC_VECTOR (1 downto 0) := "00";
-Signal BC			: STD_LOGIC_VECTOR (1 downto 0) := "00";
+Signal AB			: 		STD_LOGIC_VECTOR (1 downto 0) := "00";
+Signal BC			: 		STD_LOGIC_VECTOR (1 downto 0) := "00";
 signal Ciffer_et	:		integer range 0 to 15 := 0;
 signal Ciffer_ti	:		integer range 0 to 15 := 0;
 signal Ciffer_hun	:		integer range 0 to 15 := 0;

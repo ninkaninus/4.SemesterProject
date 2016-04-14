@@ -19,6 +19,7 @@
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -30,16 +31,38 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity Motor_Interface is
-    Port ( pwm : in  STD_LOGIC;
-           motor_State : in  STD_LOGIC_VECTOR(1 downto 0);
+	
+	 generic (  Adr_Width: natural := 3; --Width in bits of the address bus
+					Address: Natural := 0);  --Address of the device
+
+    Port ( clk : in STD_LOGIC;
+			  pwm : in  STD_LOGIC;
+			  AdrBus :	in   STD_LOGIC_VECTOR ((Adr_Width - 1) downto 0);
+			  WE : 		in  	STD_LOGIC;
+           DataBus : in STD_LOGIC_VECTOR (1 downto 0);
            motor : out  STD_LOGIC_VECTOR(1 downto 0));
 end Motor_Interface;
 
 architecture Behavioral of Motor_Interface is
 
+signal DataIn : STD_LOGIC_VECTOR (1 downto 0);
+
 begin
 
-with motor_State select motor <= 
+--DataIn <= DataBus;
+
+latch_select: process(clk)
+begin
+	if rising_edge(clk) then	
+		if unsigned(AdrBus) = Address then
+			if WE='0' then
+				DataIn <= DataBus;
+			end if;
+		end if;
+	end if;
+end process;	
+
+with DataIn select motor <= 
 	'0' & pwm when "01",
 	pwm & '0' when "10",
 	"00" when others;
