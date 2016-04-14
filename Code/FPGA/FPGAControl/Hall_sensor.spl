@@ -1,0 +1,6 @@
+[Inputs]
+=Hall_sens[1:0]=
+[Outputs]
+Pan_Hall
+Tilt_Hall
+[BiDir]

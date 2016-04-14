@@ -1,0 +1,45 @@
+#-----------------------------------------------------------
+# PlanAhead v14.7 (64-bit)
+# Build 321239 by xbuild on Fri Sep 27 19:29:51 MDT 2013
+# Start of session at: Thu Apr 14 18:39:17 2016
+# Process ID: 7384
+# Log file: C:/Users/Chris/Desktop/FPGACont/FPGAControl/planAhead_run_1/planAhead.log
+# Journal file: C:/Users/Chris/Desktop/FPGACont/FPGAControl/planAhead_run_1/planAhead.jou
+#-----------------------------------------------------------
+INFO: [Common 17-78] Attempting to get a license: PlanAhead
+INFO: [Common 17-290] Got license for PlanAhead
+INFO: [Device 21-36] Loading parts and site information from C:/Xilinx/14.7/ISE_DS/PlanAhead/data/parts/arch.xml
+Parsing RTL primitives file [C:/Xilinx/14.7/ISE_DS/PlanAhead/data/parts/xilinx/rtl/prims/rtl_prims.xml]
+Finished parsing RTL primitives file [C:/Xilinx/14.7/ISE_DS/PlanAhead/data/parts/xilinx/rtl/prims/rtl_prims.xml]
+start_gui
+source C:/Users/Chris/Desktop/FPGACont/FPGAControl/pa.fromNetlist.tcl
+# create_project -name FPGAControl -dir "C:/Users/Chris/Desktop/FPGACont/FPGAControl/planAhead_run_2" -part xc3s500efg320-4
+# set_property design_mode GateLvl [get_property srcset [current_run -impl]]
+# set_property edif_top_file "C:/Users/Chris/Desktop/FPGACont/FPGAControl/Schematic_File.ngc" [ get_property srcset [ current_run ] ]
+# add_files -norecurse { {C:/Users/Chris/Desktop/FPGACont/FPGAControl} }
+# set_property target_constrs_file "Constraints.ucf" [current_fileset -constrset]
+Adding file 'C:/Users/Chris/Desktop/FPGACont/FPGAControl/Constraints.ucf' to fileset 'constrs_1'
+# add_files [list {Constraints.ucf}] -fileset [get_property constrset [current_run]]
+# link_design
+Design is defaulting to srcset: sources_1
+Design is defaulting to constrset: constrs_1
+Design is defaulting to project part: xc3s500efg320-4
+Release 14.7 - ngc2edif P.20131013 (nt64)
+Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
+Reading design Schematic_File.ngc ...
+WARNING:NetListWriters:298 - No output is written to Schematic_File.xncf,
+   ignored.
+Processing design ...
+   Preping design's networks ...
+   Preping design's macros ...
+  finished :Prep
+Writing EDIF netlist file Schematic_File.edif ...
+ngc2edif: Total memory usage is 79400 kilobytes
+
+Parsing EDIF File [./planAhead_run_2/FPGAControl.data/cache/Schematic_File_ngc_zx.edif]
+Finished Parsing EDIF File [./planAhead_run_2/FPGAControl.data/cache/Schematic_File_ngc_zx.edif]
+ERROR: [Designutils 20-1353] No cell is specified in file './Schematic_File.ngc'. The design is empty.  This error may be caused by insufficient disk space.
+
+    while executing
+"link_design"
+    (file "C:/Users/Chris/Desktop/FPGACont/FPGAControl/pa.fromNetlist.tcl" line 10)

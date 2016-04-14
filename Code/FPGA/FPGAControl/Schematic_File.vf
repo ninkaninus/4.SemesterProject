@@ -1,0 +1,61 @@
+////////////////////////////////////////////////////////////////////////////////
+// Copyright (c) 1995-2013 Xilinx, Inc.  All rights reserved.
+////////////////////////////////////////////////////////////////////////////////
+//   ____  ____ 
+//  /   /\/   / 
+// /___/  \  /    Vendor: Xilinx 
+// \   \   \/     Version : 14.7
+//  \   \         Application : sch2hdl
+//  /   /         Filename : Schematic_File.vf
+// /___/   /\     Timestamp : 04/14/2016 20:24:21
+// \   \  /  \ 
+//  \___\/\___\ 
+//
+//Command: sch2hdl -intstyle ise -family spartan3e -verilog C:/Users/Chris/Desktop/FPGACont/FPGAControl/Schematic_File.vf -w C:/Users/Chris/Desktop/FPGACont/FPGAControl/Schematic_File.sch
+//Design Name: Schematic_File
+//Device: spartan3e
+//Purpose:
+//    This verilog netlist is translated from an ECS schematic.It can be 
+//    synthesized and simulated, but it should not be modified. 
+//
+`timescale 1ns / 1ps
+
+module Schematic_File(clk, 
+                      Encoder_Pan, 
+                      Encoder_tilt, 
+                      Hall_sens, 
+                      Position);
+
+    input clk;
+    input [1:0] Encoder_Pan;
+    input [1:0] Encoder_tilt;
+    input [1:0] Hall_sens;
+   output [7:0] Position;
+   
+   wire XLXN_21;
+   wire XLXN_30;
+   wire [1:0] XLXN_36;
+   wire [8:0] XLXN_44;
+   wire [10:0] XLXN_45;
+   
+   Motor_Tilt  XLXI_5 (.Clk(clk), 
+                      .Encoder_tilt(Encoder_tilt[1:0]), 
+                      .Sync_Hall(XLXN_21), 
+                      .Encoder_Register());
+   SikkerhedsFeature  XLXI_8 (.Motor_Pan_Hall(XLXN_45[10:0]), 
+                             .Motor_Tilt_hall(XLXN_44[8:0]), 
+                             .Stop(XLXN_36[1:0]));
+   Hall_sensor  XLXI_13 (.Hall_sens(Hall_sens[1:0]), 
+                        .Pan_Hall(XLXN_21), 
+                        .Tilt_Hall(XLXN_30));
+   Motor_Pan  XLXI_20 (.Clk(clk), 
+                      .Encoder_Pan(Encoder_Pan[1:0]), 
+                      .Sync_Hall(XLXN_30), 
+                      .Encoder_Register());
+   LED_Blinky  XLXI_21 (.Input(XLXN_36[1:0]), 
+                       .Position(Position[7:0]));
+   Clock_scale  XLXI_22 (.Clk(clk), 
+                        .Clk_100hz(), 
+                        .Fake_Encoder_pan(XLXN_44[8:0]), 
+                        .Fake_Encoder_Tilt(XLXN_45[10:0]));
+endmodule

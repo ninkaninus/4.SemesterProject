@@ -1,0 +1,7 @@
+[Inputs]
+Clk
+[Outputs]
+Clk_100hz
+=Fake_Encoder_pan[8:0]=
+=Fake_Encoder_Tilt[10:0]=
+[BiDir]
