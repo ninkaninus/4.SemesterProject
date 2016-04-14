@@ -1,5 +1,13 @@
+figure(1)
+subplot(2,1,1)
 plot(Time,RPM)
 xlabel('Time [s]'); ylabel('RPM');
+title('DC Motor Step Response at 12V');
+grid on;
+
+subplot(2,1,2)
+plot(Time,W)
+xlabel('Time [s]'); ylabel('rad/s');
 title('DC Motor Step Response at 12V');
 grid on;
 
