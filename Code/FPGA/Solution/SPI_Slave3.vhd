@@ -27,9 +27,11 @@ architecture Behavioral of SPI_Slave3 is
    -- DataBus buffers for input and output data
    signal DataIn :            STD_LOGIC_VECTOR (11 downto 0);
    signal DataOut :           STD_LOGIC_VECTOR (11 downto 0);
+	
 	-- XSClk and xSS used to detect rising and falling edges of SClk and SS
 	signal xSClk:      			std_logic_vector( 1 downto 0) := "00";
 	signal xSS:        			std_logic_vector( 1 downto 0) := "11";
+	
 	-- SClk_Count and _Cnt used to keep track of the number af SClk pulses
    signal SClk_Count: 			std_logic_vector( 2**Nb-1 downto 0) := (others=>'1');	
 	shared variable SClk_Cnt:  integer range 0 to (8*Nb)-1 := 0; 

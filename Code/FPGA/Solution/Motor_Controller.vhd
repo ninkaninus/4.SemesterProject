@@ -32,7 +32,7 @@ use IEEE.NUMERIC_STD.ALL;
 
 entity Motor_Interface is
 	
-	 generic (  Adr_Width: natural := 3; --Width in bits of the address bus
+	 generic (  Adr_Width: natural := 4; --Width in bits of the address bus
 					Address: Natural := 0);  --Address of the device
 
     Port ( clk : in STD_LOGIC;
