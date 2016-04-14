@@ -169,50 +169,6 @@ begin
 				end if;
 			end if;
 		end if;
-		
-		-- Rising Edge Encoder 1
---		if AB = "01" and BC = "00" then
---			if EncoderCounts = x"FFFF" then
---				EncoderCounts <= x"0000";
---			else
---				EncoderCounts <= EncoderCounts + 1;
---			end if;
---		elsif AB = "01" and BC = "11" then
---				EncoderCounts <= EncoderCounts - 1;
---		end if;
---		
---		-- Falling edge Encoder 1
---		if AB = "10" and BC = "11" then
---			if EncoderCounts = x"FFFF" then
---				EncoderCounts <= x"0000";
---			else
---				EncoderCounts <= EncoderCounts + 1;
---			end if;
---		elsif AB = "10" and BC = "00" then
---			EncoderCounts <= EncoderCounts - 1;
---		end if;
---		
---		-- Rising Edge Encoder 2
---		if BC = "01" and AB = "11" then
---			if EncoderCounts = x"FFFF" then
---				EncoderCounts <= x"0000";
---			else
---				EncoderCounts <= EncoderCounts + 1;
---			end if;
---		elsif BC = "01" and AB = "00" then
---				EncoderCounts <= EncoderCounts - 1;
---		end if;
---		
---		-- Falling edge Encoder 2
---		if BC = "10" and AB = "00" then
---			if EncoderCounts = x"FFFF" then
---				EncoderCounts <= x"0000";
---			else
---				EncoderCounts <= EncoderCounts + 1;
---			end if;
---		elsif BC = "10" and AB = "11" then
---			EncoderCounts <= EncoderCounts - 1;
---		end if;
 	end if;
 end process;
 end Behavioral;

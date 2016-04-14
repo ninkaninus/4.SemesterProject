@@ -1,0 +1,6 @@
+[Inputs]
+=Motor_Pan_Hall[11:0]=
+=Motor_Tilt_hall[11:0]=
+[Outputs]
+=Stop[1:0]=
+[BiDir]
