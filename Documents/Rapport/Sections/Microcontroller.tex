@@ -1,7 +1,7 @@
 \section{Microcontroller}
 
 \subsection{OS}
-
+\subsection{Scheduling}
 \subsection{Tasks}
 
 \subsubsection{Uart}
@@ -25,9 +25,44 @@ LCD modulet har nogen forskellige funktioner, dem der bliver brugt oftes er wr\t
 Keypad
 I vores Kit er der givet en keypad med 12 knapper fra 0 til 9 og *,\#. Dette keypad virker bare som switches så derfor skal vi selv definere hvad de forskellige knapper skal gøre, for at gøre det simpelt betyder hver knap det som der står på keypaded. Den har to porte til knyttet som er PORT A og PORT E. Det betyder at vi kan læse på PORT E hvis en af GPIO pinden på PORT A er aktiv. [Billede Keypad]
 \\
-Dette billede kan vi se at vi har givet de forskellige knapper unikke værdier. Dette gøre fordi vi har et array som indeholder alle værdier på keypad’et, som vi så sender kan sende ind i buffer og læse på. For at finde en karakter kigger vi først på alle X værdier (PORT A) igennem og ser om en Y værdi (PORT E) er aktiv og udfra hvilken X og Y værdi fordi en af tallen på  [Ref billede Keypad].
+Dette billede kan vi se at vi har givet de forskellige knapper unikke værdier. Dette gøre fordi vi har et array som indeholder alle værdier på keypad’et, som vi så sender kan sende ind i buffer og læse på. For at finde en karakter kigger vi først på alle X værdier (PORT A) igennem og ser om en Y værdi (PORT E) er aktiv og ud fra hvilken X og Y værdi fordi en af tallen på  [Ref billede Keypad].
 \\
 Dette keypad kan blive brugt til at sende data eller manuelt vil sætte nogle værdier i mens programmet køre.
 
 
-\subsection{Scheduling}
+
+
+\subsection{Serial Peripheral Interface}
+
+Microcontrolleren der blev udleveret dette semester (TM4C123GH6PM) indeholder 4 SSI (Synchronous Serial Interface) da disse 4 interfaces alle er ens, på undtagelse deres pins, er SSI0 blevet valgt som interface, dvs. port A pin 2 er til SSI0Clk (modulets clock), pin 3 er SSI0Fss (frame signalet), pin 4 er SSI0Rx (modtagelse), og pin 5 er SSI0Tx (afsendelse)
+
+Til SSI modulet er der 3 forskellige data formater:
+
+\begin{itemize}
+	\item Texas Instruments Synchronous Serial
+		\begin{figure}[h]
+			\begin{center}
+			\includegraphics[scale=1]{Billeder/TI_Synchronous_Serial_Frame_Format.jpg}
+			\end{center}
+			\label{fig:TIFrameFormat}
+			\caption{TI Synchronous Serial Frame Format (Single transfer)}
+		\end{figure}
+
+	\item Freescale SPI
+		\begin{figure}[h]
+			\begin{center}
+			\includegraphics[scale=1]{Billeder/FS_Frame_Format.jpg}
+			\end{center}
+			\label{fig:FSFrameFormat}
+			\caption{FreeScale Frame Format (Single Transfer)}
+		\end{figure}
+		  
+	\item Microwire
+		\begin{figure}[h]
+			\begin{center}
+			\includegraphics[scale=0.8]{Billeder/MW_Frame_format.jpg}
+			\end{center}
+			\label{fig:MWFrameFormat}
+			\caption{Micro Wire Frame Format (Single Transfer)}
+		\end{figure}
+\end{itemize}
