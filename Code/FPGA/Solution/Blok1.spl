@@ -1,0 +1,9 @@
+[Inputs]
+Clk
+WE
+=AdrBus[3:0]=
+=Sw[7:0]=
+[Outputs]
+=Led[7:0]=
+[BiDir]
+=DataBus[11:0]=

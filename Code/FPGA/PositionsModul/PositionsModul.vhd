@@ -7,7 +7,7 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 entity PositionsModul is
 	
 	generic (  Adr_Width: natural := 4; --Width in bits of the address bus
-				  Address: Natural := 0);  --Address of the device
+				  Address: Natural := 2);  --Address of the device
 
 	port(Clk 	  :	in STD_LOGIC;
 		  Encoder1 :	in STD_LOGIC;

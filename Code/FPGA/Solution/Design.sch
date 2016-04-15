@@ -22,10 +22,11 @@
         <signal name="Enable(3:0)" />
         <signal name="encoder2" />
         <signal name="XLXN_144" />
-        <signal name="XLXN_145" />
-        <signal name="XLXN_146" />
-        <signal name="XLXN_147" />
         <signal name="XLXN_143(3:0)" />
+        <signal name="XLXN_148" />
+        <signal name="XLXN_149(3:0)" />
+        <signal name="led(7:0)" />
+        <signal name="sw(7:0)" />
         <port polarity="Input" name="clk" />
         <port polarity="Input" name="SPI_MOSI" />
         <port polarity="Output" name="SPI_MISO" />
@@ -36,6 +37,8 @@
         <port polarity="Output" name="seg(0:7)" />
         <port polarity="Output" name="Enable(3:0)" />
         <port polarity="Input" name="encoder2" />
+        <port polarity="Output" name="led(7:0)" />
+        <port polarity="Input" name="sw(7:0)" />
         <blockdef name="SPI_Slave3">
             <timestamp>2016-4-14T13:14:16</timestamp>
             <line x2="384" y1="32" y2="32" x1="320" />
@@ -99,6 +102,20 @@
             <line x2="0" y1="-48" y2="-48" x1="64" />
             <rect width="256" x="64" y="-192" height="240" />
         </blockdef>
+        <blockdef name="Blok1">
+            <timestamp>2016-4-15T11:52:16</timestamp>
+            <rect width="288" x="64" y="-256" height="256" />
+            <line x2="0" y1="-224" y2="-224" x1="64" />
+            <line x2="0" y1="-160" y2="-160" x1="64" />
+            <rect width="64" x="0" y="-108" height="24" />
+            <line x2="0" y1="-96" y2="-96" x1="64" />
+            <rect width="64" x="0" y="-44" height="24" />
+            <line x2="0" y1="-32" y2="-32" x1="64" />
+            <rect width="64" x="352" y="-236" height="24" />
+            <line x2="416" y1="-224" y2="-224" x1="352" />
+            <rect width="64" x="352" y="-44" height="24" />
+            <line x2="416" y1="-32" y2="-32" x1="352" />
+        </blockdef>
         <block symbolname="SPI_Slave3" name="XLXI_21">
             <blockpin signalname="clk" name="Clk" />
             <blockpin signalname="SPI_Clk" name="SClk" />
@@ -106,8 +123,8 @@
             <blockpin signalname="SPI_MOSI" name="MOSI" />
             <blockpin signalname="DataBus(11:0)" name="DataBus(11:0)" />
             <blockpin signalname="SPI_MISO" name="MISO" />
-            <blockpin signalname="XLXN_143(3:0)" name="AdrBus(3:0)" />
-            <blockpin signalname="XLXN_144" name="WE" />
+            <blockpin signalname="XLXN_149(3:0)" name="AdrBus(3:0)" />
+            <blockpin signalname="XLXN_148" name="WE" />
         </block>
         <block symbolname="MultiplexDisplay" name="XLXI_23">
             <blockpin signalname="clk" name="Clk_50MHz" />
@@ -119,25 +136,33 @@
             <blockpin signalname="clk" name="Clk" />
             <blockpin signalname="encoder1" name="Encoder1" />
             <blockpin signalname="encoder2" name="Encoder2" />
-            <blockpin signalname="XLXN_144" name="WE" />
-            <blockpin signalname="XLXN_143(3:0)" name="AdrBus(3:0)" />
+            <blockpin signalname="XLXN_148" name="WE" />
+            <blockpin signalname="XLXN_149(3:0)" name="AdrBus(3:0)" />
             <blockpin signalname="DataBus(11:0)" name="DataBus(11:0)" />
             <blockpin signalname="XLXN_138(15:0)" name="Bcd(15:0)" />
         </block>
         <block symbolname="Motor_Interface" name="XLXI_25">
             <blockpin signalname="clk" name="clk" />
             <blockpin signalname="XLXN_89" name="pwm" />
-            <blockpin signalname="XLXN_144" name="WE" />
-            <blockpin signalname="XLXN_143(3:0)" name="AdrBus(3:0)" />
+            <blockpin signalname="XLXN_148" name="WE" />
+            <blockpin signalname="XLXN_149(3:0)" name="AdrBus(3:0)" />
             <blockpin signalname="DataBus(1:0)" name="DataBus(1:0)" />
             <blockpin signalname="motor(1:0)" name="motor(1:0)" />
         </block>
         <block symbolname="pwm_driver" name="XLXI_26">
             <blockpin signalname="clk" name="clk" />
-            <blockpin signalname="XLXN_144" name="WE" />
+            <blockpin signalname="XLXN_148" name="WE" />
             <blockpin signalname="DataBus(7:0)" name="DataBus(7:0)" />
-            <blockpin signalname="XLXN_143(3:0)" name="AdrBus(3:0)" />
+            <blockpin signalname="XLXN_149(3:0)" name="AdrBus(3:0)" />
             <blockpin signalname="XLXN_89" name="pwm" />
+        </block>
+        <block symbolname="Blok1" name="XLXI_27">
+            <blockpin signalname="clk" name="Clk" />
+            <blockpin signalname="XLXN_148" name="WE" />
+            <blockpin signalname="XLXN_149(3:0)" name="AdrBus(3:0)" />
+            <blockpin signalname="sw(7:0)" name="Sw(7:0)" />
+            <blockpin signalname="led(7:0)" name="Led(7:0)" />
+            <blockpin signalname="DataBus(11:0)" name="DataBus(11:0)" />
         </block>
     </netlist>
     <sheet sheetnum="1" width="3520" height="2720">
@@ -172,13 +197,6 @@
         <instance x="368" y="960" name="XLXI_21" orien="R0">
         </instance>
         <iomarker fontsize="28" x="224" y="176" name="clk" orien="R180" />
-        <branch name="DataBus(11:0)">
-            <wire x2="960" y1="928" y2="928" x1="752" />
-            <wire x2="960" y1="928" y2="992" x1="960" />
-            <wire x2="960" y1="992" y2="1648" x1="960" />
-            <wire x2="1280" y1="1648" y2="1648" x1="960" />
-            <wire x2="960" y1="288" y2="928" x1="960" />
-        </branch>
         <bustap x2="1056" y1="992" y2="992" x1="960" />
         <branch name="DataBus(1:0)">
             <wire x2="1216" y1="992" y2="992" x1="1056" />
@@ -187,8 +205,13 @@
         </branch>
         <branch name="clk">
             <attrtext style="alignment:SOFT-RIGHT;fontsize:28;fontname:Arial" attrname="Name" x="1200" y="1328" type="branch" />
-            <wire x2="1248" y1="1328" y2="1328" x1="1200" />
+            <wire x2="1232" y1="1248" y2="1248" x1="1008" />
+            <wire x2="1232" y1="1248" y2="1328" x1="1232" />
+            <wire x2="1248" y1="1328" y2="1328" x1="1232" />
             <wire x2="1280" y1="1328" y2="1328" x1="1248" />
+            <wire x2="1008" y1="1248" y2="1792" x1="1008" />
+            <wire x2="1264" y1="1792" y2="1792" x1="1008" />
+            <wire x2="1232" y1="1328" y2="1328" x1="1200" />
             <wire x2="1280" y1="928" y2="928" x1="1248" />
             <wire x2="1248" y1="928" y2="1200" x1="1248" />
             <wire x2="1248" y1="1200" y2="1328" x1="1248" />
@@ -231,28 +254,54 @@
             <wire x2="1280" y1="1456" y2="1456" x1="1248" />
         </branch>
         <iomarker fontsize="28" x="1248" y="1456" name="encoder2" orien="R180" />
-        <branch name="XLXN_144">
+        <instance x="1264" y="2016" name="XLXI_27" orien="R0">
+        </instance>
+        <branch name="XLXN_148">
             <wire x2="896" y1="992" y2="992" x1="752" />
             <wire x2="896" y1="992" y2="1040" x1="896" />
             <wire x2="1072" y1="1040" y2="1040" x1="896" />
             <wire x2="1072" y1="1040" y2="1520" x1="1072" />
-            <wire x2="1280" y1="1520" y2="1520" x1="1072" />
+            <wire x2="1200" y1="1520" y2="1520" x1="1072" />
+            <wire x2="1280" y1="1520" y2="1520" x1="1200" />
+            <wire x2="1200" y1="1520" y2="1856" x1="1200" />
+            <wire x2="1264" y1="1856" y2="1856" x1="1200" />
             <wire x2="1072" y1="880" y2="1040" x1="1072" />
             <wire x2="1088" y1="880" y2="880" x1="1072" />
             <wire x2="1280" y1="880" y2="880" x1="1088" />
             <wire x2="1088" y1="352" y2="880" x1="1088" />
             <wire x2="1280" y1="352" y2="352" x1="1088" />
         </branch>
-        <branch name="XLXN_143(3:0)">
+        <branch name="XLXN_149(3:0)">
             <wire x2="1120" y1="864" y2="864" x1="752" />
             <wire x2="1120" y1="864" y2="1312" x1="1120" />
             <wire x2="1120" y1="1312" y2="1312" x1="1024" />
             <wire x2="1024" y1="1312" y2="1584" x1="1024" />
             <wire x2="1280" y1="1584" y2="1584" x1="1024" />
+            <wire x2="1024" y1="1584" y2="1920" x1="1024" />
+            <wire x2="1264" y1="1920" y2="1920" x1="1024" />
             <wire x2="1280" y1="224" y2="224" x1="1120" />
             <wire x2="1120" y1="224" y2="784" x1="1120" />
             <wire x2="1280" y1="784" y2="784" x1="1120" />
             <wire x2="1120" y1="784" y2="864" x1="1120" />
         </branch>
+        <branch name="DataBus(11:0)">
+            <wire x2="960" y1="928" y2="928" x1="752" />
+            <wire x2="960" y1="928" y2="992" x1="960" />
+            <wire x2="960" y1="992" y2="1648" x1="960" />
+            <wire x2="1280" y1="1648" y2="1648" x1="960" />
+            <wire x2="960" y1="1648" y2="2080" x1="960" />
+            <wire x2="1744" y1="2080" y2="2080" x1="960" />
+            <wire x2="960" y1="288" y2="928" x1="960" />
+            <wire x2="1744" y1="1984" y2="1984" x1="1680" />
+            <wire x2="1744" y1="1984" y2="2080" x1="1744" />
+        </branch>
+        <branch name="led(7:0)">
+            <wire x2="1712" y1="1792" y2="1792" x1="1680" />
+        </branch>
+        <iomarker fontsize="28" x="1712" y="1792" name="led(7:0)" orien="R0" />
+        <branch name="sw(7:0)">
+            <wire x2="1264" y1="1984" y2="1984" x1="1232" />
+        </branch>
+        <iomarker fontsize="28" x="1232" y="1984" name="sw(7:0)" orien="R180" />
     </sheet>
 </drawing>

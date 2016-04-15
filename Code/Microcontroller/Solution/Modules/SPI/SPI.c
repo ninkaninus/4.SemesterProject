@@ -61,15 +61,16 @@ void SSI_init()
 	//SSI0_IM_R |= SSI_IM_RXIM;
 }
 
-void SPI_write(INT8U data)
+void SPI_write(INT16U data)
 {
 	SSI0_DR_R = data;
 	while( (SSI0_SR_R & (1<<0)) == 0);
 }
 
-INT8U SPI_read()
+INT16U SPI_read()
 {
 	while( (SSI0_SR_R & (1<<2)) == 0);
+	while((SSI0_SR_R & (1<<4)) == 1);
 	return SSI0_DR_R;
 }
 

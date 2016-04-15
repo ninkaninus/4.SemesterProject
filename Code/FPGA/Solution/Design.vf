@@ -7,7 +7,7 @@
 // \   \   \/     Version : 14.7
 //  \   \         Application : sch2hdl
 //  /   /         Filename : Design.vf
-// /___/   /\     Timestamp : 04/15/2016 01:30:24
+// /___/   /\     Timestamp : 04/15/2016 14:30:44
 // \   \  /  \ 
 //  \___\/\___\ 
 //
@@ -26,7 +26,9 @@ module Design(clk,
               SPI_Clk, 
               SPI_MOSI, 
               SPI_SS, 
+              sw, 
               Enable, 
+              led, 
               motor, 
               seg, 
               SPI_MISO);
@@ -37,7 +39,9 @@ module Design(clk,
     input SPI_Clk;
     input SPI_MOSI;
     input SPI_SS;
+    input [7:0] sw;
    output [3:0] Enable;
+   output [7:0] led;
    output [1:0] motor;
    output [0:7] seg;
    output SPI_MISO;
@@ -45,37 +49,43 @@ module Design(clk,
    wire [11:0] DataBus;
    wire XLXN_89;
    wire [15:0] XLXN_138;
-   wire [3:0] XLXN_143;
-   wire XLXN_144;
+   wire XLXN_148;
+   wire [3:0] XLXN_149;
    
    SPI_Slave3  XLXI_21 (.Clk(clk), 
                        .MOSI(SPI_MOSI), 
                        .SClk(SPI_Clk), 
                        .SS(SPI_SS), 
-                       .AdrBus(XLXN_143[3:0]), 
+                       .AdrBus(XLXN_149[3:0]), 
                        .MISO(SPI_MISO), 
-                       .WE(XLXN_144), 
+                       .WE(XLXN_148), 
                        .DataBus(DataBus[11:0]));
    MultiplexDisplay  XLXI_23 (.Bcd(XLXN_138[15:0]), 
                              .Clk_50MHz(clk), 
                              .An(Enable[3:0]), 
                              .Seg(seg[0:7]));
-   PositionsModul  XLXI_24 (.AdrBus(XLXN_143[3:0]), 
+   PositionsModul  XLXI_24 (.AdrBus(XLXN_149[3:0]), 
                            .Clk(clk), 
                            .DataBus(DataBus[11:0]), 
                            .Encoder1(encoder1), 
                            .Encoder2(encoder2), 
-                           .WE(XLXN_144), 
+                           .WE(XLXN_148), 
                            .Bcd(XLXN_138[15:0]));
-   Motor_Interface  XLXI_25 (.AdrBus(XLXN_143[3:0]), 
+   Motor_Interface  XLXI_25 (.AdrBus(XLXN_149[3:0]), 
                             .clk(clk), 
                             .DataBus(DataBus[1:0]), 
                             .pwm(XLXN_89), 
-                            .WE(XLXN_144), 
+                            .WE(XLXN_148), 
                             .motor(motor[1:0]));
-   pwm_driver  XLXI_26 (.AdrBus(XLXN_143[3:0]), 
+   pwm_driver  XLXI_26 (.AdrBus(XLXN_149[3:0]), 
                        .clk(clk), 
                        .DataBus(DataBus[7:0]), 
-                       .WE(XLXN_144), 
+                       .WE(XLXN_148), 
                        .pwm(XLXN_89));
+   Blok1  XLXI_27 (.AdrBus(XLXN_149[3:0]), 
+                  .Clk(clk), 
+                  .Sw(sw[7:0]), 
+                  .WE(XLXN_148), 
+                  .Led(led[7:0]), 
+                  .DataBus(DataBus[11:0]));
 endmodule

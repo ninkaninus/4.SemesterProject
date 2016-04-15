@@ -33,9 +33,10 @@ begin
 		if rising_edge( CLk) then
 			CS      <= '0';
 			DataOut <= (others => 'H');
-			if AdrBus="1001" then
+			if AdrBus = "1001" then
 				CS <= '1';
-				DataOut <= "LLHH"&Sw;
+				DataOut <= "1111"&Sw;
+				--Led <= "01010101";
 				if WE='0' then
 					Led <= DataIn( 7 downto 0);
 				end if;

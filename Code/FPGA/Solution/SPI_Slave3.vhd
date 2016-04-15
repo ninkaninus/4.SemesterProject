@@ -25,8 +25,8 @@ end SPI_Slave3;
 
 architecture Behavioral of SPI_Slave3 is
    -- DataBus buffers for input and output data
-   signal DataIn :            STD_LOGIC_VECTOR (11 downto 0);
-   signal DataOut :           STD_LOGIC_VECTOR (11 downto 0);
+   signal DataIn :            STD_LOGIC_VECTOR (11 downto 0) := (others=>'0');
+   signal DataOut :           STD_LOGIC_VECTOR (11 downto 0) := (others=>'0');
 	
 	-- XSClk and xSS used to detect rising and falling edges of SClk and SS
 	signal xSClk:      			std_logic_vector( 1 downto 0) := "00";
@@ -101,7 +101,7 @@ begin
 				when Wait_for_SS_low => 
 					UdBuf <= (others => '0');
 					if(xSS = "10") then
-						UdBuf(0 to 3) <= DataIn(3 downto 0);
+						UdBuf(0 to 3) <= "0000";--DataIn(3 downto 0); --Put data out in reverse because lsb is shifted out first but msb is expected
 						State <= Wait_for_adr;
 					end if;
 				
@@ -126,7 +126,7 @@ begin
 				when Wait_for_Databits =>
 					if Sclk_Cnt = 15 and xSClk = "01" then
 						State <= Set_WE0;
-						DataOut	<= InBuf(4 to 15);
+						DataOut<= InBuf(4 to 15);
 					end if;
 				
 				--WE goes low to enable the slave to clock out the data to the databus
