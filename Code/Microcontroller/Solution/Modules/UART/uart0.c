@@ -132,8 +132,9 @@ void UART0_rx_isr()
 	static INT16U dataToSend = 0;
 	static INT8U datRec = 0;
 	static INT8U count = 0;
-	do
-	{
+
+	//uart0_putc(UART0_DR_R);
+
 		datRec = UART0_DR_R;
 		if(count == 1) {
 			SPI_write(dataToSend | datRec);
@@ -150,7 +151,6 @@ void UART0_rx_isr()
 		//uart0_putc(SPI_read());
 		//put_queue(Q_INPUT,received,0);
 		//queue_put(&uart0_rx_queue, UART0_DR_R);
-	} while (RX_FIFO_NOT_EMPTY);
 }
 
 /*

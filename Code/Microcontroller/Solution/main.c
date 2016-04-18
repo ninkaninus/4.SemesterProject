@@ -43,7 +43,7 @@ int main(void)
 		INT8U temp = 0;
 		dataIn = SPI_read();
 		temp = (INT8U)dataIn;
-		uart0_putc((INT8U)(dataIn>>7));
+		uart0_putc((INT8U)(dataIn>>8));
 		uart0_putc(temp);
 	}
 
