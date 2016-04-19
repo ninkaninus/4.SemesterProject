@@ -101,7 +101,7 @@ begin
 				when Wait_for_SS_low => 
 					UdBuf <= (others => '0');
 					if(xSS = "10") then
-						UdBuf(0 to 3) <= "0000";--DataIn(3 downto 0); --Put data out in reverse because lsb is shifted out first but msb is expected
+						UdBuf(0 to 3) <= "1111";--DataIn(3 downto 0); --Put data out in reverse because lsb is shifted out first but msb is expected
 						State <= Wait_for_adr;
 					end if;
 				

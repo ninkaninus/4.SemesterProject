@@ -1,0 +1,29 @@
+Command line:
+   TSlave_isim_beh.exe
+     -simmode  gui
+     -simrunnum  0
+     -socket  49764
+
+Tue Apr 19 12:52:45 2016
+
+
+ Elaboration Time: 0.203125 sec
+
+ Current Memory Usage: 1334.45 Meg
+
+ Total Signals          : 25
+ Total Nets             : 88
+ Total Signal Drivers   : 17
+ Total Blocks           : 6
+ Total Primitive Blocks : 5
+ Total Processes        : 8
+ Total Traceable Variables  : 15
+ Total Scalar Nets and Variables : 471
+Total Line Count : 53
+
+ Total Simulation Time: 0.21875 sec
+
+ Current Memory Usage: 705.274 Meg
+
+Tue Apr 19 14:35:40 2016
+
