@@ -1,6 +1,7 @@
 function [ new_vector ] = fit_ratio( ratio_vector, input_vector )
-%UNTITLED3 Summary of this function goes here
-%   Detailed explanation goes here
+% Tager forholdet som de enkelte samples skal justeres med og finder det
+% rette offset det skal påføres input vektoren med. Der returneres en ny
+% vektor, hvor der justeret for fejlen i målingerne
 
 n = length(ratio_vector);
 
@@ -16,7 +17,7 @@ new_vector = 1:length(input_vector);
 for j = 1:n
     
     for i = 1:length(input_vector) 
-        new_vector(i) = ratio_vector(mod(i+j,6)+1)*input_vector(i);    
+        new_vector(i) = ratio_vector(mod(i+j,n)+1)*input_vector(i);    
     end
     
     for k = 1:n
