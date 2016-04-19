@@ -17,6 +17,8 @@ xlabel('Time[s]');ylabel('rad/s');
 
 title('Step Response at 12V');
 
+% 
+
 load('Run 1 - belt, 1MHz.mat')
 
 [Time2,W2] = combine_vectors(digital_channel_0,digital_channel_1,digital_sample_rate_hz);
@@ -24,12 +26,16 @@ load('Run 1 - belt, 1MHz.mat')
 W2 = fit_ratio(ratio,W2);
 plot(Time2,W2);
 
+%
+
 load('Run 1 - belt + frame, 1MHz.mat')
 
 [Time3,W3] = combine_vectors(digital_channel_0,digital_channel_1,digital_sample_rate_hz);
 
 W3 = fit_ratio(ratio,W3);
 plot(Time3,W3);
+
+%
 
 load('Run 1 - belt + frame + cam, 1MHz.mat')
 
@@ -39,3 +45,8 @@ W4 = fit_ratio(ratio,W4);
 plot(Time4,W4);
 
 legend('No Belt','Belt On','Belt+Frame On','Belt+Frame+Cam On','location','southeast')
+
+T1 = time_constant(650,W1,Time1);
+T2 = time_constant(605,W2,Time2);
+T3 = time_constant(600,W3,Time3);
+T4 = time_constant(590,W4,Time4);
