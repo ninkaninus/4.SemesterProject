@@ -7,7 +7,18 @@ load('Run 1 - no belt, 1MHz.mat')
 
 ratio = ratio_vector(W1,12);
 
+figure(5)
+plot(Time1,W1);
+xlabel('Time[s]');ylabel('rad/s');
+xlim([0 0.5]);ylim([0 700]);
+title('Step Response at 12V');
+grid on;
+
 W1 = fit_ratio(ratio,W1);
+
+
+
+T1 = time_constant(650,W1,Time1);
 
 figure(1)
 plot(Time1,W1);
@@ -43,6 +54,9 @@ load('Run 1 - belt + frame + cam, 1MHz.mat')
 
 W4 = fit_ratio(ratio,W4);
 plot(Time4,W4);
+xlabel('Time[s]');ylabel('rad/s');
+xlim([0 2.5]);ylim([0 750]);
+title('Step Response at 12V');
 
 legend('No Belt','Belt On','Belt+Frame On','Belt+Frame+Cam On','location','southeast')
 
@@ -65,10 +79,14 @@ sys4 = tf(K4,[T4 1]);
 figure(1)
 subplot(2,1,1)
 plot(Time1,W1);
-ylim([0,750])
+title('Measured Step Response');
+xlabel('Time[s]');ylabel('rad/s');
+xlim([0.0845 0.3345]);ylim([0 700]);
 subplot(2,1,2)
 plot(Time11,W11);
-ylim([0,750])
+title('Modelled Step Response');
+xlabel('Time[s]');ylabel('rad/s');
+xlim([0 0.25]);ylim([0 700]);
 
 figure(2)
 subplot(2,1,1)
