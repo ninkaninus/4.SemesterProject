@@ -7,11 +7,7 @@ Analyzing Verilog file "D:/Github/4.SemesterProject/Code/FPGA/Solution/Design.vf
 Analyzing Verilog file "D:/Programs/Xilinx/14.7/ISE_DS/ISE//verilog/src/glbl.v" into library work
 Parsing VHDL file "D:/Github/4.SemesterProject/Code/FPGA/Solution/Projekt_Data.vhd" into library work
 Parsing VHDL file "D:/Github/4.SemesterProject/Code/FPGA/Solution/SPI_Slave3.vhd" into library work
-Parsing VHDL file "D:/Github/4.SemesterProject/Code/FPGA/Solution/pwm_driver.vhd" into library work
-Parsing VHDL file "D:/Github/4.SemesterProject/Code/FPGA/Solution/Motor_Controller.vhd" into library work
 Parsing VHDL file "D:/Github/4.SemesterProject/Code/FPGA/Solution/Blok1.vhd" into library work
-Parsing VHDL file "D:/Github/4.SemesterProject/Code/FPGA/Solution/../PositionsModul/PositionsModul.vhd" into library work
-Parsing VHDL file "D:/Github/4.SemesterProject/Code/FPGA/Solution/../PositionsModul/Multiplex_Display.vhd" into library work
 Parsing VHDL file "D:/Github/4.SemesterProject/Code/FPGA/Solution/TestDesign.vhd" into library work
 Starting static elaboration
 Completed static elaboration
@@ -26,16 +22,12 @@ Compiling package std_logic_arith
 Compiling package std_logic_unsigned
 Compiling package projekt_data
 Compiling architecture behavioral of entity SPI_Slave3 [spi_slave3_default]
-Compiling architecture behavioral of entity MultiplexDisplay [multiplexdisplay_default]
-Compiling architecture behavioral of entity PositionsModul [positionsmodul_default]
-Compiling architecture behavioral of entity Motor_Interface [motor_interface_default]
-Compiling architecture behavioral of entity pwm_driver [pwm_driver_default]
 Compiling architecture behavioral of entity Blok1 [blok1_default]
 Compiling architecture behavioral of entity design_design_sch_tb
 Time Resolution for simulation is 1ps.
-Waiting for 7 sub-compilation(s) to finish...
-Compiled 21 VHDL Units
+Waiting for 2 sub-compilation(s) to finish...
+Compiled 13 VHDL Units
 Compiled 2 Verilog Units
 Built simulation executable D:/Github/4.SemesterProject/Code/FPGA/Solution/Design_Design_sch_tb_isim_beh.exe
-Fuse Memory Usage: 52976 KB
+Fuse Memory Usage: 53080 KB
 Fuse CPU Usage: 514 ms

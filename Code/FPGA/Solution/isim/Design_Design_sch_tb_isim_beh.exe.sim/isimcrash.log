@@ -1,0 +1,19 @@
+Exception at PC 0x00000001800C55D1
+Attemped to read address 0x0000000000000000
+Printing stacktrace...
+
+[0] (xsi_vhdl_mod+0x5b1) [0x0x00000001800c55d1]
+[1] (xsi_vhdl_mod+0x5b1) [0x0x00000001800c55d1]
+[2] (xsi_vhdl_pow_double+0x5756) [0x0x00000001800c2e76]
+[3] (xsi_vlogsignal_release_indexed+0x3797) [0x0x000000018008d167]
+[4] (HSimNetDriver::operator=+0xa956) [0x0x0000000180086c56]
+[5] (HSimNetDriver::isVLOGSDFPORTDELAYANNOTATIONDriver+0x97e) [0x0x000000018005439e]
+[6] (HSimDesign::getDeclaration+0x39ca) [0x0x00000001800507ea]
+[7] (HSimDesign::getDeclaration+0x335c) [0x0x000000018005017c]
+[8] (HSimDesign::getDeclaration+0x54a0) [0x0x00000001800522c0]
+[9] (boost::this_thread::get_id+0xc01) [0x0x0000000009b62da1]
+[10] (endthreadex+0x47) [0x0x00000000512c2fdf]
+[11] (endthreadex+0xe8) [0x0x00000000512c3080]
+[12] (BaseThreadInitThunk+0x22) [0x0x00007ffa64908102]
+[13] (RtlUserThreadStart+0x34) [0x0x00007ffa6514c5b4]
+Done

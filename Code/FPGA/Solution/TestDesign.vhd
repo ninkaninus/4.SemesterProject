@@ -27,11 +27,11 @@ ARCHITECTURE behavioral OF Design_Design_sch_tb IS
           SPI_MISO	:	OUT	STD_LOGIC; 
           SPI_SS	:	IN	STD_LOGIC; 
           SPI_Clk	:	IN	STD_LOGIC; 
-          motor	:	OUT	STD_LOGIC_VECTOR (1 DOWNTO 0); 
-          encoder1	:	IN	STD_LOGIC; 
-          seg	:	OUT	STD_LOGIC_VECTOR (0 TO 7); 
-          Enable	:	OUT	STD_LOGIC_VECTOR (3 DOWNTO 0); 
-          encoder2	:	IN	STD_LOGIC; 
+--          motor	:	OUT	STD_LOGIC_VECTOR (1 DOWNTO 0); 
+--          encoder1	:	IN	STD_LOGIC; 
+--          seg	:	OUT	STD_LOGIC_VECTOR (0 TO 7); 
+--          Enable	:	OUT	STD_LOGIC_VECTOR (3 DOWNTO 0); 
+--          encoder2	:	IN	STD_LOGIC; 
           led	:	OUT	STD_LOGIC_VECTOR (7 DOWNTO 0); 
           sw	:	IN	STD_LOGIC_VECTOR (7 DOWNTO 0));
    END COMPONENT;
@@ -41,11 +41,11 @@ ARCHITECTURE behavioral OF Design_Design_sch_tb IS
    SIGNAL SPI_MISO	:	STD_LOGIC;
    SIGNAL SPI_SS	:	STD_LOGIC;
    SIGNAL SPI_Clk	:	STD_LOGIC;
-   SIGNAL motor	:	STD_LOGIC_VECTOR (1 DOWNTO 0);
-   SIGNAL encoder1	:	STD_LOGIC;
-   SIGNAL seg	:	STD_LOGIC_VECTOR (0 TO 7);
-   SIGNAL Enable	:	STD_LOGIC_VECTOR (3 DOWNTO 0);
-   SIGNAL encoder2	:	STD_LOGIC;
+--   SIGNAL motor	:	STD_LOGIC_VECTOR (1 DOWNTO 0);
+--   SIGNAL encoder1	:	STD_LOGIC;
+--   SIGNAL seg	:	STD_LOGIC_VECTOR (0 TO 7);
+--   SIGNAL Enable	:	STD_LOGIC_VECTOR (3 DOWNTO 0);
+--   SIGNAL encoder2	:	STD_LOGIC;
    SIGNAL led	:	STD_LOGIC_VECTOR (7 DOWNTO 0);
    SIGNAL sw	:	STD_LOGIC_VECTOR (7 DOWNTO 0);
 
@@ -62,11 +62,11 @@ BEGIN
 		SPI_MISO => SPI_MISO, 
 		SPI_SS => SPI_SS, 
 		SPI_Clk => SPI_Clk, 
-		motor => motor, 
-		encoder1 => encoder1, 
-		seg => seg, 
-		Enable => Enable, 
-		encoder2 => encoder2, 
+--		motor => motor, 
+--		encoder1 => encoder1, 
+--		seg => seg, 
+--		Enable => Enable, 
+--		encoder2 => encoder2, 
 		led => led, 
 		sw => sw
    );
