@@ -20,9 +20,9 @@ entity Blok1 is
 end Blok1;
 
 architecture Behavioral of Blok1 is
-   signal DataIn :            STD_LOGIC_VECTOR (11 downto 0);	-- Input from DataBus
-   signal DataOut :           STD_LOGIC_VECTOR (11 downto 0);  -- Output to DataBus
-	signal CS:                 STD_LOGIC; 								-- Active High Chip Select
+   signal DataIn :            STD_LOGIC_VECTOR (11 downto 0) := "000000000000";	-- Input from DataBus
+   signal DataOut :           STD_LOGIC_VECTOR (11 downto 0) := "000000000000";  -- Output to DataBus
+	signal CS:                 STD_LOGIC := '0'; 								-- Active High Chip Select
 begin
 
    DataIn  <= DataBus;                                           -- Read from DataBus

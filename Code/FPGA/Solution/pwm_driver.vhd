@@ -47,7 +47,7 @@ architecture Behavioral of pwm_driver is
 signal clk_divider: integer range 0 to 195000 := 0;
 signal current_value: unsigned (7 downto 0) := "00000000";
 signal iterator: unsigned (7 downto 0) := "00000000";
-signal DataIn : STD_LOGIC_VECTOR (7 downto 0);
+signal DataIn : STD_LOGIC_VECTOR (7 downto 0) := "00000000";
 
 begin
 

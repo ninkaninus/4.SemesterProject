@@ -21,8 +21,6 @@
         <signal name="seg(0:7)" />
         <signal name="Enable(3:0)" />
         <signal name="encoder2" />
-        <signal name="XLXN_144" />
-        <signal name="XLXN_143(3:0)" />
         <signal name="XLXN_148" />
         <signal name="XLXN_149(3:0)" />
         <signal name="led(7:0)" />

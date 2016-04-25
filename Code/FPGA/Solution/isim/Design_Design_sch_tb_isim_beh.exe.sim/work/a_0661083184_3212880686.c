@@ -31,7 +31,7 @@ char *ieee_p_3620187407_sub_436279890_3965413181(char *, char *, char *, char *,
 int ieee_p_3620187407_sub_514432868_3965413181(char *, char *, char *);
 
 
-static void work_a_0404539108_3212880686_p_0(char *t0)
+static void work_a_0661083184_3212880686_p_0(char *t0)
 {
     char *t1;
     char *t2;
@@ -61,7 +61,7 @@ LAB4:    goto LAB2;
 
 }
 
-static void work_a_0404539108_3212880686_p_1(char *t0)
+static void work_a_0661083184_3212880686_p_1(char *t0)
 {
     char *t1;
     char *t2;
@@ -121,7 +121,7 @@ LAB6:    goto LAB2;
 
 }
 
-static void work_a_0404539108_3212880686_p_2(char *t0)
+static void work_a_0661083184_3212880686_p_2(char *t0)
 {
     char *t1;
     char *t2;
@@ -153,7 +153,7 @@ LAB4:    goto LAB2;
 
 }
 
-static void work_a_0404539108_3212880686_p_3(char *t0)
+static void work_a_0661083184_3212880686_p_3(char *t0)
 {
     char t13[16];
     char t24[16];
@@ -395,7 +395,7 @@ LAB18:    xsi_size_not_matching(4U, t7, 0);
 
 }
 
-static void work_a_0404539108_3212880686_p_4(char *t0)
+static void work_a_0661083184_3212880686_p_4(char *t0)
 {
     char t11[16];
     char *t1;
@@ -737,9 +737,9 @@ LAB31:    xsi_set_current_line(146, ng0);
 }
 
 
-extern void work_a_0404539108_3212880686_init()
+extern void work_a_0661083184_3212880686_init()
 {
-	static char *pe[] = {(void *)work_a_0404539108_3212880686_p_0,(void *)work_a_0404539108_3212880686_p_1,(void *)work_a_0404539108_3212880686_p_2,(void *)work_a_0404539108_3212880686_p_3,(void *)work_a_0404539108_3212880686_p_4};
-	xsi_register_didat("work_a_0404539108_3212880686", "isim/TSlave_isim_beh.exe.sim/work/a_0404539108_3212880686.didat");
+	static char *pe[] = {(void *)work_a_0661083184_3212880686_p_0,(void *)work_a_0661083184_3212880686_p_1,(void *)work_a_0661083184_3212880686_p_2,(void *)work_a_0661083184_3212880686_p_3,(void *)work_a_0661083184_3212880686_p_4};
+	xsi_register_didat("work_a_0661083184_3212880686", "isim/Design_Design_sch_tb_isim_beh.exe.sim/work/a_0661083184_3212880686.didat");
 	xsi_register_executes(pe);
 }

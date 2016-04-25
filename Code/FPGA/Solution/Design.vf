@@ -7,11 +7,11 @@
 // \   \   \/     Version : 14.7
 //  \   \         Application : sch2hdl
 //  /   /         Filename : Design.vf
-// /___/   /\     Timestamp : 04/19/2016 11:21:52
+// /___/   /\     Timestamp : 04/26/2016 00:21:27
 // \   \  /  \ 
 //  \___\/\___\ 
 //
-//Command: sch2hdl -sympath D:/Github/4.SemesterProject/Code/FPGA/Solution/ipcore_dir -intstyle ise -family spartan3e -verilog D:/Github/4.SemesterProject/Code/FPGA/Solution/Design.vf -w D:/Github/4.SemesterProject/Code/FPGA/Solution/Design.sch
+//Command: sch2hdl -intstyle ise -family spartan3e -verilog D:/Github/4.SemesterProject/Code/FPGA/Solution/Design.vf -w D:/Github/4.SemesterProject/Code/FPGA/Solution/Design.sch
 //Design Name: Design
 //Device: spartan3e
 //Purpose:
