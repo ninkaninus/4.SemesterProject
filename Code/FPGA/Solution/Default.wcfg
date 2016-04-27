@@ -17,7 +17,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="11" />
+   <WVObjectSize size="12" />
    <wave_markers>
       <marker time="600000000" label="" />
       <marker time="1100000000" label="" />
@@ -69,6 +69,10 @@
       <obj_property name="ObjectShortName">Write_Enable</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
       <obj_property name="CustomSignalColor">#00ff00</obj_property>
+   </wvobject>
+   <wvobject fp_name="/design_design_sch_tb/misobuffer" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">misobuffer[15:0]</obj_property>
+      <obj_property name="ObjectShortName">misobuffer[15:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/design_design_sch_tb/UUT/AddressBus" type="array" db_ref_id="1">
       <obj_property name="ElementShortName">AddressBus[3:0]</obj_property>

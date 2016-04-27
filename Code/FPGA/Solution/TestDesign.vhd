@@ -48,6 +48,9 @@ ARCHITECTURE behavioral OF Design_Design_sch_tb IS
 --   SIGNAL encoder2	:	STD_LOGIC;
    SIGNAL led	:	STD_LOGIC_VECTOR (7 DOWNTO 0);
    SIGNAL sw	:	STD_LOGIC_VECTOR (7 DOWNTO 0);
+	
+-- Used to simulate the master receiver buffer. To actually see the entire value.
+	SIGNAL misoBuffer : STD_LOGIC_VECTOR(15 downto 0) := (others=>'L');
 
 	-- Clock period definitions
    constant clk_period : time := 20 ns;
@@ -107,6 +110,8 @@ BEGIN
 
 		for I in 0 to 1 loop
 
+			misoBuffer <= (others=>'L');
+
 			SPI_SS <= '0';
 			
 			wait for SPI_Clk_period/2;
@@ -122,6 +127,8 @@ BEGIN
 				wait for SPI_Clk_period/2;
 				
 				SPI_Clk <= '0';
+				
+				misoBuffer <= misoBuffer(14 downto 0) & SPI_MISO;
 
 			end loop;
 			

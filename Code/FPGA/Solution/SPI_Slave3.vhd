@@ -25,8 +25,8 @@ end SPI_Slave3;
 
 architecture Behavioral of SPI_Slave3 is
    -- DataBus buffers for input and output data
-   signal DataIn :            STD_LOGIC_VECTOR (11 downto 0);
-   signal DataOut :           STD_LOGIC_VECTOR (11 downto 0);
+   signal DataIn :            STD_LOGIC_VECTOR (11 downto 0) := (others=>'0');
+   signal DataOut :           STD_LOGIC_VECTOR (11 downto 0) := (others=>'0');
 	
 	-- XSClk and xSS used to detect rising and falling edges of SClk and SS
 	signal xSClk:      			std_logic_vector( 1 downto 0) := "00";
@@ -37,8 +37,8 @@ architecture Behavioral of SPI_Slave3 is
 	shared variable SClk_Cnt:  integer range 0 to (8*Nb)-1 := 0; 
 	-------------------------------------------------------------------------------
 	signal WE_net: std_logic := '1'; -- Active low
-   signal InBuf: 	std_logic_vector( 0 to (8*Nb)-1) := (others=>'L');
-   signal UdBuf:  std_logic_vector( 0 to (8*Nb)-1) := (others=>'L');	
+   signal InBuf: 	std_logic_vector( 0 to (8*Nb)-1) := (others=>'0');
+   signal UdBuf:  std_logic_vector( 0 to (8*Nb)-1) := (others=>'0');	
    alias  Adr:    std_logic_vector( 3 downto 0) is InBuf( 0 to 3); 
 
 	type States is (Wait_for_SS_low, --Wait for the SS line to turn low and initiate a transfer
@@ -47,6 +47,7 @@ architecture Behavioral of SPI_Slave3 is
 						 Load_UdBuf, --Load in data from the device selected by the address
 						 Wait_for_Databits, --Wait for all the data to have been transfered 
 						 Set_WE0, --Read in the data, because write enable is off
+						 Wait_state2,
 						 Set_WE1, --Set write enable high again
 						 Wait_for_SS_high); --Wait for SS to turn high again and end the data transfer
 						 
@@ -55,10 +56,10 @@ architecture Behavioral of SPI_Slave3 is
 begin
 	-- SClk_Count <= conv_std_logic_vector( SClk_cnt, SClk_Count'length); --alternativ 
 	
-   DataIn  <= DataBus; -- Read from DataBus
-   DataBus <= DataOut when WE_net='0' else (others=>'Z'); -- Write to DataBus
    WE      <= WE_net;												 -- WE = Active Low
-
+	DataIn  <= DataBus; -- Read from DataBus
+   DataBus <= DataOut when WE_net='0' else (others=>'Z'); -- Write to DataBus
+	
  --##################################################################################
  --# This process detect changes of SS and SClk
  --# SClk_Count will reset by a falling edge of SS
@@ -131,6 +132,9 @@ begin
 				--WE goes low to enable the slave to clock out the data to the databus
 				when Set_WE0 =>
 					WE_net <= '0';	
+					State <= Wait_state2;
+					
+				when Wait_state2 =>
 					State <= Set_WE1;
 				
 				--WE goes high so data kan be loaded onto the databus again from the devices

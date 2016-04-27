@@ -1,41 +1,33 @@
-Running: D:\Programs\Xilinx\14.7\ISE_DS\ISE\bin\nt64\unwrapped\fuse.exe -intstyle ise -incremental -lib simprims_ver -lib unisims_ver -lib unimacro_ver -lib xilinxcorelib_ver -o D:/Github/4.SemesterProject/Code/FPGA/Solution/Design_Design_sch_tb_isim_par.exe -prj D:/Github/4.SemesterProject/Code/FPGA/Solution/Design_Design_sch_tb_par.prj work.Design_Design_sch_tb work.glbl 
+Running: D:\Programs\Xilinx\14.7\ISE_DS\ISE\bin\nt64\unwrapped\fuse.exe -intstyle ise -incremental -lib unisims_ver -lib unimacro_ver -lib xilinxcorelib_ver -o D:/Github/4.SemesterProject/Code/FPGA/Solution/Design_Design_sch_tb_isim_beh.exe -prj D:/Github/4.SemesterProject/Code/FPGA/Solution/Design_Design_sch_tb_beh.prj work.Design_Design_sch_tb work.glbl 
 ISim P.20131013 (signature 0x7708f090)
 Number of CPUs detected in this system: 4
 Turning on mult-threading, number of parallel sub-compilation jobs: 8 
 Determining compilation order of HDL files
-Analyzing Verilog file "D:/Github/4.SemesterProject/Code/FPGA/Solution/netgen/par/Design_timesim.v" into library work
+Analyzing Verilog file "D:/Github/4.SemesterProject/Code/FPGA/Solution/Design.vf" into library work
+Analyzing Verilog file "D:/Programs/Xilinx/14.7/ISE_DS/ISE//verilog/src/glbl.v" into library work
+Parsing VHDL file "D:/Github/4.SemesterProject/Code/FPGA/Solution/Projekt_Data.vhd" into library work
+Parsing VHDL file "D:/Github/4.SemesterProject/Code/FPGA/Solution/SPI_Slave3.vhd" into library work
+Parsing VHDL file "D:/Github/4.SemesterProject/Code/FPGA/Solution/Blok1.vhd" into library work
 Parsing VHDL file "D:/Github/4.SemesterProject/Code/FPGA/Solution/TestDesign.vhd" into library work
 Starting static elaboration
 Completed static elaboration
 Compiling module glbl
-Compiling module X_BUF
-Compiling module mux
-Compiling module X_MUX2
-Compiling module X_OPAD
-Compiling module X_OBUF
-Compiling module X_IPAD
-Compiling module X_INV(LOC="SLICE_X67Y43")
-Compiling module X_BUFGMUX(LOC="BUFGMUX_X2Y11")
-Compiling module X_LUT4(INIT=16'b1010000010100000...
-Compiling module ffsrce
-Compiling module X_FF
-Compiling module sffsrce
-Compiling module X_SFF
-Compiling module X_SFF(INIT=1'b1)
-Compiling module X_FF(INIT=1'b1)
-Compiling module X_ZERO
-Compiling module X_ONE
 Compiling module Design
 Compiling package standard
 Compiling package std_logic_1164
 Compiling package numeric_std
 Compiling package vcomponents
 Compiling package vl_types
+Compiling package std_logic_arith
+Compiling package std_logic_unsigned
+Compiling package projekt_data
+Compiling architecture behavioral of entity SPI_Slave3 [spi_slave3_default]
+Compiling architecture behavioral of entity Blok1 [blok1_default]
 Compiling architecture behavioral of entity design_design_sch_tb
 Time Resolution for simulation is 1ps.
-Waiting for 1 sub-compilation(s) to finish...
-Compiled 6 VHDL Units
-Compiled 369 Verilog Units
-Built simulation executable D:/Github/4.SemesterProject/Code/FPGA/Solution/Design_Design_sch_tb_isim_par.exe
-Fuse Memory Usage: 56164 KB
-Fuse CPU Usage: 937 ms
+Waiting for 2 sub-compilation(s) to finish...
+Compiled 13 VHDL Units
+Compiled 2 Verilog Units
+Built simulation executable D:/Github/4.SemesterProject/Code/FPGA/Solution/Design_Design_sch_tb_isim_beh.exe
+Fuse Memory Usage: 52908 KB
+Fuse CPU Usage: 452 ms
