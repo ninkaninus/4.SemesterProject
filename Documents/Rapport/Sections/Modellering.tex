@@ -58,3 +58,49 @@ Man har nu to muligheder for at realisere sit system: Man kan lave en \textit{Wh
 \begin{equation}
 G(s)=\dfrac{\omega(s)}{V_{a}(s)}=\dfrac{K}{\tau*s+1}
 \end{equation}
+
+\subsubsection{Design af Controller}
+
+Hvis man tager udgangspunkt i black box-modellen af systemet, kan man lave et closed-loop-system, der ser ud som på figur \ref{fig:BB_Model}. 
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[scale=0.7]{Billeder/BB_Model.PNG}
+	\end{center}
+\label{fig:BB_Model}
+\caption{Closed-Loop kontrolsystem til black box-modellen}
+\end{figure}
+
+\paragraph{Designmål}
+
+\begin{itemize}
+
+\item Steady state fejl på 0
+\item Minimalt overshoot
+\item Settling time $<$ 5 sekunder
+
+\end{itemize}
+
+\paragraph{Steady State Fejl}
+
+For at undersøge om systemet kan drive fejlen i 0, er det nødvendigt at finde et udtryk for $E_{1}(s)$, og ved hjælp af \textit{Final Value Theorem} (ligning \ref{eq:FVT}), finde ud af hvad der er tilbage, når systemet går i steady state. 
+
+\begin{equation} \label{eq:FVT}
+lim_{t \to \infty} f(t) = lim_{s \to 0} sF(s)
+\end{equation}
+
+\begin{equation} \label{eq:ess}
+E_{1}(s)=R(s)\frac{s(\tau s+1)}{s(\tau s+1)+12K_{c}KH}+T_{d}(s)\frac{(\tau s+1)H}{s(\tau s+1)+12K_{c}KH}
+\end{equation}
+
+Ved et step-input ($A/s$) bliver fejlen drevet i 0, så længe der ikke er nogen disturbance. 
+
+\begin{equation}
+e_{ss}=lim_{s \to 0} sE_{1}(s)=AH\frac{1}{12K_{c}KH} , T_{d}(s)=\dfrac{A}{s}
+\end{equation}
+
+Det kan altså konkluderes, at man er nødt til at have mindst en integrator i controlleren, for at opfylde kriteriet om en steady state-fejl på 0.
+
+\paragraph{Overshoot}
+
+\paragraph{Settling Time}
