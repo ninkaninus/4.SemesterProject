@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="D:/Github/4.SemesterProject/Code/FPGA/Solution/Design_Design_sch_tb_isim_beh.wdb" id="1" type="auto">
+         <top_modules>
+            <top_module name="design_design_sch_tb" />
+            <top_module name="glbl" />
+            <top_module name="numeric_std" />
+            <top_module name="projekt_data" />
+            <top_module name="std_logic_1164" />
+            <top_module name="std_logic_arith" />
+            <top_module name="std_logic_unsigned" />
+            <top_module name="vcomponents" />
+            <top_module name="vl_types" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <WVObjectSize size="11" />
+   <wave_markers>
+      <marker time="600000000" label="" />
+      <marker time="1100000000" label="" />
+      <marker time="1600000000" label="" />
+      <marker time="2100000000" label="" />
+      <marker time="2600000000" label="" />
+      <marker time="3100000000" label="" />
+      <marker time="3600000000" label="" />
+      <marker time="4100000000" label="" />
+      <marker time="4600000000" label="" />
+      <marker time="5100000000" label="" />
+      <marker time="5600000000" label="" />
+      <marker time="6100000000" label="" />
+      <marker time="6600000000" label="" />
+      <marker time="7100000000" label="" />
+      <marker time="7600000000" label="" />
+      <marker time="8100000000" label="" />
+   </wave_markers>
+   <wvobject fp_name="/design_design_sch_tb/clk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/design_design_sch_tb/spi_mosi" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">spi_mosi</obj_property>
+      <obj_property name="ObjectShortName">spi_mosi</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#00ffff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/design_design_sch_tb/spi_miso" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">spi_miso</obj_property>
+      <obj_property name="ObjectShortName">spi_miso</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ff00ff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/design_design_sch_tb/spi_ss" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">spi_ss</obj_property>
+      <obj_property name="ObjectShortName">spi_ss</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffff00</obj_property>
+   </wvobject>
+   <wvobject fp_name="/design_design_sch_tb/spi_clk" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">spi_clk</obj_property>
+      <obj_property name="ObjectShortName">spi_clk</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#a0a0a4</obj_property>
+   </wvobject>
+   <wvobject fp_name="/design_design_sch_tb/UUT/Write_Enable" type="logic" db_ref_id="1">
+      <obj_property name="ElementShortName">Write_Enable</obj_property>
+      <obj_property name="ObjectShortName">Write_Enable</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#00ff00</obj_property>
+   </wvobject>
+   <wvobject fp_name="/design_design_sch_tb/UUT/AddressBus" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">AddressBus[3:0]</obj_property>
+      <obj_property name="ObjectShortName">AddressBus[3:0]</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffffff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/design_design_sch_tb/UUT/DataBus" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">DataBus[11:0]</obj_property>
+      <obj_property name="ObjectShortName">DataBus[11:0]</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
+      <obj_property name="CustomSignalColor">#ffa500</obj_property>
+   </wvobject>
+   <wvobject fp_name="group44" type="group">
+      <obj_property name="label">Constants</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/design_design_sch_tb/datatosend" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">datatosend[15:0]</obj_property>
+         <obj_property name="ObjectShortName">datatosend[15:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/design_design_sch_tb/sw" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">sw[7:0]</obj_property>
+         <obj_property name="ObjectShortName">sw[7:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/design_design_sch_tb/clk_period" type="other" db_ref_id="1">
+         <obj_property name="ElementShortName">clk_period</obj_property>
+         <obj_property name="ObjectShortName">clk_period</obj_property>
+      </wvobject>
+      <wvobject fp_name="/design_design_sch_tb/spi_clk_period" type="other" db_ref_id="1">
+         <obj_property name="ElementShortName">spi_clk_period</obj_property>
+         <obj_property name="ObjectShortName">spi_clk_period</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group45" type="group">
+      <obj_property name="label">Blok3</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/design_design_sch_tb/led" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">led[7:0]</obj_property>
+         <obj_property name="ObjectShortName">led[7:0]</obj_property>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group33" type="group">
+      <obj_property name="label">Slave</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/design_design_sch_tb/UUT/XLXI_21/we_net" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">we_net</obj_property>
+         <obj_property name="ObjectShortName">we_net</obj_property>
+      </wvobject>
+      <wvobject fp_name="/design_design_sch_tb/UUT/XLXI_21/sclk_count" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">sclk_count[3:0]</obj_property>
+         <obj_property name="ObjectShortName">sclk_count[3:0]</obj_property>
+         <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+         <obj_property name="UseCustomSignalColor">true</obj_property>
+         <obj_property name="CustomSignalColor">#aaaaff</obj_property>
+      </wvobject>
+      <wvobject fp_name="/design_design_sch_tb/UUT/XLXI_21/inbuf" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">inbuf[0:15]</obj_property>
+         <obj_property name="ObjectShortName">inbuf[0:15]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/design_design_sch_tb/UUT/XLXI_21/udbuf" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">udbuf[0:15]</obj_property>
+         <obj_property name="ObjectShortName">udbuf[0:15]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/design_design_sch_tb/UUT/XLXI_21/datain" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">datain[11:0]</obj_property>
+         <obj_property name="ObjectShortName">datain[11:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/design_design_sch_tb/UUT/XLXI_21/dataout" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">dataout[11:0]</obj_property>
+         <obj_property name="ObjectShortName">dataout[11:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/design_design_sch_tb/UUT/XLXI_21/we" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">we</obj_property>
+         <obj_property name="ObjectShortName">we</obj_property>
+      </wvobject>
+      <wvobject fp_name="/design_design_sch_tb/UUT/XLXI_21/state" type="other" db_ref_id="1">
+         <obj_property name="ElementShortName">state</obj_property>
+         <obj_property name="ObjectShortName">state</obj_property>
+      </wvobject>
+      <wvobject fp_name="/design_design_sch_tb/UUT/XLXI_21/xsclk" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">xsclk[1:0]</obj_property>
+         <obj_property name="ObjectShortName">xsclk[1:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/design_design_sch_tb/UUT/XLXI_21/xss" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">xss[1:0]</obj_property>
+         <obj_property name="ObjectShortName">xss[1:0]</obj_property>
+      </wvobject>
+   </wvobject>
+</wave_config>

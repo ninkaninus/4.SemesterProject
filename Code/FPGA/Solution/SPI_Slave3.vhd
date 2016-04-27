@@ -25,8 +25,8 @@ end SPI_Slave3;
 
 architecture Behavioral of SPI_Slave3 is
    -- DataBus buffers for input and output data
-   signal DataIn :            STD_LOGIC_VECTOR (11 downto 0) := (others=>'0');
-   signal DataOut :           STD_LOGIC_VECTOR (11 downto 0) := (others=>'0');
+   signal DataIn :            STD_LOGIC_VECTOR (11 downto 0);
+   signal DataOut :           STD_LOGIC_VECTOR (11 downto 0);
 	
 	-- XSClk and xSS used to detect rising and falling edges of SClk and SS
 	signal xSClk:      			std_logic_vector( 1 downto 0) := "00";
@@ -55,7 +55,7 @@ architecture Behavioral of SPI_Slave3 is
 begin
 	-- SClk_Count <= conv_std_logic_vector( SClk_cnt, SClk_Count'length); --alternativ 
 	
-   DataIn  <= DataBus;                                    -- Read from DataBus
+   DataIn  <= DataBus; -- Read from DataBus
    DataBus <= DataOut when WE_net='0' else (others=>'Z'); -- Write to DataBus
    WE      <= WE_net;												 -- WE = Active Low
 
@@ -81,7 +81,6 @@ begin
 			if xSClk="01" then
 				SClk_Count <= SClk_Count + 1; -- Count the number of rising SClk's
 				SClk_Cnt := conv_integer( SClk_Count); 
-				
 			   InBuf( SClk_Cnt) <= MOSI;	
 			end if;
 			MISO <= UdBuf( SClk_Cnt);
@@ -107,7 +106,7 @@ begin
 				
 				--Wait for the address to be transfered, once transfered then put it out on the address bus
 	         when Wait_for_Adr =>
-					if Sclk_Cnt = 3 and xSClk = "01" then
+					if Sclk_Cnt = 3 and xSClk = "11" then
 						State <= Wait_state1;
 						AdrBus <= Adr;
 					end if;

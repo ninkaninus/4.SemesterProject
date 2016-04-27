@@ -1,5 +1,5 @@
 ISim log file
-Running: D:\Github\4.SemesterProject\Code\FPGA\Solution\Design_Design_sch_tb_isim_beh.exe -intstyle ise -gui -tclbatch isim.cmd -wdb D:/Github/4.SemesterProject/Code/FPGA/Solution/Design_Design_sch_tb_isim_beh.wdb 
+Running: D:\Github\4.SemesterProject\Code\FPGA\Solution\Design_Design_sch_tb_isim_par.exe -intstyle ise -gui -tclbatch isim.cmd -wdb D:/Github/4.SemesterProject/Code/FPGA/Solution/Design_Design_sch_tb_isim_par.wdb 
 ISim P.20131013 (signature 0x7708f090)
 WARNING: A WEBPACK license was found.
 WARNING: Please use Xilinx License Configuration Manager to check out a full ISim license.
@@ -10,6 +10,10 @@ Time resolution is 1 ps
 # wave add /
 # run 1000 ns
 Simulator is doing circuit initialization process.
+INFO: SDF backannotation was successful with SDF file netgen/par/design_timesim.sdf, for root module /design_design_sch_tb/UUT/.
 Finished circuit initialization process.
+# restart
 # run 20.00us
-ERROR: FATAL ERROR:ISim: This application has discovered an exceptional condition from which it cannot recover. Process will terminate. To search for possible resolutions to this issue, refer to the Xilinx answer database by going to http://www.xilinx.com/support/answers/index.htm and search with keywords 'ISim' and 'FATAL ERROR'. For technical support on this issue, please open a WebCase with this project attached at http://www.xilinx.com/support.
+Simulator is doing circuit initialization process.
+INFO: SDF backannotation was successful with SDF file netgen/par/design_timesim.sdf, for root module /design_design_sch_tb/UUT/.
+Finished circuit initialization process.

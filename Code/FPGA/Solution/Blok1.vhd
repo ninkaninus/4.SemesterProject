@@ -36,7 +36,7 @@ begin
 			if AdrBus = "1001" then
 				CS <= '1';
 				DataOut <= "1111"&Sw;
-				--Led <= "01010101";
+				Led <= "01010101";
 				if WE='0' then
 					Led <= DataIn( 7 downto 0);
 				end if;

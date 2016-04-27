@@ -13,11 +13,9 @@
         <signal name="sw(7:0)" />
         <signal name="led(7:0)" />
         <signal name="clk" />
-        <signal name="XLXN_152" />
-        <signal name="XLXN_153(11:0)" />
-        <signal name="XLXN_154" />
-        <signal name="XLXN_155" />
-        <signal name="XLXN_156(3:0)" />
+        <signal name="DataBus(11:0)" />
+        <signal name="Write_Enable" />
+        <signal name="AddressBus(3:0)" />
         <port polarity="Input" name="SPI_MOSI" />
         <port polarity="Output" name="SPI_MISO" />
         <port polarity="Input" name="SPI_SS" />
@@ -58,18 +56,18 @@
             <blockpin signalname="SPI_Clk" name="SClk" />
             <blockpin signalname="SPI_SS" name="SS" />
             <blockpin signalname="SPI_MOSI" name="MOSI" />
-            <blockpin signalname="XLXN_153(11:0)" name="DataBus(11:0)" />
+            <blockpin signalname="DataBus(11:0)" name="DataBus(11:0)" />
             <blockpin signalname="SPI_MISO" name="MISO" />
-            <blockpin signalname="XLXN_156(3:0)" name="AdrBus(3:0)" />
-            <blockpin signalname="XLXN_155" name="WE" />
+            <blockpin signalname="AddressBus(3:0)" name="AdrBus(3:0)" />
+            <blockpin signalname="Write_Enable" name="WE" />
         </block>
         <block symbolname="Blok1" name="XLXI_27">
             <blockpin signalname="clk" name="Clk" />
-            <blockpin signalname="XLXN_155" name="WE" />
-            <blockpin signalname="XLXN_156(3:0)" name="AdrBus(3:0)" />
+            <blockpin signalname="Write_Enable" name="WE" />
+            <blockpin signalname="AddressBus(3:0)" name="AdrBus(3:0)" />
             <blockpin signalname="sw(7:0)" name="Sw(7:0)" />
             <blockpin signalname="led(7:0)" name="Led(7:0)" />
-            <blockpin signalname="XLXN_153(11:0)" name="DataBus(11:0)" />
+            <blockpin signalname="DataBus(11:0)" name="DataBus(11:0)" />
         </block>
     </netlist>
     <sheet sheetnum="1" width="3520" height="2720">
@@ -109,7 +107,7 @@
             <wire x2="1120" y1="176" y2="848" x1="1120" />
             <wire x2="1200" y1="848" y2="848" x1="1120" />
         </branch>
-        <branch name="XLXN_153(11:0)">
+        <branch name="DataBus(11:0)">
             <wire x2="880" y1="928" y2="928" x1="752" />
             <wire x2="880" y1="928" y2="1232" x1="880" />
             <wire x2="1664" y1="1232" y2="1232" x1="880" />
@@ -117,12 +115,12 @@
             <wire x2="1664" y1="1040" y2="1216" x1="1664" />
             <wire x2="1664" y1="1216" y2="1232" x1="1664" />
         </branch>
-        <branch name="XLXN_155">
+        <branch name="Write_Enable">
             <wire x2="976" y1="992" y2="992" x1="752" />
             <wire x2="976" y1="912" y2="992" x1="976" />
             <wire x2="1200" y1="912" y2="912" x1="976" />
         </branch>
-        <branch name="XLXN_156(3:0)">
+        <branch name="AddressBus(3:0)">
             <wire x2="960" y1="864" y2="864" x1="752" />
             <wire x2="960" y1="864" y2="976" x1="960" />
             <wire x2="1200" y1="976" y2="976" x1="960" />
