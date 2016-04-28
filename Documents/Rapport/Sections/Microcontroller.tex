@@ -54,7 +54,7 @@ Til SSI modulet er der 3 forskellige data formater:
 
 \begin{itemize}
 	\item Texas Instruments Synchronous Serial
-		\begin{figure}[h]
+		\begin{figure}[!h]
 			\begin{center}
 			\includegraphics[scale=1]{Billeder/TI_Synchronous_Serial_Frame_Format.jpg}
 			\end{center}
@@ -63,7 +63,7 @@ Til SSI modulet er der 3 forskellige data formater:
 		\end{figure}
 
 	\item Freescale SPI
-		\begin{figure}[h]
+		\begin{figure}[H]
 			\begin{center}
 			\includegraphics[scale=1]{Billeder/FS_Frame_Format.jpg}
 			\end{center}
@@ -72,7 +72,7 @@ Til SSI modulet er der 3 forskellige data formater:
 		\end{figure}
 		  
 	\item Microwire
-		\begin{figure}[h]
+		\begin{figure}[H]
 			\begin{center}
 			\includegraphics[scale=0.8]{Billeder/MW_Frame_format.jpg}
 			\end{center}
@@ -80,3 +80,26 @@ Til SSI modulet er der 3 forskellige data formater:
 			\caption{Micro Wire Frame Format (Single Transfer)}
 		\end{figure}
 \end{itemize}
+
+Da Freescale er den eneste SPI iblandt de tre SSI moduler er det den der blev valgt.
+
+		\begin{figure}[H]
+			\begin{center}
+			\includegraphics[scale=0.8]{Billeder/Spi_Setup.jpg}
+			\end{center}
+			\label{fig:SPI_Setup}
+			\caption{Setup af Freescale SPI}
+		\end{figure}
+
+For at lave et Freescale setup skal der SSI modulet disables, også kan microcontrolleren sættes som master ved at skrive nul til control registret.
+derefer skal clock configurations registret sættes til 0 så vi bruger system clocken.
+da der ønskes en 2 Mbps clock bruges følgende ligning
+
+\begin{align*}
+2*10^6 bps &= \dfrac{16*10^6 Hz}{CPSDVSR * (1 + 0)}\\
+CPSDVSR &= \dfrac{16*10^6 Hz}{2*10^6 bps}\\
+CPSDVSR &= 8
+\end{align*}
+
+Så sættes kontrol registret for SSI0 til 0xF da bit 3:0 angiver data størrelse, 0xF er så 16-bit data. samtidig bliver Freescale SPI sat op da bit 4 og 5 bestemmer frame formatet, og hvis de begge er lave betyder det at Freescale er valgt. 
+og igen sættes bit 1 i kontrol registret for SSI1 til høj så SSI'en er enablet
