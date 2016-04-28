@@ -4,7 +4,8 @@ Encoder1
 Encoder2
 WE
 =AdrBus[3:0]=
-=DataBus[11:0]=
+=DataBusFromSlave[11:0]=
 [Outputs]
+=DataBusToSlave[11:0]=
 =Bcd[15:0]=
 [BiDir]

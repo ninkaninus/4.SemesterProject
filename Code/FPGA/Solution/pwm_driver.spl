@@ -1,7 +1,7 @@
 [Inputs]
 clk
 WE
-=DataBus[7:0]=
+=DataBusFromSlave[11:0]=
 =AdrBus[3:0]=
 [Outputs]
 pwm

@@ -7,7 +7,7 @@
 // \   \   \/     Version : 14.7
 //  \   \         Application : sch2hdl
 //  /   /         Filename : Design.vf
-// /___/   /\     Timestamp : 04/28/2016 12:18:58
+// /___/   /\     Timestamp : 04/28/2016 17:15:00
 // \   \  /  \ 
 //  \___\/\___\ 
 //
@@ -21,61 +21,97 @@
 `timescale 1ns / 1ps
 
 module Design(clk, 
+              encoder1, 
+              encoder2, 
               SPI_Clk, 
               SPI_MOSI, 
               SPI_SS, 
               sw, 
+              Enable, 
               led, 
+              motor, 
+              seg, 
               SPI_MISO);
 
     input clk;
+    input encoder1;
+    input encoder2;
     input SPI_Clk;
     input SPI_MOSI;
     input SPI_SS;
     input [7:0] sw;
+   output [3:0] Enable;
    output [7:0] led;
+   output [1:0] motor;
+   output [0:7] seg;
    output SPI_MISO;
    
    wire Write_Enable;
-   wire [11:0] XLXN_1;
-   wire [3:0] XLXN_13;
    wire [11:0] XLXN_16;
-   wire [11:0] XLXN_24;
    wire [11:0] XLXN_38;
+   wire XLXN_40;
+   wire [15:0] XLXN_50;
+   wire [3:0] XLXN_52;
+   wire [11:0] XLXN_53;
+   wire [11:0] XLXN_54;
+   wire [11:0] XLXN_56;
    
-   assign XLXN_24 = 12'h000;
+   assign XLXN_54 = 12'h000;
    SPI_Slave3  XLXI_21 (.Clk(clk), 
                        .DataBusToSlave(XLXN_38[11:0]), 
                        .MOSI(SPI_MOSI), 
                        .SClk(SPI_Clk), 
                        .SS(SPI_SS), 
-                       .AdrBus(XLXN_13[3:0]), 
-                       .DataBusFromSlave(XLXN_1[11:0]), 
+                       .AdrBus(XLXN_52[3:0]), 
+                       .DataBusFromSlave(XLXN_53[11:0]), 
                        .MISO(SPI_MISO), 
                        .WE(Write_Enable));
-   Blok1  XLXI_27 (.AdrBus(XLXN_13[3:0]), 
+   Blok1  XLXI_27 (.AdrBus(XLXN_52[3:0]), 
                   .Clk(clk), 
-                  .DataBusFromSlave(XLXN_1[11:0]), 
+                  .DataBusFromSlave(XLXN_53[11:0]), 
                   .Sw(sw[7:0]), 
                   .WE(Write_Enable), 
                   .DataBusToSlave(XLXN_16[11:0]), 
                   .Led(led[7:0]));
-   Mux16x12_4  XLXI_30 (.input0(XLXN_24[11:0]), 
-                       .input1(XLXN_24[11:0]), 
-                       .input2(XLXN_24[11:0]), 
-                       .input3(XLXN_24[11:0]), 
-                       .input4(XLXN_24[11:0]), 
-                       .input5(XLXN_24[11:0]), 
-                       .input6(XLXN_24[11:0]), 
-                       .input7(XLXN_24[11:0]), 
-                       .input8(XLXN_24[11:0]), 
+   Mux16x12_4  XLXI_30 (.input0(XLXN_54[11:0]), 
+                       .input1(XLXN_54[11:0]), 
+                       .input2(XLXN_54[11:0]), 
+                       .input3(XLXN_56[11:0]), 
+                       .input4(XLXN_54[11:0]), 
+                       .input5(XLXN_54[11:0]), 
+                       .input6(XLXN_54[11:0]), 
+                       .input7(XLXN_54[11:0]), 
+                       .input8(XLXN_54[11:0]), 
                        .input9(XLXN_16[11:0]), 
-                       .input10(XLXN_24[11:0]), 
-                       .input11(XLXN_24[11:0]), 
-                       .input12(XLXN_24[11:0]), 
-                       .input13(XLXN_24[11:0]), 
-                       .input14(XLXN_24[11:0]), 
-                       .input15(XLXN_24[11:0]), 
-                       .sel(XLXN_13[3:0]), 
+                       .input10(XLXN_54[11:0]), 
+                       .input11(XLXN_54[11:0]), 
+                       .input12(XLXN_54[11:0]), 
+                       .input13(XLXN_54[11:0]), 
+                       .input14(XLXN_54[11:0]), 
+                       .input15(XLXN_54[11:0]), 
+                       .sel(XLXN_52[3:0]), 
                        .dataOut(XLXN_38[11:0]));
+   pwm_driver  XLXI_35 (.AdrBus(XLXN_52[3:0]), 
+                       .clk(clk), 
+                       .DataBusFromSlave(XLXN_53[11:0]), 
+                       .WE(Write_Enable), 
+                       .pwm(XLXN_40));
+   Motor_Interface  XLXI_36 (.AdrBus(XLXN_52[3:0]), 
+                            .clk(clk), 
+                            .DataBusFromSlave(XLXN_53[11:0]), 
+                            .pwm(XLXN_40), 
+                            .WE(Write_Enable), 
+                            .motor(motor[1:0]));
+   PositionsModul  XLXI_37 (.AdrBus(XLXN_52[3:0]), 
+                           .Clk(clk), 
+                           .DataBusFromSlave(XLXN_53[11:0]), 
+                           .Encoder1(encoder1), 
+                           .Encoder2(encoder2), 
+                           .WE(Write_Enable), 
+                           .Bcd(XLXN_50[15:0]), 
+                           .DataBusToSlave(XLXN_56[11:0]));
+   MultiplexDisplay  XLXI_38 (.Bcd(XLXN_50[15:0]), 
+                             .Clk_50MHz(clk), 
+                             .An(Enable[3:0]), 
+                             .Seg(seg[0:7]));
 endmodule

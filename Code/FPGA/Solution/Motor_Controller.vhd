@@ -33,13 +33,13 @@ use IEEE.NUMERIC_STD.ALL;
 entity Motor_Interface is
 	
 	 generic (  Adr_Width: natural := 4; --Width in bits of the address bus
-					Address: Natural := 1);  --Address of the device
+					Address: Natural := 2);  --Address of the device
 
     Port ( clk : in STD_LOGIC;
 			  pwm : in  STD_LOGIC;
 			  AdrBus :	in   STD_LOGIC_VECTOR ((Adr_Width - 1) downto 0);
 			  WE : 		in  	STD_LOGIC;
-           DataBus : in STD_LOGIC_VECTOR (1 downto 0);
+           DataBusFromSlave : in STD_LOGIC_VECTOR (11 downto 0);
            motor : out  STD_LOGIC_VECTOR(1 downto 0));
 end Motor_Interface;
 
@@ -49,14 +49,12 @@ signal DataIn : STD_LOGIC_VECTOR (1 downto 0);
 
 begin
 
---DataIn <= DataBus;
-
 latch_select: process(clk)
 begin
 	if rising_edge(clk) then	
 		if unsigned(AdrBus) = Address then
 			if WE='0' then
-				DataIn <= DataBus;
+				DataIn <= DataBusFromSlave(1 downto 0);
 			end if;
 		end if;
 	end if;

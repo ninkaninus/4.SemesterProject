@@ -3,7 +3,7 @@ clk
 pwm
 WE
 =AdrBus[3:0]=
-=DataBus[1:0]=
+=DataBusFromSlave[11:0]=
 [Outputs]
 =motor[1:0]=
 [BiDir]
