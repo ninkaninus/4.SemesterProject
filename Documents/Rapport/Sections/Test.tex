@@ -11,8 +11,8 @@ Når målingerne fra hall-sensorerne er regnet om til $rad/s$ og slået sammen t
 	\begin{center}
 		\includegraphics[scale=0.35]{Billeder/Untreated_Response.jpg}
 	\end{center}
-\label{fig:Ubehandlet}
 \caption{Den målte step respons i rad/s ved 12V konstant spænding. Omdrejningshastigheden er beregnet ud fra tiden imellem flankerne på hall sensor-signalerne. Der er interpoleret ned til 0 rad/s ud fra hældningen på de første to målinger.}
+\label{fig:Ubehandlet}
 \end{figure}
 
 Hvis man nærstuderer figur \ref{fig:Ubehandlet}, kan man se at udsvingene gentager sig selv hver 12. sample. Det passer perfekt med at hver hall sensor har 6 halvperioder, hvor der bliver målt en tid, pr omgang. Det er med andre ord muligt at justere for fejlen ved at gange en faktor på alle samples, der tager højde for afvigelsen fra de $\pi/3$ radianer. I matlab kan man relativt simpelt finde de 12 faktorer, ved at undersøge hvor meget 12 konsekutive samples afviger fra gennemsnittet, så længe det bliver gjort i et område hvor responsen har nået steady state. Så er det bare et spørgsmål om at gange faktorerne på alle samples med det rette offset for at justere for fejlen. 
@@ -21,8 +21,8 @@ Hvis man nærstuderer figur \ref{fig:Ubehandlet}, kan man se at udsvingene genta
 	\begin{center}
 		\includegraphics[scale=0.35]{Billeder/Treated_Response.jpg}
 	\end{center}
-\label{fig:Behandlet}
 \caption{Den målte step respons justeret for periodiske fejl.}
+\label{fig:Behandlet}
 \end{figure}
 
 På det nye plot det noget lettere at aflæse tidskonstanten for systemet. Den eneste store usikkerhed der er tilbage er starttidspunktet for steppet, da det ikke indgår i målingerne fra logic analyzeren - det er en tilnærmet værdi ud fra hældningen af de første par samples ($\Delta\omega/\Delta t$). Plottene på figur \ref{fig:Ubehandlet} og \ref{fig:Behandlet} viser responsen for motoren uden belastning. Den aflæste tidskonstant på figur \ref{fig:Behandlet} er 27.3 ms.
