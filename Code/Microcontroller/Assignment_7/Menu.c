@@ -5,38 +5,40 @@
  *      Author: Daniel
  */
 
-#define menu	0;
-#define Run		1;
-#define	numpad	2;
-#define	geber	3;
-#define adjust	4;
-#define	options 5;
+#include "EMP/emp_type.h"
 
-#define menu_return 0;
-#define menu_run	1;
-#define menu_numpad 2;
-#define menu_geber	3:
-#define menu_adjust 4;
-#define menu_options 5;
+#define menu	0
+#define Run		1
+#define	numpad	2
+#define	geber	3
+#define adjust	4
+#define	options 5
 
-#define start_stop	1;
-#define pic_now		2;
-#define	auto_pic_on_off	3;
+#define menu_return 0
+#define menu_run	1
+#define menu_numpad 2
+#define menu_geber	3
+#define menu_adjust 4
+#define menu_options 5
 
-#define longtitude	1;
-#define lattitude	2;
+#define start_stop	1
+#define pic_now		2
+#define	auto_pic_on_off	3
 
-#define	value1		1;
+#define longtitude	1
+#define lattitude	2
 
-#define numpad_on_off	1;
-#define UART_on_off		2;
-#define set_time		3;
-#define set_location	4;
-#define reset_position	5;
+#define	value1		1
 
-#define BE_left		1;
-#define BE_right	2;
-#define BE_push		3;
+#define numpad_on_off	1
+#define UART_on_off		2
+#define set_time		3
+#define set_location	4
+#define reset_position	5
+
+#define BE_left		1
+#define BE_right	2
+#define BE_push		3
 
 /*
 switch (geber_evet)
