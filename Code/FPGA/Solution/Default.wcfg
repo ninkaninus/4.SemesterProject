@@ -74,18 +74,6 @@
       <obj_property name="ElementShortName">misobuffer[15:0]</obj_property>
       <obj_property name="ObjectShortName">misobuffer[15:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/design_design_sch_tb/UUT/AddressBus" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">AddressBus[3:0]</obj_property>
-      <obj_property name="ObjectShortName">AddressBus[3:0]</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
-      <obj_property name="CustomSignalColor">#ffffff</obj_property>
-   </wvobject>
-   <wvobject fp_name="/design_design_sch_tb/UUT/DataBus" type="array" db_ref_id="1">
-      <obj_property name="ElementShortName">DataBus[11:0]</obj_property>
-      <obj_property name="ObjectShortName">DataBus[11:0]</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
-      <obj_property name="CustomSignalColor">#ffa500</obj_property>
-   </wvobject>
    <wvobject fp_name="group44" type="group">
       <obj_property name="label">Constants</obj_property>
       <obj_property name="DisplayName">label</obj_property>
@@ -144,6 +132,10 @@
          <obj_property name="ElementShortName">dataout[11:0]</obj_property>
          <obj_property name="ObjectShortName">dataout[11:0]</obj_property>
       </wvobject>
+      <wvobject fp_name="/design_design_sch_tb/UUT/XLXI_21/adrbus" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">adrbus[3:0]</obj_property>
+         <obj_property name="ObjectShortName">adrbus[3:0]</obj_property>
+      </wvobject>
       <wvobject fp_name="/design_design_sch_tb/UUT/XLXI_21/we" type="logic" db_ref_id="1">
          <obj_property name="ElementShortName">we</obj_property>
          <obj_property name="ObjectShortName">we</obj_property>
@@ -160,5 +152,13 @@
          <obj_property name="ElementShortName">xss[1:0]</obj_property>
          <obj_property name="ObjectShortName">xss[1:0]</obj_property>
       </wvobject>
+   </wvobject>
+   <wvobject fp_name="/design_design_sch_tb/UUT/XLXI_21/databustoslave" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">databustoslave[11:0]</obj_property>
+      <obj_property name="ObjectShortName">databustoslave[11:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/design_design_sch_tb/UUT/XLXI_21/databusfromslave" type="array" db_ref_id="1">
+      <obj_property name="ElementShortName">databusfromslave[11:0]</obj_property>
+      <obj_property name="ObjectShortName">databusfromslave[11:0]</obj_property>
    </wvobject>
 </wave_config>

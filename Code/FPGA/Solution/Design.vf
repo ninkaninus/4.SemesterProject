@@ -7,7 +7,7 @@
 // \   \   \/     Version : 14.7
 //  \   \         Application : sch2hdl
 //  /   /         Filename : Design.vf
-// /___/   /\     Timestamp : 04/26/2016 16:47:08
+// /___/   /\     Timestamp : 04/28/2016 12:18:58
 // \   \  /  \ 
 //  \___\/\___\ 
 //
@@ -36,22 +36,46 @@ module Design(clk,
    output [7:0] led;
    output SPI_MISO;
    
-   wire [3:0] AddressBus;
-   wire [11:0] DataBus;
    wire Write_Enable;
+   wire [11:0] XLXN_1;
+   wire [3:0] XLXN_13;
+   wire [11:0] XLXN_16;
+   wire [11:0] XLXN_24;
+   wire [11:0] XLXN_38;
    
+   assign XLXN_24 = 12'h000;
    SPI_Slave3  XLXI_21 (.Clk(clk), 
+                       .DataBusToSlave(XLXN_38[11:0]), 
                        .MOSI(SPI_MOSI), 
                        .SClk(SPI_Clk), 
                        .SS(SPI_SS), 
-                       .AdrBus(AddressBus[3:0]), 
+                       .AdrBus(XLXN_13[3:0]), 
+                       .DataBusFromSlave(XLXN_1[11:0]), 
                        .MISO(SPI_MISO), 
-                       .WE(Write_Enable), 
-                       .DataBus(DataBus[11:0]));
-   Blok1  XLXI_27 (.AdrBus(AddressBus[3:0]), 
+                       .WE(Write_Enable));
+   Blok1  XLXI_27 (.AdrBus(XLXN_13[3:0]), 
                   .Clk(clk), 
+                  .DataBusFromSlave(XLXN_1[11:0]), 
                   .Sw(sw[7:0]), 
                   .WE(Write_Enable), 
-                  .Led(led[7:0]), 
-                  .DataBus(DataBus[11:0]));
+                  .DataBusToSlave(XLXN_16[11:0]), 
+                  .Led(led[7:0]));
+   Mux16x12_4  XLXI_30 (.input0(XLXN_24[11:0]), 
+                       .input1(XLXN_24[11:0]), 
+                       .input2(XLXN_24[11:0]), 
+                       .input3(XLXN_24[11:0]), 
+                       .input4(XLXN_24[11:0]), 
+                       .input5(XLXN_24[11:0]), 
+                       .input6(XLXN_24[11:0]), 
+                       .input7(XLXN_24[11:0]), 
+                       .input8(XLXN_24[11:0]), 
+                       .input9(XLXN_16[11:0]), 
+                       .input10(XLXN_24[11:0]), 
+                       .input11(XLXN_24[11:0]), 
+                       .input12(XLXN_24[11:0]), 
+                       .input13(XLXN_24[11:0]), 
+                       .input14(XLXN_24[11:0]), 
+                       .input15(XLXN_24[11:0]), 
+                       .sel(XLXN_13[3:0]), 
+                       .dataOut(XLXN_38[11:0]));
 endmodule

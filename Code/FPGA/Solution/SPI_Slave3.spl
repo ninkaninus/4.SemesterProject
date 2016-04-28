@@ -3,9 +3,10 @@ Clk
 SClk
 SS
 MOSI
+=DataBusToSlave[11:0]=
 [Outputs]
 MISO
 WE
 =AdrBus[3:0]=
+=DataBusFromSlave[11:0]=
 [BiDir]
-=DataBus[11:0]=

@@ -39,12 +39,6 @@ int main(void)
 	enable_global_int();
 
 	while(1) {
-		static INT16U dataIn;
-		INT8U temp = 0;
-		dataIn = SPI_read();
-		temp = (INT8U)dataIn;
-		uart0_putc((INT8U)(dataIn>>8));
-		uart0_putc(temp);
 	}
 
 	return (0);

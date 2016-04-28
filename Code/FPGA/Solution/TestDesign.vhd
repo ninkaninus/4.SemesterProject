@@ -55,7 +55,7 @@ ARCHITECTURE behavioral OF Design_Design_sch_tb IS
 	-- Clock period definitions
    constant clk_period : time := 20 ns;
    constant SPI_Clk_period : time := 500 ns;
-	constant dataToSend : STD_LOGIC_VECTOR(15 downto 0) := "1001000101011111";
+	constant dataToSend : STD_LOGIC_VECTOR(15 downto 0) := "1001000001111111";
 
 BEGIN
 
@@ -102,13 +102,13 @@ BEGIN
 		
 		SPI_Clk <= '0';
 		
-		sw <= "11001110";
+		sw <= "00001011";
 		
 		wait for 100 ns;
 		
 		--Start of SPI transmission
 
-		for I in 0 to 1 loop
+		for I in 0 to 0 loop
 
 			misoBuffer <= (others=>'L');
 
@@ -118,11 +118,11 @@ BEGIN
 			
 			for J in 15 downto 0 loop
 				
-				SPI_MOSI <= dataToSend(J);
-				
 				wait for SPI_Clk_period/2;
 				
 				SPI_Clk <= '1';
+				
+				SPI_MOSI <= dataToSend(J);
 				
 				wait for SPI_Clk_period/2;
 				

@@ -20,7 +20,8 @@ entity SPI_Slave3 is
 			  -- The internal AdrBus, DataBus and Write Enable
            AdrBus :	out   STD_LOGIC_VECTOR ((Adr_Width - 1) downto 0);
            WE : 		out   STD_LOGIC;
-           DataBus : inout STD_LOGIC_VECTOR (11 downto 0));
+           DataBusToSlave : in STD_LOGIC_VECTOR (11 downto 0);
+			  DataBusFromSlave : out STD_LOGIC_VECTOR (11 downto 0));
 end SPI_Slave3;
 
 architecture Behavioral of SPI_Slave3 is
@@ -57,10 +58,10 @@ begin
 	-- SClk_Count <= conv_std_logic_vector( SClk_cnt, SClk_Count'length); --alternativ 
 	
    WE      <= WE_net;												 -- WE = Active Low
-	DataIn  <= DataBus; -- Read from DataBus
-   DataBus <= DataOut when WE_net='0' else (others=>'Z'); -- Write to DataBus
+	DataIn  <= DataBusToSlave; -- Read from DataBus
+   DataBusFromSlave <= DataOut; -- Write to DataBus
 	
- --##################################################################################
+ --################################################################################## 
  --# This process detect changes of SS and SClk
  --# SClk_Count will reset by a falling edge of SS
  --# For each rising edge will:  SClk_Count <= SClk_count+1
@@ -77,14 +78,19 @@ begin
 		if falling_edge( Clk) then       -- Clk will be 50 MHz 
 			if xSS="10" then
 				SClk_Count <= (others=>'0'); -- Reset the SClk counter
+				--MISO <= '1';
 			end if;
 			---------------------------Receive MOSI @ Rising SClk ----------			
 			if xSClk="01" then
 				SClk_Count <= SClk_Count + 1; -- Count the number of rising SClk's
 				SClk_Cnt := conv_integer( SClk_Count); 
-			   InBuf( SClk_Cnt) <= MOSI;	
+				MISO <= UdBuf( SClk_Cnt);
 			end if;
-			MISO <= UdBuf( SClk_Cnt);
+			
+			if xSClk="10" then
+				InBuf( SClk_Cnt) <= MOSI;	
+			end if;
+			
 		end if;
 	end process;
 
@@ -107,7 +113,7 @@ begin
 				
 				--Wait for the address to be transfered, once transfered then put it out on the address bus
 	         when Wait_for_Adr =>
-					if Sclk_Cnt = 3 and xSClk = "11" then
+					if Sclk_Cnt = 3 and xSClk = "00" then
 						State <= Wait_state1;
 						AdrBus <= Adr;
 					end if;
@@ -124,7 +130,7 @@ begin
 				
 				--Wait for the rest of the data to be clocked in
 				when Wait_for_Databits =>
-					if Sclk_Cnt = 15 and xSClk = "01" then
+					if Sclk_Cnt = 15 and xSClk = "00" then
 						State <= Set_WE0;
 						DataOut<= InBuf(4 to 15);
 					end if;

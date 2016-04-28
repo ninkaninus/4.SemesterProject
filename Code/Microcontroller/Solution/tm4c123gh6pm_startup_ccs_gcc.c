@@ -59,6 +59,7 @@ static uint32_t pui32Stack[128];
 //*****************************************************************************
 
 extern void UART0_rx_isr();
+extern void SSI0_Interrupt();
 
 // interrupt til drehimpulsgiber
 //extern void dreh_isr();
@@ -97,7 +98,7 @@ void (* const g_pfnVectors[])(void) =
     IntDefaultHandler,                      // GPIO Port E
 	UART0_rx_isr,                      		// UART0 Rx and Tx
     IntDefaultHandler,                      // UART1 Rx and Tx
-	IntDefaultHandler,                      // SSI0 Rx and Tx
+	SSI0_Interrupt,                      // SSI0 Rx and Tx
     IntDefaultHandler,                      // I2C0 Master and Slave
     IntDefaultHandler,                      // PWM Fault
     IntDefaultHandler,                      // PWM Generator 0

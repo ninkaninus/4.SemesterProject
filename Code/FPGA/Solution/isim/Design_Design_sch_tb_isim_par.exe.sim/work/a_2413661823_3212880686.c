@@ -177,9 +177,9 @@ LAB4:    xsi_set_current_line(111, ng0);
     t2 = (t0 + 7412);
     *((int *)t2) = 0;
     t3 = (t0 + 7416);
-    *((int *)t3) = 1;
+    *((int *)t3) = 9;
     t10 = 0;
-    t11 = 1;
+    t11 = 9;
 
 LAB8:    if (t10 <= t11)
         goto LAB9;

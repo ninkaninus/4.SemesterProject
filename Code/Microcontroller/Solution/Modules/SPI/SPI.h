@@ -33,6 +33,8 @@
 
 void SSI_init();
 
+void SSI0_Interrupt();
+
 void SPI_write(INT16U data);
 
 INT16U SPI_read();

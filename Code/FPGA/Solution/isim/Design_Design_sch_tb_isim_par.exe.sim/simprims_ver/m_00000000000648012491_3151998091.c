@@ -25,14 +25,14 @@
 
 
 
-extern void simprims_ver_m_00000000000648012491_3151998091_2475288813_init()
-{
-	xsi_register_didat("simprims_ver_m_00000000000648012491_3151998091_2475288813", "isim/Design_Design_sch_tb_isim_par.exe.sim/simprims_ver/m_00000000000648012491_3151998091_2475288813.didat");
-}
-
 extern void simprims_ver_m_00000000000648012491_3151998091_0897090379_init()
 {
 	xsi_register_didat("simprims_ver_m_00000000000648012491_3151998091_0897090379", "isim/Design_Design_sch_tb_isim_par.exe.sim/simprims_ver/m_00000000000648012491_3151998091_0897090379.didat");
+}
+
+extern void simprims_ver_m_00000000000648012491_3151998091_2475288813_init()
+{
+	xsi_register_didat("simprims_ver_m_00000000000648012491_3151998091_2475288813", "isim/Design_Design_sch_tb_isim_par.exe.sim/simprims_ver/m_00000000000648012491_3151998091_2475288813.didat");
 }
 
 extern void simprims_ver_m_00000000000648012491_3151998091_4263792878_init()
@@ -40,19 +40,19 @@ extern void simprims_ver_m_00000000000648012491_3151998091_4263792878_init()
 	xsi_register_didat("simprims_ver_m_00000000000648012491_3151998091_4263792878", "isim/Design_Design_sch_tb_isim_par.exe.sim/simprims_ver/m_00000000000648012491_3151998091_4263792878.didat");
 }
 
-extern void simprims_ver_m_00000000000648012491_3151998091_1091890831_init()
-{
-	xsi_register_didat("simprims_ver_m_00000000000648012491_3151998091_1091890831", "isim/Design_Design_sch_tb_isim_par.exe.sim/simprims_ver/m_00000000000648012491_3151998091_1091890831.didat");
-}
-
-extern void simprims_ver_m_00000000000648012491_3151998091_3410421475_init()
-{
-	xsi_register_didat("simprims_ver_m_00000000000648012491_3151998091_3410421475", "isim/Design_Design_sch_tb_isim_par.exe.sim/simprims_ver/m_00000000000648012491_3151998091_3410421475.didat");
-}
-
 extern void simprims_ver_m_00000000000648012491_3151998091_2313588885_init()
 {
 	xsi_register_didat("simprims_ver_m_00000000000648012491_3151998091_2313588885", "isim/Design_Design_sch_tb_isim_par.exe.sim/simprims_ver/m_00000000000648012491_3151998091_2313588885.didat");
+}
+
+extern void simprims_ver_m_00000000000648012491_3151998091_0109991756_init()
+{
+	xsi_register_didat("simprims_ver_m_00000000000648012491_3151998091_0109991756", "isim/Design_Design_sch_tb_isim_par.exe.sim/simprims_ver/m_00000000000648012491_3151998091_0109991756.didat");
+}
+
+extern void simprims_ver_m_00000000000648012491_3151998091_1091890831_init()
+{
+	xsi_register_didat("simprims_ver_m_00000000000648012491_3151998091_1091890831", "isim/Design_Design_sch_tb_isim_par.exe.sim/simprims_ver/m_00000000000648012491_3151998091_1091890831.didat");
 }
 
 extern void simprims_ver_m_00000000000648012491_3151998091_0351939305_init()
@@ -65,7 +65,7 @@ extern void simprims_ver_m_00000000000648012491_3151998091_0135834363_init()
 	xsi_register_didat("simprims_ver_m_00000000000648012491_3151998091_0135834363", "isim/Design_Design_sch_tb_isim_par.exe.sim/simprims_ver/m_00000000000648012491_3151998091_0135834363.didat");
 }
 
-extern void simprims_ver_m_00000000000648012491_3151998091_0109991756_init()
+extern void simprims_ver_m_00000000000648012491_3151998091_3410421475_init()
 {
-	xsi_register_didat("simprims_ver_m_00000000000648012491_3151998091_0109991756", "isim/Design_Design_sch_tb_isim_par.exe.sim/simprims_ver/m_00000000000648012491_3151998091_0109991756.didat");
+	xsi_register_didat("simprims_ver_m_00000000000648012491_3151998091_3410421475", "isim/Design_Design_sch_tb_isim_par.exe.sim/simprims_ver/m_00000000000648012491_3151998091_3410421475.didat");
 }
