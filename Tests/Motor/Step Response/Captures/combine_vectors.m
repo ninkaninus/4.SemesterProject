@@ -63,8 +63,8 @@ W(:,1:2) = [];
 
 % Find tidpunktet hvor grafen skærer x-aksen ud fra hældningen imellem de
 % første to punkter. Tilføj så denne tid som nulpunkt for plottet
-dW = W(2) - W(1);
-dT = Time(2) - Time(1);
+dW = W(3) - W(1);
+dT = Time(3) - Time(1);
 
 slope = dW/dT;
 
