@@ -1,35 +1,21 @@
-Running: C:\Xilinx\14.7\ISE_DS\ISE\bin\nt64\unwrapped\fuse.exe -intstyle ise -incremental -lib unisims_ver -lib unimacro_ver -lib xilinxcorelib_ver -o D:/Github/4.SemesterProject/Code/FPGA/Solution/Design_Design_sch_tb_isim_beh.exe -prj D:/Github/4.SemesterProject/Code/FPGA/Solution/Design_Design_sch_tb_beh.prj work.Design_Design_sch_tb work.glbl 
+Running: fuse.exe -relaunch -intstyle "ise" -incremental -o "D:/Github/4.SemesterProject/Code/FPGA/Solution/bcdTest_isim_beh.exe" -prj "D:/Github/4.SemesterProject/Code/FPGA/Solution/bcdTest_beh.prj" "work.bcdTest" 
 ISim P.20131013 (signature 0x7708f090)
 Number of CPUs detected in this system: 4
 Turning on mult-threading, number of parallel sub-compilation jobs: 8 
 Determining compilation order of HDL files
-Analyzing Verilog file "D:/Github/4.SemesterProject/Code/FPGA/Solution/Design.vf" into library work
-Analyzing Verilog file "C:/Xilinx/14.7/ISE_DS/ISE//verilog/src/glbl.v" into library work
-Parsing VHDL file "D:/Github/4.SemesterProject/Code/FPGA/Solution/Projekt_Data.vhd" into library work
-Parsing VHDL file "D:/Github/4.SemesterProject/Code/FPGA/Solution/SPI_Slave3.vhd" into library work
-Parsing VHDL file "D:/Github/4.SemesterProject/Code/FPGA/Solution/Mux16x12_4.vhd" into library work
-Parsing VHDL file "D:/Github/4.SemesterProject/Code/FPGA/Solution/Blok1.vhd" into library work
-Parsing VHDL file "D:/Github/4.SemesterProject/Code/FPGA/Solution/TestDesign.vhd" into library work
+Parsing VHDL file "D:/Github/4.SemesterProject/Code/FPGA/Solution/NumberToBcd.vhd" into library work
+Parsing VHDL file "D:/Github/4.SemesterProject/Code/FPGA/Solution/bcdTest.vhd" into library work
 Starting static elaboration
 Completed static elaboration
-Compiling module glbl
-Compiling module Design
 Compiling package standard
 Compiling package std_logic_1164
-Compiling package numeric_std
-Compiling package vcomponents
-Compiling package vl_types
 Compiling package std_logic_arith
 Compiling package std_logic_unsigned
-Compiling package projekt_data
-Compiling architecture behavioral of entity SPI_Slave3 [spi_slave3_default]
-Compiling architecture behavioral of entity Blok1 [blok1_default]
-Compiling architecture behavioral of entity Mux16x12_4 [mux16x12_4_default]
-Compiling architecture behavioral of entity design_design_sch_tb
+Compiling architecture behavioral of entity NumberToBcd [numbertobcd_default]
+Compiling architecture behavior of entity bcdtest
 Time Resolution for simulation is 1ps.
-Waiting for 3 sub-compilation(s) to finish...
-Compiled 15 VHDL Units
-Compiled 2 Verilog Units
-Built simulation executable D:/Github/4.SemesterProject/Code/FPGA/Solution/Design_Design_sch_tb_isim_beh.exe
-Fuse Memory Usage: 53916 KB
-Fuse CPU Usage: 999 ms
+Waiting for 1 sub-compilation(s) to finish...
+Compiled 7 VHDL Units
+Built simulation executable D:/Github/4.SemesterProject/Code/FPGA/Solution/bcdTest_isim_beh.exe
+Fuse Memory Usage: 34220 KB
+Fuse CPU Usage: 609 ms

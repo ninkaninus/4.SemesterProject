@@ -1,11 +1,9 @@
 [Inputs]
 Clk
-Encoder1
-Encoder2
+HallA
+HallB
 WE
 =AdrBus[3:0]=
-=DataBusFromSlave[11:0]=
 [Outputs]
 =DataBusToSlave[11:0]=
-=Bcd[15:0]=
 [BiDir]

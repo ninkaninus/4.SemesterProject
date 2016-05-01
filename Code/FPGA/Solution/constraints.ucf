@@ -72,22 +72,22 @@ NET "SPI_Clk"	 LOC = "M15"; #JA4
 
 #JB1
 
-NET "encoder1"	 LOC = "M13"; #JB1
-NET "encoder2"	 LOC = "R18"; #JB2
-#NET "led<2>"	 LOC = "R15"; #JB3
-#NET "led<3>"	 LOC = "T17"; #JB4
-NET "motor<0>"	 LOC = "P17"; #JB7
-NET "motor<1>"	 LOC = "R16"; #JB8
-#NET "SPI_MISO"	 LOC = "T18"; #JB9
-#NET "SPI_Clk"	 LOC = "U18"; #JB10
+#NET "NOC"	 LOC = "M13"; #JB1
+NET "MotorA<0>"	 LOC = "R18"; #JB2
+NET "MotorAE"	 LOC = "R15"; #JB3
+#NET "MotorB<1>"	 LOC = "T17"; #JB4
+#NET "NOC"	 LOC = "P17"; #JB7
+NET "MotorA<1>"	 LOC = "R16"; #JB8
+#NET "MotorB<0>"	 LOC = "T18"; #JB9
+#NET "MotorBE"	 LOC = "U18"; #JB10
 
 #JC1
 
-#NET "encoder1"	 LOC = "G15"; #JC1
-#NET "encoder2"	 LOC = "J16"; #JC2
-#NET "motor<0>"	 LOC = "G13"; #JC3
-#NET "motor<1>"	 LOC = "H16"; #JC4
-#NET "SPI_SS"	 LOC = "H15"; #JC7
-#NET "SPI_MOSI"	 LOC = "F14"; #JC8
-#NET "SPI_MISO"	 LOC = "G16"; #JC9
-#NET "SPI_Clk"	 LOC = "J12"; #JC10
+#NET "NOC"	      LOC = "G15"; #JC1
+#NET "HallIndex1" LOC = "J16"; #JC2
+#NET "Motor1HallA" LOC = "G13"; #JC3
+NET "Motor2HallA"	 LOC = "H16"; #JC4
+#NET "NOC"	 LOC = "H15"; #JC7
+#NET "HallIndex0"	 LOC = "F14"; #JC8
+#NET "Motor1HallB"	 LOC = "G16"; #JC9
+NET "Motor2HallB"	 LOC = "J12"; #JC10
