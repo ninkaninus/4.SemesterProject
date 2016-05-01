@@ -1,22 +1,23 @@
 clear
 clc
 
-load('Run 1 - no belt, 1MHz.mat')
+load('PWM/No Belt/160PWM - no belt.mat')
 
 [Time1,W1] = combine_vectors(digital_channel_0,digital_channel_1,digital_sample_rate_hz);
 
 ratio = ratio_vector(W1,12);
 
-figure(5)
-plot(Time1,W1);
-xlabel('Time[s]');ylabel('rad/s');
-xlim([0 0.5]);ylim([0 700]);
-title('Step Response at 12V');
-grid on;
+
 
 W1 = fit_ratio(ratio,W1);
 
+figure(5)
+plot(Time1,W1);
+xlabel('Time[s]');ylabel('rad/s');
+title('Step Response at 12V');
+grid on;
 
+%%
 
 T1 = time_constant(650,W1,Time1);
 
