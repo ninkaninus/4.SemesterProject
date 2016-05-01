@@ -1,0 +1,5 @@
+[Inputs]
+=Motor_Ticks[11:0]=
+[Outputs]
+Stop
+[BiDir]

@@ -7,7 +7,7 @@
 // \   \   \/     Version : 14.7
 //  \   \         Application : sch2hdl
 //  /   /         Filename : Design.vf
-// /___/   /\     Timestamp : 05/01/2016 15:23:09
+// /___/   /\     Timestamp : 05/01/2016 17:53:48
 // \   \  /  \ 
 //  \___\/\___\ 
 //
@@ -28,9 +28,8 @@ module Design(clk,
               SPI_SS, 
               sw, 
               Enable, 
-              led, 
-              MotorA, 
-              MotorAE, 
+              MotorB, 
+              MotorBE, 
               seg, 
               SPI_MISO);
 
@@ -42,9 +41,8 @@ module Design(clk,
     input SPI_SS;
     input [7:0] sw;
    output [3:0] Enable;
-   output [7:0] led;
-   output [1:0] MotorA;
-   output MotorAE;
+   output [1:0] MotorB;
+   output MotorBE;
    output [0:7] seg;
    output SPI_MISO;
    
@@ -57,6 +55,7 @@ module Design(clk,
    wire [11:0] XLXN_56;
    wire [11:0] XLXN_70;
    wire [15:0] XLXN_72;
+   wire XLXN_85;
    
    assign XLXN_70 = 12'h000;
    SPI_Slave3  XLXI_21 (.Clk(clk), 
@@ -74,7 +73,7 @@ module Design(clk,
                   .Sw(sw[7:0]), 
                   .WE(Write_Enable), 
                   .DataBusToSlave(XLXN_16[11:0]), 
-                  .Led(led[7:0]));
+                  .Led());
    Mux16x12_4  XLXI_30 (.input0(XLXN_70[11:0]), 
                        .input1(XLXN_70[11:0]), 
                        .input2(XLXN_70[11:0]), 
@@ -111,11 +110,14 @@ module Design(clk,
    NumberToBcd  XLXI_41 (.Clk(clk), 
                         .Number(XLXN_56[11:0]), 
                         .BcdOut(XLXN_72[15:0]));
-   Motor_Interface  XLXI_42 (.AdrBus(XLXN_52[3:0]), 
+   Motor_Interface  XLXI_45 (.AdrBus(XLXN_52[3:0]), 
                             .clk(clk), 
                             .DataBusFromSlave(XLXN_53[11:0]), 
+                            .emergencyStop(XLXN_85), 
                             .pwm(XLXN_40), 
                             .WE(Write_Enable), 
-                            .motor(MotorA[1:0]), 
-                            .motorEnable(MotorAE));
+                            .motor(MotorB[1:0]), 
+                            .motorEnable(MotorBE));
+   SikkerhedsFeature  XLXI_46 (.Motor_Ticks(XLXN_56[11:0]), 
+                              .Stop(XLXN_85));
 endmodule

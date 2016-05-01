@@ -19,6 +19,8 @@
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -30,15 +32,19 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity SikkerhedsFeature is
-    Port ( Motor_Pan_Hall : in  STD_LOGIC_VECTOR (10 downto 0) := "000000000000";
-			  Motor_Tilt_hall: in  STD_LOGIC_VECTOR (8 downto 0) := "000000000000";
-           Stop : out  STD_LOGIC_VECTOR (1 downto 0));
+
+		Generic( 
+			Boundary1 : integer range 0 to 4096 := 2000;
+			Boundary2 : integer range 0 to 4096 := 2650
+		);
+
+    Port ( Motor_Ticks : in  STD_LOGIC_VECTOR (11 downto 0);
+           Stop : out  STD_LOGIC);
 end SikkerhedsFeature;
 
 architecture Behavioral of SikkerhedsFeature is
 begin
 
-Stop <= "01" when Motor_Pan_Hall > "10000111000" else "00";
-Stop <= "10" when Motor_Tilt_hall > "110111000" else "00";
+Stop <= '1' when (Motor_Ticks > Boundary2) OR (Motor_Ticks < Boundary1) else '0';
 
 end Behavioral;

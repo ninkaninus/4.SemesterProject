@@ -13,39 +13,38 @@
         <signal name="SPI_Clk" />
         <signal name="Write_Enable" />
         <signal name="sw(7:0)" />
-        <signal name="led(7:0)" />
         <signal name="XLXN_16(11:0)" />
         <signal name="XLXN_38(11:0)" />
         <signal name="XLXN_40" />
-        <signal name="MotorA(1:0)" />
-        <signal name="XLXN_50(15:0)" />
+        <signal name="MotorB(1:0)" />
         <signal name="XLXN_52(3:0)" />
         <signal name="XLXN_53(11:0)" />
-        <signal name="XLXN_54(11:0)" />
         <signal name="XLXN_56(11:0)" />
         <signal name="Motor2HallA" />
         <signal name="Motor2HallB" />
         <signal name="seg(0:7)" />
         <signal name="Enable(3:0)" />
-        <signal name="XLXN_68(11:0)" />
-        <signal name="XLXN_69(11:0)" />
         <signal name="XLXN_70(11:0)" />
-        <signal name="XLXN_71" />
         <signal name="XLXN_72(15:0)" />
-        <signal name="MotorAE" />
+        <signal name="MotorBE" />
+        <signal name="XLXN_79" />
+        <signal name="XLXN_80" />
+        <signal name="XLXN_82" />
+        <signal name="XLXN_83" />
+        <signal name="XLXN_84(11:0)" />
+        <signal name="XLXN_85" />
         <port polarity="Input" name="clk" />
         <port polarity="Input" name="SPI_MOSI" />
         <port polarity="Output" name="SPI_MISO" />
         <port polarity="Input" name="SPI_SS" />
         <port polarity="Input" name="SPI_Clk" />
         <port polarity="Input" name="sw(7:0)" />
-        <port polarity="Output" name="led(7:0)" />
-        <port polarity="Output" name="MotorA(1:0)" />
+        <port polarity="Output" name="MotorB(1:0)" />
         <port polarity="Input" name="Motor2HallA" />
         <port polarity="Input" name="Motor2HallB" />
         <port polarity="Output" name="seg(0:7)" />
         <port polarity="Output" name="Enable(3:0)" />
-        <port polarity="Output" name="MotorAE" />
+        <port polarity="Output" name="MotorBE" />
         <blockdef name="SPI_Slave3">
             <timestamp>2016-4-28T9:33:44</timestamp>
             <rect width="64" x="320" y="84" height="24" />
@@ -167,7 +166,8 @@
             <line x2="432" y1="-96" y2="-96" x1="368" />
         </blockdef>
         <blockdef name="Motor_Interface">
-            <timestamp>2016-5-1T12:40:33</timestamp>
+            <timestamp>2016-5-1T15:42:40</timestamp>
+            <line x2="0" y1="240" y2="240" x1="64" />
             <line x2="384" y1="192" y2="192" x1="320" />
             <rect width="64" x="0" y="132" height="24" />
             <line x2="0" y1="144" y2="144" x1="64" />
@@ -178,7 +178,14 @@
             <line x2="0" y1="-48" y2="-48" x1="64" />
             <line x2="0" y1="48" y2="48" x1="64" />
             <line x2="0" y1="96" y2="96" x1="64" />
-            <rect width="256" x="64" y="-128" height="344" />
+            <rect width="256" x="64" y="-128" height="388" />
+        </blockdef>
+        <blockdef name="SikkerhedsFeature">
+            <timestamp>2016-5-1T15:43:41</timestamp>
+            <rect width="256" x="64" y="-64" height="64" />
+            <rect width="64" x="0" y="-44" height="24" />
+            <line x2="0" y1="-32" y2="-32" x1="64" />
+            <line x2="384" y1="-32" y2="-32" x1="320" />
         </blockdef>
         <block symbolname="Mux16x12_4" name="XLXI_30">
             <blockpin signalname="XLXN_70(11:0)" name="input0(11:0)" />
@@ -217,7 +224,7 @@
             <blockpin signalname="XLXN_52(3:0)" name="AdrBus(3:0)" />
             <blockpin signalname="XLXN_53(11:0)" name="DataBusFromSlave(11:0)" />
             <blockpin signalname="sw(7:0)" name="Sw(7:0)" />
-            <blockpin signalname="led(7:0)" name="Led(7:0)" />
+            <blockpin name="Led(7:0)" />
             <blockpin signalname="XLXN_16(11:0)" name="DataBusToSlave(11:0)" />
         </block>
         <block symbolname="constant" name="XLXI_34">
@@ -254,14 +261,19 @@
             <blockpin signalname="XLXN_56(11:0)" name="Number(11:0)" />
             <blockpin signalname="XLXN_72(15:0)" name="BcdOut(15:0)" />
         </block>
-        <block symbolname="Motor_Interface" name="XLXI_42">
+        <block symbolname="Motor_Interface" name="XLXI_45">
             <blockpin signalname="clk" name="clk" />
             <blockpin signalname="XLXN_40" name="pwm" />
             <blockpin signalname="Write_Enable" name="WE" />
             <blockpin signalname="XLXN_52(3:0)" name="AdrBus(3:0)" />
             <blockpin signalname="XLXN_53(11:0)" name="DataBusFromSlave(11:0)" />
-            <blockpin signalname="MotorAE" name="motorEnable" />
-            <blockpin signalname="MotorA(1:0)" name="motor(1:0)" />
+            <blockpin signalname="MotorBE" name="motorEnable" />
+            <blockpin signalname="MotorB(1:0)" name="motor(1:0)" />
+            <blockpin signalname="XLXN_85" name="emergencyStop" />
+        </block>
+        <block symbolname="SikkerhedsFeature" name="XLXI_46">
+            <blockpin signalname="XLXN_56(11:0)" name="Motor_Ticks(11:0)" />
+            <blockpin signalname="XLXN_85" name="Stop" />
         </block>
     </netlist>
     <sheet sheetnum="1" width="3520" height="2720">
@@ -289,10 +301,6 @@
         <branch name="sw(7:0)">
             <wire x2="1216" y1="544" y2="544" x1="1184" />
         </branch>
-        <branch name="led(7:0)">
-            <wire x2="1664" y1="352" y2="352" x1="1632" />
-        </branch>
-        <iomarker fontsize="28" x="1664" y="352" name="led(7:0)" orien="R0" />
         <iomarker fontsize="28" x="1184" y="544" name="sw(7:0)" orien="R180" />
         <instance x="1216" y="1904" name="XLXI_30" orien="R0">
         </instance>
@@ -320,55 +328,20 @@
         </branch>
         <instance x="2080" y="256" name="XLXI_35" orien="R0">
         </instance>
-        <branch name="MotorA(1:0)">
+        <branch name="MotorB(1:0)">
             <wire x2="2512" y1="512" y2="512" x1="2480" />
-        </branch>
-        <branch name="XLXN_52(3:0)">
-            <wire x2="848" y1="416" y2="416" x1="752" />
-            <wire x2="848" y1="416" y2="480" x1="848" />
-            <wire x2="848" y1="480" y2="1872" x1="848" />
-            <wire x2="1216" y1="1872" y2="1872" x1="848" />
-            <wire x2="1072" y1="480" y2="480" x1="848" />
-            <wire x2="1216" y1="480" y2="480" x1="1072" />
-            <wire x2="1072" y1="192" y2="480" x1="1072" />
-            <wire x2="1920" y1="192" y2="192" x1="1072" />
-            <wire x2="1920" y1="192" y2="224" x1="1920" />
-            <wire x2="1920" y1="224" y2="560" x1="1920" />
-            <wire x2="2096" y1="560" y2="560" x1="1920" />
-            <wire x2="2000" y1="224" y2="224" x1="1920" />
-            <wire x2="1920" y1="560" y2="560" x1="1904" />
-            <wire x2="1904" y1="560" y2="1168" x1="1904" />
-            <wire x2="2112" y1="1168" y2="1168" x1="1904" />
-            <wire x2="2000" y1="144" y2="224" x1="2000" />
-            <wire x2="2080" y1="144" y2="144" x1="2000" />
         </branch>
         <branch name="XLXN_56(11:0)">
             <wire x2="1120" y1="1040" y2="2016" x1="1120" />
             <wire x2="2576" y1="2016" y2="2016" x1="1120" />
             <wire x2="1216" y1="1040" y2="1040" x1="1120" />
-            <wire x2="2576" y1="1248" y2="1248" x1="2496" />
-            <wire x2="2576" y1="1248" y2="1376" x1="2576" />
+            <wire x2="2576" y1="1280" y2="1280" x1="2496" />
+            <wire x2="2576" y1="1280" y2="1376" x1="2576" />
             <wire x2="2576" y1="1376" y2="2016" x1="2576" />
             <wire x2="2720" y1="1376" y2="1376" x1="2576" />
+            <wire x2="2656" y1="736" y2="736" x1="2576" />
+            <wire x2="2576" y1="736" y2="1280" x1="2576" />
         </branch>
-        <branch name="Write_Enable">
-            <wire x2="944" y1="544" y2="544" x1="752" />
-            <wire x2="944" y1="416" y2="544" x1="944" />
-            <wire x2="1152" y1="416" y2="416" x1="944" />
-            <wire x2="1216" y1="416" y2="416" x1="1152" />
-            <wire x2="1152" y1="224" y2="416" x1="1152" />
-            <wire x2="1888" y1="224" y2="224" x1="1152" />
-            <wire x2="1888" y1="224" y2="352" x1="1888" />
-            <wire x2="1888" y1="352" y2="656" x1="1888" />
-            <wire x2="2096" y1="656" y2="656" x1="1888" />
-            <wire x2="1888" y1="656" y2="1104" x1="1888" />
-            <wire x2="2112" y1="1104" y2="1104" x1="1888" />
-            <wire x2="1984" y1="352" y2="352" x1="1888" />
-            <wire x2="1984" y1="272" y2="352" x1="1984" />
-            <wire x2="2080" y1="272" y2="272" x1="1984" />
-        </branch>
-        <instance x="2112" y="1072" name="XLXI_39" orien="R0">
-        </instance>
         <branch name="XLXN_53(11:0)">
             <wire x2="1088" y1="608" y2="608" x1="752" />
             <wire x2="1216" y1="608" y2="608" x1="1088" />
@@ -382,11 +355,15 @@
             <wire x2="2032" y1="320" y2="416" x1="2032" />
         </branch>
         <branch name="Motor2HallA">
-            <wire x2="2112" y1="1424" y2="1424" x1="2080" />
+            <wire x2="2096" y1="1424" y2="1424" x1="2080" />
+            <wire x2="2096" y1="1424" y2="1456" x1="2096" />
+            <wire x2="2112" y1="1456" y2="1456" x1="2096" />
         </branch>
         <iomarker fontsize="28" x="2080" y="1424" name="Motor2HallA" orien="R180" />
         <branch name="Motor2HallB">
-            <wire x2="2112" y1="1360" y2="1360" x1="2080" />
+            <wire x2="2096" y1="1360" y2="1360" x1="2080" />
+            <wire x2="2096" y1="1360" y2="1392" x1="2096" />
+            <wire x2="2112" y1="1392" y2="1392" x1="2096" />
         </branch>
         <iomarker fontsize="28" x="2080" y="1360" name="Motor2HallB" orien="R180" />
         <instance x="2880" y="1088" name="XLXI_38" orien="R0">
@@ -440,9 +417,23 @@
             <wire x2="3216" y1="1168" y2="1312" x1="3216" />
             <wire x2="3216" y1="1312" y2="1312" x1="3152" />
         </branch>
-        <iomarker fontsize="28" x="2512" y="512" name="MotorA(1:0)" orien="R0" />
-        <instance x="2096" y="608" name="XLXI_42" orien="R0">
-        </instance>
+        <iomarker fontsize="28" x="2512" y="512" name="MotorB(1:0)" orien="R0" />
+        <branch name="Write_Enable">
+            <wire x2="944" y1="544" y2="544" x1="752" />
+            <wire x2="944" y1="416" y2="544" x1="944" />
+            <wire x2="1152" y1="416" y2="416" x1="944" />
+            <wire x2="1216" y1="416" y2="416" x1="1152" />
+            <wire x2="1152" y1="224" y2="416" x1="1152" />
+            <wire x2="1888" y1="224" y2="224" x1="1152" />
+            <wire x2="1888" y1="224" y2="352" x1="1888" />
+            <wire x2="1888" y1="352" y2="656" x1="1888" />
+            <wire x2="2096" y1="656" y2="656" x1="1888" />
+            <wire x2="1888" y1="656" y2="1136" x1="1888" />
+            <wire x2="2112" y1="1136" y2="1136" x1="1888" />
+            <wire x2="1984" y1="352" y2="352" x1="1888" />
+            <wire x2="1984" y1="272" y2="352" x1="1984" />
+            <wire x2="2080" y1="272" y2="272" x1="1984" />
+        </branch>
         <branch name="clk">
             <wire x2="368" y1="176" y2="176" x1="224" />
             <wire x2="368" y1="176" y2="288" x1="368" />
@@ -455,20 +446,52 @@
             <wire x2="2096" y1="704" y2="704" x1="1856" />
             <wire x2="1856" y1="704" y2="912" x1="1856" />
             <wire x2="2064" y1="912" y2="912" x1="1856" />
-            <wire x2="2112" y1="912" y2="912" x1="2064" />
+            <wire x2="2064" y1="912" y2="944" x1="2064" />
+            <wire x2="2112" y1="944" y2="944" x1="2064" />
             <wire x2="2080" y1="96" y2="96" x1="1840" />
             <wire x2="1840" y1="96" y2="176" x1="1840" />
             <wire x2="2064" y1="832" y2="912" x1="2064" />
-            <wire x2="2480" y1="832" y2="832" x1="2064" />
-            <wire x2="2656" y1="832" y2="832" x1="2480" />
+            <wire x2="2656" y1="832" y2="832" x1="2064" />
             <wire x2="2656" y1="832" y2="992" x1="2656" />
             <wire x2="2880" y1="992" y2="992" x1="2656" />
             <wire x2="2656" y1="992" y2="1312" x1="2656" />
             <wire x2="2720" y1="1312" y2="1312" x1="2656" />
         </branch>
-        <branch name="MotorAE">
-            <wire x2="2512" y1="800" y2="800" x1="2480" />
+        <iomarker fontsize="28" x="2640" y="608" name="MotorBE" orien="R0" />
+        <branch name="MotorBE">
+            <wire x2="2640" y1="608" y2="608" x1="2480" />
+            <wire x2="2480" y1="608" y2="800" x1="2480" />
         </branch>
-        <iomarker fontsize="28" x="2512" y="800" name="MotorAE" orien="R0" />
+        <instance x="2096" y="608" name="XLXI_45" orien="R0">
+        </instance>
+        <instance x="2112" y="1104" name="XLXI_39" orien="R0">
+        </instance>
+        <branch name="XLXN_52(3:0)">
+            <wire x2="848" y1="416" y2="416" x1="752" />
+            <wire x2="848" y1="416" y2="480" x1="848" />
+            <wire x2="848" y1="480" y2="1872" x1="848" />
+            <wire x2="1216" y1="1872" y2="1872" x1="848" />
+            <wire x2="1072" y1="480" y2="480" x1="848" />
+            <wire x2="1216" y1="480" y2="480" x1="1072" />
+            <wire x2="1072" y1="192" y2="480" x1="1072" />
+            <wire x2="1920" y1="192" y2="192" x1="1072" />
+            <wire x2="1920" y1="192" y2="224" x1="1920" />
+            <wire x2="1920" y1="224" y2="560" x1="1920" />
+            <wire x2="2096" y1="560" y2="560" x1="1920" />
+            <wire x2="1920" y1="560" y2="1200" x1="1920" />
+            <wire x2="2112" y1="1200" y2="1200" x1="1920" />
+            <wire x2="2000" y1="224" y2="224" x1="1920" />
+            <wire x2="2000" y1="144" y2="224" x1="2000" />
+            <wire x2="2080" y1="144" y2="144" x1="2000" />
+        </branch>
+        <instance x="2656" y="768" name="XLXI_46" orien="R0">
+        </instance>
+        <branch name="XLXN_85">
+            <wire x2="2096" y1="848" y2="848" x1="2032" />
+            <wire x2="2032" y1="848" y2="880" x1="2032" />
+            <wire x2="3120" y1="880" y2="880" x1="2032" />
+            <wire x2="3120" y1="736" y2="736" x1="3040" />
+            <wire x2="3120" y1="736" y2="880" x1="3120" />
+        </branch>
     </sheet>
 </drawing>
