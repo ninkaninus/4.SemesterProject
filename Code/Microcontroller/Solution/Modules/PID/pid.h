@@ -25,16 +25,29 @@
 
 /*****************************    Defines    *******************************/
 
+typedef struct
+{
+	FP32 Kp;				// Proportional Gain
+	FP32 Ki;				// Integral Gain
+	FP32 Kd;				// Derivative Gain
+	
+	FP32 integral;			// Integral Term
+	FP32 prev_error;		// Previous error term
+} PID
+
 /********************** External declaration of Variables ******************/
 
 /*****************************   Constants   *******************************/
 
 /*************************  Function interfaces ****************************/
 
+void init_pid();
+
 void pid_task(void *pvParameters);
 
 FP32 pid_calc(FP32 desired, FP32 actual);
 
+INT8U pwm_conv(FP32 output);
 
 
 #endif /* PID_H_ */
