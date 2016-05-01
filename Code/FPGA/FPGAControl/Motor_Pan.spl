@@ -1,0 +1,7 @@
+[Inputs]
+Clk
+Sync_Hall
+=Encoder_Pan[1:0]=
+[Outputs]
+=Encoder_Register[8:0]=
+[BiDir]

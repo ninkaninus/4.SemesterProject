@@ -49,27 +49,45 @@ void SSI_init()
 	//Disable SSI
 	SSI0_CR1_R &= ~(1<<1);
 	//Microcontroller as master
-	SSI0_CR1_R = 0x00000000;
+	SSI0_CR1_R |= (1<<4);
+
+
 	//SSI Clock Source
-	SSI0_CC_R = 0x00;
+	SSI0_CC_R = 0x00; // System Clock (Se side 981)
 	//Prescale Divisor
-	SSI0_CPSR_R = 8; //Stod til 10, skal det ikke være 8 for at få 2 Mbps?
-	//Protocol mode
-	SSI0_CR0_R = (0x7<<0);
+	SSI0_CPSR_R = 160; //Stod til 10, skal det ikke være 8 for at få 2 Mbps? Jo jonas, du har ret.
+	//SSI Data Size select (Bit 3:0),SSI Frame Format Select (bit 5:4), SSI Serial Clock Polarity (Bit 6), SSI Serial Clock Phase (Bit 7), SSI Serial Clock Rate (Bit 15:8) 31:16 reserved
+	SSI0_CR0_R = (0xF<<0); // Se side 966 - 977
+	SSI0_CR0_R |= (1<<7);
+	SSI0_CR0_R |= (3<<8);
+	//SSI Interrupt
+	SSI0_IM_R |= (1<<3); //Receive FIFO receive timeout interrupt
 	//Enable SSI
-	SSI0_CR1_R |= (1<<1) | (1<<0); //Enable ssi (bit 1) | Enable loopback (bit 0)
+	NVIC_EN0_R |= (1<<7); //Enable SSI0 in the nvic table
+	SSI0_CR1_R |= (1<<1) | (0<<0); //Enable ssi (bit 1) | Enable loopback (bit 0)
 	//SSI0_IM_R |= SSI_IM_RXIM;
 }
 
-void SPI_write(INT8U data)
+void SSI0_Interrupt() {
+	INT16U dataIn;
+	INT8U temp = 0;
+	dataIn = SSI0_DR_R;
+	temp = (INT8U)dataIn;
+	uart0_putc((INT8U)(dataIn>>8));
+	uart0_putc(temp);
+	//SSI0_ICR_R |= (1<<1); //Clear the timeout;
+}
+
+void SPI_write(INT16U data)
 {
 	SSI0_DR_R = data;
 	while( (SSI0_SR_R & (1<<0)) == 0);
 }
 
-INT8U SPI_read()
+INT16U SPI_read()
 {
 	while( (SSI0_SR_R & (1<<2)) == 0);
+	while((SSI0_SR_R & (1<<4)) == 1);
 	return SSI0_DR_R;
 }
 

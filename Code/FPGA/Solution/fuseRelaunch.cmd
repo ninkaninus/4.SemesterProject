@@ -1,0 +1,1 @@
+-intstyle "ise" -incremental -o "D:/Github/4.SemesterProject/Code/FPGA/Solution/bcdTest_isim_beh.exe" -prj "D:/Github/4.SemesterProject/Code/FPGA/Solution/bcdTest_beh.prj" "work.bcdTest" 

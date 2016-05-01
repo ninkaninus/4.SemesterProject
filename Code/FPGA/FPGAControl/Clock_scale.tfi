@@ -1,0 +1,10 @@
+
+
+
+// Instantiate the module
+Clock_scale instance_name (
+    .Clk(Clk), 
+    .Clk_100hz(Clk_100hz)
+    );
+
+

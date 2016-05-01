@@ -1,0 +1,9 @@
+[Inputs]
+Clk
+HallA
+HallB
+WE
+=AdrBus[3:0]=
+[Outputs]
+=DataBusToSlave[11:0]=
+[BiDir]
