@@ -34,8 +34,10 @@
 
 #define SSM_PWM_DIR_EN_PAN		50
 #define SSM_POS_PAN				51
-#define SSM_PWM_DIR_EN_TILT		52
+#define SSM_SP_PAN				52
+#define SSM_PWM_DIR_EN_TILT		53
 #define SSM_POS_TILT			54
+#define SSM_SP_TILT				55
 
 // Events
 #define ERROR_EVENT				0
@@ -45,5 +47,9 @@
 #define SET_SCALE_EVENT			4
 #define SET_OFFSET_EVENT		5
 #define SHOW_KNOB_EVENT			6
+#define POS_UPD_EVENT			7
+#define GET_POS_EVENT			8
+#define SET_PWM_EVENT			9
+#define PID_UPDATE_EVENT		10
 
 #endif /* _TMODEL_H_ */

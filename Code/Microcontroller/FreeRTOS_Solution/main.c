@@ -63,7 +63,7 @@ xQueueHandle PID_queue;
 
 xSemaphoreHandle adc_sem;
 xSemaphoreHandle scale_sem;
-xSemaphoreHandle pwm_update_sem;
+xSemaphoreHandle spi_access_sem;
 xSemaphoreHandle time_access_sem;
 xSemaphoreHandle rtc_update_sem;
 
@@ -96,6 +96,7 @@ int main(void)
   adc_sem 				= xSemaphoreCreateMutex();
   time_access_sem 		= xSemaphoreCreateMutex();
   rtc_update_sem  		= xSemaphoreCreateMutex();
+  spi_access_sem  		= xSemaphoreCreateMutex();
 
   // Start the tasks defined within this file/specific to this demo.
   return_value &= xTaskCreate( status_led_task, ( signed portCHAR * ) 	"Status LED", 	USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );

@@ -74,36 +74,75 @@ void pid_task(void *pvParameters)
 {
 	init_pid();
 	FP32 adjust;
-	BOOLEAN dir;
-	INT8U duty_cycle;
+	INT8U dir;
+	INT16U duty_cycle;
+	INT8U received;
+	FP32 sp_tilt;
+	FP32 sp_pan;
+	FP32 act_tilt;
+	FP32 act_pan;
 
 	while(1)
 	{
 	// hent ny værdi fra feedback for PAN
 	// udregn PWM værdi fra pid_calc() og send til SPI modul
-		adjust = pid_calc(set_point_tilt,SPI_pan,&pan_sys);
+		if (xQueueReceive(PID_queue, &received, 500 / portTICK_RATE_MS))
+		{
+			switch(received)
+			{
+			case PID_UPDATE_EVENT:
 
-		if(adjust < 0)
-			dir = 0;
-		else
-			dir = 1;
+				sp_tilt = get_msg_state(SSM_SP_TILT);
+				sp_pan	= get_msg_state(SSM_SP_PAN);
 
-		duty_cycle = pwm_conv(adjust);
+				act_tilt = get_msg_state(SSM_POS_TILT);
+				act_pan	 = get_msg_state(SSM_POS_PAN);
 
-		// send duty cycle og direction til SPI
+				adjust = pid_calc(sp_pan,act_pan,&pan_sys);
 
-	// hent ny værdi fra feedback for TILT
-	// udregn PWM værdi fra pid_calc() og send til SPI modul
-		adjust = pid_calc(set_point_tilt,SPI_tilt,&tilt_sys);
+				if(adjust < 0)
+					dir = 1;
+				else
+					dir = 2;
 
-		if(adjust < 0)
-			dir = 0;
-		else
-			dir = 1;
+				duty_cycle = pwm_conv(adjust);
 
-		duty_cycle = pwm_conv(adjust);
+				duty_cycle = (dir<<8) | duty_cycle;
+				duty_cycle = 0x0400 | duty_cycle;
 
-		// send duty cycle og direction til SPI
+				put_msg_state(SSM_PWM_DIR_EN_PAN,duty_cycle);
+				// send duty cycle og direction til SPI
+
+			// hent ny værdi fra feedback for TILT
+			// udregn PWM værdi fra pid_calc() og send til SPI modul
+				adjust = pid_calc(sp_tilt,act_tilt,&tilt_sys);
+
+				if(adjust < 0)
+					dir = 1;
+				else
+					dir = 2;
+
+				duty_cycle = pwm_conv(adjust);
+
+				duty_cycle = (dir<<8) | duty_cycle;
+				duty_cycle = 0x0400 | duty_cycle;
+
+				put_msg_state(SSM_PWM_DIR_EN_TILT,duty_cycle);
+
+				// send duty cycle og direction til SPI
+				received = SET_PWM_EVENT;
+				xQueueSend(SPI_queue,&received,500 / portTICK_RATE_MS);
+
+				vTaskDelay(5 / portTICK_RATE_MS);
+
+				received = GET_POS_EVENT;
+				xQueueSend(SPI_queue,&received,500 / portTICK_RATE_MS);
+				break;
+
+			default:
+				break;
+			}
+		}
 	}
 }
 
@@ -138,22 +177,23 @@ FP32 pid_calc(FP32 desired, FP32 actual, PID *controller)
 	return output;
 }
 
-INT8U pwm_conv(FP32 output)
+INT16U pwm_conv(FP32 output)
 {
 	if(output < 0)
 		output *= -1;
 
-	ratio = output / MAX;
+	FP32 ratio = output / MAX;
 
-	INT8U result = 255 * ratio;
+	INT16U result = 255 * ratio;
 
-	if(result > dcMax)
-		result = dcMax;
-	if(result < dcMin)
-		result = dcMin;
+	if(result > DC_MAX)
+		result = DC_MAX;
+	if(result < DC_MIN)
+		result = DC_MIN;
 
 	return result;
 
 }
+
 
 /****************************** End Of Module *******************************/

@@ -35,6 +35,8 @@ typedef struct
 	FP32 prev_error;		// Previous error term
 } PID;
 
+
+
 /********************** External declaration of Variables ******************/
 
 /*****************************   Constants   *******************************/
@@ -45,9 +47,9 @@ void init_pid();
 
 void pid_task(void *pvParameters);
 
-FP32 pid_calc(FP32 desired, FP32 actual);
+FP32 pid_calc(FP32 desired, FP32 actual, PID* controller);
 
-INT8U pwm_conv(FP32 output);
+INT16U pwm_conv(FP32 output);
 
 
 #endif /* PID_H_ */

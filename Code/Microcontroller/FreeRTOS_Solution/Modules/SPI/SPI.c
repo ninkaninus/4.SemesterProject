@@ -44,7 +44,8 @@ enum spi_states
 };
 
 extern xQueueHandle SPI_queue;
-extern xSemaphoreHandle pwm_update_sem;
+extern xQueueHandle PID_queue;
+extern xSemaphoreHandle spi_access_sem;
 
 /*****************************   Functions   *******************************/
 
@@ -108,32 +109,6 @@ INT16U SPI_read()
 	return SSI0_DR_R;
 }
 
-void SPI_task(void *pvParameters)
-{
-	SSI_init();
-	INT8U state = PID;
-	INT8U received;
-
-	while(1)
-	{
-		switch(state)
-		{
-		case PID:
-			if (xQueueReceive(SPI_queue, &received, 500 / portTICK_RATE_MS))
-			{
-				set_pwm();
-			}
-			break;
-
-		case UI:
-			break;
-
-		default:
-			break;
-		}
-	}
-}
-
 void set_pwm()
 {
 	INT16U data = 0;
@@ -142,8 +117,6 @@ void set_pwm()
 
 	SPI_write(data);
 	data = SPI_read();
-
-	// evt positionssnask her
 
 	data = get_msg_state(SSM_PWM_DIR_EN_TILT);
 	data |= TILT_PWM;
@@ -166,6 +139,54 @@ void get_position()
 	data = SPI_read();
 	put_msg_state(SSM_POS_TILT,data);
 }
+
+void SPI_task(void *pvParameters)
+{
+	SSI_init();
+	INT8U state = PID;
+	INT8U received;
+
+	while(1)
+	{
+		switch(state)
+		{
+		case PID:
+			if (xQueueReceive(SPI_queue, &received, 500 / portTICK_RATE_MS))
+			{
+				switch(received)
+				{
+				case GET_POS_EVENT:
+					if(xSemaphoreTake(spi_access_sem, 500 / portTICK_RATE_MS))
+					{
+						get_position();
+						received = POS_UPD_EVENT;
+						xQueueSend(PID_queue, &received, 500 / portTICK_RATE_MS);
+						xSemaphoreGive(spi_access_sem);
+					}
+					break;
+
+				case SET_PWM_EVENT:
+					set_pwm();
+					break;
+
+				default:
+					break;
+				}
+
+			}
+
+			break;
+
+		case UI:
+			break;
+
+		default:
+			break;
+		}
+	}
+}
+
+
 
 // void test();
 /*****************************************************************************
