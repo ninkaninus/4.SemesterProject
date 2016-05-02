@@ -24,6 +24,7 @@
 
 #include <stdint.h>
 #include "SPI/SPI.h"
+#include "UART/uart0.h"
 
 //*****************************************************************************
 //
@@ -64,6 +65,7 @@ void vPortSVCHandler( void ) __attribute__ (( naked ));
 void xPortPendSVHandler( void ) __attribute__ (( naked ));
 void xPortSysTickHandler( void );
 extern void SSI0_Interrupt();
+extern void UART0_rx_isr();
 
 //*****************************************************************************
 //
@@ -97,7 +99,7 @@ void (* const g_pfnVectors[])(void) =
     IntDefaultHandler,                      // GPIO Port C
     IntDefaultHandler,                      // GPIO Port D
     IntDefaultHandler,                      // GPIO Port E
-    IntDefaultHandler,                      // UART0 Rx and Tx
+    UART0_rx_isr,		                    // UART0 Rx and Tx
     IntDefaultHandler,                      // UART1 Rx and Tx
 	SSI0_Interrupt,                 	    // SSI0 Rx and Tx
     IntDefaultHandler,                      // I2C0 Master and Slave

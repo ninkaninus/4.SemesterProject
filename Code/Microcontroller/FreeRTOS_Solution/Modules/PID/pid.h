@@ -45,9 +45,11 @@ typedef struct
 
 void init_pid();
 
-void pid_task(void *pvParameters);
+void PID_task(void *pvParameters);
 
 FP32 pid_calc(FP32 desired, FP32 actual, PID* controller);
+
+void pid_update();
 
 INT16U pwm_conv(FP32 output);
 

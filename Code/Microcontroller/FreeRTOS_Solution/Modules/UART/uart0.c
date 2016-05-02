@@ -25,8 +25,10 @@
 #include <UART/uart0.h>
 #include <Tasking/tmodel.h>
 #include <Tasking/messages.h>
+
 #include "FreeRTOS.h"
 #include "queue.h"
+#include "task.h"
 /*****************************    Defines    *******************************/
 
 /*****************************   Constants   *******************************/
@@ -34,8 +36,7 @@
 /*****************************   Variables   *******************************/
 //extern struct Queue uart0_rx_queue;
 extern xQueueHandle uart0_rx_queue;
-extern xQueueHandle LCD_image_queue;
-extern xQueueHandle LCD_char_queue;
+extern xQueueHandle UI_queue;
 
 /*****************************   Functions   *******************************/
 
@@ -132,21 +133,20 @@ void UART0_rx_isr()
 {
 	do
 	{
-		//put_queue(Q_INPUT,received,0);
-		//queue_put(&uart0_rx_queue, UART0_DR_R);
-//		xQueueSendFromISR(LCD_image_queue, &image, NULL);
-//
 		INT8U received = UART0_DR_R;
-//		xQueueSendFromISR(LCD_char_queue, &received, NULL);
+		xQueueSendFromISR(uart0_rx_queue, &received, NULL);
 	} while (RX_FIFO_NOT_EMPTY);
 }
 
-void UART0_task(INT8U my_id, INT8U my_state, INT8U my_event, INT8U my_data)
+void UART0_task(void *pvParameters)
 {
-	UART0_init( 19200, 8, 1, 0 );
+	INT8U received;
 	while(1)
 	{
-
+		if (xQueueReceive(uart0_rx_queue, &received, 500 / portTICK_RATE_MS))
+		{
+			put_msg_state(SSM_SP_TILT, received);
+		}
 	}
 }
 

@@ -33,8 +33,8 @@
 /*****************************    Defines    *******************************/
 
 #define DT 		0.005
-#define MAX		40
-#define MIN		-40
+#define O_MAX		40
+#define O_MIN		-40
 #define I_MAX	10
 #define I_MIN	-10
 #define DC_MAX	255
@@ -124,10 +124,10 @@ FP32 pid_calc(FP32 desired, FP32 actual, PID *controller)
 	output = controller->Kp*error + controller->Ki*integral + controller->Kd*derivative;
 
 
-	if(output > MAX)
-		output = MAX;
-	if(output < MIN)
-		output = MIN;
+	if(output > O_MAX)
+		output = O_MAX;
+	if(output < O_MIN)
+		output = O_MIN;
 
 	controller->integral = integral;
 	controller->prev_error = error;
@@ -140,7 +140,7 @@ INT8U pwm_conv(FP32 output)
 	if(output < 0)
 		output *= -1;
 
-	ratio = output / MAX;
+	ratio = output / O_MAX;
 
 	INT8U result = 255 * ratio;
 

@@ -69,7 +69,7 @@ void numpad_init();
 *   Function : Initializes the Numpad
 ******************************************************************************/
 
-void numpad_task(INT8U my_id, INT8U my_state, INT8U event, INT8U data);
+void numpad_task(void *pvParameters);
 
 /****************************** End Of Module *******************************/
 

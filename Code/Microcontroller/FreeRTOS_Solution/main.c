@@ -32,17 +32,19 @@
 
 
 // ------------------------
-#include "Modules/LCD/lcd.h"
-#include "Modules/GPIO/GPIO.h"
-//#include "Numpad/Numpad.h"
+#include "LCD/lcd.h"
+#include "GPIO/GPIO.h"
 #include "UART/uart0.h"
 #include "Keypad/keypad.h"
+#include "Numpad/Numpad.h"
 #include "LCD/lcd.h"
 #include "GPIO/GPIO.h"
 #include "GUI/gui.h"
 #include "ADC/adc.h"
 #include "UI/ui.h"
 #include "RTC/rtc.h"
+#include "PID/pid.h"
+#include "SPI/SPI.h"
 
 /*****************************    Defines    *******************************/
 #define USERTASK_STACK_SIZE configMINIMAL_STACK_SIZE
@@ -90,6 +92,7 @@ int main(void)
   LCD_image_queue 	 	= xQueueCreate(10, sizeof(INT8U[36]));
   GUI_queue  			= xQueueCreate(16, sizeof(INT8U));
   UI_queue  			= xQueueCreate(16, sizeof(INT8U));
+  PID_queue  			= xQueueCreate(16, sizeof(INT8U));
   SPI_queue  			= xQueueCreate(8, sizeof(INT16U));
 
 
@@ -101,11 +104,14 @@ int main(void)
   // Start the tasks defined within this file/specific to this demo.
   return_value &= xTaskCreate( status_led_task, ( signed portCHAR * ) 	"Status LED", 	USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
   return_value &= xTaskCreate( LCD_task, ( signed portCHAR * ) 			"LCD", 			USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
-  return_value &= xTaskCreate( keypad_get_task, ( signed portCHAR * ) 		"Keypad", 		USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
+  return_value &= xTaskCreate( numpad_task, ( signed portCHAR * ) 		"Keypad", 		USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
   return_value &= xTaskCreate( gui_task, ( signed portCHAR * ) 			"GUI", 			USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
   return_value &= xTaskCreate( ui_task, ( signed portCHAR * ) 			"UI", 			USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
-  return_value &= xTaskCreate( adc_task, ( signed portCHAR * ) 			"ADC", 			USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
+  //return_value &= xTaskCreate( adc_task, ( signed portCHAR * ) 			"ADC", 			USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
   return_value &= xTaskCreate( RTC_task, ( signed portCHAR * ) 			"RTC", 			USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
+  return_value &= xTaskCreate( PID_task, ( signed portCHAR * ) 			"PID", 			USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
+  return_value &= xTaskCreate( SPI_task, ( signed portCHAR * ) 			"SPI", 			USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
+  return_value &= xTaskCreate( UART0_task, ( signed portCHAR * ) 		"UART",			USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
 
   // test if all tasks started sucessfully
   if (return_value != pdTRUE)

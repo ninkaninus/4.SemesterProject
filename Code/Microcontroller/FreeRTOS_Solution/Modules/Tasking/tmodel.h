@@ -47,9 +47,8 @@
 #define SET_SCALE_EVENT			4
 #define SET_OFFSET_EVENT		5
 #define SHOW_KNOB_EVENT			6
-#define POS_UPD_EVENT			7
+#define PID_UPDATE_EVENT		7
 #define GET_POS_EVENT			8
 #define SET_PWM_EVENT			9
-#define PID_UPDATE_EVENT		10
 
 #endif /* _TMODEL_H_ */

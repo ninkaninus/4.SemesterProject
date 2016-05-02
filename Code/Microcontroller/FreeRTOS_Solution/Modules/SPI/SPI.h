@@ -25,10 +25,10 @@
 
 /*****************************    Defines    *******************************/
 
-#define PAN_PWM		0x1000
-#define PAN_POS		0x2000
-#define TILT_PWM	0x3000
-#define TILT_POS	0x4000
+#define ADDR_PAN_PWM		0x1000
+#define ADDR_PAN_POS		0x2000
+#define ADDR_TILT_PWM		0x3000
+#define ADDR_TILT_POS		0x4000
 
 /********************** External declaration of Variables ******************/
 
