@@ -1,8 +1,6 @@
 [Inputs]
 clk
-WE
-=DataBusFromSlave[11:0]=
-=AdrBus[3:0]=
+=data[7:0]=
 [Outputs]
 pwm
 [BiDir]

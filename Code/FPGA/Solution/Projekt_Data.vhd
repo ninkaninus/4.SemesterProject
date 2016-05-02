@@ -12,6 +12,23 @@ use IEEE.STD_LOGIC_1164.all;
 
 package Projekt_Data is
 
+--***Module addresses***---
+CONSTANT MOTOR_CONTROLLER1 : INTEGER := 1;
+CONSTANT POSITIONS_MODUL1 : INTEGER := 2;
+CONSTANT MOTOR_CONTROLLER2 : INTEGER := 3;
+CONSTANT POSITIONS_MODUL2 : INTEGER := 4;
+CONSTANT BLOK1 : INTEGER := 5;
+
+--***Boundaries for the motors***--
+CONSTANT PAN_MAX : INTEGER := 100;
+CONSTANT PAN_MIN : INTEGER := 100;
+CONSTANT TILT_MAX : INTEGER := 100;
+CONSTANT TILT_MIN : INTEGER := 100;
+
+--***General constants for the motors***--
+CONSTANT ZEROING_POINT : INTEGER := 2048;
+CONSTANT ZEROING_PWM : INTEGER := 60;
+
 -- type <new_type> is
 --  record
 --    <type_name>        : std_logic_vector( 7 downto 0);

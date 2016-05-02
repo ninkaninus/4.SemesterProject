@@ -4,15 +4,17 @@ use IEEE.NUMERIC_STD.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
+library WORK;
+use WORK.Projekt_Data.all;
+
 entity PositionsModul is
 	
-	generic (  Adr_Width: natural := 4; --Width in bits of the address bus
-				  Address: Natural := 3);  --Address of the device
+	generic (Address: Integer := POSITIONS_MODUL1);  --Address of the device
 
 	port(Clk 	  :	in STD_LOGIC;
 		  HallA    :	in STD_LOGIC;
 		  HallB    :	in STD_LOGIC;
-		  AdrBus   :	in   STD_LOGIC_VECTOR ((Adr_Width - 1) downto 0);
+		  AdrBus   :	in   STD_LOGIC_VECTOR (3 downto 0);
         DataBusToSlave : out STD_LOGIC_VECTOR (11 downto 0);
 		  WE       : 	in  	STD_LOGIC);
 		  
