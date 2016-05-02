@@ -60,9 +60,6 @@ void status_led_init(void)
 
 void status_led_task(void *pvParameters)
 {
-	
-	status_led_init();
-
 	while(1)
 	{
 		// Toggle status led
