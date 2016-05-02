@@ -32,10 +32,10 @@ NET "Enable<3>" LOC = "F15"; # Bank = 1, Pin name = IO_L21P_1, Type = I/O, Sch n
 #NET "led<1>"  LOC = "J15"; # Bank = 1, Pin name = IO_L14P_1/A4/RHCLK6, Type = RHCLK/DUAL, Sch name = JD9/LD1
 #NET "led<2>"  LOC = "K15"; # Bank = 1, Pin name = IO_L12P_1/A8/RHCLK2, Type = RHCLK/DUAL, Sch name = JD8/LD2
 #NET "led<3>"  LOC = "K14"; # Bank = 1, Pin name = IO_L12N_1/A7/RHCLK3/TRDY1, Type = RHCLK/DUAL, Sch name = JD7/LD3
-#NET "led<4>"  LOC = "E17"; # Bank = 1, Pin name = IO, Type = I/O, Sch name = LD4? s3e500 only
-#NET "led<5>"  LOC = "P15"; # Bank = 1, Pin name = IO, Type = I/O, Sch name = LD5? s3e500 only
-#NET "led<6>"  LOC = "F4";  # Bank = 3, Pin name = IO, Type = I/O, Sch name = LD6? s3e500 only
-#NET "led<7>"  LOC = "R4";  # Bank = 3, Pin name = IO/VREF_3, Type = VREF, Sch name = LD7? s3e500 only
+NET "MotLed1<0>"  LOC = "E17"; # Bank = 1, Pin name = IO, Type = I/O, Sch name = LD4? s3e500 only
+NET "MotLed1<1>"  LOC = "P15"; # Bank = 1, Pin name = IO, Type = I/O, Sch name = LD5? s3e500 only
+NET "MotLed2<0>"  LOC = "F4";  # Bank = 3, Pin name = IO, Type = I/O, Sch name = LD6? s3e500 only
+NET "MotLed2<1>"  LOC = "R4";  # Bank = 3, Pin name = IO/VREF_3, Type = VREF, Sch name = LD7? s3e500 only
 
 #NET "Led<4>" LOC = "E16"; # Bank = 1, Pin name = N.C., Type = N.C., Sch name = LD4? other than s3e500
 #NET "Led<5>" LOC = "P16"; # Bank = 1, Pin name = N.C., Type = N.C., Sch name = LD5? other than s3e500
@@ -43,21 +43,21 @@ NET "Enable<3>" LOC = "F15"; # Bank = 1, Pin name = IO_L21P_1, Type = I/O, Sch n
 #NET "Led<7>" LOC = "P4";  # Bank = 3, Pin name = N.C., Type = N.C., Sch name = LD7? other than s3e500
 
 # Switches
-NET "sw<0>" LOC = "G18"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = SW0
-NET "sw<1>" LOC = "H18"; # Bank = 1, Pin name = IP/VREF_1, Type = VREF, Sch name = SW1
-NET "sw<2>" LOC = "K18"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = SW2
-NET "sw<3>" LOC = "K17"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = SW3
-NET "sw<4>" LOC = "L14"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = SW4
-NET "sw<5>" LOC = "L13"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = SW5
-NET "sw<6>" LOC = "N17"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = SW6
-NET "sw<7>" LOC = "R17"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = SW7
+NET "ToggleDisplay" LOC = "G18"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = SW0
+#NET "sw<1>" LOC = "H18"; # Bank = 1, Pin name = IP/VREF_1, Type = VREF, Sch name = SW1
+#NET "sw<2>" LOC = "K18"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = SW2
+#NET "sw<3>" LOC = "K17"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = SW3
+#NET "sw<4>" LOC = "L14"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = SW4
+#NET "sw<5>" LOC = "L13"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = SW5
+#NET "sw<6>" LOC = "N17"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = SW6
+#NET "sw<7>" LOC = "R17"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = SW7
 
 # Buttons
 
-#NET "reset" LOC = "B18"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = BTN0
+NET "Motor1PanZero" LOC = "B18"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = BTN0
 #NET "btn<0>" LOC = "D18"; # Bank = 1, Pin name = IP/VREF_1, Type = VREF, Sch name = BTN1
 #NET "btn<1>" LOC = "E18"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = BTN2
-#NET "btn<3>" LOC = "H13"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = BTN3
+NET "Motor2TiltZero" LOC = "H13"; # Bank = 1, Pin name = IP, Type = INPUT, Sch name = BTN3
 
 # JA1
 
@@ -84,21 +84,21 @@ NET "SPI_Clk"	 LOC = "M15"; #JA4
 #JC1
 
 #NET "NOC"	      LOC = "G15"; #JC1
-#NET "HallIndex1" LOC = "J16"; #JC2
-#NET "Motor1HallA" LOC = "G13"; #JC3
+NET "HallIndex0Pan" LOC = "J16"; #JC2
+NET "Motor1HallA" LOC = "G13"; #JC3
 NET "Motor2HallA"	 LOC = "H16"; #JC4
 #NET "NOC"	 LOC = "H15"; #JC7
-#NET "HallIndex0"	 LOC = "F14"; #JC8
-#NET "Motor1HallB"	 LOC = "G16"; #JC9
+NET "HallIndex1Tilt"	 LOC = "F14"; #JC8
+NET "Motor1HallB"	 LOC = "G16"; #JC9
 NET "Motor2HallB"	 LOC = "J12"; #JC10
 
-#JB1
+#JD1
 
 #NET "NOC"	 LOC = "J13"; #JD1
-#NET "MotorA<0>"	 LOC = "M18"; #JD2
-#NET "MotorAE"	 LOC = "N18"; #JD3
-NET "MotorB<1>"	 LOC = "P18"; #JD4
+NET "Motor1Pan<0>"	 LOC = "M18"; #JD2
+NET "Motor1PanE"	 LOC = "N18"; #JD3
+NET "Motor2Tilt<1>"	 LOC = "P18"; #JD4
 #NET "NOC"	 LOC = "K14"; #JD7
-#NET "MotorA<1>"	 LOC = "K15"; #JD8
-NET "MotorB<0>"	 LOC = "J15"; #JD9
-NET "MotorBE"	 LOC = "J14"; #JD10
+NET "Motor1Pan<1>"	 LOC = "K15"; #JD8
+NET "Motor2Tilt<0>"	 LOC = "J15"; #JD9
+NET "Motor2TiltE"	 LOC = "J14"; #JD10

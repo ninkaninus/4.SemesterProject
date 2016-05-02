@@ -37,9 +37,9 @@ use WORK.Projekt_Data.all;
 
 entity MotorController is
 
-	generic (Address: Integer := MOTOR_CONTROLLER1;
-				Boundary_Max : integer := 0;
-				Boundary_Min : integer := 0
+	generic (Address: Integer := MOTOR_CONTROLLER2_TILT;
+				Boundary_Max : integer := 2250;
+				Boundary_Min : integer := 1840
 				);  
 	
 	Port(	Clk : in  STD_LOGIC;
@@ -52,7 +52,8 @@ entity MotorController is
 			ButtonToggle : in STD_LOGIC;
 			MotorEnable : out STD_LOGIC;
 			MotorPins : out STD_LOGIC_VECTOR(1 downto 0);
-			Zeroed : out STD_LOGIC
+			Zeroed : out STD_LOGIC;
+			StateOutput : out STD_LOGIC_VECTOR(1 downto 0)
 	);
 end MotorController;
 
@@ -62,6 +63,7 @@ architecture Behavioral of MotorController is
 	signal pwm_data_in : STD_LOGIC_VECTOR(7 downto 0) := (others=>'0');
 	signal runState : STD_LOGIC_VECTOR(1 downto 0) := "00";
 	signal dataIn : STD_LOGIC_VECTOR(11 downto 0) := (others=>'0');
+	signal ticks : STD_LOGIC_VECTOR(11 downto 0) := (others=>'0');
 	
 	type States is (Init,
 						 Zero_Motor,
@@ -80,6 +82,8 @@ begin
 	pwm_out & '0' when "10",
 	"00" when others;
 	
+	ticks <= Motor_Ticks;
+	
 	latch_select: process(clk)
 	begin
 		if rising_edge(clk) then	
@@ -92,23 +96,32 @@ begin
 	end process;
 	
 	State_Machine:	process(Clk)
+	variable cTicks : integer := 0;
 	begin
 		if falling_edge( Clk) then 
+			
+			cTicks := to_integer(unsigned(ticks));
+			
 			case State is
 			
 				when Init =>
+					StateOutput <= "00";
 					pwm_data_in <= "00000000";
 					MotorEnable <= '0';
 					RunState <= "00";
 					Zeroed <= '0';
-					State <= Init;
+					
+					if ButtonPress = '1' then
+						State <= Zero_Motor;
+					end if;
 				
 				when Zero_Motor =>
+					StateOutput <= "01";
 					if HallIndex = '1' then
 						pwm_data_in <= STD_LOGIC_VECTOR(TO_UNSIGNED(ZEROING_PWM, pwm_data_in'length));
 						MotorEnable <= '1';
 						if ButtonPress = '1' then
-							if(ButtonToggle = '1') then
+							if ButtonToggle = '1' then
 								runState <= "01";
 							else
 								runState <= "10";
@@ -124,17 +137,20 @@ begin
 					end if;
 				
 				when RunMode =>
-					if (to_integer(unsigned(Motor_Ticks)) < Boundary_Max) AND (to_integer(unsigned(Motor_Ticks)) > Boundary_Min) then
+					StateOutput <= "10";
+					if (cTicks > Boundary_Max) OR (cTicks < Boundary_Min) then
+						State <= Emergency;
+					else
 						pwm_data_in <= dataIn(7 downto 0);
 						runState <= dataIn(9 downto 8);
 						motorEnable <= dataIn(10);
-					else
-						State <= Emergency;
 					end if;
 					
 				when Emergency =>
-						pwm_data_in <= (others=>'0');
-						runState <= "00";
+					StateOutput <= "11";
+					pwm_data_in <= (others=>'0');
+					runState <= "00";
+					
 			end case;
 		
 		end if;
