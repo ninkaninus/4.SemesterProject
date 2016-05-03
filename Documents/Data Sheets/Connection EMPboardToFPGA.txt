@@ -3,8 +3,8 @@ EMP J2  ->   FPGA JA
 	PB1 -> JA7
 	PB2 -> JA2
 	PB3 -> JA8
-	PB4 -> JA3
-	PB5 -> JA9
-	PB6 -> JA4
-	PB7 -> JA10
+CLK	PB4 -> JA3  CLK
+SS	PB5 -> JA9  SS
+RX	PB6 -> JA4  TX
+TX	PB7 -> JA10 RX
 	GND -> GND
