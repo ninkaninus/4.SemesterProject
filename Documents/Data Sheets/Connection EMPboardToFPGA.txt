@@ -1,0 +1,10 @@
+EMP J2  ->   FPGA JA
+	PB0 -> JA1
+	PB1 -> JA7
+	PB2 -> JA2
+	PB3 -> JA8
+	PB4 -> JA3
+	PB5 -> JA9
+	PB6 -> JA4
+	PB7 -> JA10
+	GND -> GND
