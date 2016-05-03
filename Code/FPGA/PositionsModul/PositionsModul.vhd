@@ -7,7 +7,7 @@ use WORK.Projekt_Data.all;
 
 entity PositionsModul is
 	
-	generic (Address: Integer := POSITIONS_MODUL1_PAN);  --Address of the device
+	generic (Address : STD_LOGIC_VECTOR(3 downto 0) := (others=>'0'));  --Address of the device
 
 	port(Clk 	  :	in STD_LOGIC;
 		  HallA    :	in STD_LOGIC;

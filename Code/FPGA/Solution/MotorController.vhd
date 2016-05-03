@@ -37,9 +37,9 @@ use WORK.Projekt_Data.all;
 
 entity MotorController is
 
-	generic (Address: Integer := MOTOR_CONTROLLER2_TILT;
-				Boundary_Max : integer := 2250;
-				Boundary_Min : integer := 1840
+	generic (Address : STD_LOGIC_VECTOR(3 downto 0) := (others=>'0');
+				Boundary_Max : integer := 100;
+				Boundary_Min : integer := 100
 				);  
 	
 	Port(	Clk : in  STD_LOGIC;
@@ -87,7 +87,7 @@ begin
 	latch_select: process(clk)
 	begin
 		if rising_edge(clk) then	
-			if unsigned(AdrBus) = Address then
+			if AdrBus = Address then
 				if WE='0' then
 					DataIn <= DataBusFromSlave;
 				end if;
