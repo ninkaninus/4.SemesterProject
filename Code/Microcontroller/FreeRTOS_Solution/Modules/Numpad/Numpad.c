@@ -24,6 +24,7 @@
 #include <Numpad/Numpad.h>
 #include <UART/uart0.h>
 #include <Tasking/tmodel.h>
+#include "Tasking/messages.h"
 #include "FreeRTOS.h"
 #include "task.h"
 #include "queue.h"
@@ -36,6 +37,7 @@
 
 extern struct Queue numpad_input_queue;
 extern xQueueHandle UI_queue;
+extern xQueueHandle PID_queue;
 
 /*****************************   Functions   *******************************/
 
@@ -80,7 +82,7 @@ void numpad_task(void *pvParameters)
 		static INT16U button_prev = 0;
 		volatile INT16U button_state = 0;
 		volatile INT8U temp = 0;
-		INT8U btn;
+		INT16U btn;
 
 		//Clear column pins and set column 1 high
 
@@ -185,6 +187,11 @@ void numpad_task(void *pvParameters)
 							break;
 						}
 						xQueueSend(UI_queue,&btn,10000);
+//						btn = 1500;
+//						put_msg_state(SSM_SP_TILT, btn);
+//
+//						btn = PID_UPDATE_EVENT;
+//						xQueueSend(PID_queue,&btn,10000);
 					}
 				}
 			}

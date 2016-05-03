@@ -27,12 +27,12 @@
 
 typedef struct
 {
-	FP32 Kp;				// Proportional Gain
-	FP32 Ki;				// Integral Gain
-	FP32 Kd;				// Derivative Gain
+	INT32U Kp;				// Proportional Gain
+	INT32U Ki;				// Integral Gain
+	INT32U Kd;				// Derivative Gain
 	
-	FP32 integral;			// Integral Term
-	FP32 prev_error;		// Previous error term
+	INT32S integral;			// Integral Term
+	INT32S prev_error;		// Previous error term
 } PID;
 
 
@@ -47,11 +47,11 @@ void init_pid();
 
 void PID_task(void *pvParameters);
 
-FP32 pid_calc(FP32 desired, FP32 actual, PID* controller);
+INT32S pid_calc(INT32U desired, INT32U actual, PID* controller);
 
 void pid_update();
 
-INT16U pwm_conv(FP32 output);
+INT16U pwm_conv(INT32S output);
 
 
 #endif /* PID_H_ */

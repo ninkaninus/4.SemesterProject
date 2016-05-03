@@ -32,16 +32,16 @@
 
 /*****************************    Defines    *******************************/
 
-#define DT 		0.005
+#define DT 		5		// 5ms * 1000
 #define O_MAX	40
 #define O_MIN	-40
-#define I_MAX	10
-#define I_MIN	-10
-#define DC_MAX	255
-#define DC_MIN	50
-#define KP		0.1
-#define KI		0.01
-#define KD		0.005
+#define I_MAX	1000
+#define I_MIN	-1000
+#define DC_MAX	120
+#define DC_MIN	60
+#define KP		40
+#define KI		1
+#define KD		15
 
 /*****************************   Constants   *******************************/
 
@@ -78,7 +78,8 @@ void PID_task(void *pvParameters)
 
 	while(1)
 	{
-		if (xQueueReceive(PID_queue, &received, 500 / portTICK_RATE_MS))
+
+		if (xQueueReceive(PID_queue, &received, 20500 / portTICK_RATE_MS))
 		{
 			switch(received)
 			{
@@ -93,12 +94,12 @@ void PID_task(void *pvParameters)
 	}
 }
 
-FP32 pid_calc(FP32 desired, FP32 actual, PID *controller)
+INT32S pid_calc(INT32U desired, INT32U actual, PID *controller)
 {
-	FP32 error;
-	FP32 derivative;
-	FP32 integral;
-	FP32 output;
+	INT32S error;
+	INT32S derivative;
+	INT32S integral;
+	INT32S output;
 	
 	error = desired - actual;
 	integral = controller->integral;
@@ -113,6 +114,7 @@ FP32 pid_calc(FP32 desired, FP32 actual, PID *controller)
 
 	output = controller->Kp*error + controller->Ki*integral + controller->Kd*derivative;
 
+	output /= 1000;
 
 	if(output > O_MAX)
 		output = O_MAX;
@@ -127,16 +129,20 @@ FP32 pid_calc(FP32 desired, FP32 actual, PID *controller)
 
 void pid_update()
 {
-	FP32 adjust;
+	INT32S set_point;
+	INT32S actual;
+	INT32S adjust;
 	INT8U dir;
 	INT16U duty_cycle;
-	FP32 set_point;
-	FP32 actual;
 
 	set_point 	= get_msg_state(SSM_SP_PAN);
 	actual 		= get_msg_state(SSM_POS_PAN);
 
 	adjust = pid_calc(set_point,actual,&pan_sys);
+
+	////
+
+	////
 
 	if(adjust < 0)
 		dir = 1;
@@ -157,7 +163,6 @@ void pid_update()
 
 	set_point 	= get_msg_state(SSM_SP_TILT);
 	actual	  	= get_msg_state(SSM_POS_TILT);
-
 	adjust = pid_calc(set_point,actual,&tilt_sys);
 
 	if(adjust < 0)
@@ -173,7 +178,8 @@ void pid_update()
 	put_msg_state(SSM_PWM_DIR_EN_TILT,duty_cycle);
 
 	// send duty cycle og direction til SPI
-	INT8U event = SET_PWM_EVENT;
+	INT8U event;
+	event = SET_PWM_EVENT;
 	xQueueSend(SPI_queue,&event,500 / portTICK_RATE_MS);
 
 		vTaskDelay(5 / portTICK_RATE_MS);
@@ -182,14 +188,15 @@ void pid_update()
 	xQueueSend(SPI_queue,&event,500 / portTICK_RATE_MS);
 }
 
-INT16U pwm_conv(FP32 output)
+INT16U pwm_conv(INT32S output)
 {
 	if(output < 0)
 		output *= -1;
 
-	FP32 ratio = output / O_MAX;
+	INT32U ratio = (output*1000) / O_MAX ;
 
-	INT16U result = 255 * ratio;
+	INT32U result = 255 * ratio;
+	result /= 1000;
 
 	if(result > DC_MAX)
 		result = DC_MAX;

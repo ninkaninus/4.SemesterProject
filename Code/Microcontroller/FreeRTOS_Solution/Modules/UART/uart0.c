@@ -34,9 +34,10 @@
 /*****************************   Constants   *******************************/
 
 /*****************************   Variables   *******************************/
-//extern struct Queue uart0_rx_queue;
+
 extern xQueueHandle uart0_rx_queue;
 extern xQueueHandle UI_queue;
+extern xQueueHandle PID_queue;
 
 /*****************************   Functions   *******************************/
 
@@ -131,21 +132,67 @@ void UART0_tx_isr()
 
 void UART0_rx_isr()
 {
-	do
+	while (RX_FIFO_NOT_EMPTY)
 	{
 		INT8U received = UART0_DR_R;
 		xQueueSendFromISR(uart0_rx_queue, &received, NULL);
-	} while (RX_FIFO_NOT_EMPTY);
+	}
 }
 
 void UART0_task(void *pvParameters)
 {
 	INT8U received;
+	INT8U itr = 0;
+	INT32U temp;
 	while(1)
 	{
 		if (xQueueReceive(uart0_rx_queue, &received, 500 / portTICK_RATE_MS))
 		{
-			put_msg_state(SSM_SP_TILT, received);
+			received -= '0';
+			switch(itr++)
+			{
+			case 0:
+				temp = received*1000;
+				break;
+
+			case 1:
+				temp += received*100;
+				break;
+
+			case 2:
+				temp += received*10;
+				break;
+
+			case 3:
+				temp += received;
+				put_msg_state(SSM_SP_TILT, temp);
+				received = PID_UPDATE_EVENT;
+				xQueueSend(PID_queue,&received,50);
+				break;
+
+			case 4:
+				temp = received*1000;
+				break;
+
+			case 5:
+				temp += received*100;
+				break;
+
+			case 6:
+				temp += received*10;
+				break;
+
+			case 7:
+				temp += received;
+				put_msg_state(SSM_SP_PAN, temp);
+				received = PID_UPDATE_EVENT;
+				xQueueSend(PID_queue,&received,50);
+				itr = 0;
+				break;
+
+			default:
+				break;
+			}
 		}
 	}
 }
