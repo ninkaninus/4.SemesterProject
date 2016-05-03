@@ -21,7 +21,17 @@ end PositionsModul;
 architecture Behavioral of PositionsModul is
 Signal HallAState		: 		STD_LOGIC_VECTOR (1 downto 0) := "00";
 Signal HallBState		: 		STD_LOGIC_VECTOR (1 downto 0) := "00";
-Signal ticks			:		integer range 0 to 4096 := 2048;
+Signal ticks			:		integer range -4096 to 4096 := 0;
+signal HallIndexEdge : STD_LOGIC_VECTOR(1 downto 0) := "00";
+
+type States is(
+	Init,
+	ZeroMotor,
+	RunMode
+); 
+						 
+signal State: States := Init;
+
 --signal Ciffer_et	:		integer range 0 to 15 := 0;
 --signal Ciffer_ti	:		integer range 0 to 15 := 0;
 --signal Ciffer_hun	:		integer range 0 to 15 := 0;
@@ -35,40 +45,65 @@ begin
 
 DataBustoSlave <= STD_LOGIC_VECTOR(TO_UNSIGNED(ticks, DataBusToSlave'length));
 
-	GetEncoders: process (clk)
-	variable newTicks : integer range 0 to 4096 := ZEROING_POINT;
-	begin
-		if rising_edge(clk) then
-			newTicks := ticks;
+GetEncoders: process (clk)
+variable newTicks : integer range -4096 to 4096 := 0;
+variable difference : integer range -4096 to 4096 := 0;
+
+begin
+	if falling_edge(clk) then
 		
-			if HallIndex = '0' then
-				newTicks := ZEROING_POINT;
-			end if;
+		HallIndexEdge <= HallIndexEdge(0) & HallIndex;
+	
+		newTicks := ticks;
+	
+		HallAState <= HallAState(0) & HallA;
+		HallbState <= HallBState(0) & HallB;
 		
-			HallAState <= HallAState(0) & HallA;
-			HallbState <= HallBState(0) & HallB;
-			
-			if HallAState = "01" and HallBState = "00" then
-				newTicks := newTicks + 1;
-			elsif HallAState = "01" and HallBState = "11" then
-				newTicks := newTicks - 1;
-			elsif HallAState = "10" and HallBState = "00" then
-				newTicks := newTicks - 1;
-			elsif HallAState = "10" and HallBState = "11" then
-				newTicks := newTicks + 1;
-			elsif HallBState = "01" and HallAState = "00" then
-				newTicks := newTicks - 1;
-			elsif HallBState = "01" and HallAState = "11" then
-				newTicks := newTicks + 1;
-			elsif HallBState = "10" and HallAState = "00" then
-				newTicks := newTicks + 1;
-			elsif HallBState = "10" and HallAState = "11" then
-				newTicks := newTicks - 1;
-			end if;
-			
-			ticks <= newTicks;
+		if HallAState = "01" and HallBState = "00" then
+			newTicks := newTicks + 1;
+		elsif HallAState = "01" and HallBState = "11" then
+			newTicks := newTicks - 1;
+		elsif HallAState = "10" and HallBState = "00" then
+			newTicks := newTicks - 1;
+		elsif HallAState = "10" and HallBState = "11" then
+			newTicks := newTicks + 1;
+		elsif HallBState = "01" and HallAState = "00" then
+			newTicks := newTicks - 1;
+		elsif HallBState = "01" and HallAState = "11" then
+			newTicks := newTicks + 1;
+		elsif HallBState = "10" and HallAState = "00" then
+			newTicks := newTicks + 1;
+		elsif HallBState = "10" and HallAState = "11" then
+			newTicks := newTicks - 1;
 		end if;
-	end process;
+		
+		case State is
+			when Init =>
+				if HallIndexEdge = "01" then
+					newTicks := ZEROING_POINT;
+					State <= ZeroMotor;
+				end if;
+				
+			when ZeroMotor =>
+				if HallIndexEdge = "10" then
+					
+--					difference := newTicks - ZEROING_POINT;
+--					
+--					difference := difference/2;
+--					
+--					newTicks := newTicks - difference;
+					
+					State <= RunMode;
+				end if;
+				
+			when RunMode =>
+			
+		end case;
+	end if;
+
+	ticks <= newTicks;
+	
+end process;
 end Behavioral;
 
 --		if Ciffer_et = 9 and Ciffer_ti = 9 and Ciffer_hun = 9 and Ciffer_tu = 9 then

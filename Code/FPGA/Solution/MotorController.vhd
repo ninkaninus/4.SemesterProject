@@ -64,9 +64,10 @@ architecture Behavioral of MotorController is
 	signal runState : STD_LOGIC_VECTOR(1 downto 0) := "00";
 	signal dataIn : STD_LOGIC_VECTOR(11 downto 0) := (others=>'0');
 	signal ticks : STD_LOGIC_VECTOR(11 downto 0) := (others=>'0');
+	signal HallIndexEdge : STD_LOGIC_VECTOR(1 downto 0) := "00";
 	
 	type States is (Init,
-						 Zero_Motor,
+						 ZeroMotor,
 						 RunMode,
 						 Emergency
 						 ); 
@@ -87,6 +88,9 @@ begin
 	latch_select: process(clk)
 	begin
 		if rising_edge(clk) then	
+			
+			HallIndexEdge <= HallIndexEdge(0) & HallIndex;
+			
 			if AdrBus = Address then
 				if WE='0' then
 					DataIn <= DataBusFromSlave;
@@ -112,12 +116,17 @@ begin
 					Zeroed <= '0';
 					
 					if ButtonPress = '1' then
-						State <= Zero_Motor;
+						State <= ZeroMotor;
 					end if;
 				
-				when Zero_Motor =>
+				when ZeroMotor =>
 					StateOutput <= "01";
-					if HallIndex = '1' then
+					if HallIndexEdge = "10" then
+						runState <= "00";
+						pwm_data_in <= "00000000";
+						Zeroed <= '1';
+						State <= RunMode;
+					else 
 						pwm_data_in <= STD_LOGIC_VECTOR(TO_UNSIGNED(ZEROING_PWM, pwm_data_in'length));
 						MotorEnable <= '1';
 						if ButtonPress = '1' then
@@ -129,11 +138,6 @@ begin
 						else
 							runState <= "00";
 						end if;
-					else 
-						runState <= "00";
-						pwm_data_in <= "00000000";
-						State <= RunMode;
-						Zeroed <= '1';
 					end if;
 				
 				when RunMode =>
