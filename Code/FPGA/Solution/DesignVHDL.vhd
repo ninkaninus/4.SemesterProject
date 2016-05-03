@@ -85,6 +85,9 @@ architecture Behavioral of DesignVHDL is
 	signal NTB_M2_Tilt_Ticks_BCD : STD_LOGIC_VECTOR(15 downto 0);
 
 	signal Bcd_To_Display : STD_LOGIC_VECTOR(15 downto 0);
+	
+	--Retarded Conversion
+	signal Retarded_Conversion : STD_LOGIC_VECTOR(0 to 7);
 
 begin
 

@@ -147,8 +147,9 @@ begin
 					end if;
 					
 				when Emergency =>
-					StateOutput <= "11";
 					pwm_data_in <= (others=>'0');
+					MotorEnable <= '1';
+					StateOutput <= "11";
 					runState <= "00";
 					
 			end case;

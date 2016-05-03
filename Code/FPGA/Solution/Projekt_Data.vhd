@@ -28,6 +28,7 @@ CONSTANT TILT_MIN : INTEGER := 2000;
 --***General constants for the motors***--
 CONSTANT ZEROING_POINT : INTEGER := 2048;
 CONSTANT ZEROING_PWM : INTEGER := 60;
+CONSTANT EMERGENCY_BRAKETIME : INTEGER := 
 
 -- type <new_type> is
 --  record
