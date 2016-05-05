@@ -1,59 +1,32 @@
 import serial
 import time
 
-ser = serial.Serial('COM3', 19200)  # open serial port
+ser = serial.Serial('COM4', 19200)  # open serial port
 print(ser.name)  # check which port was really used
-pwm = 255
-brakeTime = 1
-runTime = 0.2
 
-motor1Addr = 16
-motor2Addr = 48
-motorForward = 5
-motorBackward = 6
-motorBrake = 4
+waitTime = 5
+
+panPos1 = 1900
+panPos2 = 2200
+
+tiltPos1 = 2100
+tiltPos2 = 3000
 
 try:
 
-    ser.write(bytearray([motor2Addr | motorBackward]))
-    ser.write(bytearray([pwm]))
-
-    time.sleep(runTime)
-
     while True:
 
-        ser.write(bytearray([motor1Addr | motorBrake]))
-        ser.write(bytearray([0]))
+        ser.write(b'1900')
+        ser.write(b'2100')
 
-        ser.write(bytearray([motor2Addr | motorBrake]))
-        ser.write(bytearray([0]))
+        #print(panPos1)
 
-        time.sleep(brakeTime)
+        time.sleep(waitTime)
 
-        ser.write(bytearray([motor1Addr | motorForward]))
-        ser.write(bytearray([pwm]))
+        ser.write(b'2200')
+        ser.write(b'3000')
 
-        ser.write(bytearray([motor2Addr | motorForward]))
-        ser.write(bytearray([pwm]))
-
-        time.sleep(runTime)
-
-        ser.write(bytearray([motor1Addr | motorBrake]))
-        ser.write(bytearray([0]))
-
-        ser.write(bytearray([motor2Addr | motorBrake]))
-        ser.write(bytearray([0]))
-
-
-        time.sleep(brakeTime)
-
-        ser.write(bytearray([motor1Addr | motorBackward]))
-        ser.write(bytearray([pwm]))
-
-        ser.write(bytearray([motor2Addr | motorBackward]))
-        ser.write(bytearray([pwm]))
-
-        time.sleep(runTime)
+        time.sleep(waitTime)
 
 except KeyboardInterrupt:
     pass

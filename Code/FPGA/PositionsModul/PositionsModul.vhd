@@ -13,7 +13,8 @@ entity PositionsModul is
 		  HallA    :	in STD_LOGIC;
 		  HallB    :	in STD_LOGIC;
 		  HallIndex : in STD_LOGIC;
-        DataBusToSlave : out STD_LOGIC_VECTOR (11 downto 0)
+        DataBusToSlave : out STD_LOGIC_VECTOR (11 downto 0);
+		  MotorZeroed : in STD_LOGIC
 		  );
 		  
 end PositionsModul;
@@ -21,8 +22,8 @@ end PositionsModul;
 architecture Behavioral of PositionsModul is
 Signal HallAState		: 		STD_LOGIC_VECTOR (1 downto 0) := "00";
 Signal HallBState		: 		STD_LOGIC_VECTOR (1 downto 0) := "00";
-Signal ticks			:		integer range -4096 to 4096 := 0;
-signal HallIndexEdge : STD_LOGIC_VECTOR(1 downto 0) := "00";
+Signal ticks			:		integer range 0 to 4096 := 0;
+signal HallIndexEdge : STD_LOGIC_VECTOR(1 downto 0) := "11";
 
 type States is(
 	Init,
@@ -46,13 +47,13 @@ begin
 DataBustoSlave <= STD_LOGIC_VECTOR(TO_UNSIGNED(ticks, DataBusToSlave'length));
 
 GetEncoders: process (clk)
-variable newTicks : integer range -4096 to 4096 := 0;
-variable difference : integer range -4096 to 4096 := 0;
+variable newTicks : integer range 0 to 4096 := 0;
+variable difference : integer range 0 to 4096 := 0;
 
 begin
 	if falling_edge(clk) then
 		
-		HallIndexEdge <= HallIndexEdge(0) & HallIndex;
+		HallIndexEdge <= HallIndexEdge(0) & (NOT HallIndex);
 	
 		newTicks := ticks;
 	
@@ -85,7 +86,7 @@ begin
 				end if;
 				
 			when ZeroMotor =>
-				if HallIndexEdge = "10" then
+				if MotorZeroed = '1' then
 					
 --					difference := newTicks - ZEROING_POINT;
 --					
@@ -97,6 +98,9 @@ begin
 				end if;
 				
 			when RunMode =>
+				if MotorZeroed = '0' then
+					State <= Init;
+				end if;
 			
 		end case;
 	end if;

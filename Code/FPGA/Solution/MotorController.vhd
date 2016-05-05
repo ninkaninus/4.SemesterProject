@@ -50,6 +50,7 @@ entity MotorController is
 			HallIndex : in STD_LOGIC;
 			ButtonPress : in STD_LOGIC;
 			ButtonToggle : in STD_LOGIC;
+			ButtonPulse : in STD_LOGIC;
 			MotorEnable : out STD_LOGIC;
 			MotorPins : out STD_LOGIC_VECTOR(1 downto 0);
 			Zeroed : out STD_LOGIC;
@@ -64,9 +65,10 @@ architecture Behavioral of MotorController is
 	signal runState : STD_LOGIC_VECTOR(1 downto 0) := "00";
 	signal dataIn : STD_LOGIC_VECTOR(11 downto 0) := (others=>'0');
 	signal ticks : STD_LOGIC_VECTOR(11 downto 0) := (others=>'0');
-	signal HallIndexEdge : STD_LOGIC_VECTOR(1 downto 0) := "00";
+	signal HallIndexEdge : STD_LOGIC_VECTOR(1 downto 0) := "11";
 	
 	type States is (Init,
+						 ZeroRelease,
 						 ZeroMotor,
 						 RunMode,
 						 Emergency
@@ -89,7 +91,7 @@ begin
 	begin
 		if rising_edge(clk) then	
 			
-			HallIndexEdge <= HallIndexEdge(0) & HallIndex;
+			HallIndexEdge <= HallIndexEdge(0) & (NOT HallIndex);
 			
 			if AdrBus = Address then
 				if WE='0' then
@@ -115,7 +117,12 @@ begin
 					RunState <= "00";
 					Zeroed <= '0';
 					
-					if ButtonPress = '1' then
+					if ButtonPulse = '1' then
+						State <= ZeroRelease;
+					end if;
+				
+				when ZeroRelease =>
+					if ButtonPress = '0' then
 						State <= ZeroMotor;
 					end if;
 				
@@ -155,6 +162,10 @@ begin
 					MotorEnable <= '1';
 					StateOutput <= "11";
 					runState <= "00";
+					
+					if ButtonPress = '1' then
+						State <= Init;
+					end if;
 					
 			end case;
 		

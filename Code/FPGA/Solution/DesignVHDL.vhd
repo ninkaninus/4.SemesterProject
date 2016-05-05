@@ -71,14 +71,20 @@ architecture Behavioral of DesignVHDL is
 	--Motor 1 Pan 
 	signal M1_Pan_Z_Toggle : STD_LOGIC := '0';
 	signal M1_Pan_Z_Push : STD_LOGIC := '0';
+	signal M1_Pan_Z_Pulse : STD_LOGIC := '0';
 	
 	signal M1_Pan_Ticks : STD_LOGIC_VECTOR(11 downto 0);
+	
+	signal M1_Pan_Zeroed : STD_LOGIC;
 	
 	--Motor 2 Tilt 
 	signal M2_Tilt_Z_Toggle : STD_LOGIC := '0';
 	signal M2_Tilt_Z_Push : STD_LOGIC := '0';
+	signal M2_Tilt_Z_Pulse : STD_LOGIC := '0';
 	
 	signal M2_Tilt_Ticks : STD_LOGIC_VECTOR(11 downto 0);
+	
+	signal M2_Tilt_Zeroed : STD_LOGIC;
 	
 	--BCD
 	signal NTB_M1_Pan_Ticks_BCD : STD_LOGIC_VECTOR(15 downto 0);
@@ -97,7 +103,7 @@ begin
 		Button=>M1_Pan_Z, 
 		Toggle=>M1_Pan_Z_Toggle, 
 		Deboun=>M1_Pan_Z_Push, 
-		Pulse=>open
+		Pulse=>M1_Pan_Z_Pulse
 	);
 	
 	M2_Tilt_Zero_Button : entity work.Toggle_Button3 
@@ -106,7 +112,7 @@ begin
 		Button=>M2_Tilt_Z,
 		Toggle=>M2_Tilt_Z_Toggle,
 		Deboun=>M2_Tilt_Z_Push,
-		Pulse=>open
+		Pulse=>M2_Tilt_Z_Pulse
 	);
 	
 	SPI_Slave :  entity work.SPI_Slave3
@@ -137,9 +143,10 @@ begin
 		HallIndex=>H_I_0_Pan,
 		ButtonPress=>M1_Pan_Z_Push,
 		ButtonToggle=>M1_Pan_Z_Toggle,
+		ButtonPulse=>M1_Pan_Z_Pulse,
 		MotorEnable=>M1_Pan_E,
 		MotorPins=>M1_Pan,
-		Zeroed=>open,
+		Zeroed=>M1_Pan_Zeroed,
 		StateOutput=>M1_Led
 	);
 	
@@ -158,9 +165,10 @@ begin
 		HallIndex=>H_I_1_Tilt,
 		ButtonPress=>M2_Tilt_Z_Push,
 		ButtonToggle=>M2_Tilt_Z_Toggle,
+		ButtonPulse=>M2_Tilt_Z_Pulse,
 		MotorEnable=>M2_Tilt_E,
 		MotorPins=>M2_Tilt,
-		Zeroed=>open,
+		Zeroed=>M2_Tilt_Zeroed,
 		StateOutput=>M2_Led
 	);
 
@@ -173,7 +181,8 @@ begin
 		HallA=>M1_H_A,
 		HallB=>M1_H_B,
 		HallIndex=>H_I_0_Pan,
-		DataBusToSlave=>M1_Pan_Ticks
+		DataBusToSlave=>M1_Pan_Ticks,
+		MotorZeroed=>M1_Pan_Zeroed
 	);
 	
 	M2_PM_Tilt : entity work.PositionsModul
@@ -185,7 +194,8 @@ begin
 		HallA=>M2_H_A,
 		HallB=>M2_H_B,
 		HallIndex=>H_I_1_Tilt,
-		DataBusToSlave=>M2_Tilt_Ticks
+		DataBusToSlave=>M2_Tilt_Ticks,
+		MotorZeroed=>M2_Tilt_Zeroed
 	);
 	
 	NTB_M1_Pan_Ticks : entity work.NumberToBcd
