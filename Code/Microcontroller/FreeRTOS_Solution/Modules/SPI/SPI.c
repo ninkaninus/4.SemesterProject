@@ -63,6 +63,9 @@ void SSI_init()
 
 	// Let AFSEL stay 0  for SSI mode
 	//GPIO_PORTA_AFSEL_R |= 0b00111100;
+
+	GPIO_PORTB_AFSEL_R |= 0b11110000;
+
 	// Set Port cotrol for PORTA to SSI
 	//GPIO_PORTA_PCTL_R |= GPIO_PCTL_PA2_SSI0CLK | GPIO_PCTL_PA3_SSI0FSS | GPIO_PCTL_PA4_SSI0RX | GPIO_PCTL_PA5_SSI0TX;
 
@@ -114,8 +117,8 @@ void SSI_init()
 	SSI2_CR1_R |= (1<<1) | (0<<0);
 	//SSI0_IM_R |= SSI_IM_RXIM;
 
-	put_msg_state(SSM_POS_PAN, 2048);
-	put_msg_state(SSM_POS_TILT, 2048);
+	put_msg_state(SSM_SP_PAN, 1900);
+	put_msg_state(SSM_SP_TILT, 1900);
 }
 
 void SSI0_Interrupt() {
@@ -130,20 +133,20 @@ void SSI0_Interrupt() {
 
 void SPI_write(INT16U data)
 {
-	SSI0_DR_R = data;
-	while( (SSI0_SR_R & (1<<0)) == 0);
-	//SSI2_DR_R = data;
-	//while( (SSI2_SR_R & (1<<0)) == 0);
+	//SSI0_DR_R = data;
+	//while( (SSI0_SR_R & (1<<0)) == 0);
+	SSI2_DR_R = data;
+	while( (SSI2_SR_R & (1<<0)) == 0);
 }
 
 INT16U SPI_read()
 {
-	while( (SSI0_SR_R & (1<<2)) == 0);
-	while((SSI0_SR_R & (1<<4)) == 1);
-	INT16U temp = SSI0_DR_R & 0x0FFF;
+	//while( (SSI0_SR_R & (1<<2)) == 0);
+	//while((SSI0_SR_R & (1<<4)) == 1);
+	while( (SSI2_SR_R & (1<<2)) == 0);
+	while((SSI2_SR_R & (1<<4)) == 1);
+	INT16U temp = SSI2_DR_R & 0x0FFF;
 	return temp;
-	//while( (SSI2_SR_R & (1<<2)) == 0);
-	//while((SSI2_SR_R & (1<<4)) == 1);
 	//return SSI2_DR_R;
 }
 

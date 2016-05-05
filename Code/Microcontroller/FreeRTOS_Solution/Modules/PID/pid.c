@@ -32,16 +32,16 @@
 
 /*****************************    Defines    *******************************/
 
-#define DT 		5		// 5ms * 1000
+#define DT 		4		// 5ms * 1000
 #define O_MAX	40
 #define O_MIN	-40
 #define I_MAX	1000
 #define I_MIN	-1000
-#define DC_MAX	120
+#define DC_MAX	150
 #define DC_MIN	60
-#define KP		40
-#define KI		1
-#define KD		15
+#define KP		33
+#define KI		0
+#define KD		20
 
 /*****************************   Constants   *******************************/
 
@@ -141,39 +141,47 @@ void pid_update()
 	adjust = pid_calc(set_point,actual,&pan_sys);
 
 	////
-
+	dir = 0;
 	////
 
-	if(adjust < 0)
-		dir = 1;
-	else
-		dir = 2;
+	if(set_point != actual)
+	{
+		if(adjust < 0)
+			dir = 1;
+		else
+			dir = 2;
+	}
 
 	duty_cycle = pwm_conv(adjust);
 
 	duty_cycle = (dir<<8) | duty_cycle;		// direction is ored to the 9-10th bit
-	duty_cycle = 0x0400 | duty_cycle;		// enable
+	//if(set_point != actual)
+		duty_cycle = 0x0400 | duty_cycle;
 
 	put_msg_state(SSM_PWM_DIR_EN_PAN,duty_cycle);
 
 	// send duty cycle og direction til SPI
-
-	// hent ny værdi fra feedback for TILT
-	// udregn PWM værdi fra pid_calc() og send til SPI modul
+	dir = 0;
+	// hent ny vï¿½rdi fra feedback for TILT
+	// udregn PWM vï¿½rdi fra pid_calc() og send til SPI modul
 
 	set_point 	= get_msg_state(SSM_SP_TILT);
 	actual	  	= get_msg_state(SSM_POS_TILT);
 	adjust = pid_calc(set_point,actual,&tilt_sys);
+	if(set_point != actual)
+	{
+		if(adjust < 0)
+			dir = 1;
+		else
+			dir = 2;
+	}
 
-	if(adjust < 0)
-		dir = 1;
-	else
-		dir = 2;
 
 	duty_cycle = pwm_conv(adjust);
 
 	duty_cycle = (dir<<8) | duty_cycle;
-	duty_cycle = 0x0400 | duty_cycle;
+	//if(set_point != actual)
+		duty_cycle = 0x0400 | duty_cycle;
 
 	put_msg_state(SSM_PWM_DIR_EN_TILT,duty_cycle);
 
@@ -182,7 +190,7 @@ void pid_update()
 	event = SET_PWM_EVENT;
 	xQueueSend(SPI_queue,&event,500 / portTICK_RATE_MS);
 
-		vTaskDelay(5 / portTICK_RATE_MS);
+		vTaskDelay(4 / portTICK_RATE_MS);
 
 	event = GET_POS_EVENT;
 	xQueueSend(SPI_queue,&event,500 / portTICK_RATE_MS);
