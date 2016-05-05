@@ -25,7 +25,7 @@
 #include "EMP/emp_type.h"
 #include "EMP/glob_def.h"
 #include "FreeRTOS.h"
-#include "Task.h"
+#include "task.h"
 #include "queue.h"
 #include "semphr.h"
 #include "status_led.h"
