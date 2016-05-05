@@ -35,8 +35,8 @@
 #define DT 		4		// 5ms * 1000
 #define O_MAX	35
 #define O_MIN	-35
-#define I_MAX	4000
-#define I_MIN	-4000
+#define I_MAX	10000
+#define I_MIN	-10000
 #define DC_MAX	150
 #define DC_MIN	40
 #define KP1		50
@@ -206,16 +206,22 @@ INT16U pwm_conv(INT32S output)
 
 	INT32U ratio = (output*1000) / O_MAX ;
 
-	INT32U result = 255 * ratio;
+	INT32U result;// = 255 * ratio;
+
+	result = (DC_MAX - DC_MIN) * ratio;
+
 	result /= 1000;
 
+	result += DC_MIN;
+
+	/*
 	if(result > DC_MAX)
 		result = DC_MAX;
 	if(result < DC_MIN)
 		result = DC_MIN;
+	 */
 
 	return result;
-
 }
 
 
