@@ -165,7 +165,7 @@ void UART0_task(void *pvParameters)
 
 			case 3:
 				temp += received;
-				put_msg_state(SSM_SP_TILT, temp);
+				put_msg_state(SSM_SP_PAN, temp);
 				received = PID_UPDATE_EVENT;
 				xQueueSend(PID_queue,&received,50);
 				break;
@@ -184,7 +184,7 @@ void UART0_task(void *pvParameters)
 
 			case 7:
 				temp += received;
-				put_msg_state(SSM_SP_PAN, temp);
+				put_msg_state(SSM_SP_TILT, temp);
 				received = PID_UPDATE_EVENT;
 				xQueueSend(PID_queue,&received,50);
 				itr = 0;
