@@ -1,0 +1,23 @@
+\subsection{Task Diagram}
+
+Der er blevet lavet et task diagram, som kan ses i figur \ref{fig:taskdiagram}, under udviklingen af programet til microcontroleren. Kommunikation mellem tasksne foregår gennem både queues og Shared State Memory. Shared state memory benyttes når der skal sendes data i form af ændring af variabler mellem tasksne, mens queues benyttes til at sende beskeder i form af events eller beskeder. Denne metode blev valgt fordi opstår situationer hvor flere tasks skal bruge de samme informationer, og deres eventuelle ændringer af dem påvirker de andre tasks der skal have kendskab til samme variable.
+\\
+Af samme årsag benyttes der en samaphor til at begrændse adgangen til disse, så der ikke opstår synchonicerings fejl.
+
+Den centrale task er UI'en. Denne styrer en menu, der har til opgave at give mulighed for manuelt at sætte variabler, såsom tid og position, samt at starte og stoppe vores control system, og kommunikerer tilbage gennem UART transmit.
+
+Display tasken holder selvsigende styr på hvad der skal vises, som den får besked om fra UI'en. Den kan yderligere vise når der bliver kommunikeret gennem UART'en.
+
+Geber og Keypad tasksne holder styr på hver deres input, og sender resultaterne i en fælles indgangs kø til UI'en.
+
+Control systemet tager kontinuært variabler fra Shared State Memory, og benytter disse til at opdaterer det mål den går efter, på både x og y aksen. Den kommunikerer så frem og tilbage med SPI tasken, som kommunikerer med vores FPGA.
+
+Årsagen til at dette layout er blevet valgt er at det vurderes at control systemet ikke skal være afhængig af input fra UI'en, så det ikke er nødvendigt at benytte menuen til at give den nye koordinater. Ved at sepererer den fra UI'en er det muligt for den at kører selvstændigt, uden at den yderligere skal checke en kø for nye koordinater hele tiden.
+
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[scale=0.35]{Billeder/Taskdiagram.png}
+	\end{center}
+\label{fig:taskdiagram}
+\caption{Vores task diagram tager udgangspunkt i en UI der sender besked til et display, hvilket benyttes til at vise en menu der kan bruges til at opdaterer diverse parametre og mål, hvilket så gives videre til det implementerede control system gennem Shared State Memory.}
+\end{figure}
