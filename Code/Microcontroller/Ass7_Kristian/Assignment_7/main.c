@@ -35,8 +35,9 @@
 // ------------------------
 #include "Modules/LCD/lcd.h"
 #include "Modules/GPIO/GPIO.h"
-#include "Numpad/Numpad.h"
+//#include "Numpad/Numpad.h"
 #include "UART/uart0.h"
+#include "Keypad/keypad.h"
 #include "LCD/lcd.h"
 #include "GPIO/GPIO.h"
 #include "GUI/gui.h"
@@ -99,7 +100,8 @@ int main(void)
   // Start the tasks defined within this file/specific to this demo.
   return_value &= xTaskCreate( status_led_task, ( signed portCHAR * ) 	"Status LED", 	USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
   return_value &= xTaskCreate( LCD_task, ( signed portCHAR * ) 			"LCD", 			USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
-  return_value &= xTaskCreate( numpad_task, ( signed portCHAR * ) 		"Numpad", 		USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
+  //return_value &= xTaskCreate( numpad_task, ( signed portCHAR * ) 		"Numpad", 		USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
+  return_value &= xTaskCreate( keypad_get_task, ( signed portCHAR * ) 		"Keypad", 		USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
   return_value &= xTaskCreate( gui_task, ( signed portCHAR * ) 			"GUI", 			USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
   return_value &= xTaskCreate( ui_task, ( signed portCHAR * ) 			"UI", 			USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
   return_value &= xTaskCreate( adc_task, ( signed portCHAR * ) 			"ADC", 			USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );

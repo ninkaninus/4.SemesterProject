@@ -3,3 +3,7 @@ MODULE Schematic_top_module
 		INSTANCE XLXI_1
 	SUBMODULE MultiplexDisplay
 		INSTANCE XLXI_2
+	SUBMODULE Hall_sensor
+		INSTANCE XLXI_3
+	SUBMODULE SikkerhedsFeature
+		INSTANCE XLXI_5

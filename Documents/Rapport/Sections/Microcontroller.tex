@@ -2,6 +2,13 @@
 
 \subsection{OS}
 \subsection{Scheduling}
+Det er vigtigt i enhver kode situation, der inkluderer flere tasks, at kunne skifte mellem dem på en fornuftig måde; Dette gøres med en scheduler. Når der skal implementeres en scheduler skal det overvejes hvorvidt det er nødvendigt at lave en designed specielt til projectet, eller om der en en eksisterende der er i stand til at udfører opgaven tilstrækkeligt. I dette project havde vi tre muligheder til rådighed: RTCS, FreeRTOS, og at lave vores egen.
+\\
+Den simple løsning er at bruge RTCS. Denne er simpel at benytte, og kan godt opfylde de grundlæggende krav vi har til systemet. Dog har denne ikke prioritering, preemption, eller mutex.
+\\
+Den mere tidskrævende løsning ville være at lave en selv. Dette ville kræve en del tid og mange flerer overvejelser omkring hvilke funktionaliteter der kræves, uden at det ville give den store fordel set i forhold til RTCS.
+\\
+Den sidste løsning er at benytte FreeRTOS. Denne har meget mere funktionalitet, sikkerhed, og støtter at projectet udviddes ud over de nuværnde krav uden at shceduleren skulle genovervejes.
 \subsection{Tasks}
 
 \subsubsection{Uart}
@@ -15,10 +22,26 @@ Uart er en god måde til at sende information når man f.eks. skal debugge eller
 
 \subsubsection{LCD}
 
-Til vores kit er der givet et liqiud-crystal display (LCD), som har størrelsen 2x16. For at kunne bruge dette display, som er på PORT C og PORT D, der skal aktiveres ved hjælp at sysctl før det kan bruges. For at sende sætte LCD’ed i forskellige mods skal det gøres på PORT C og sende data. Den har RS og E på PORT D.
-\\
-Dette display har to modes 8 bit og 4 bit, fordi fire af vores pinde er sat til ground kan den kun køre 4 bit mode.
-LCD modulet har nogen forskellige funktioner, dem der bliver brugt oftes er wr\textunderscore str\textunderscore LCD, som laver en pointer og sender de enkelte karaktere ud en efter en, ved hjælp af funktion wr\textunderscore ch\textunderscore LCD. Disse funktion er til for at gøre det simpelt for at sende noget. De bliver sendt ind i en funktion som gør at karakteren bliver skrevet ud til PORT C data register og herefter bliver mode sat i PORT D data register.
+Den fysiske opsætning af LCD'et kan ses på figur \ref{fig:LCD}, og viser blandt andet at fire databen og R/W benet er forbundet til stel. Med denne opsætning kan man kun skrive til displayet ligesom man er tvunget til at bruge LCD'et i 4-bit mode. Hvis man havde mulighed for at læse fra displayet, kunne man holde øje med et busyflag, der fortæller om LCD'et er optaget, og på den måde sørge for at udnytte displayets tid bedst muligt. Når man kun kan skrive til displayet, er man tvunget til at vente en bestemt tid for at sikre sig at det er klar til at modtage ny data. Til de fleste formål er det dog ikke et problem, at man venter lidt længere end nødvendigt imellem kommandoer. I 4-bit mode kan der kun sendes en nibble ad gangen. For at sende data til displayet, skal dataen skrives ud på de fire databen, derefter flasher man E-benet så LCD'et kan latche og starte behandlingen. RS-benet styrer om den data, der sendes, skal tolkes som data eller en kommando. 
+
+\begin{figure}[h]
+			\begin{center}
+			\includegraphics[scale=0.9]{Billeder/LCD.PNG}
+			\end{center}
+			\caption{LCD pinout}
+			\label{fig:LCD}
+\end{figure}
+
+Selve LCD-tasken arbejder sammen med resten af systemet ved at afkode et særligt image-format (se figur \ref{fig:LCD_array}), så det vises korrekt på skærmen. Dette image bliver sendt fra display-tasken og indeholder oplysninger om, hvilke karakterer, hvis nogen, der skal skrives til alle 32 synlige adresser på displayet. Udover de 32 karakterer, er der også fire kontrolfelter, som fortæller tasken, hvor cursoren skal placeres efter karaktererne er skrevet ud; om cursoren skal blinke eller bare highlighte nuværende adresse med en streg under karakteren. Det sidste felt bliver sat til at vise adressen, hvor næste karakter skal skrives, når alle 32 karakterer er blevet skrevet første gang. På den måde kan LCD-tasken afgøre om den skal skrive et helt image fra starten, eller bare tilføje en ny karakter til et image der allerede er vist på displayet. Med dette setup kan LCD-tasken finde ud af hvilken ny karakter, der skal tilføjes ud fra den første kontrol-bit, og også hvor cursoren skal placeres efter den er skrevet - hvis den næste adresse, der skal skrives på, er mere end en plads væk, skal cursoren flyttes aktivt. Manipuleringen af images og kontrol-bits foregår i display-tasken - LCD-tasken afkoder bare images, når de bliver tilføjet til dens input-kø.
+
+
+\begin{figure}[h]
+			\begin{center}
+			\includegraphics[scale=0.9]{Billeder/LCD_Array.PNG}
+			\end{center}
+			\caption{LCD Image-format er et array af 36 8-bits størrelser. De første 32 pladser i arrayet repræsenterer de synlige adresser på displayet - de sidste 4 er kontrol-bits.}
+			\label{fig:LCD_array}
+\end{figure}
 
 \subsubsection{Keypad}
 
@@ -66,3 +89,26 @@ Til SSI modulet er der 3 forskellige data formater:
 			\caption{Micro Wire Frame Format (Single Transfer)}
 		\end{figure}
 \end{itemize}
+
+Da Freescale er den eneste SPI iblandt de tre SSI moduler er det den der blev valgt.
+
+		\begin{figure}[h]
+			\begin{center}
+			\includegraphics[scale=0.8]{Billeder/Spi_Setup.jpg}
+			\end{center}
+			\label{fig:SPI_Setup}
+			\caption{Setup af Freescale SPI}
+		\end{figure}
+
+For at lave et Freescale setup skal der SSI modulet disables, også kan microcontrolleren sættes som master ved at skrive nul til control registret.
+derefer skal clock configurations registret sættes til 0 så vi bruger system clocken.
+da der ønskes en 2 Mbps clock bruges følgende ligning
+
+\begin{align*}
+2*10^6 bps &= \dfrac{16*10^6 Hz}{CPSDVSR * (1 + 0)}\\
+CPSDVSR &= \dfrac{16*10^6 Hz}{2*10^6 bps}\\
+CPSDVSR &= 8
+\end{align*}
+
+Så sættes kontrol registret for SSI0 til 0xF da bit 3:0 angiver data størrelse, 0xF er så 16-bit data. samtidig bliver Freescale SPI sat op da bit 4 og 5 bestemmer frame formatet, og hvis de begge er lave betyder det at Freescale er valgt. 
+og igen sættes bit 1 i kontrol registret for SSI1 til høj så SSI'en er enablet

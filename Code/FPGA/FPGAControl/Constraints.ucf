@@ -1,0 +1,77 @@
+################################################## N E X Y S - kit
+#NET "Encoder1" 		LOC = "L15"  ;  #JA1
+#NET "Encoder2"			LOC = "K13"  ;  #JA7
+#NET "JA<3>"  			LOC = "L17"  ;	 #JA3
+#NET "Hall_sens<0>" LOC = "M15"  ;	 #JA4
+#NET "Hall_sens<1>" LOC = "M16"  ;  #JA10
+##NET "JA<6>"	LOC = "L16"  ; 
+##NET "JA<7>"  LOC = "M14"  ;
+##NET "JA<8>"  LOC = "M16"  ;
+##--------------------------------------
+#NET "JB<1>"  	LOC = "M13"  ;  #PMOD 2
+#NET "JB<2>"		LOC = "R18"  ; 
+#NET "JB<3>"  	LOC = "R15"  ;
+#NET "JB<4>"  	LOC = "T17"  ;
+##--------------------------------------
+#NET "JC<1>"  	LOC = "G15"  ;  #PMOD 3
+#NET "JC<2>"		LOC = "J16"  ; 
+#NET "JC<3>"  	LOC = "G13"  ;
+#NET "JC<4>"  	LOC = "H16"  ;
+##--------------------------------------
+#NET "JD<1>"  	LOC = "J13"  ;  #PMOD 4
+#NET "JD<2>"		LOC = "M18"  ; 
+#NET "JD<3>"  	LOC = "N18"  ;
+#NET "JD<4>"  	LOC = "P18"  ;
+##-------------------- 7 Segment display 
+#NET "An<0>"  	LOC = "F17"  ;
+#NET "An<1>"  	LOC = "H17"  ;
+#NET "An<2>"  	LOC = "C18"  ;
+#NET "An<3>"  	LOC = "F15"  ;
+#NET "Seg<1>"  LOC = "L18"  ; #Segment a
+#NET "Seg<2>"  LOC = "F18"  ;
+#NET "Seg<3>"  LOC = "D17"  ;
+#NET "Seg<4>"  LOC = "D16"  ;
+#NET "Seg<5>"  LOC = "G14"  ;
+#NET "Seg<6>"  LOC = "J17"  ;
+#NET "Seg<7>"  LOC = "H14"  ;
+#NET "Seg<8>"  LOC = "C17"  ; #dp
+#
+#NET "Encoder1" 	LOC = "B18"  ; #Btn<0>
+#NET "Encoder2"  	LOC = "D18"  ;	#Btn<1>
+#NET "Btn<2>"  	LOC = "E18"  ;
+#NET "Clear"  		LOC = "H13"  ; #Btn<3>
+
+NET "Position<0>"  	LOC = "J14"; 
+NET "Position<1>"  	LOC = "J15"; 
+NET "Position<2>"  	LOC = "K15"; 
+NET "Position<3>"  	LOC = "K14"; 
+NET "Position<4>"  	LOC = "E17"; 
+NET "Position<5>"  	LOC = "P15"; 
+NET "Position<6>"  	LOC = "F4"; 
+NET "Position<7>"  	LOC = "R4"; 
+#
+NET "Encoder_Pan<0>"  	LOC = "G18"  ;
+NET "Encoder_Pan<1>"  	LOC = "H18"  ;
+NET "Encoder_tilt<0>"  	LOC = "K18"  ;
+NET "Encoder_tilt<1>"  	LOC = "K17"  ;
+NET "Hall_sens<0>"  	LOC = "L14"  ;
+NET "Hall_sens<1>"  	LOC = "L13"  ;
+#NET "Sw<6>"  	LOC = "N17"  ;
+#NET "Sw<7>"  	LOC = "R17"  ;
+#
+#NET "VGA<9>"  	LOC = "xxx"  ; #Red 0
+#NET "VGA<8>"  	LOC = "xxx"  ; #Red 1
+#NET "VGA<7>"  	LOC = "xxx"  ; #Red 2
+#NET "VGA<6>"  	LOC = "xxx"  ; #Green 0
+#NET "VGA<5>"  	LOC = "xxx"  ; #Green 1
+#NET "VGA<4>"  	LOC = "xxx"  ; #Green 2
+#NET "VGA<3>"  	LOC = "xxx"  ; #Blue 0
+#NET "VGA<2>"  	LOC = "xxx"  ; #Blue 1
+#NET "VGA<1>"  	LOC = "xxx"  ; #HS
+#NET "VGA<0>"  	LOC = "xxx"  ; #VS
+
+#NET "PS2_CLK" 	LOC = "R12";
+#NET "PS2_DATA"	LOC = "P11";
+
+NET "Clk"  LOC = "B8"  ; #Clk_50MHz
+

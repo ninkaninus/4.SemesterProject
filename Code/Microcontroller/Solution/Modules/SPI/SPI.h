@@ -33,9 +33,11 @@
 
 void SSI_init();
 
-void SPI_write(INT8U data);
+void SSI0_Interrupt();
 
-INT8U SPI_read();
+void SPI_write(INT16U data);
+
+INT16U SPI_read();
 
 //Test Function
 /*****************************************************************************

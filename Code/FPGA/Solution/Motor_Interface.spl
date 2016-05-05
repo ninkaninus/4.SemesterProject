@@ -1,0 +1,10 @@
+[Inputs]
+clk
+pwm
+WE
+=AdrBus[3:0]=
+=DataBusFromSlave[11:0]=
+[Outputs]
+motorEnable
+=motor[1:0]=
+[BiDir]

@@ -1,0 +1,7 @@
+[Inputs]
+Clk
+Sync_Hall
+=Encoder_tilt[1:0]=
+[Outputs]
+=Encoder_Register[10:0]=
+[BiDir]

@@ -1,9 +1,9 @@
 ################################################## N E X Y S - kit
-NET "Encoder1" LOC = "L15"  ;  #PMOD 1
-NET "Encoder2"	LOC = "K13"  ; 
-#NET "JA<3>"  	LOC = "L17"  ;
-#NET "JA<4>"  	LOC = "M15"  ;
-##NET "JA<5>"  LOC = "K13"  ;  #PMOD 1
+NET "Encoder1" 		LOC = "L15"  ;  #JA1
+NET "Encoder2"			LOC = "K13"  ;  #JA7
+NET "JA<3>"  			LOC = "L17"  ;	 #JA3
+NET "Hall_sens<0>" LOC = "M15"  ;	 #JA4
+NET "Hall_sens<1>" LOC = "M16"  ;  #JA10
 ##NET "JA<6>"	LOC = "L16"  ; 
 ##NET "JA<7>"  LOC = "M14"  ;
 ##NET "JA<8>"  LOC = "M16"  ;
