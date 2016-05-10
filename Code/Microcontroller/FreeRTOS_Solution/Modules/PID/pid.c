@@ -115,6 +115,9 @@ INT32S pid_calc(INT32U desired, INT32U actual, PID *controller)
 	if(integral < I_MIN)
 		integral = I_MIN;
 		
+	if(error == 0)			// nulstiller integral-delen når målet er nået.
+		integral = 0;
+
 	derivative = (error - controller->prev_error)/DT;
 
 	output = controller->Kp*error + controller->Ki*integral + controller->Kd*derivative;
@@ -139,8 +142,6 @@ void pid_update()
 	INT32S adjust;
 	INT8U dir;
 	INT16U duty_cycle;
-
-	convert_and_secure();
 
 	set_point 	= get_msg_state(SSM_SP_PAN);
 	actual 		= get_msg_state(SSM_POS_PAN);
