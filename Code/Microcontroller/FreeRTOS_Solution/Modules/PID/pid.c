@@ -35,8 +35,8 @@
 #define DT 		4		// 5ms * 1000
 #define O_MAX	35
 #define O_MIN	-35
-#define I_MAX	10000
-#define I_MIN	-10000
+#define I_MAX	5000
+#define I_MIN	-5000
 #define DC_MAX	150
 #define DC_MIN	40
 #define KP1		50
