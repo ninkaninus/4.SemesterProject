@@ -18,6 +18,7 @@
 *****************************************************************************/
 
 /***************************** Include files *******************************/
+#include <Converter/convert.h>
 #include <stdint.h>
 #include <tm4c123gh6pm.h>
 #include "FreeRTOS.h"
@@ -29,23 +30,23 @@
 #include "EMP/emp_type.h"
 #include "Tasking/tmodel.h"
 #include "Tasking/messages.h"
-#include "Converter/Convert.h"
 
 /*****************************    Defines    *******************************/
 
-#define DT 		4		// 5ms * 1000
-#define O_MAX	40
-#define O_MIN	-40
-#define I_MAX	1000
-#define I_MIN	-1000
-#define DC_MAX	150
-#define DC_MIN	60
-#define KP1		50
-#define KI1		1
-#define KD1		20
-#define KP2		60
-#define KI2		2
-#define KD2		40
+#define SCALE_FACTOR	1000
+#define DT 				5		//  5ms * 1000
+#define O_MAX			40
+#define O_MIN			-40
+#define I_MAX			1000
+#define I_MIN			-1000
+#define DC_MAX			150
+#define DC_MIN			60
+#define KP1				50
+#define KI1				1
+#define KD1				20
+#define KP2				60
+#define KI2				2
+#define KD2				40
 
 /*****************************   Constants   *******************************/
 
@@ -196,7 +197,7 @@ void pid_update()
 	event = SET_PWM_EVENT;
 	xQueueSend(SPI_queue,&event,500 / portTICK_RATE_MS);
 
-		vTaskDelay(4 / portTICK_RATE_MS);
+		vTaskDelay(5 / portTICK_RATE_MS);
 
 	event = GET_POS_EVENT;
 	xQueueSend(SPI_queue,&event,500 / portTICK_RATE_MS);

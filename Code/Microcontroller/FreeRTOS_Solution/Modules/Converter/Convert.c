@@ -81,6 +81,8 @@ void convert_and_secure(void)
 		{
 			tilt = INDEX_TILT;
 			pan = INDEX_PAN;
+			put_msg_state(SSM_SP_TILT,tilt);
+			put_msg_state(SSM_SP_PAN,pan);
 			//xSemaphoreGive(coordinate_access_sem);
 			return;
 		}
@@ -91,6 +93,8 @@ void convert_and_secure(void)
 			{
 				tilt = INDEX_TILT;
 				pan = INDEX_PAN;
+				put_msg_state(SSM_SP_TILT,tilt);
+				put_msg_state(SSM_SP_PAN,pan);
 				//xSemaphoreGive(coordinate_access_sem);
 				return;
 			}
@@ -110,6 +114,8 @@ void convert_and_secure(void)
 		{
 			tilt = INDEX_TILT;
 			pan = INDEX_PAN;
+			put_msg_state(SSM_SP_TILT,tilt);
+			put_msg_state(SSM_SP_PAN,pan);
 			//xSemaphoreGive(coordinate_access_sem);
 			return;
 		}
