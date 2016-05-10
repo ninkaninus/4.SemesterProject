@@ -152,39 +152,31 @@ void UART0_task(void *pvParameters)
 			switch(itr++)
 			{
 			case 0:
-				temp = received*1000;
+				temp = received*100;
 				break;
 
 			case 1:
-				temp += received*100;
-				break;
-
-			case 2:
 				temp += received*10;
 				break;
 
-			case 3:
+			case 2:
 				temp += received;
-				put_msg_state(SSM_SP_TILT, temp);
+				put_msg_state(SSM_SP_DEG_TILT, temp);
 				received = PID_UPDATE_EVENT;
 				xQueueSend(PID_queue,&received,50);
 				break;
 
+			case 3:
+				temp = received*100;
+				break;
+
 			case 4:
-				temp = received*1000;
-				break;
-
-			case 5:
-				temp += received*100;
-				break;
-
-			case 6:
 				temp += received*10;
 				break;
 
-			case 7:
+			case 5:
 				temp += received;
-				put_msg_state(SSM_SP_PAN, temp);
+				put_msg_state(SSM_SP_DEG_PAN, temp);
 				received = PID_UPDATE_EVENT;
 				xQueueSend(PID_queue,&received,50);
 				itr = 0;

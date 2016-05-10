@@ -38,6 +38,9 @@
 #define SSM_PWM_DIR_EN_TILT		53
 #define SSM_POS_TILT			54
 #define SSM_SP_TILT				55
+#define SSM_SP_DEG_TILT			56
+#define SSM_SP_DEG_PAN			57
+
 
 // Events
 #define ERROR_EVENT				0

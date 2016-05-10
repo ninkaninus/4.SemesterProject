@@ -32,6 +32,6 @@
 
 /*************************  Function interfaces ****************************/
 
-void convert_and_secure_pan(void);
+void convert_and_secure(void);
 
 #endif /* CONVERT_H_ */

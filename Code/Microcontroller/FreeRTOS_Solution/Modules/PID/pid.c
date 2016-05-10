@@ -29,6 +29,7 @@
 #include "EMP/emp_type.h"
 #include "Tasking/tmodel.h"
 #include "Tasking/messages.h"
+#include "Converter/Convert.h"
 
 /*****************************    Defines    *******************************/
 
@@ -39,9 +40,12 @@
 #define I_MIN	-1000
 #define DC_MAX	150
 #define DC_MIN	60
-#define KP		33
-#define KI		0
-#define KD		20
+#define KP1		50
+#define KI1		1
+#define KD1		20
+#define KP2		60
+#define KI2		2
+#define KD2		40
 
 /*****************************   Constants   *******************************/
 
@@ -57,15 +61,15 @@ extern xQueueHandle PID_queue;
 
 void init_pid()
 {
-	pan_sys.Kp = KP;
-	pan_sys.Ki = KI;
-	pan_sys.Kd = KD;
+	pan_sys.Kp = KP1;
+	pan_sys.Ki = KI1;
+	pan_sys.Kd = KD1;
 	pan_sys.integral = 0;
 	pan_sys.prev_error = 0;
 
-	tilt_sys.Kp = KP;
-	tilt_sys.Ki = KI;
-	tilt_sys.Kd = KD;
+	tilt_sys.Kp = KP2;
+	tilt_sys.Ki = KI2;
+	tilt_sys.Kd = KD2;
 	tilt_sys.integral = 0;
 	tilt_sys.prev_error = 0;
 }
@@ -134,6 +138,8 @@ void pid_update()
 	INT32S adjust;
 	INT8U dir;
 	INT16U duty_cycle;
+
+	convert_and_secure();
 
 	set_point 	= get_msg_state(SSM_SP_PAN);
 	actual 		= get_msg_state(SSM_POS_PAN);
