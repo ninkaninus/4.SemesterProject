@@ -70,6 +70,58 @@ void init_pid()
 	tilt_sys.prev_error = 0;
 }
 
+void convert_and_secure_pan(void)
+{
+
+
+	if(xSemaphoreTake(coordinate_access_sem, 100))
+	{
+		INT32U pan = get_msg_state(SSM_SP_PAN);
+		INT32U tilt =get_msg_state(SSM_SP_TILT);
+
+		if (tilt > TILT_MIN && tilt < TILT_MAX)
+		{
+			tilt = INDEX_TILT;
+			pan = INDEX_PAN;
+			xSemaphoreGive(coordinate_access_sem);
+			return;
+		}
+
+		if(pan > 180)
+		{
+			if(pan > THETA_3)
+			{
+				tilt = INDEX_TILT;
+				pan = INDEX_PAN;
+				xSemaphoreGive(coordinate_access_sem);
+				return;
+			}
+
+			pan = pan-180;
+			if(tilt < 90)
+			{
+				tilt = tilt - 2*(tilt-90);
+			}
+			else if(tilt > 90)
+			{
+				tilt = tilt + 2*(90-tilt);
+			}
+
+		}
+		else if(pan > THETA_1)
+		{
+			tilt = INDEX_TILT;
+			pan = INDEX_PAN;
+			xSemaphoreGive(coordinate_access_sem);
+			return;
+		}
+		xSemaphoreGive(coordinate_access_sem);
+		tilt = 3 * tilt + INDEX_TILT;
+		pan = 3 * pan + INDEX_PAN + PAN_DIRECTION_OFFSET;
+
+	}
+}
+
 void PID_task(void *pvParameters)
 {
 	init_pid();
