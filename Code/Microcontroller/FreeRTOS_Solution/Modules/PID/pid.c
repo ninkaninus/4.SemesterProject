@@ -73,7 +73,6 @@ void init_pid()
 void convert_and_secure_pan(void)
 {
 
-
 	if(xSemaphoreTake(coordinate_access_sem, 100))
 	{
 		INT32U pan = get_msg_state(SSM_SP_PAN);
