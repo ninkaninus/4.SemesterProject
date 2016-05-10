@@ -32,20 +32,20 @@
 
 /*****************************    Defines    *******************************/
 
-#define DT 		4		// 5ms * 1000
-#define O_MAX	40
-#define O_MIN	-40
-#define I_MAX	1000
-#define I_MIN	-1000
-#define DC_MAX	150
-#define DC_MIN	60
-#define KP		33
-#define KI		0
-#define KD		20
+#define INDEX_PAN		1
+#define INDEX_TILT		1
+#define PAN_DIRECTION_OFFSET 0
+#define	THETA_1			160
+#define THETA_3			340
+#define TILT_MIN		250
+#define TILT_MAX		290
+
 
 /*****************************   Constants   *******************************/
 
 /*****************************   Variables   *******************************/
+
+extern xSemaphoreHandle coordinate_access_sem;
 
 /*****************************   Functions   *******************************/
 
