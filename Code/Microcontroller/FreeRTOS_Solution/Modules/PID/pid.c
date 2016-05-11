@@ -185,6 +185,7 @@ void pid_update()
 	}
 
 
+
 	duty_cycle = pwm_conv(adjust);
 
 	duty_cycle = (dir<<8) | duty_cycle;

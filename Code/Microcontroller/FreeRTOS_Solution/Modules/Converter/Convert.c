@@ -32,15 +32,14 @@
 
 /*****************************    Defines    *******************************/
 
-\defien INDEX			2048
-#define INDEX_PAN		2048//1778
-#define INDEX_TILT		2048//1778
-#define OFFSET			280
+#define INDEX			2048
+#define INDEX_PAN		1778
+#define INDEX_TILT		1778
 #define PAN_DIRECTION_OFFSET 0
-#define	THETA_1			20
-#define	THETA_2			160
-#define THETA_3			200
-#define	THETA_4			340
+#define	THETA_1			70
+#define	THETA_2			110
+#define THETA_3			250
+#define	THETA_4			290
 #define TILT_MIN		250
 #define TILT_MAX		290
 
@@ -58,10 +57,10 @@ void convert_and_secure(void)
 	INT32U pan = 	get_msg_state(SSM_SP_DEG_PAN);
 	INT32U tilt =	get_msg_state(SSM_SP_DEG_TILT);
 
-	if ((tilt > TILT_MIN && tilt < TILT_MAX) || pan < THETA_1 || (pan > THETA_2 && pan < THETA_3) || pan > THETA_4)
+	if ((tilt > TILT_MIN && tilt < TILT_MAX) || (pan > THETA_1 && pan < THETA_2) || (pan > THETA_3 && pan < THETA_4))
 	{
-		tilt = INDEX_TILT;
-		pan = INDEX_PAN;
+		tilt = INDEX;
+		pan = INDEX;
 
 	}
 	else
@@ -89,18 +88,18 @@ void convert_and_secure(void)
 		{
 			pan = pan-180;
 
-			if(tilt < 180)
+			if(tilt > 180)
 			{
-				tilt = tilt - 2*(tilt-90);
+				tilt = tilt - 2*(tilt-180);
 			}
 			else
 			{
-				tilt = tilt + 2*(90-tilt);
+				tilt = tilt + 2*(180-tilt);
 			}
 		}
 
-		tilt = 3 * tilt + INDEX_TILT- OFFSET;
-		pan = 3 * pan + INDEX_PAN - OFFSET + PAN_DIRECTION_OFFSET;
+		tilt = 3 * tilt + INDEX_TILT;
+		pan = 3 * pan + INDEX_PAN + PAN_DIRECTION_OFFSET;
 
 	}
 
