@@ -1,26 +1,26 @@
 import serial
 import time
 
-ser = serial.Serial('COM7', 19200)  # open serial port
+ser = serial.Serial('COM7', 115200)  # open serial port
 print(ser.name)  # check which port was really used
 
-waitTime = 10
+waitTime = 0.25
 
-iStep1 = 50
+iStep1 = 10
 iStep2 = 5
 
 panLimitHigh = 359
 panLimitLow = 0
 
-tiltLimitHigh = 359
-tiltLimitLow = 0
+tiltLimitHigh = 95
+tiltLimitLow = 85
 
-i1 = 0
-i2 = 0
+i1 = panLimitLow
+i2 = tiltLimitLow
 
 try:
 
-    ser.write(bytearray(map(ord,"\\st045")))
+    #ser.write(bytearray(map(ord,"\\st085")))
 
     while True:
 
@@ -52,8 +52,9 @@ try:
         ser.write(b1)
 
         b2 = bytearray(map(ord,s2))
-        #ser.write(b2)
-        print(b1)
+        ser.write(b2)
+
+        print("PAN: " + str(i1) + " " + "TILT: " + str(i2))
 
         i1 += iStep1
         i2 += iStep2
