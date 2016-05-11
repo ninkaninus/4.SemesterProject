@@ -323,6 +323,8 @@ extern void UART0_init( INT32U baud_rate, INT8U databits, INT8U stopbits, INT8U 
   SYSCTL_RCGC1_R |= SYSCTL_RCGC1_UART0;					// Enable clock for UART 0
   #endif
 
+  NVIC_PRI1_R |= 0x0000DF00; 			//Setting the priority of the uart0 interrup to 6, which is the same as 223.
+
   GPIO_PORTA_AFSEL_R |= 0x00000003;		// set PA0 og PA1 to alternativ function (uart0)
   GPIO_PORTA_DIR_R   |= 0x00000002;     // set PA1 (uart0 tx) to output
   GPIO_PORTA_DIR_R   &= 0xFFFFFFFE;     // set PA0 (uart0 rx) to input
