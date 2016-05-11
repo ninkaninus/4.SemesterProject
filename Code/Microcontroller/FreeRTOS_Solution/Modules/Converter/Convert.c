@@ -32,6 +32,7 @@
 
 /*****************************    Defines    *******************************/
 
+\defien INDEX			2048
 #define INDEX_PAN		2048//1778
 #define INDEX_TILT		2048//1778
 #define OFFSET			280
