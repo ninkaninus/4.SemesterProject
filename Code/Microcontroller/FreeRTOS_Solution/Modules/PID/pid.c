@@ -37,16 +37,16 @@
 #define DT 				5		//  5ms * 1000
 #define O_MAX			40
 #define O_MIN			-40
-#define I_MAX			1000
-#define I_MIN			-1000
+#define I_MAX			7000
+#define I_MIN			-7000
 #define DC_MAX			150
 #define DC_MIN			60
 #define KP1				50
 #define KI1				1
 #define KD1				20
-#define KP2				60
+#define KP2				40
 #define KI2				2
-#define KD2				40
+#define KD2				20
 
 /*****************************   Constants   *******************************/
 
