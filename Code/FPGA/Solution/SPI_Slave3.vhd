@@ -8,9 +8,7 @@ library WORK;
 use WORK.Projekt_Data.all;
 
 entity SPI_Slave3 is
-	 generic (  Adr_Width: natural := 4; --Width in bits of the address bus
-					Nb: Natural := 2);  --Number of bytes
-					
+	 		
     Port ( Clk : 		in    STD_LOGIC;  -- FPGA 50 MHz clk
            -- The SPI interface
 			  SClk : 	in    STD_LOGIC;
@@ -18,7 +16,7 @@ entity SPI_Slave3 is
            MOSI : 	in    STD_LOGIC;
            MISO : 	out   STD_LOGIC;
 			  -- The internal AdrBus, DataBus and Write Enable
-           AdrBus :	out   STD_LOGIC_VECTOR ((Adr_Width - 1) downto 0);
+           AdrBus :	out   STD_LOGIC_VECTOR (3 downto 0);
            WE : 		out   STD_LOGIC;
            DataBusToSlave : in STD_LOGIC_VECTOR (11 downto 0);
 			  DataBusFromSlave : out STD_LOGIC_VECTOR (11 downto 0));
@@ -34,12 +32,12 @@ architecture Behavioral of SPI_Slave3 is
 	signal xSS:        			std_logic_vector( 1 downto 0) := "11";
 	
 	-- SClk_Count and _Cnt used to keep track of the number af SClk pulses
-   signal SClk_Count: 			std_logic_vector( 2**Nb-1 downto 0) := (others=>'1');	
-	shared variable SClk_Cnt:  integer range 0 to (8*Nb)-1 := 0; 
+   signal SClk_Count: 			std_logic_vector( 15 downto 0) := (others=>'1');	
+	shared variable SClk_Cnt:  integer range 0 to 15 := 0; 
 	-------------------------------------------------------------------------------
 	signal WE_net: std_logic := '1'; -- Active low
-   signal InBuf: 	std_logic_vector( 0 to (8*Nb)-1) := (others=>'0');
-   signal UdBuf:  std_logic_vector( 0 to (8*Nb)-1) := (others=>'0');	
+   signal InBuf: 	std_logic_vector( 0 to 15) := (others=>'0');
+   signal UdBuf:  std_logic_vector( 0 to  15) := (others=>'0');	
    alias  Adr:    std_logic_vector( 3 downto 0) is InBuf( 0 to 3); 
 
 	type States is (Wait_for_SS_low, --Wait for the SS line to turn low and initiate a transfer

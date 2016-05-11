@@ -2,6 +2,7 @@
 clk
 pwm
 WE
+emergencyStop
 =AdrBus[3:0]=
 =DataBusFromSlave[11:0]=
 [Outputs]

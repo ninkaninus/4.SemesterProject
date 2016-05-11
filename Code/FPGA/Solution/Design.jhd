@@ -1,17 +1,25 @@
 MODULE Design
 	SUBMODULE SPI_Slave3
-		INSTANCE XLXI_21
-	SUBMODULE Blok1
-		INSTANCE XLXI_27
+		INSTANCE SPI_Slave
 	SUBMODULE Mux16x12_4
-		INSTANCE XLXI_30
-	SUBMODULE pwm_driver
-		INSTANCE XLXI_35
+		INSTANCE DataToSlave
+	SUBMODULE MotorController
+		INSTANCE MotorController1Pan
+	SUBMODULE MotorController
+		INSTANCE MotorController2Tilt
 	SUBMODULE MultiplexDisplay
-		INSTANCE XLXI_38
-	SUBMODULE PositionsModul
-		INSTANCE XLXI_39
+		INSTANCE DisplayMultiplexer
 	SUBMODULE NumberToBcd
-		INSTANCE XLXI_41
-	SUBMODULE Motor_Interface
-		INSTANCE XLXI_42
+		INSTANCE TicksMotor1Pan
+	SUBMODULE NumberToBcd
+		INSTANCE TicksMotor2Tilt
+	SUBMODULE PositionsModul
+		INSTANCE PositionMotor1Pan
+	SUBMODULE PositionsModul
+		INSTANCE PositionMotor2Tilt
+	SUBMODULE Mux2x16_1
+		INSTANCE DisplayMux
+	SUBMODULE Toggle_Button3
+		INSTANCE Motor1PanZeroButton
+	SUBMODULE Toggle_Button3
+		INSTANCE Motor2TiltZeroButton

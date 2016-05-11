@@ -2,9 +2,9 @@
 -- Company: 
 -- Engineer: 
 -- 
--- Create Date:    16:02:43 04/14/2016 
+-- Create Date:    13:22:21 05/03/2016 
 -- Design Name: 
--- Module Name:    SikkerhedsFeature - Behavioral 
+-- Module Name:    Edge_Detect - Behavioral 
 -- Project Name: 
 -- Target Devices: 
 -- Tool versions: 
@@ -19,8 +19,6 @@
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.STD_LOGIC_ARITH.ALL;
-use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -31,20 +29,26 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity SikkerhedsFeature is
+entity Edge_Detect is
+	Port (
+		Clk : in STD_LOGIC;
+		Input : in  STD_LOGIC;
+		Edge_Out : out  STD_LOGIC_VECTOR (1 downto 0)
+	);
+end Edge_Detect;
 
-		Generic( 
-			Boundary1 : integer range 0 to 4096 := 2000;
-			Boundary2 : integer range 0 to 4096 := 2650
-		);
+architecture Behavioral of Edge_Detect is
 
-    Port ( Motor_Ticks : in  STD_LOGIC_VECTOR (11 downto 0);
-           Stop : out  STD_LOGIC);
-end SikkerhedsFeature;
+signal state : STD_LOGIC_VECTOR(1 downto 0) := "00";
 
-architecture Behavioral of SikkerhedsFeature is
 begin
 
-Stop <= '1' when (Motor_Ticks > Boundary2) OR (Motor_Ticks < Boundary1) else '0';
+EdgeDetector : process( Clk)
+begin
+	if rising_edge( Clk) then
+		state <= xSClk(0) & SClk;    -- SClk detection (SClk << 25 MHz)
+	end if;
+end process;
 
 end Behavioral;
+

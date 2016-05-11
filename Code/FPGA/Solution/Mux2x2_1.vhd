@@ -2,9 +2,9 @@
 -- Company: 
 -- Engineer: 
 -- 
--- Create Date:    16:02:43 04/14/2016 
+-- Create Date:    14:20:14 05/02/2016 
 -- Design Name: 
--- Module Name:    SikkerhedsFeature - Behavioral 
+-- Module Name:    Mux2x2_1 - Behavioral 
 -- Project Name: 
 -- Target Devices: 
 -- Tool versions: 
@@ -19,8 +19,6 @@
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.STD_LOGIC_ARITH.ALL;
-use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
@@ -31,20 +29,21 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity SikkerhedsFeature is
+entity Mux2x2_1 is
+    Port ( Input0 : in  STD_LOGIC_VECTOR (1 downto 0);
+           Input1 : in  STD_LOGIC_VECTOR (1 downto 0);
+           Sel : in  STD_LOGIC;
+           DataOut : out  STD_LOGIC_VECTOR (1 downto 0));
+end Mux2x2_1;
 
-		Generic( 
-			Boundary1 : integer range 0 to 4096 := 2000;
-			Boundary2 : integer range 0 to 4096 := 2650
-		);
+architecture Behavioral of Mux2x2_1 is
 
-    Port ( Motor_Ticks : in  STD_LOGIC_VECTOR (11 downto 0);
-           Stop : out  STD_LOGIC);
-end SikkerhedsFeature;
-
-architecture Behavioral of SikkerhedsFeature is
 begin
 
-Stop <= '1' when (Motor_Ticks > Boundary2) OR (Motor_Ticks < Boundary1) else '0';
+with Sel select DataOut <=
+	Input0 when '0',
+	Input1 when '1',
+	(others=>'X') when others;
 
 end Behavioral;
+

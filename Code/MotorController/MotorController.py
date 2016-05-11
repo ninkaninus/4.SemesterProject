@@ -1,63 +1,33 @@
 import serial
 import time
 
-ser = serial.Serial('COM3', 19200)  # open serial port
+ser = serial.Serial('COM4', 19200)  # open serial port
 print(ser.name)  # check which port was really used
-riseTime = 0.1
-fallTime = 0.1
-highTime = 0.1
-lowTime = 0.1
-topPwm = 210
-lowPwm = 150
-brakeTime = 0.1
+
+waitTime = 5
+
+panPos1 = 1900
+panPos2 = 2200
+
+tiltPos1 = 2100
+tiltPos2 = 3000
 
 try:
+
     while True:
 
-        ser.write(bytearray([32]))
-        ser.write(bytearray([0]))
+        ser.write(b'1900')
+        ser.write(b'2100')
 
-        time.sleep(brakeTime)
+        #print(panPos1)
 
-        ser.write(bytearray([32]))
-        ser.write(bytearray([1]))
-        i = lowPwm
-        while i < topPwm + 1:
-            ser.write(bytearray([16]))
-            ser.write(bytearray([i]))
-            i += 1
-            time.sleep(riseTime)
-        i = topPwm
-        time.sleep(highTime)
-        while i > lowPwm-1:
-            ser.write(bytearray([16]))
-            ser.write(bytearray([i]))
-            i -= 1
-            time.sleep(fallTime)
-        time.sleep(lowTime)
+        time.sleep(waitTime)
 
-        ser.write(bytearray([32]))
-        ser.write(bytearray([0]))
+        ser.write(b'2200')
+        ser.write(b'3000')
 
-        time.sleep(brakeTime)
+        time.sleep(waitTime)
 
-        ser.write(bytearray([32]))
-        ser.write(bytearray([2]))
-
-        i = lowPwm
-        while i < topPwm + 1:
-            ser.write(bytearray([16]))
-            ser.write(bytearray([i]))
-            i += 1
-            time.sleep(riseTime)
-        i = topPwm
-        time.sleep(highTime)
-        while i > lowPwm-1:
-            ser.write(bytearray([16]))
-            ser.write(bytearray([i]))
-            i -= 1
-            time.sleep(fallTime)
-        time.sleep(lowTime)
 except KeyboardInterrupt:
     pass
 ser.close()  # close port

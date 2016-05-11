@@ -31,14 +31,9 @@ use IEEE.NUMERIC_STD.ALL;
 --use UNISIM.VComponents.all;
 
 entity pwm_driver is
-	
-	 generic (  Adr_Width: natural := 4; --Width in bits of the address bus
-					Address: Natural := 1);  --Address of the device
 
     Port ( clk : in  STD_LOGIC;
-			  DataBusFromSlave : in STD_LOGIC_VECTOR (11 downto 0);
-			  AdrBus :	in   STD_LOGIC_VECTOR ((Adr_Width - 1) downto 0);
-			  WE : 		in  	STD_LOGIC;
+			  data : in STD_LOGIC_VECTOR (7 downto 0);
            pwm : out  STD_LOGIC);
 end pwm_driver;
 
@@ -51,7 +46,7 @@ signal DataIn : STD_LOGIC_VECTOR (7 downto 0) := "00000000";
 
 begin
 
-DataIn <= DataBusFromSlave(7 downto 0);
+DataIn <= data;
 
 counter: process(clk)		
 begin
@@ -77,11 +72,7 @@ end process;
 latch_data: process(clk)
 begin
 	if rising_edge(clk) then	
-		if unsigned(AdrBus) = Address then
-			if WE='0' then
-				current_value <= unsigned(DataIn);
-			end if;
-		end if;
+			current_value <= unsigned(DataIn);
 	end if;
 end process;
 	
