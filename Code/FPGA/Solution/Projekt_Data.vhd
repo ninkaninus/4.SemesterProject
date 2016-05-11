@@ -20,8 +20,8 @@ CONSTANT POSITIONS_MODUL2_TILT : STD_LOGIC_VECTOR(3 downto 0) := "0100";
 CONSTANT BLOK1 : INTEGER := 5;
 
 --***Boundaries for the motors***--
-CONSTANT PAN_MAX : INTEGER := 2284;--Smack on the rubber ring
-CONSTANT PAN_MIN : INTEGER := 1823;--Smack on the rubber ring
+CONSTANT PAN_MAX : INTEGER := 2350;--Smack on the rubber ring
+CONSTANT PAN_MIN : INTEGER := 1750;--Smack on the rubber ring
 CONSTANT TILT_MAX : INTEGER := 4096;--2650;
 CONSTANT TILT_MIN : INTEGER := 0;--2000;
 
