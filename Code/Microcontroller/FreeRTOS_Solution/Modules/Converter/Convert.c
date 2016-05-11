@@ -57,7 +57,7 @@ void convert_and_secure(void)
 	INT32U pan = 	get_msg_state(SSM_SP_DEG_PAN);
 	INT32U tilt =	get_msg_state(SSM_SP_DEG_TILT);
 
-	if ((tilt > TILT_MIN && tilt < TILT_MAX) || (pan > THETA_1 && pan < THETA_2) || (pan > THETA_3 && pan < THETA_4))
+	if ((tilt > TILT_MIN && tilt < TILT_MAX) || (pan > THETA_1 && pan < THETA_2) || (pan > THETA_3 && pan < THETA_4) || pan > 360 || tilt > 360)
 	{
 		tilt = INDEX;
 		pan = INDEX;
