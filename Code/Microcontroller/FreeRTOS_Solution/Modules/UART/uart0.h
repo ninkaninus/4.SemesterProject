@@ -27,6 +27,11 @@
 
 #define RX_FIFO_NOT_EMPTY !(UART0_FR_R & 0x10)
 
+// addresses
+
+#define PAN_SP			'p' // 0x70
+#define TILT_SP			't' // 0x74
+
 /*****************************   Constants   *******************************/
 
 /*****************************   Functions   *******************************/

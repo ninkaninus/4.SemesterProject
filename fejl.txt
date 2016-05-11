@@ -18,7 +18,6 @@
 *****************************************************************************/
 
 /***************************** Include files *******************************/
-#include <Converter/convert.h>
 #include <stdint.h>
 #include <tm4c123gh6pm.h>
 #include "FreeRTOS.h"
@@ -33,20 +32,27 @@
 
 /*****************************    Defines    *******************************/
 
-#define SCALE_FACTOR	1000
-#define DT 				5		//  5ms * 1000
-#define O_MAX			40
-#define O_MIN			-40
-#define I_MAX			7000
-#define I_MIN			-7000
-#define DC_MAX			150
-#define DC_MIN			60
-#define KP1				50
-#define KI1				1
-#define KD1				20
-#define KP2				40
-#define KI2				2
-#define KD2				20
+#define DT 		4		// 5ms * 1000
+#define O_MAX	40
+#define O_MIN	-40
+#define I_MAX	1000
+#define I_MIN	-1000
+#define DC_MAX	150
+#define DC_MIN	60
+#define KP		33
+#define KI		0
+#define KD		20
+#define TILT_MIN 	5
+#define TILT_MAX 	10
+#define THETA_1 	5
+#define THETA_3 	355
+#define TILT_OFFSET 0
+#define INDEX_TILT 	5
+#define INDEX_PAN 	5
+#define PAN_DIRECTION_OFFSET 90
+
+#define SSM_SP_PAN_TICKS		56
+#define SSM_SP_TILT_TICKS		57
 
 /*****************************   Constants   *******************************/
 
@@ -57,20 +63,73 @@ PID tilt_sys;
 
 extern xQueueHandle SPI_queue;
 extern xQueueHandle PID_queue;
+extern xSemaphoreHandle coordinate_access_sem;
 
 /*****************************   Functions   *******************************/
 
+void convert_and_secure_pan(void)
+{
+
+
+	if(xSemaphoreTake(coordinate_access_sem, 100))
+	{
+		INT32U pan = get_msg_state(SSM_SP_PAN);
+		INT32U tilt =get_msg_state(SSM_SP_TILT);
+
+		if (tilt > TILT_MIN && tilt < TILT_MAX)
+		{
+			tilt = INDEX_TILT;
+			pan = INDEX_PAN;
+			xSemaphoreGive(coordinate_access_sem);
+			return;
+		}
+
+		if(pan > 180)
+		{
+			if(pan > THETA_3)
+			{
+				tilt = INDEX_TILT;
+				pan = INDEX_PAN;
+				xSemaphoreGive(coordinate_access_sem);
+				return;
+			}
+
+			pan = pan-180;
+			if(tilt < 90)
+			{
+				tilt = tilt - 2*(tilt-90);
+			}
+			else if(tilt > 90)
+			{
+				tilt = tilt + 2*(90-tilt);
+			}
+
+		}
+		else if(pan > THETA_1)
+		{
+			tilt = INDEX_TILT;
+			pan = INDEX_PAN;
+			xSemaphoreGive(coordinate_access_sem);
+			return;
+		}
+		xSemaphoreGive(coordinate_access_sem);
+		tilt = 3 * tilt + INDEX_TILT;
+		pan = 3 * pan + INDEX_PAN + PAN_DIRECTION_OFFSET;
+
+	}
+}
+
 void init_pid()
 {
-	pan_sys.Kp = KP1;
-	pan_sys.Ki = KI1;
-	pan_sys.Kd = KD1;
+	pan_sys.Kp = KP;
+	pan_sys.Ki = KI;
+	pan_sys.Kd = KD;
 	pan_sys.integral = 0;
 	pan_sys.prev_error = 0;
 
-	tilt_sys.Kp = KP2;
-	tilt_sys.Ki = KI2;
-	tilt_sys.Kd = KD2;
+	tilt_sys.Kp = KP;
+	tilt_sys.Ki = KI;
+	tilt_sys.Kd = KD;
 	tilt_sys.integral = 0;
 	tilt_sys.prev_error = 0;
 }
@@ -115,9 +174,6 @@ INT32S pid_calc(INT32U desired, INT32U actual, PID *controller)
 	if(integral < I_MIN)
 		integral = I_MIN;
 		
-	if(error == 0)			// nulstiller integral-delen når målet er nået.
-		integral = 0;
-
 	derivative = (error - controller->prev_error)/DT;
 
 	output = controller->Kp*error + controller->Ki*integral + controller->Kd*derivative;
@@ -143,7 +199,9 @@ void pid_update()
 	INT8U dir;
 	INT16U duty_cycle;
 
-	set_point 	= get_msg_state(SSM_SP_PAN);
+	convert_and_secure_pan();
+
+	set_point 	= get_msg_state(SSM_SP_PAN_TICKS);
 	actual 		= get_msg_state(SSM_POS_PAN);
 
 	adjust = pid_calc(set_point,actual,&pan_sys);
@@ -173,7 +231,7 @@ void pid_update()
 	// hent ny vï¿½rdi fra feedback for TILT
 	// udregn PWM vï¿½rdi fra pid_calc() og send til SPI modul
 
-	set_point 	= get_msg_state(SSM_SP_TILT);
+	set_point 	= get_msg_state(SSM_SP_TILT_TICKS);
 	actual	  	= get_msg_state(SSM_POS_TILT);
 	adjust = pid_calc(set_point,actual,&tilt_sys);
 	if(set_point != actual)
@@ -183,7 +241,6 @@ void pid_update()
 		else
 			dir = 2;
 	}
-
 
 
 	duty_cycle = pwm_conv(adjust);
@@ -199,7 +256,7 @@ void pid_update()
 	event = SET_PWM_EVENT;
 	xQueueSend(SPI_queue,&event,500 / portTICK_RATE_MS);
 
-		vTaskDelay(5 / portTICK_RATE_MS);
+		vTaskDelay(4 / portTICK_RATE_MS);
 
 	event = GET_POS_EVENT;
 	xQueueSend(SPI_queue,&event,500 / portTICK_RATE_MS);
@@ -212,22 +269,16 @@ INT16U pwm_conv(INT32S output)
 
 	INT32U ratio = (output*1000) / O_MAX ;
 
-	INT32U result;// = 255 * ratio;
-
-	result = (DC_MAX - DC_MIN) * ratio;
-
+	INT32U result = 255 * ratio;
 	result /= 1000;
 
-	result += DC_MIN;
-
-	/*
 	if(result > DC_MAX)
 		result = DC_MAX;
 	if(result < DC_MIN)
 		result = DC_MIN;
-	 */
 
 	return result;
+
 }
 
 

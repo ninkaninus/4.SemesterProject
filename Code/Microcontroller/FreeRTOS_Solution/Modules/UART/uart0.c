@@ -19,13 +19,14 @@
 *****************************************************************************/
 
 /***************************** Include files *******************************/
+#include <Converter/convert.h>
 #include <stdint.h>
 #include "tm4c123gh6pm.h"
 #include <EMP/emp_type.h>
 #include <UART/uart0.h>
 #include <Tasking/tmodel.h>
 #include <Tasking/messages.h>
-
+#include "Converter/convert.h"
 #include "FreeRTOS.h"
 #include "queue.h"
 #include "task.h"
@@ -38,6 +39,17 @@
 extern xQueueHandle uart0_rx_queue;
 extern xQueueHandle UI_queue;
 extern xQueueHandle PID_queue;
+
+enum uart_states {
+	IDLE,
+	COMMAND,
+	SET,
+	SET_DATA,
+	GET,
+	DATA,
+	SEND_EVENTS,
+	WAIT
+};
 
 /*****************************   Functions   *******************************/
 
@@ -142,58 +154,158 @@ void UART0_rx_isr()
 void UART0_task(void *pvParameters)
 {
 	INT8U received;
-	INT8U itr = 0;
-	INT32U temp;
+	INT32U temp = 0;
+	INT32U data = 0;
+	INT8U uart_state = IDLE;
+	INT8U address;
+	INT8U n_max;
+
 	while(1)
 	{
-		if (xQueueReceive(uart0_rx_queue, &received, 500 / portTICK_RATE_MS))
+//			received -= '0';
+//			switch(itr++)
+//			{
+//			case 0:
+//				temp = received*100;
+//				break;
+//
+//			case 1:
+//				temp += received*10;
+//				break;
+//
+//			case 2:
+//				temp += received;
+//				put_msg_state(SSM_SP_DEG_TILT, temp);
+//				received = PID_UPDATE_EVENT;
+//				xQueueSend(PID_queue,&received,50);
+//				break;
+//
+//			case 3:
+//				temp = received*100;
+//				break;
+//
+//			case 4:
+//				temp += received*10;
+//				break;
+//
+//			case 5:
+//				temp += received;
+//				put_msg_state(SSM_SP_DEG_PAN, temp);
+//				received = PID_UPDATE_EVENT;
+//				xQueueSend(PID_queue,&received,50);
+//				itr = 0;
+//				break;
+//
+//			default:
+//				break;
+//			}
+
+		switch(uart_state)
 		{
-			received -= '0';
-			switch(itr++)
+		case IDLE:
+			if (xQueueReceive(uart0_rx_queue, &received, 500 / portTICK_RATE_MS))
 			{
-			case 0:
-				temp = received*1000;
-				break;
+				if(received == '\\')
+					uart_state = COMMAND;
+			}
+			break;
 
-			case 1:
-				temp += received*100;
-				break;
+		case COMMAND:
+			if (xQueueReceive(uart0_rx_queue, &received, 500 / portTICK_RATE_MS))
+			{
+				switch(received)
+				{
+				case 's':
+					uart_state = SET;
+					break;
+				case 'g':
+					uart_state = GET;
+					break;
 
-			case 2:
-				temp += received*10;
-				break;
+				default:
+					uart_state = IDLE;
+					break;
+				}
+			}
+			break;
 
-			case 3:
-				temp += received;
-				put_msg_state(SSM_SP_PAN, temp);
+		case SET:
+			if (xQueueReceive(uart0_rx_queue, &received, 500 / portTICK_RATE_MS))
+			{
+				switch(received)
+				{
+				case PAN_SP:
+					address = SSM_SP_DEG_PAN;
+					n_max = 3;
+					uart_state = SET_DATA;
+					break;
+
+				case TILT_SP:
+					address = SSM_SP_DEG_TILT;
+					n_max = 3;
+					uart_state = SET_DATA;
+					break;
+
+				default:
+					uart_state = IDLE;
+					break;
+				}
+			}
+			break;
+
+		case SET_DATA:
+
+			data = 0;
+			for(INT8U i = 0; i < n_max; i++)
+			{
+				if (xQueueReceive(uart0_rx_queue, &received, 50000 / portTICK_RATE_MS))
+				{
+					received -= '0';
+					temp = received;
+					for(INT8U j = i+1; j < n_max; j++)
+					{
+						temp *= 10;
+					}
+
+					data += temp;
+				}
+				else
+				{
+					uart_state = IDLE;
+					break;
+				}
+			}
+
+			put_msg_state(address, data);
+			uart_state = SEND_EVENTS;
+			break;
+
+		case SEND_EVENTS:
+
+			switch(address)
+			{
+			case SSM_SP_DEG_PAN:
+			case SSM_SP_DEG_TILT:
+				convert_and_secure();
 				received = PID_UPDATE_EVENT;
 				xQueueSend(PID_queue,&received,50);
-				break;
-
-			case 4:
-				temp = received*1000;
-				break;
-
-			case 5:
-				temp += received*100;
-				break;
-
-			case 6:
-				temp += received*10;
-				break;
-
-			case 7:
-				temp += received;
-				put_msg_state(SSM_SP_TILT, temp);
-				received = PID_UPDATE_EVENT;
-				xQueueSend(PID_queue,&received,50);
-				itr = 0;
 				break;
 
 			default:
 				break;
 			}
+			uart_state = IDLE;
+			break;
+
+		case GET:
+			break;
+		case WAIT:
+			break;
+		default:
+			break;
+
 		}
+
 	}
 }
 

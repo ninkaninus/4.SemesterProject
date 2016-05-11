@@ -68,6 +68,7 @@ xSemaphoreHandle scale_sem;
 xSemaphoreHandle spi_access_sem;
 xSemaphoreHandle time_access_sem;
 xSemaphoreHandle rtc_update_sem;
+xSemaphoreHandle coordinate_access_sem;
 
 /*****************************   Functions   *******************************/
 

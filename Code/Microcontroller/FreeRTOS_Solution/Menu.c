@@ -5,40 +5,47 @@
  *      Author: Daniel
  */
 
-#include "EMP/emp_type.h"
+//What menu we are in
+#define Main_menu	0;
+#define Run			1;
+#define	Numpad		2;
+#define	Geber		3;
+#define Adjust		4;
+#define	Options 	5;
 
-#define menu	0
-#define Run		1
-#define	numpad	2
-#define	geber	3
-#define adjust	4
-#define	options 5
+//Current option in menu - Main
+#define Main_menu_run	1;
+#define Main_menu_numpad 2;
+#define Main_menu_geber	3:
+#define Main_menu_adjust 4;
+#define Main_menu_options 5;
 
-#define menu_return 0
-#define menu_run	1
-#define menu_numpad 2
-#define menu_geber	3
-#define menu_adjust 4
-#define menu_options 5
+//Current option in menu - Run
+#define run_return  0;
+#define start_stop	1;
+#define pic_now		2;
+#define	auto_pic_on_off	3;
 
-#define start_stop	1
-#define pic_now		2
-#define	auto_pic_on_off	3
+//Current option in menu - Numpad
+#define numpad_return 0;
+#define longtitude	1;
+#define lattitude	2;
 
-#define longtitude	1
-#define lattitude	2
+//Current option in menu - Adjust
+#define adjust_return 0;
+#define	value1		1;
 
-#define	value1		1
+//Current option in menu - Options
+#define options_return	0;
+#define numpad_on_off	1;
+#define UART_on_off		2;
+#define set_time		3;
+#define set_location	4;
+#define reset_position	5;
 
-#define numpad_on_off	1
-#define UART_on_off		2
-#define set_time		3
-#define set_location	4
-#define reset_position	5
-
-#define BE_left		1
-#define BE_right	2
-#define BE_push		3
+#define BE_left		1;
+#define BE_right	2;
+#define BE_push		3;
 
 /*
 switch (geber_evet)
@@ -75,13 +82,13 @@ void menu_task(void *pvParameters)
 						switch (geber_evet)
 						{
 							case BE_left:
-
+								menu_selected = Options;
 								break;
 							case BE_right:
-
+								menu_selected = Numpad;
 								break;
 							case BE_push:
-
+								menu_state = Main_menu_run;
 								break;
 							default:
 								break;
@@ -96,13 +103,13 @@ void menu_task(void *pvParameters)
 						switch (geber_evet)
 						{
 							case BE_left:
-
+								menu_selected = Run;
 								break;
 							case BE_right:
-
+								menu_selected = Geber;
 								break;
 							case BE_push:
-
+								menu_state = Main_menu_numpad;
 								break;
 							default:
 								break;
@@ -116,13 +123,13 @@ void menu_task(void *pvParameters)
 						switch (geber_evet)
 						{
 							case BE_left:
-
+								menu_selected = Numpad;
 								break;
 							case BE_right:
-
+								menu_selected = Adjust;
 								break;
 							case BE_push:
-
+								menu_state = Main_menu_geber;
 								break;
 							default:
 								break;
@@ -136,13 +143,13 @@ void menu_task(void *pvParameters)
 						switch (geber_evet)
 						{
 							case BE_left:
-
+								menu_selected = Geber;
 								break;
 							case BE_right:
-
+								menu_selected = Options;
 								break;
 							case BE_push:
-
+								menu_state = Main_menu_adjust;
 								break;
 							default:
 								break;
@@ -156,13 +163,13 @@ void menu_task(void *pvParameters)
 						switch (geber_evet)
 						{
 							case BE_left:
-
+								menu_selected = Adjust;
 								break;
 							case BE_right:
-
+								menu_selected = Run;
 								break;
 							case BE_push:
-
+								menu_state = Main_menu_options;
 								break;
 							default:
 								break;
@@ -185,17 +192,17 @@ void menu_task(void *pvParameters)
 
 						switch (geber_evet)
 						{
-							case BE_left:
-
-								break;
-							case BE_right:
-
-								break;
-							case BE_push:
-
-								break;
-							default:
-								break;
+						case BE_left:
+							menu_selected = run_return;
+							break;
+						case BE_right:
+							menu_selected = pic_now;
+							break;
+						case BE_push:
+							//do stuff
+							break;
+						default:
+							break;
 						}
 
 						break;
@@ -206,13 +213,13 @@ void menu_task(void *pvParameters)
 						switch (geber_evet)
 						{
 							case BE_left:
-
+								menu_selected = start_stop;
 								break;
 							case BE_right:
-
+								menu_selected = auto_pic_on_off;
 								break;
 							case BE_push:
-
+								//do stuff
 								break;
 							default:
 								break;
@@ -226,13 +233,13 @@ void menu_task(void *pvParameters)
 						switch (geber_evet)
 						{
 							case BE_left:
-
+								menu_selected = pic_now
 								break;
 							case BE_right:
-
+								menu_selected = run_return;
 								break;
 							case BE_push:
-
+								//do stuff
 								break;
 							default:
 								break;
@@ -240,19 +247,20 @@ void menu_task(void *pvParameters)
 
 						break;
 
-					case menu_return:
+					case run_return:
 						//do stuff
 
 						switch (geber_evet)
 						{
 							case BE_left:
-
+								menu_state = auto_pic_on_off;
 								break;
 							case BE_right:
-
+								menu_state = start_stop;
 								break;
 							case BE_push:
-
+								menu_state = Main_menu;
+								menu_selection = Run;
 								break;
 							default:
 								break;
@@ -281,13 +289,13 @@ void menu_task(void *pvParameters)
 						switch (geber_evet)
 						{
 							case BE_left:
-
+								menu_selected = geber_return;
 								break;
 							case BE_right:
-
+								menu_selected = lattitude;
 								break;
 							case BE_push:
-
+								//do stuff
 								break;
 							default:
 								break;
@@ -301,13 +309,13 @@ void menu_task(void *pvParameters)
 						switch (geber_evet)
 						{
 							case BE_left:
-
+								menu_selected = longtitude;
 								break;
 							case BE_right:
-
+								menu_selected = geber_return;
 								break;
 							case BE_push:
-
+								//do stuff
 								break;
 							default:
 								break;
@@ -315,19 +323,20 @@ void menu_task(void *pvParameters)
 
 						break;
 
-					case menu_return:
+					case geber_return:
 						//do stuff
 
 						switch (geber_evet)
 						{
 							case BE_left:
-
+								menu_selected = lattitude;
 								break;
 							case BE_right:
-
+								menu_selected = longtitude;
 								break;
 							case BE_push:
-
+								menu_state = Main_menu;
+								menu_selected = Geber;
 								break;
 							default:
 								break;
@@ -350,13 +359,13 @@ void menu_task(void *pvParameters)
 						switch (geber_evet)
 						{
 							case BE_left:
-
+								menu_selected = adjust_return;
 								break;
 							case BE_right:
-
+								menu_selected = value2;			// Indsæt hvis der laves flere
 								break;
 							case BE_push:
-
+								//do stuff
 								break;
 							default:
 								break;
@@ -364,19 +373,20 @@ void menu_task(void *pvParameters)
 
 						break;
 
-					case menu_return:
+					case adjust_return:
 						//do stuff
 
 						switch (geber_evet)
 						{
 							case BE_left:
-
+								menu_selected = adjustlast;				//skal indsættes
 								break;
 							case BE_right:
-
+								menu_selected = adjust1;
 								break;
 							case BE_push:
-
+								menu_state = Main_menu;
+								menu_selected = Adjust;
 								break;
 							default:
 								break;
@@ -397,13 +407,13 @@ void menu_task(void *pvParameters)
 						switch (geber_evet)
 						{
 							case BE_left:
-
+								menu_selected = options_return;
 								break;
 							case BE_right:
-
+								menu_selected = UART_on_off;
 								break;
 							case BE_push:
-
+								//do stuff
 								break;
 							default:
 								break;
@@ -417,13 +427,13 @@ void menu_task(void *pvParameters)
 						switch (geber_evet)
 						{
 							case BE_left:
-
+								menu_selected = numpad_on_off;
 								break;
 							case BE_right:
-
+								menu_selected = set_time;
 								break;
 							case BE_push:
-
+								//do stuff
 								break;
 							default:
 								break;
@@ -437,13 +447,13 @@ void menu_task(void *pvParameters)
 						switch (geber_evet)
 						{
 							case BE_left:
-
+								menu_selected = UART_on_off;
 								break;
 							case BE_right:
-
+								menu_selected = set_location;
 								break;
 							case BE_push:
-
+								//do stuff
 								break;
 							default:
 								break;
@@ -457,13 +467,13 @@ void menu_task(void *pvParameters)
 						switch (geber_evet)
 						{
 							case BE_left:
-
+								menu_selected = set_time;
 								break;
 							case BE_right:
-
+								menu_selected = reset_position;
 								break;
 							case BE_push:
-
+								//do stuff
 								break;
 							default:
 								break;
@@ -477,13 +487,13 @@ void menu_task(void *pvParameters)
 						switch (geber_evet)
 						{
 							case BE_left:
-
+								menu_selected = set_location;
 								break;
 							case BE_right:
-
+								menu_selected = options_return;
 								break;
 							case BE_push:
-
+								//do stuff
 								break;
 							default:
 								break;
@@ -491,19 +501,20 @@ void menu_task(void *pvParameters)
 
 						break;
 
-					case menu_return:
+					case options_return:
 						//do stuff
 
 						switch (geber_evet)
 						{
 							case BE_left:
-
+								menu_selected = reset_position;
 								break;
 							case BE_right:
-
+								menu_selected = numpad_on_off;
 								break;
 							case BE_push:
-
+								menu_state = Main_menu;
+								menu_selected = Options;
 								break;
 							default:
 								break;
