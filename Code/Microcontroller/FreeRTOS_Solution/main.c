@@ -80,7 +80,7 @@ static void setupHardware(void)
   // Warning: If you do not initialize the hardware clock, the timings will be inaccurate
 
   GPIO_init();
-  UART0_init( 19200, 8, 1, 0 );
+  UART0_init( 115200, 8, 1, 0 );
 }
 
 int main(void)
