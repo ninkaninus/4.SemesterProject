@@ -4,9 +4,9 @@ import time
 ser = serial.Serial('COM7', 19200)  # open serial port
 print(ser.name)  # check which port was really used
 
-waitTime = 0.5
+waitTime = 10
 
-iStep1 = 5
+iStep1 = 50
 iStep2 = 5
 
 panLimitHigh = 359

@@ -70,6 +70,7 @@ architecture Behavioral of MotorController is
 	type States is (Init,
 						 ZeroRelease,
 						 ZeroMotor,
+						 PostZero,
 						 RunMode,
 						 Emergency
 						 ); 
@@ -129,10 +130,8 @@ begin
 				when ZeroMotor =>
 					StateOutput <= "01";
 					if HallIndexEdge = "10" then
-						runState <= "00";
-						pwm_data_in <= "00000000";
 						Zeroed <= '1';
-						State <= RunMode;
+						State <= PostZero;
 					else 
 						pwm_data_in <= STD_LOGIC_VECTOR(TO_UNSIGNED(ZEROING_PWM, pwm_data_in'length));
 						MotorEnable <= '1';
@@ -145,6 +144,13 @@ begin
 						else
 							runState <= "00";
 						end if;
+					end if;
+				
+				when PostZero =>
+					runState <= "00";
+					pwm_data_in <= "00000000";
+					if ButtonPulse = '1' then
+						State <= RunMode;
 					end if;
 				
 				when RunMode =>
