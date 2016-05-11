@@ -97,19 +97,19 @@ NET "SPI_MOSI"	LOC = "M16"; #JA10
 #NET "NOC"	      LOC = "G15"; #JC1
 NET "H_I_0_Pan" LOC = "J16"; #JC2
 NET "M1_H_A" LOC = "G13"; #JC3
-NET "M2_H_A"	 LOC = "H16"; #JC4
+NET "M2_H_B"	 LOC = "H16"; #JC4
 #NET "NOC"	 LOC = "H15"; #JC7
 NET "H_I_1_Tilt"	 LOC = "F14"; #JC8
 NET "M1_H_B"	 LOC = "G16"; #JC9
-NET "M2_H_B"	 LOC = "J12"; #JC10
+NET "M2_H_A"	 LOC = "J12"; #JC10
 
 #JD1
 
 #NET "NOC"	 LOC = "J13"; #JD1
 NET "M1_Pan<0>"	 LOC = "M18"; #JD2
 NET "M1_Pan_E"	 LOC = "N18"; #JD3
-NET "M2_Tilt<1>"	 LOC = "P18"; #JD4
+NET "M2_Tilt<0>"	 LOC = "P18"; #JD4
 #NET "NOC"	 LOC = "K14"; #JD7
 NET "M1_Pan<1>"	 LOC = "K15"; #JD8
-NET "M2_Tilt<0>"	 LOC = "J15"; #JD9
+NET "M2_Tilt<1>"	 LOC = "J15"; #JD9
 NET "M2_Tilt_E"	 LOC = "J14"; #JD10
