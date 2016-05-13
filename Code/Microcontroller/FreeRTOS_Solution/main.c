@@ -104,7 +104,7 @@ int main(void)
 
   // Start the tasks defined within this file/specific to this demo.
   return_value &= xTaskCreate( status_led_task, ( signed portCHAR * ) 	"Status LED", 	USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
-  //return_value &= xTaskCreate( LCD_task, ( signed portCHAR * ) 			"LCD", 			USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
+  return_value &= xTaskCreate( LCD_task, ( signed portCHAR * ) 			"LCD", 			USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
   //return_value &= xTaskCreate( numpad_task, ( signed portCHAR * ) 		"Keypad", 		USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
   return_value &= xTaskCreate( gui_task, ( signed portCHAR * ) 			"GUI", 			USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
   return_value &= xTaskCreate( ui_task, ( signed portCHAR * ) 			"UI", 			USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );

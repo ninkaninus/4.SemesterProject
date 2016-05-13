@@ -37,16 +37,17 @@
 #define DT 				50		//  50 * 0.0001 = 0,005s
 #define O_MAX			400000
 #define O_MIN			-400000
-#define I_MAX			70000
-#define I_MIN			-70000
+#define I_MAX			30000000
+#define I_MIN			-30000000
 #define DC_MAX			150
 #define DC_MIN			60
-#define KP1				175		// 175 * 0.0001		// 5 * k = 0.0175		, k = 0.0035
-#define KI1				35		// 35  * 0.0001		// 1 * k = 0.0035
-#define KD1				35		// 35  * 0.0001		// 1 * k = 0.0035
-#define KP2				175		// 175 * 0.0001		// 5 * k = 0.0175
-#define KI2				35		// 35  * 0.0001		// 1 * k = 0.0035
-#define KD2				35		// 35  * 0.0001		// 1 * k = 0.0035
+#define K				35		// 0.0035 * 10000
+#define KP1				5*K		// 175 * 0.0001		// 5 * k = 0.0175		, k = 0.0035
+#define KI1				1*K		// 35  * 0.0001		// 1 * k = 0.0035
+#define KD1				1*K		// 35  * 0.0001		// 1 * k = 0.0035
+#define KP2				5*K		// 175 * 0.0001		// 5 * k = 0.0175
+#define KI2				1*K		// 35  * 0.0001		// 1 * k = 0.0035
+#define KD2				1*K		// 35  * 0.0001		// 1 * k = 0.0035
 
 /*****************************   Constants   *******************************/
 
@@ -105,7 +106,6 @@ INT32S pid_calc(INT32U desired, INT32U actual, PID *controller)
 	INT32S derivative;
 	INT32S integral;
 	INT32S output;
-	//INT32S pre-output;
 	
 	error = desired - actual;
 	integral = controller->integral;
@@ -121,14 +121,26 @@ INT32S pid_calc(INT32U desired, INT32U actual, PID *controller)
 
 	derivative = (error - controller->prev_error)/DT;
 
-	output = controller->Kp*error + controller->Ki*integral + controller->Kd*derivative;
+	INT32S P_term = controller->Kp*error;			// scaled by 10E4
+
+	INT32S I_term = controller->Ki*integral;		// scaled by 10E8
+	I_term /= SCALE_FACTOR;							// scaled by 10E4
+
+	INT32S D_term = controller->Kd*derivative;		// scaled by 10E0
+	D_term *= SCALE_FACTOR;							// scaled by 10E4
+
+	if(error > 300 || error < -300)					// integration is only active when close to the target
+	{
+		I_term = 0;
+		integral = 0;
+	}
+
+	output = P_term + I_term + D_term;
 
 	if(output > O_MAX)
 		output = O_MAX;
 	if(output < O_MIN)
 		output = O_MIN;
-
-	output /= SCALE_FACTOR;
 
 	controller->integral = integral;
 	controller->prev_error = error;
@@ -209,13 +221,13 @@ INT16U pwm_conv(INT32S output)
 	if(output < 0)
 		output *= -1;
 
-	INT32U ratio = (output*1000) / O_MAX ;
+	INT32U ratio = (output << 10) / O_MAX ;
 
 	INT32U result;// = 255 * ratio;
 
 	result = (DC_MAX - DC_MIN) * ratio;
 
-	result /= 1000;
+	result = result >> 10;
 
 	result += DC_MIN;
 
