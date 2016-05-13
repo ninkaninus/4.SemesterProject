@@ -33,20 +33,20 @@
 
 /*****************************    Defines    *******************************/
 
-#define SCALE_FACTOR	1000
-#define DT 				5		//  5ms * 1000
-#define O_MAX			40
-#define O_MIN			-40
-#define I_MAX			7000
-#define I_MIN			-7000
+#define SCALE_FACTOR	10000
+#define DT 				50		//  50 * 0.0001 = 0,005s
+#define O_MAX			400000
+#define O_MIN			-400000
+#define I_MAX			70000
+#define I_MIN			-70000
 #define DC_MAX			150
 #define DC_MIN			60
-#define KP1				50
-#define KI1				1
-#define KD1				20
-#define KP2				40
-#define KI2				2
-#define KD2				20
+#define KP1				175		// 175 * 0.0001		// 5 * k = 0.0175		, k = 0.0035
+#define KI1				35		// 35  * 0.0001		// 1 * k = 0.0035
+#define KD1				35		// 35  * 0.0001		// 1 * k = 0.0035
+#define KP2				175		// 175 * 0.0001		// 5 * k = 0.0175
+#define KI2				35		// 35  * 0.0001		// 1 * k = 0.0035
+#define KD2				35		// 35  * 0.0001		// 1 * k = 0.0035
 
 /*****************************   Constants   *******************************/
 
@@ -105,6 +105,7 @@ INT32S pid_calc(INT32U desired, INT32U actual, PID *controller)
 	INT32S derivative;
 	INT32S integral;
 	INT32S output;
+	//INT32S pre-output;
 	
 	error = desired - actual;
 	integral = controller->integral;
@@ -122,12 +123,12 @@ INT32S pid_calc(INT32U desired, INT32U actual, PID *controller)
 
 	output = controller->Kp*error + controller->Ki*integral + controller->Kd*derivative;
 
-	output /= 1000;
-
 	if(output > O_MAX)
 		output = O_MAX;
 	if(output < O_MIN)
 		output = O_MIN;
+
+	output /= SCALE_FACTOR;
 
 	controller->integral = integral;
 	controller->prev_error = error;
@@ -184,13 +185,11 @@ void pid_update()
 			dir = 2;
 	}
 
-
-
 	duty_cycle = pwm_conv(adjust);
 
 	duty_cycle = (dir<<8) | duty_cycle;
-	//if(set_point != actual)
-		duty_cycle = 0x0400 | duty_cycle;
+
+	duty_cycle = 0x0400 | duty_cycle;
 
 	put_msg_state(SSM_PWM_DIR_EN_TILT,duty_cycle);
 

@@ -32,6 +32,7 @@ typedef struct
 	INT32U Kd;				// Derivative Gain
 	
 	INT32S integral;			// Integral Term
+	INT32S back_calc;
 	INT32S prev_error;		// Previous error term
 } PID;
 
