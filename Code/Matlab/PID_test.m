@@ -21,8 +21,8 @@ sigrid(100)
 
 
 P = 5;
-I = 1;
-D = 1;
+I = 1000;
+D = 0.001;
 
 syms x;
 sol = solve(P*x+I+D*x^2==0,x)
