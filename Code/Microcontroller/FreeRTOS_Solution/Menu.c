@@ -17,540 +17,669 @@
 #include "Tasking/tmodel.h"
 #include "Tasking/messages.h"
 
-//What menu we are in
+//What menu we are in - super state
 #define Main_menu	0
 #define Run			1
-#define	Numpad		2
-#define	Geber		3
-#define Adjust		4
-#define	Options 	5
+#define	Show		2
+#define	Options 	3
 
 //Current option in menu - Main
-#define menu_run	1
-#define menu_numpad 2
-#define menu_geber	3
-#define menu_adjust 4
-#define menu_options 5
+#define menu_run		1
+#define menu_show		2
+#define menu_options	3
 
 //Current option in menu - Run
-#define run_return  0
-#define start_stop	1
-#define pic_now		2
-#define	auto_pic_on_off	3
+#define run_return  	0
+#define start			1
+#define stop			2
+#define manual_jog		3
+#define manual_set		4
+#define	auto_pic_on_off	5
 
-//Current option in menu - Numpad
-#define numpad_return 0
-#define longtitude	1
-#define lattitude	2
-
-//Current option in menu - Geber
-#define geber_return 0
-
-//Current option in menu - Adjust
-#define adjust_return 0
-#define	adjust1		1
-#define adjust2		2
-#define adjustlast	10
+//Current options in menu - Show
+#define show_return		0
+#define show_pan		1
+#define show_tilt		2
+#define show_error		3
 
 //Current option in menu - Options
 #define options_return	0
-#define numpad_on_off	1
-#define UART_on_off		2
-#define set_time		3
-#define set_location	4
-#define reset_position	5
+#define set_tilt_offset	1
+#define set_pan_offset	2
+#define pan_pidk		3
+#define tilt_pidk		4
+#define kanin pid		5
 
-#define BE_left		1
-#define BE_right	2
-#define BE_push		3
-
-/*
-switch (geber_event)
-{
-	case BE_left:
-
-		break;
-	case BE_right:
-
-		break;
-	case BE_push:
-
-		break;
-	default:
-		break;
-}*/
+//Input events
+#define KE_0		0
+#define KE_1		1
+#define KE_2		2
+#define KE_3		3
+#define KE_4		4
+#define KE_5		5
+#define KE_6		6
+#define KE_7		7
+#define KE_8		8
+#define KE_9		9
+#define KE_*		10
+#define KE_hashtag	11
+#define BE_left		12
+#define BE_right	13
+#define BE_push		14
 
 void menu_task(void *pvParameters)
 {
-	static INT8U menu_state = 0;
-	static INT8U menu_selected = 0;
+	static INT8U super_state = 0;
+	static INT8U sub_state = 0;
 	static INT8U item_selected = 0;
-
-	while(1)
+	INT8U input_event = 0;
+	while (1)
 	{
-		INT8U geber_event = 0;			//placeholder
-
-		switch (menu_state)
+		if( xSemaphoreTake( menu_input_semaphore, 100 ))
 		{
-			case Main_menu:
+			if( xQueueReceive( menu_input_queue, &( input ), 0 ))
+			{
+				input_event = input;
+				xSemaphoreGive(menu_input_semaphore);
 
-				switch (menu_selected)
+				switch (super_state)
 				{
-					case menu_run:
-
-						switch (geber_event)
+				case Main_state:
+					switch (sub_state)
+					{
+					case run_menu:
+						switch (input_event)
 						{
 							case BE_left:
-								menu_selected = Options;
+								sub_state = Options;
 								break;
+
 							case BE_right:
-								menu_selected = Numpad;
+								sub_state = Show;
 								break;
+
 							case BE_push:
-								menu_state = menu_run;
+								super_state = menu_run;
 								break;
+
 							default:
 								break;
 						}
-
-						//do stuff
 						break;
 
-					case menu_numpad:
-						//do stuff
-
-						switch (geber_event)
+					case show_menu:
+						switch (input_event)
 						{
 							case BE_left:
-								menu_selected = Run;
+								sub_state = Options;
 								break;
+
 							case BE_right:
-								menu_selected = Geber;
+								sub_state = Show;
 								break;
+
 							case BE_push:
-								menu_state = menu_numpad;
+								super_state = menu_run;
 								break;
+
 							default:
 								break;
 						}
-
 						break;
 
-					case menu_geber:
-						//do stuff
-
-						switch (geber_event)
+					case options_menu:
+						switch (input_event)
 						{
 							case BE_left:
-								menu_selected = Numpad;
+								sub_state = Options;
 								break;
+
 							case BE_right:
-								menu_selected = Adjust;
+								sub_state = Show;
 								break;
+
 							case BE_push:
-								menu_state = menu_geber;
+								super_state = menu_run;
 								break;
+
 							default:
 								break;
 						}
-
 						break;
 
-					case menu_adjust:
-						//do stuff
+					default:
+						break;
+					}
+					break;
 
-						switch (geber_event)
+				case Run:
+					switch (sub_state)
+					{
+					case Start:
+						switch (input_event)
 						{
 							case BE_left:
-								menu_selected = Geber;
+								sub_state = Options;
 								break;
+
 							case BE_right:
-								menu_selected = Options;
+								sub_state = Show;
 								break;
+
 							case BE_push:
-								menu_state = menu_adjust;
+								super_state = menu_run;
 								break;
+
 							default:
 								break;
 						}
-
 						break;
 
-					case menu_options:
-						//do stuff
-
-						switch (geber_event)
+					case Stop:
+						switch (input_event)
 						{
 							case BE_left:
-								menu_selected = Adjust;
+								sub_state = Options;
 								break;
+
 							case BE_right:
-								menu_selected = Run;
+								sub_state = Show;
 								break;
+
 							case BE_push:
-								menu_state = menu_options;
+								super_state = menu_run;
 								break;
+
 							default:
 								break;
 						}
-
 						break;
 
-					default :
-						break;
-				}
-
-				break;
-
-			case Run:
-
-				switch (menu_selected)
-				{
-					case start_stop:
-						//do stuff
-
-						switch (geber_event)
-						{
-						case BE_left:
-							menu_selected = run_return;
-							break;
-						case BE_right:
-							menu_selected = pic_now;
-							break;
-						case BE_push:
-							//do stuff
-							break;
-						default:
-							break;
-						}
-
-						break;
-
-					case pic_now:
-						//do stuff
-
-						switch (geber_event)
+					case Manual_jog:
+						switch (input_event)
 						{
 							case BE_left:
-								menu_selected = start_stop;
+								sub_state = Options;
 								break;
+
 							case BE_right:
-								menu_selected = auto_pic_on_off;
+								sub_state = Show;
 								break;
+
 							case BE_push:
-								//do stuff
+								super_state = menu_run;
 								break;
+
 							default:
 								break;
 						}
+						break;
 
+					case Manual_set:
+						switch (input_event)
+						{
+							case BE_left:
+								sub_state = Options;
+								break;
+
+							case BE_right:
+								sub_state = Show;
+								break;
+
+							case BE_push:
+								super_state = menu_run;
+								break;
+
+							default:
+								break;
+						}
 						break;
 
 					case auto_pic_on_off:
-						//do stuff
-
-						switch (geber_event)
+						switch (input_event)
 						{
 							case BE_left:
-								menu_selected = pic_now;
+								sub_state = Options;
 								break;
+
 							case BE_right:
-								menu_selected = run_return;
+								sub_state = Show;
 								break;
+
 							case BE_push:
-								//do stuff
+								super_state = menu_run;
 								break;
+
 							default:
 								break;
 						}
-
 						break;
 
 					case run_return:
-						//do stuff
-
-						switch (geber_event)
+						switch (input_event)
 						{
 							case BE_left:
-								menu_state = auto_pic_on_off;
+								sub_state = Options;
 								break;
+
 							case BE_right:
-								menu_state = start_stop;
+								sub_state = Show;
 								break;
+
 							case BE_push:
-								menu_state = Main_menu;
-								menu_selected = Run;
+								super_state = menu_run;
 								break;
+
 							default:
 								break;
 						}
-
-						break;
-
-					default :
-						break;
-
-				}
-
-				break;
-
-			case Numpad:
-
-				//do stuff
-				break;
-
-			case Geber:
-
-				switch (menu_selected)
-				{
-					case longtitude:
-						//do stuff
-
-						switch (geber_event)
-						{
-							case BE_left:
-								menu_selected = geber_return;
-								break;
-							case BE_right:
-								menu_selected = lattitude;
-								break;
-							case BE_push:
-								//do stuff
-								break;
-							default:
-								break;
-						}
-
-						break;
-
-					case lattitude:
-						//do stuff
-
-						switch (geber_event)
-						{
-							case BE_left:
-								menu_selected = longtitude;
-								break;
-							case BE_right:
-								menu_selected = geber_return;
-								break;
-							case BE_push:
-								//do stuff
-								break;
-							default:
-								break;
-						}
-
-						break;
-
-					case geber_return:
-						//do stuff
-
-						switch (geber_event)
-						{
-							case BE_left:
-								menu_selected = lattitude;
-								break;
-							case BE_right:
-								menu_selected = longtitude;
-								break;
-							case BE_push:
-								menu_state = Main_menu;
-								menu_selected = Geber;
-								break;
-							default:
-								break;
-						}
-
 						break;
 
 					default:
 						break;
-				}
-				break;
+					}
+					break;
 
-			case Adjust:
-
-				switch (menu_selected)
-				{
-					case adjust1:
-						//do stuff
-
-						switch (geber_event)
+				case Show:
+					switch (sub_state)
+					{
+					case show_pan:
+						switch (input_event)
 						{
 							case BE_left:
-								menu_selected = adjust_return;
+								sub_state = Options;
 								break;
+
 							case BE_right:
-								menu_selected = adjust2;			// Indsæt hvis der laves flere
+								sub_state = Show;
 								break;
+
 							case BE_push:
-								//do stuff
+								super_state = menu_run;
 								break;
+
 							default:
 								break;
 						}
-
 						break;
 
-					case adjust_return:
-						//do stuff
-
-						switch (geber_event)
+					case show_tilt:
+						switch (input_event)
 						{
 							case BE_left:
-								menu_selected = adjustlast;				//skal indsættes
+								sub_state = Options;
 								break;
+
 							case BE_right:
-								menu_selected = adjust1;
+								sub_state = Show;
 								break;
+
 							case BE_push:
-								menu_state = Main_menu;
-								menu_selected = Adjust;
+								super_state = menu_run;
 								break;
+
 							default:
 								break;
 						}
-
-						break;
-				}
-				break;
-
-			case Options:
-
-				switch (menu_selected)
-				{
-					case numpad_on_off:
-						//do stuff
-
-						switch (geber_event)
-						{
-							case BE_left:
-								menu_selected = options_return;
-								break;
-							case BE_right:
-								menu_selected = UART_on_off;
-								break;
-							case BE_push:
-								//do stuff
-								break;
-							default:
-								break;
-						}
-
 						break;
 
-					case UART_on_off:
-						//do stuff
-
-						switch (geber_event)
+					case show_error:
+						switch (input_event)
 						{
 							case BE_left:
-								menu_selected = numpad_on_off;
+								sub_state = Options;
 								break;
+
 							case BE_right:
-								menu_selected = set_time;
+								sub_state = Show;
 								break;
+
 							case BE_push:
-								//do stuff
+								super_state = menu_run;
 								break;
+
 							default:
 								break;
 						}
-
 						break;
 
-					case set_time:
-						//do stuff
-
-						switch (geber_event)
+					case show_return:
+						switch (input_event)
 						{
 							case BE_left:
-								menu_selected = UART_on_off;
+								sub_state = Options;
 								break;
+
 							case BE_right:
-								menu_selected = set_location;
+								sub_state = Show;
 								break;
+
 							case BE_push:
-								//do stuff
+								super_state = menu_run;
 								break;
+
 							default:
 								break;
 						}
-
 						break;
 
-					case set_location:
-						//do stuff
+					default:
+						break;
+					}
 
-						switch (geber_event)
+					break;
+
+				case Options:
+					switch (sub_state)
+					{
+					case set_pan_offset:
+						switch (input_event)
 						{
 							case BE_left:
-								menu_selected = set_time;
+								sub_state = Options;
 								break;
+
 							case BE_right:
-								menu_selected = reset_position;
+								sub_state = Show;
 								break;
+
 							case BE_push:
-								//do stuff
+								super_state = menu_run;
 								break;
+
 							default:
 								break;
 						}
-
 						break;
 
-					case reset_position:
-						//do stuff
-
-						switch (geber_event)
+					case set_tilt_offset:
+						switch (input_event)
 						{
 							case BE_left:
-								menu_selected = set_location;
+								sub_state = Options;
 								break;
+
 							case BE_right:
-								menu_selected = options_return;
+								sub_state = Show;
 								break;
+
 							case BE_push:
-								//do stuff
+								super_state = menu_run;
 								break;
+
 							default:
 								break;
 						}
+						break;
 
+					case pan_pidk:
+						switch (input_event)
+						{
+							case BE_left:
+								sub_state = Options;
+								break;
+
+							case BE_right:
+								sub_state = Show;
+								break;
+
+							case BE_push:
+								super_state = menu_run;
+								break;
+
+							default:
+								break;
+						}
+						break;
+
+					case tilt_pidk:
+						switch (input_event)
+						{
+							case BE_left:
+								sub_state = Options;
+								break;
+
+							case BE_right:
+								sub_state = Show;
+								break;
+
+							case BE_push:
+								super_state = menu_run;
+								break;
+
+							default:
+								break;
+						}
+						break;
+
+					case kanin_pid:
+						switch (input_event)
+						{
+							case BE_left:
+								sub_state = Options;
+								break;
+
+							case BE_right:
+								sub_state = Show;
+								break;
+
+							case BE_push:
+								super_state = menu_run;
+								break;
+
+							default:
+								break;
+						}
 						break;
 
 					case options_return:
-						//do stuff
-
-						switch (geber_event)
+						switch (input_event)
 						{
 							case BE_left:
-								menu_selected = reset_position;
+								sub_state = Options;
 								break;
+
 							case BE_right:
-								menu_selected = numpad_on_off;
+								sub_state = Show;
 								break;
+
 							case BE_push:
-								menu_state = Main_menu;
-								menu_selected = Options;
+								super_state = menu_run;
 								break;
+
 							default:
 								break;
 						}
+						break;
+					}
 
+					break;
+
+				default:
+					break;
+				}
+			}
+
+		}
+
+	}
+
+}
+
+
+	/*
+
+	while(1)
+	{
+		//wait for input semaphore
+
+		if( xSemaphoreTake( menu_input_semaphore, 100 )
+		{
+
+			if( xQueueReceive( menu_input_queue, &( input ), 0 )
+			{
+
+				input_event = input;
+
+				xSemaphoreGive(menu_input_semaphore);
+
+
+				switch (super_state)
+				{
+					case Main_menu:
+
+					switch (sub_state)
+					{
+						case menu_run:
+switch (input_event)
+{
+	case BE_left:
+		sub_state = Options;
+		break;
+
+	case BE_right:
+		sub_state = Show;
+		break;
+
+	case BE_push:
+		super_state = menu_run;
+		break;
+
+	default:
+		break;
+}
+
+							break;
+
+						case menu_show:
+
+							switch (input_event)
+							{
+								case BE_left:
+									sub_state = Options;
+									break;
+
+								case BE_right:
+									sub_state = Show;
+									break;
+
+								case BE_push:
+									super_state = menu_run;
+									break;
+
+								default:
+									break;
+							}
+
+							break;
+
+						case menu_options:
+
+							switch (input_event)
+							{
+								case BE_left:
+									sub_state = Options;
+									break;
+
+								case BE_right:
+									sub_state = Show;
+									break;
+
+								case BE_push:
+									super_state = menu_run;
+									break;
+
+								default:
+									break;
+							}
+
+							break;
+						}
+						break;
+
+					case Run:
+						switch (sub_state)
+						{
+							case Start:
+
+							case Stop:
+
+							case Manual_jog:
+
+							case Manual_set:
+
+							case auto_pic_on_off:
+
+							case Run_return:
+
+							default:
+								break;
+						}
+					break;
+
+					case Show:
+						switch (sub_state)
+						{
+							case Pan:
+
+								break;
+
+							case Tilt:
+
+								break;
+
+							case error:
+
+								break;
+
+							case Show_return:
+
+								break;
+
+							default:
+								break;
+						}
+					break;
+
+					case Options:
+						switch (sub_state)
+						{
+							case set_pan_offset:
+
+								break;
+
+							case set_tilt_offset:
+
+								break;
+
+							case pan_pidk:
+
+								break;
+
+							case tilt_pidk:
+
+								break;
+
+							case kanin_pid:
+
+								break;
+
+							case options_return:
+
+								break;
+
+							default:
+								break;
+
+						}
 						break;
 
 					default:
 						break;
 				}
-
-			break;
-
-			default :
-				break;
+			}
 		}
 	}
-}
+
 
 
