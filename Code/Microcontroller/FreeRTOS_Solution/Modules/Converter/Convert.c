@@ -36,12 +36,12 @@
 #define INDEX_PAN		1778
 #define INDEX_TILT		1778
 #define PAN_DIRECTION_OFFSET 0
-#define	THETA_1			70
-#define	THETA_2			110
-#define THETA_3			250
-#define	THETA_4			290
-#define TILT_MIN		250
-#define TILT_MAX		290
+#define	THETA_1			90
+#define	THETA_2			90
+#define THETA_3			270
+#define	THETA_4			270
+#define TILT_MIN		185
+#define TILT_MAX		320
 
 
 /*****************************   Constants   *******************************/
@@ -57,7 +57,16 @@ void convert_and_secure(void)
 	INT32U pan = 	get_msg_state(SSM_SP_DEG_PAN);
 	INT32U tilt =	get_msg_state(SSM_SP_DEG_TILT);
 
-	if (0)//(tilt > TILT_MIN && tilt < TILT_MAX) || (pan > THETA_1 && pan < THETA_2) || (pan > THETA_3 && pan < THETA_4) || pan > 360 || tilt > 360)
+	while (pan >= 360)
+	{
+		pan = pan-360;
+	}
+	while (tilt >= 360)
+	{
+		tilt = tilt-360;
+	}
+
+	if ((tilt > TILT_MIN && tilt < TILT_MAX) || (pan > THETA_1 && pan < THETA_2) || (pan > THETA_3 && pan < THETA_4) || pan > 360 || tilt > 360)
 	{
 		tilt = INDEX;
 		pan = INDEX;

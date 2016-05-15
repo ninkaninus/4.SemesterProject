@@ -84,7 +84,7 @@ static void setupHardware(void)
 }
 
 int main(void)
-{
+	{
   portBASE_TYPE return_value = pdTRUE;
 
   setupHardware();

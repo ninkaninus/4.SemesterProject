@@ -37,16 +37,16 @@
 #define DT 				50		//  50 * 0.0001 = 0,005s
 #define O_MAX			200000
 #define O_MIN			-200000
-#define I_MAX			30000000
-#define I_MIN			-30000000
-#define DC_MAX			255
+#define I_MAX			0x003FFFFF//30000000
+#define I_MIN			-0x003FFFFF//30000000
+#define DC_MAX			170
 #define DC_MIN			40
 #define K				100		// 0.0035 * 10000
 #define KP1				5*K		// 175 * 0.0001		// 5 * k = 0.0175		, k = 0.0035
-#define KI1				1*K		// 35  * 0.0001		// 1 * k = 0.0035
+#define KI1				2*K		// 35  * 0.0001		// 1 * k = 0.0035
 #define KD1				1*K		// 35  * 0.0001		// 1 * k = 0.0035
 #define KP2				5*K		// 175 * 0.0001		// 5 * k = 0.0175
-#define KI2				1*K		// 35  * 0.0001		// 1 * k = 0.0035
+#define KI2				5*K		// 35  * 0.0001		// 1 * k = 0.0035
 #define KD2				1*K		// 35  * 0.0001		// 1 * k = 0.0035
 
 /*****************************   Constants   *******************************/
@@ -55,6 +55,7 @@
 
 PID pan_sys;
 PID tilt_sys;
+PID tilt_sys_2;
 
 extern xQueueHandle SPI_queue;
 extern xQueueHandle PID_queue;
@@ -74,6 +75,12 @@ void init_pid()
 	tilt_sys.Kd = KD2;
 	tilt_sys.integral = 0;
 	tilt_sys.prev_error = 0;
+
+	tilt_sys_2.Kp = 5*K;
+	tilt_sys_2.Ki = 50*K;
+	tilt_sys_2.Kd = 1*K;
+	tilt_sys_2.integral = 0;
+	tilt_sys_2.prev_error = 0;
 }
 
 void PID_task(void *pvParameters)
@@ -190,7 +197,11 @@ void pid_update()
 
 	set_point 	= get_msg_state(SSM_SP_TILT);
 	actual	  	= get_msg_state(SSM_POS_TILT);
-	adjust = pid_calc(set_point,actual,&tilt_sys);
+
+	if(set_point - actual > 16 || set_point - actual < -16)
+		adjust = pid_calc(set_point,actual,&tilt_sys);
+	else
+		adjust = pid_calc(set_point,actual,&tilt_sys_2);
 	if(set_point != actual)
 	{
 		if(adjust < 0)
