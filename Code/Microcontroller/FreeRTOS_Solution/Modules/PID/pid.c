@@ -35,13 +35,13 @@
 
 #define SCALE_FACTOR	10000
 #define DT 				50		//  50 * 0.0001 = 0,005s
-#define O_MAX			400000
-#define O_MIN			-400000
+#define O_MAX			200000
+#define O_MIN			-200000
 #define I_MAX			30000000
 #define I_MIN			-30000000
-#define DC_MAX			150
-#define DC_MIN			60
-#define K				35		// 0.0035 * 10000
+#define DC_MAX			255
+#define DC_MIN			40
+#define K				100		// 0.0035 * 10000
 #define KP1				5*K		// 175 * 0.0001		// 5 * k = 0.0175		, k = 0.0035
 #define KI1				1*K		// 35  * 0.0001		// 1 * k = 0.0035
 #define KD1				1*K		// 35  * 0.0001		// 1 * k = 0.0035
@@ -134,6 +134,8 @@ INT32S pid_calc(INT32U desired, INT32U actual, PID *controller)
 		I_term = 0;
 		integral = 0;
 	}
+
+
 
 	output = P_term + I_term + D_term;
 
