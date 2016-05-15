@@ -91,15 +91,15 @@ void menu_task(void *pvParameters)
 						switch (input_event)
 						{
 							case BE_left:
-								sub_state = Options;
+								sub_state = options_menu;
 								break;
 
 							case BE_right:
-								sub_state = Show;
+								sub_state = show_menu;
 								break;
 
 							case BE_push:
-								super_state = menu_run;
+								super_state = Run;
 								break;
 
 							default:
@@ -111,15 +111,15 @@ void menu_task(void *pvParameters)
 						switch (input_event)
 						{
 							case BE_left:
-								sub_state = Options;
+								sub_state = run_menu;
 								break;
 
 							case BE_right:
-								sub_state = Show;
+								sub_state = options_menu;
 								break;
 
 							case BE_push:
-								super_state = menu_run;
+								super_state = Show;
 								break;
 
 							default:
@@ -131,15 +131,15 @@ void menu_task(void *pvParameters)
 						switch (input_event)
 						{
 							case BE_left:
-								sub_state = Options;
+								sub_state = show_menu;
 								break;
 
 							case BE_right:
-								sub_state = Show;
+								sub_state = run_menu;
 								break;
 
 							case BE_push:
-								super_state = menu_run;
+								super_state = Options;
 								break;
 
 							default:
