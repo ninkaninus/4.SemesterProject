@@ -37,11 +37,11 @@
 #define DT 				50		//  50 * 0.0001 = 0,005s
 #define O_MAX			200000
 #define O_MIN			-200000
-#define I_MAX			0x003FFFFF//30000000
-#define I_MIN			-0x003FFFFF//30000000
-#define DC_MAX			170
+#define I_MAX			5000000
+#define I_MIN			-5000000
+#define DC_MAX			160
 #define DC_MIN			40
-#define K				100		// 0.0035 * 10000
+#define K				50		// 0.0035 * 10000
 #define KP1				5*K		// 175 * 0.0001		// 5 * k = 0.0175		, k = 0.0035
 #define KI1				2*K		// 35  * 0.0001		// 1 * k = 0.0035
 #define KD1				1*K		// 35  * 0.0001		// 1 * k = 0.0035
@@ -142,9 +142,13 @@ INT32S pid_calc(INT32U desired, INT32U actual, PID *controller)
 		integral = 0;
 	}
 
-
-
 	output = P_term + I_term + D_term;
+
+	if(I_term > 80000)
+	{
+		output += 1;
+		output -= 1;
+	}
 
 	if(output > O_MAX)
 		output = O_MAX;
@@ -198,10 +202,11 @@ void pid_update()
 	set_point 	= get_msg_state(SSM_SP_TILT);
 	actual	  	= get_msg_state(SSM_POS_TILT);
 
-	if(set_point - actual > 16 || set_point - actual < -16)
+	//if(set_point - actual > 16 || set_point - actual < -16)
 		adjust = pid_calc(set_point,actual,&tilt_sys);
-	else
-		adjust = pid_calc(set_point,actual,&tilt_sys_2);
+	//else
+		//adjust = pid_calc(set_point,actual,&tilt_sys_2);
+
 	if(set_point != actual)
 	{
 		if(adjust < 0)
