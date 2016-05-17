@@ -187,6 +187,7 @@ void SPI_task(void *pvParameters)
 	SSI_init();
 	INT8U state = PID;
 	INT8U received;
+	INT16U send;
 
 	while(1)
 	{
@@ -208,7 +209,20 @@ void SPI_task(void *pvParameters)
 					break;
 
 				case SET_PWM_EVENT:
+					if(xSemaphoreTake(spi_access_sem, 1500 / portTICK_RATE_MS))
+					{
 					set_pwm();
+					xSemaphoreGive(spi_access_sem);
+					}
+					break;
+
+				case MAX_PWM_EVENT:
+					send = 255;					// 100% duty cycle
+					send |= (2<<8);				// positiv retning
+					send |= ADDR_PAN_PWM;		// adresse
+
+					SPI_write(send);
+					send = SPI_read();
 					break;
 
 				default:

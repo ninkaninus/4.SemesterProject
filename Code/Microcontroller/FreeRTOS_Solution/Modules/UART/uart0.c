@@ -39,6 +39,7 @@
 extern xQueueHandle uart0_rx_queue;
 extern xQueueHandle UI_queue;
 extern xQueueHandle PID_queue;
+extern xQueueHandle SPI_queue;
 
 enum uart_states {
 	IDLE,
@@ -206,6 +207,12 @@ void UART0_task(void *pvParameters)
 					address = SSM_SP_DEG_TILT;
 					n_max = 3;
 					uart_state = SET_DATA;
+					break;
+
+				case PAN_MAX_PWM:
+					address = MAX_PWM_EVENT;
+					xQueueSend(SPI_queue,&address,100);
+					uart_state = IDLE;
 					break;
 
 				default:

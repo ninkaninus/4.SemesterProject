@@ -41,13 +41,13 @@
 #define I_MIN			-5000000
 #define DC_MAX			255
 #define DC_MIN			40
-#define K				24		// 0.0035 * 10000
-#define KP1				6*K		// 175 * 0.0001		// 5 * k = 0.0175		, k = 0.0035
-#define KI1				6*K		// 35  * 0.0001		// 1 * k = 0.0035
-#define KD1				1*K		// 35  * 0.0001		// 1 * k = 0.0035
-#define KP2				6*K		// 175 * 0.0001		// 5 * k = 0.0175
-#define KI2				6*K		// 35  * 0.0001		// 1 * k = 0.0035
-#define KD2				1*K		// 35  * 0.0001		// 1 * k = 0.0035
+#define K				24		// 0.0024 * 10000
+#define KP1				6*K
+#define KI1				6*K
+#define KD1				1*K
+#define KP2				6*K
+#define KI2				6*K
+#define KD2				1*K
 
 /*****************************   Constants   *******************************/
 
