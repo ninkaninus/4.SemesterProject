@@ -39,14 +39,14 @@
 #define O_MIN			-200000
 #define I_MAX			5000000
 #define I_MIN			-5000000
-#define DC_MAX			160
+#define DC_MAX			255
 #define DC_MIN			40
-#define K				50		// 0.0035 * 10000
-#define KP1				5*K		// 175 * 0.0001		// 5 * k = 0.0175		, k = 0.0035
-#define KI1				2*K		// 35  * 0.0001		// 1 * k = 0.0035
+#define K				24		// 0.0035 * 10000
+#define KP1				6*K		// 175 * 0.0001		// 5 * k = 0.0175		, k = 0.0035
+#define KI1				6*K		// 35  * 0.0001		// 1 * k = 0.0035
 #define KD1				1*K		// 35  * 0.0001		// 1 * k = 0.0035
-#define KP2				5*K		// 175 * 0.0001		// 5 * k = 0.0175
-#define KI2				5*K		// 35  * 0.0001		// 1 * k = 0.0035
+#define KP2				6*K		// 175 * 0.0001		// 5 * k = 0.0175
+#define KI2				6*K		// 35  * 0.0001		// 1 * k = 0.0035
 #define KD2				1*K		// 35  * 0.0001		// 1 * k = 0.0035
 
 /*****************************   Constants   *******************************/
@@ -76,8 +76,8 @@ void init_pid()
 	tilt_sys.integral = 0;
 	tilt_sys.prev_error = 0;
 
-	tilt_sys_2.Kp = 5*K;
-	tilt_sys_2.Ki = 50*K;
+	tilt_sys_2.Kp = 150*K;
+	tilt_sys_2.Ki = 150*K;
 	tilt_sys_2.Kd = 1*K;
 	tilt_sys_2.integral = 0;
 	tilt_sys_2.prev_error = 0;
@@ -168,6 +168,7 @@ void pid_update()
 	INT32S adjust;
 	INT8U dir;
 	INT16U duty_cycle;
+	static INT16U offset = 0;
 
 	set_point 	= get_msg_state(SSM_SP_PAN);
 	actual 		= get_msg_state(SSM_POS_PAN);
@@ -202,10 +203,18 @@ void pid_update()
 	set_point 	= get_msg_state(SSM_SP_TILT);
 	actual	  	= get_msg_state(SSM_POS_TILT);
 
-	//if(set_point - actual > 16 || set_point - actual < -16)
+	offset++;
+
+	set_point = set_point + offset/5;
+
+	if(set_point - actual > 16 || set_point - actual < -16)
 		adjust = pid_calc(set_point,actual,&tilt_sys);
-	//else
-		//adjust = pid_calc(set_point,actual,&tilt_sys_2);
+	else
+	{
+		tilt_sys.integral = 0;
+		tilt_sys.prev_error = 0;
+		adjust = pid_calc(set_point,actual,&tilt_sys_2);
+	}
 
 	if(set_point != actual)
 	{

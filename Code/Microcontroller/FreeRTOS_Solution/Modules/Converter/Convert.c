@@ -40,8 +40,8 @@
 #define	THETA_2			90
 #define THETA_3			270
 #define	THETA_4			270
-#define TILT_MIN		185
-#define TILT_MAX		320
+#define TILT_MIN		250
+#define TILT_MAX		290
 
 
 /*****************************   Constants   *******************************/
