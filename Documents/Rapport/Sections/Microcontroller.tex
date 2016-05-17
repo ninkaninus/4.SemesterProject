@@ -2,7 +2,7 @@
 
 \subsection{OS}
 \subsection{Scheduling}
-Det er vigtigt i enhver kode situation, der inkluderer flere tasks, at kunne skifte mellem dem på en fornuftig måde; Dette gøres med en scheduler. Når der skal implementeres en scheduler skal det overvejes hvorvidt det er nødvendigt at lave en designed specielt til projectet, eller om der en en eksisterende der er i stand til at udfører opgaven tilstrækkeligt. I dette project havde vi tre muligheder til rådighed: RTCS, FreeRTOS, og at lave vores egen.
+Det er vigtigt i enhver kode situation, der inkluderer flere tasks, at kunne skifte mellem dem på en fornuftig måde; Dette gøres med en scheduler. Når der skal implementeres en scheduler skal det overvejes hvorvidt det er nødvendigt at lave en designed specielt til projektet, eller om der en en eksisterende der er i stand til at udfører opgaven tilstrækkeligt. I dette project havde vi tre muligheder til rådighed: RTCS, FreeRTOS, og at lave vores egen.
 \\
 Den simple løsning er at bruge RTCS. Denne er simpel at benytte, og kan godt opfylde de grundlæggende krav vi har til systemet. Dog har denne ikke prioritering, preemption, eller mutex.
 \\
@@ -45,8 +45,7 @@ Selve LCD-tasken arbejder sammen med resten af systemet ved at afkode et særlig
 
 \subsubsection{Keypad}
 
-Keypad
-I vores Kit er der givet en keypad med 12 knapper fra 0 til 9 og *,\#. Dette keypad virker bare som switches så derfor skal vi selv definere hvad de forskellige knapper skal gøre, for at gøre det simpelt betyder hver knap det som der står på keypaded. Den har to porte til knyttet som er PORT A og PORT E. Det betyder at vi kan læse på PORT E hvis en af GPIO pinden på PORT A er aktiv.
+Det udleverede Kit er der tilhørende keypad med 12 knapper fra 0 til 9 og *,\#. Dette keypad virker bare som switches så derfor skal vi selv definere hvad de forskellige knapper skal gøre, for at gøre det simpelt betyder hver knap det som der står på keypad'et. Den har to porte til knyttet som er PORT A og PORT E. Det betyder at vi kan læse på PORT E hvis GPIO pinden på PORT A er aktiv.
 \begin{figure}[h]
 	\begin{center}
 		\includegraphics[scale=0.7]{Billeder/Keypad.PNG}
@@ -56,9 +55,9 @@ I vores Kit er der givet en keypad med 12 knapper fra 0 til 9 og *,\#. Dette key
 \end{figure}
 
 
-På figur \ref{fig:Keypad} kan vi se at vi har givet de forskellige knapper unikke værdier. Dette gøres fordi vi har et array som indeholder alle værdier på keypad’et, som vi så sender kan sende ind i buffer og læse på. For at finde en karakter kigger vi først på alle X værdier (PORT A) igennem og ser om en Y værdi (PORT E) er aktiv og ud fra hvilken X og Y værdi kan vi finde hvilket plads i arrayet ud fra figur \ref{fig:Keypad}
+På figur \ref{fig:Keypad} kan vi se at vi har givet de forskellige knapper unikke værdier. Dette gøres fordi vi har et array som indeholder alle værdier på keypad’et, som vi så sender ind i bufferen og læse på. For at finde en karakter kigger vi først på alle X værdier (PORT A) igennem og ser om en Y værdi (PORT E) er aktiv og ud fra hvilken X og Y værdi kan vi finde hvilket plads i arrayet ud fra figur \ref{fig:Keypad}
 \\
-Dette keypad kan blive brugt til at sende data eller manuelt vil sætte nogle værdier i mens programmet køre.
+Dette keypad kan blive brugt til at sende data eller manuelt indsætte nogle værdier i mens programmet kører.
 
 
 
@@ -108,9 +107,9 @@ Da Freescale er den eneste SPI iblandt de tre SSI moduler er det den der blev va
 			\caption{Setup af Freescale SPI}
 		\end{figure}
 
-For at lave et Freescale setup skal der SSI modulet disables, også kan microcontrolleren sættes som master ved at skrive nul til control registret.
-derefer skal clock configurations registret sættes til 0 så vi bruger system clocken.
-da der ønskes en 2 Mbps clock bruges følgende ligning
+For at lave et Freescale setup skal SSI modulet deaktiveres, også kan microcontrolleren sættes som master ved at skrive nul til control registret.
+Derefter skal clock configurations registret sættes til 0 så vi bruger system clocken.
+Der ønskes en 2 Mbps clock bruges følgende ligning
 
 \begin{align*}
 2*10^6 bps &= \dfrac{16*10^6 Hz}{CPSDVSR * (1 + 0)}\\
@@ -118,5 +117,5 @@ CPSDVSR &= \dfrac{16*10^6 Hz}{2*10^6 bps}\\
 CPSDVSR &= 8
 \end{align*}
 
-Så sættes kontrol registret for SSI0 til 0xF da bit 3:0 angiver data størrelse, 0xF er så 16-bit data. samtidig bliver Freescale SPI sat op da bit 4 og 5 bestemmer frame formatet, og hvis de begge er lave betyder det at Freescale er valgt. 
-og igen sættes bit 1 i kontrol registret for SSI1 til høj så SSI'en er enablet
+Så sættes kontrol registret for SSI0 til 0xF da bit 3:0 angiver data størrelse, 0xF er så 16-bit data. Samtidig bliver Freescale SPI sat op, da bit 4 og 5 bestemmer frame formatet, og hvis de begge er lave betyder det at Freescale er valgt. 
+og igen sættes bit 1 i kontrol registret for SSI1 til høj så SSI'en er aktiveret.
