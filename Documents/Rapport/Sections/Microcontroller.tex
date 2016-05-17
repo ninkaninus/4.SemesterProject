@@ -46,9 +46,17 @@ Selve LCD-tasken arbejder sammen med resten af systemet ved at afkode et særlig
 \subsubsection{Keypad}
 
 Keypad
-I vores Kit er der givet en keypad med 12 knapper fra 0 til 9 og *,\#. Dette keypad virker bare som switches så derfor skal vi selv definere hvad de forskellige knapper skal gøre, for at gøre det simpelt betyder hver knap det som der står på keypaded. Den har to porte til knyttet som er PORT A og PORT E. Det betyder at vi kan læse på PORT E hvis en af GPIO pinden på PORT A er aktiv. [Billede Keypad]
-\\
-Dette billede kan vi se at vi har givet de forskellige knapper unikke værdier. Dette gøre fordi vi har et array som indeholder alle værdier på keypad’et, som vi så sender kan sende ind i buffer og læse på. For at finde en karakter kigger vi først på alle X værdier (PORT A) igennem og ser om en Y værdi (PORT E) er aktiv og ud fra hvilken X og Y værdi fordi en af tallen på  [Ref billede Keypad].
+I vores Kit er der givet en keypad med 12 knapper fra 0 til 9 og *,\#. Dette keypad virker bare som switches så derfor skal vi selv definere hvad de forskellige knapper skal gøre, for at gøre det simpelt betyder hver knap det som der står på keypaded. Den har to porte til knyttet som er PORT A og PORT E. Det betyder at vi kan læse på PORT E hvis en af GPIO pinden på PORT A er aktiv.
+\begin{figure}[key]
+	\begin{center}
+		\includegraphics[scale=0.7]{Billeder/Keypad.PNG}
+	\end{center}
+\caption{Keypad struktur}
+\label{fig:Keypad}
+\end{figure}
+
+
+På figur \ref{fig:Keypad} kan vi se at vi har givet de forskellige knapper unikke værdier. Dette gøres fordi vi har et array som indeholder alle værdier på keypad’et, som vi så sender kan sende ind i buffer og læse på. For at finde en karakter kigger vi først på alle X værdier (PORT A) igennem og ser om en Y værdi (PORT E) er aktiv og ud fra hvilken X og Y værdi kan vi finde hvilket plads i arrayet ud fra figur \ref{fig:Keypad}
 \\
 Dette keypad kan blive brugt til at sende data eller manuelt vil sætte nogle værdier i mens programmet køre.
 
