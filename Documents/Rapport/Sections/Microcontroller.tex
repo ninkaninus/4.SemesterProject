@@ -45,7 +45,15 @@ Selve LCD-tasken arbejder sammen med resten af systemet ved at afkode et særlig
 
 \subsubsection{Keypad}
 
-Det udleverede Kit er der tilhørende keypad med 12 knapper fra 0 til 9 og *,\#. Dette keypad virker bare som switches så derfor skal vi selv definere hvad de forskellige knapper skal gøre, for at gøre det simpelt betyder hver knap det som der står på keypad'et. Den har to porte til knyttet som er PORT A og PORT E. Det betyder at vi kan læse på PORT E hvis GPIO pinden på PORT A er aktiv.
+Det udleverede Kit er der tilhørende keypad med 12 knapper fra 0 til 9 og *,\#. Dette keypad virker som knapper, Da er derfor nødvendigt at definere hvad de forskellige knapper skal gøre. For at gøre det simpelt bliver hver knap det som der står på keypad'et. figur \ref{fig:Keypadpins} viser hvordan dens pins at tilsluttet.
+\begin{figure}[h]
+	\begin{center}
+		\includegraphics[scale=0.7]{Billeder/Keypadpins.PNG}
+	\end{center}
+\caption{Keypad pins}
+\label{fig:Keypadpins}
+\end{figure}
+Den har to porte til knyttet som er PORT A og PORT E. Det betyder at vi kan læse på PORT E hvis GPIO pinden på PORT A er aktiv.
 \begin{figure}[h]
 	\begin{center}
 		\includegraphics[scale=0.7]{Billeder/Keypad.PNG}
