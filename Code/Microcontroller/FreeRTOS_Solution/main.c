@@ -62,6 +62,7 @@ xQueueHandle GUI_queue;
 xQueueHandle UI_queue;
 xQueueHandle SPI_queue;
 xQueueHandle PID_queue;
+xQueueHandle MENU_queue;
 
 xSemaphoreHandle adc_sem;
 xSemaphoreHandle scale_sem;
@@ -69,6 +70,7 @@ xSemaphoreHandle spi_access_sem;
 xSemaphoreHandle time_access_sem;
 xSemaphoreHandle rtc_update_sem;
 xSemaphoreHandle coordinate_access_sem;
+xSemaphoreHandle menu_input_sem;
 
 /*****************************   Functions   *******************************/
 
@@ -95,12 +97,14 @@ int main(void)
   UI_queue  			= xQueueCreate(16, sizeof(INT8U));
   PID_queue  			= xQueueCreate(16, sizeof(INT8U));
   SPI_queue  			= xQueueCreate(8, sizeof(INT8U));
+  MENU_queue			= xQueueCreate(8, sizeof(INT8U));
 
 
   adc_sem 				= xSemaphoreCreateMutex();
   time_access_sem 		= xSemaphoreCreateMutex();
   rtc_update_sem  		= xSemaphoreCreateMutex();
   spi_access_sem  		= xSemaphoreCreateMutex();
+  menu_input_sem		= xSemaphoreCreateMutex();
 
   // Start the tasks defined within this file/specific to this demo.
   return_value &= xTaskCreate( status_led_task, ( signed portCHAR * ) 	"Status LED", 	USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );

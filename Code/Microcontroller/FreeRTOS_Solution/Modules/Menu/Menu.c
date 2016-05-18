@@ -14,6 +14,7 @@
 
 #include "PID/pid.h"
 #include "EMP/emp_type.h"
+#include "Modules/GUI/gui.h"
 #include "Tasking/tmodel.h"
 #include "Tasking/messages.h"
 
@@ -69,7 +70,7 @@
 #define OPTIONS_SET_TILT_OFFSET	2
 #define OPTIONS_PAN_PIDK		3
 #define OPTIONS_TILT_PIDK		4
-#define OPTIONS_kanin pid		5
+#define OPTIONS_KANIN_PID		5
 
 //Input events
 #define KE_0		0
@@ -87,6 +88,11 @@
 #define BE_LEFT		12
 #define BE_RIGHT	13
 #define BE_PUSH		14
+
+extern xQueueHandle GUI_queue;
+extern xQueueHandle MENU_queue;
+
+extern xSemaphoreHandle menu_input_sem;
 
 void run_start_function(void)
 {
@@ -155,27 +161,28 @@ void options_kanin_pid_function(void)
 
 void send_image(INT8U besked)
 {
-
+	if (xQueueSend(GUI_queue, &besked, 10000));
 }
 
 void MENU_task(void *pvParameters)
 {
 	static INT8U super_state = 0;
 	static INT8U sub_state = 0;
-	static INT8U input_event = 0;
+
 
 	while (1)
 	{
-		if( xSemaphoreTake( menu_input_semaphore, 100 ))
+		INT8U input_event = 0;
+
+		if( xSemaphoreTake( menu_input_sem, 100 ))
 		{
-			if( xQueueReceive( menu_input_queue, &( input ), 0 ))
+			if( xQueueReceive( MENU_queue, &( input_event ), 0 ))
 			{
-				input_event = input;
-				xSemaphoreGive(menu_input_semaphore);
+				xSemaphoreGive(menu_input_sem);
 
 				switch (super_state)
 				{
-				case Main_state:
+				case MAIN_MENU:
 					switch (sub_state)
 					{
 					case MENU_RUN:
@@ -183,18 +190,18 @@ void MENU_task(void *pvParameters)
 						{
 							case BE_LEFT:
 								sub_state = MENU_OPTIONS;
-								send_image();
+								send_image(IMAGE_MAIN_OPTIONS);
 								break;
 
 							case BE_RIGHT:
 								sub_state = MENU_SHOW;
-								send_image();
+								send_image(IMAGE_MAIN_SHOW);
 								break;
 
 							case BE_PUSH:
 								super_state = RUN;
 								sub_state = RUN_START;
-								send_image();
+								send_image(IMAGE_RUN_START);
 								break;
 
 							default:
@@ -207,18 +214,18 @@ void MENU_task(void *pvParameters)
 						{
 							case BE_LEFT:
 								sub_state = MENU_RUN;
-								send_image();
+								send_image(IMAGE_MAIN_RUN);
 								break;
 
 							case BE_RIGHT:
 								sub_state = MENU_OPTIONS;
-								send_image();
+								send_image(IMAGE_MAIN_OPTIONS);
 								break;
 
 							case BE_PUSH:
 								super_state = SHOW;
 								sub_state = SHOW_PAN;
-								send_image();
+								send_image(IMAGE_SHOW_PAN);
 								break;
 
 							default:
@@ -231,18 +238,18 @@ void MENU_task(void *pvParameters)
 						{
 							case BE_LEFT:
 								sub_state = MENU_SHOW;
-								send_image();
+								send_image(IMAGE_MAIN_SHOW);
 								break;
 
 							case BE_RIGHT:
 								sub_state = MENU_RUN;
-								send_image();
+								send_image(IMAGE_MAIN_RUN);
 								break;
 
 							case BE_PUSH:
 								super_state = OPTIONS;
 								sub_state = OPTIONS_SET_PAN_OFFSET;
-								send_image();
+								send_image(IMAGE_OPTIONS_PAN);
 								break;
 
 							default:
@@ -263,12 +270,12 @@ void MENU_task(void *pvParameters)
 						{
 							case BE_LEFT:
 								sub_state = RUN_RETURN;
-								send_image();
+								send_image(IMAGE_RUN_RETURN);
 								break;
 
 							case BE_RIGHT:
 								sub_state = RUN_STOP;
-								send_image();
+								send_image(IMAGE_RUN_STOP);
 								break;
 
 							case BE_PUSH:
@@ -285,12 +292,12 @@ void MENU_task(void *pvParameters)
 						{
 							case BE_LEFT:
 								sub_state = RUN_START;
-								send_image();
+								send_image(IMAGE_RUN_START);
 								break;
 
 							case BE_RIGHT:
 								sub_state = RUN_MANUAL_JOG;
-								send_image();
+								send_image(IMAGE_RUN_JOG);
 								break;
 
 							case BE_PUSH:
@@ -307,12 +314,12 @@ void MENU_task(void *pvParameters)
 						{
 							case BE_LEFT:
 								sub_state = RUN_STOP;
-								send_image();
+								send_image(IMAGE_RUN_STOP);
 								break;
 
 							case BE_RIGHT:
 								sub_state = RUN_MANUAL_SET;
-								send_image();
+								send_image(IMAGE_RUN_SET);
 								break;
 
 							case BE_PUSH:
@@ -329,12 +336,12 @@ void MENU_task(void *pvParameters)
 						{
 							case BE_LEFT:
 								sub_state = RUN_MANUAL_JOG;
-								send_image();
+								send_image(IMAGE_RUN_JOG);
 								break;
 
 							case BE_RIGHT:
 								sub_state = RUN_AUTO_PIC_ON_OFF;
-								send_image();
+								send_image(IMAGE_RUN_AUTO);
 								break;
 
 							case BE_PUSH:
@@ -351,12 +358,12 @@ void MENU_task(void *pvParameters)
 						{
 							case BE_LEFT:
 								sub_state = RUN_MANUAL_SET;
-								send_image();
+								send_image(IMAGE_RUN_SET);
 								break;
 
 							case BE_RIGHT:
 								sub_state = RUN_RETURN;
-								send_image();
+								send_image(IMAGE_RUN_RETURN);
 								break;
 
 							case BE_PUSH:
@@ -373,18 +380,18 @@ void MENU_task(void *pvParameters)
 						{
 							case BE_LEFT:
 								sub_state = RUN_AUTO_PIC_ON_OFF;
-								send_image();
+								send_image(IMAGE_RUN_AUTO);
 								break;
 
 							case BE_RIGHT:
 								sub_state = RUN_START;
-								send_image();
+								send_image(IMAGE_RUN_START);
 								break;
 
 							case BE_PUSH:
 								super_state = MAIN_MENU;
 								sub_state = MENU_RUN;
-								send_image();
+								send_image(IMAGE_MAIN_RUN);
 								break;
 
 							default:
@@ -405,12 +412,12 @@ void MENU_task(void *pvParameters)
 						{
 							case BE_LEFT:
 								sub_state = SHOW_RETURN;
-								send_image();
+								send_image(IMAGE_SHOW_RETURN);
 								break;
 
 							case BE_RIGHT:
 								sub_state = SHOW_TILT;
-								send_image();
+								send_image(IMAGE_SHOW_TILT);
 								break;
 
 							case BE_PUSH:
@@ -427,12 +434,12 @@ void MENU_task(void *pvParameters)
 						{
 							case BE_LEFT:
 								sub_state = SHOW_PAN;
-								send_image();
+								send_image(IMAGE_SHOW_PAN);
 								break;
 
 							case BE_RIGHT:
 								sub_state = SHOW_ERROR;
-								send_image();
+								send_image(IMAGE_SHOW_ERROR);
 								break;
 
 							case BE_PUSH:
@@ -449,12 +456,12 @@ void MENU_task(void *pvParameters)
 						{
 							case BE_LEFT:
 								sub_state = SHOW_TILT;
-								send_image();
+								send_image(IMAGE_SHOW_TILT);
 								break;
 
 							case BE_RIGHT:
 								sub_state = SHOW_RETURN;
-								send_image();
+								send_image(IMAGE_SHOW_RETURN);
 								break;
 
 							case BE_PUSH:
@@ -471,18 +478,18 @@ void MENU_task(void *pvParameters)
 						{
 							case BE_LEFT:
 								sub_state = SHOW_ERROR;
-								send_image();
+								send_image(IMAGE_SHOW_ERROR);
 								break;
 
 							case BE_RIGHT:
 								sub_state = SHOW_PAN;
-								send_image();
+								send_image(IMAGE_SHOW_PAN);
 								break;
 
 							case BE_PUSH:
 								super_state = MAIN_MENU;
 								sub_state = MENU_SHOW;
-								send_image();
+								send_image(IMAGE_MAIN_SHOW);
 								break;
 
 							default:
@@ -504,12 +511,12 @@ void MENU_task(void *pvParameters)
 						{
 							case BE_LEFT:
 								sub_state = OPTIONS_RETURN;
-								send_image();
+								send_image(IMAGE_OPTIONS_RETURN);
 								break;
 
 							case BE_RIGHT:
 								sub_state = OPTIONS_SET_TILT_OFFSET;
-								send_image();
+								send_image(IMAGE_OPTIONS_TILT);
 								break;
 
 							case BE_PUSH:
@@ -526,12 +533,12 @@ void MENU_task(void *pvParameters)
 						{
 							case BE_LEFT:
 								sub_state = OPTIONS_SET_PAN_OFFSET;
-								send_image();
+								send_image(IMAGE_OPTIONS_PAN);
 								break;
 
 							case BE_RIGHT:
 								sub_state = OPTIONS_PAN_PIDK;
-								send_image();
+								send_image(IMAGE_OPTIONS_PAN_PID);
 								break;
 
 							case BE_PUSH:
@@ -548,12 +555,12 @@ void MENU_task(void *pvParameters)
 						{
 							case BE_LEFT:
 								sub_state = OPTIONS_SET_TILT_OFFSET;
-								send_image();
+								send_image(IMAGE_OPTIONS_TILT);
 								break;
 
 							case BE_RIGHT:
 								sub_state = OPTIONS_TILT_PIDK;
-								send_image();
+								send_image(IMAGE_OPTIONS_TILT_PID);
 								break;
 
 							case BE_PUSH:
@@ -570,12 +577,12 @@ void MENU_task(void *pvParameters)
 						{
 							case BE_LEFT:
 								sub_state = OPTIONS_PAN_PIDK;
-								send_image();
+								send_image(IMAGE_OPTIONS_PAN_PID);
 								break;
 
 							case BE_RIGHT:
 								sub_state = OPTIONS_KANIN_PID;
-								send_image();
+								send_image(IMAGE_OPTIONS_KANIN);
 								break;
 
 							case BE_PUSH:
@@ -592,12 +599,12 @@ void MENU_task(void *pvParameters)
 						{
 							case BE_LEFT:
 								sub_state = OPTIONS_TILT_PIDK;
-								send_image();
+								send_image(IMAGE_OPTIONS_TILT_PID);
 								break;
 
 							case BE_RIGHT:
 								sub_state = OPTIONS_RETURN;
-								send_image();
+								send_image(IMAGE_OPTIONS_RETURN);
 								break;
 
 							case BE_PUSH:
@@ -614,18 +621,18 @@ void MENU_task(void *pvParameters)
 						{
 							case BE_LEFT:
 								sub_state = OPTIONS_KANIN_PID;
-								send_image();
+								send_image(IMAGE_OPTIONS_KANIN);
 								break;
 
 							case BE_RIGHT:
 								sub_state = OPTIONS_SET_PAN_OFFSET;
-								send_image();
+								send_image(IMAGE_OPTIONS_PAN);
 								break;
 
 							case BE_PUSH:
 								super_state = MAIN_MENU;
 								sub_state = MENU_OPTIONS;
-								send_image();
+								send_image(IMAGE_MAIN_OPTIONS);
 								break;
 
 							default:
@@ -642,7 +649,7 @@ void MENU_task(void *pvParameters)
 			}
 			else
 			{
-				xSemaphoreGive(menu_input_semaphore);
+				xSemaphoreGive(menu_input_sem);
 			}
 		}
 	}
