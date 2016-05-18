@@ -40,6 +40,8 @@
 #define SSM_SP_TILT				55
 #define SSM_SP_DEG_TILT			56
 #define SSM_SP_DEG_PAN			57
+#define SSM_OFFSET_PAN			58
+#define SSM_OFFSET_TILT			59
 
 
 // Events
@@ -54,5 +56,6 @@
 #define GET_POS_EVENT			8
 #define SET_PWM_EVENT			9
 #define MAX_PWM_EVENT			10
+#define STOP_EVENT				11
 
 #endif /* _TMODEL_H_ */

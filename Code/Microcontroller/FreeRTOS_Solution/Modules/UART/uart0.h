@@ -32,7 +32,8 @@
 
 #define PAN_SP			'p' // 0x70
 #define TILT_SP			't' // 0x74
-#define PAN_MAX_PWM		'm'
+#define MAX_PWM			'm'
+#define STOP			's'
 
 /*****************************   Constants   *******************************/
 

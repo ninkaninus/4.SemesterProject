@@ -231,8 +231,14 @@ void UART0_task(void *pvParameters)
 					uart_state = SET_DATA;
 					break;
 
-				case PAN_MAX_PWM:
+				case MAX_PWM:
 					address = MAX_PWM_EVENT;
+					xQueueSend(SPI_queue,&address,100);
+					uart_state = IDLE;
+					break;
+
+				case STOP:
+					address = STOP_EVENT;
 					xQueueSend(SPI_queue,&address,100);
 					uart_state = IDLE;
 					break;
@@ -276,10 +282,34 @@ void UART0_task(void *pvParameters)
 			switch(address)
 			{
 			case SSM_SP_DEG_PAN:
+				if (xQueueReceive(uart0_rx_queue, &received, 50000 / portTICK_RATE_MS))
+				{
+					received -= '0';
+					if(received < 0 || received > 2)
+					{
+						received = 0;
+					}
+					put_msg_state(SSM_OFFSET_PAN,received);
+					convert_and_secure();
+					received = PID_UPDATE_EVENT;
+					xQueueSend(PID_queue,&received,50);
+				}
+				break;
+
 			case SSM_SP_DEG_TILT:
-				convert_and_secure();
-				received = PID_UPDATE_EVENT;
-				xQueueSend(PID_queue,&received,50);
+				if (xQueueReceive(uart0_rx_queue, &received, 50000 / portTICK_RATE_MS))
+				{
+					received -= '0';
+					if(received < 0 || received > 2)
+					{
+						received = 0;
+					}
+					put_msg_state(SSM_OFFSET_TILT,received);
+					convert_and_secure();
+					received = PID_UPDATE_EVENT;
+					xQueueSend(PID_queue,&received,50);
+				}
+
 				break;
 
 			default:

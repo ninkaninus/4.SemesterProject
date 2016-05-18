@@ -39,21 +39,23 @@
 #define O_MIN			-200000
 #define I_MAX			5000000
 #define I_MIN			-5000000
-#define DC_MAX			255
+#define DC_MAX			150
 #define DC_MIN			40
-#define K				24		// 0.0024 * 10000
-#define KP1				6*K
-#define KI1				6*K
-#define KD1				1*K
-#define KP2				6*K
-#define KI2				6*K
-#define KD2				1*K
+#define K1				161
+#define K2				24		// 0.0024 * 10000
+#define KP1				2*K1
+#define KI1				1*K1
+#define KD1				1*K1
+#define KP2				6*K2
+#define KI2				6*K2
+#define KD2				1*K2
 
 /*****************************   Constants   *******************************/
 
 /*****************************   Variables   *******************************/
 
 PID pan_sys;
+PID pan_sys_2;
 PID tilt_sys;
 PID tilt_sys_2;
 
@@ -67,18 +69,28 @@ void init_pid()
 	pan_sys.Kp = KP1;
 	pan_sys.Ki = KI1;
 	pan_sys.Kd = KD1;
+	pan_sys.gain = K1;
 	pan_sys.integral = 0;
 	pan_sys.prev_error = 0;
+
+	pan_sys_2.Kp = 50*K1;
+	pan_sys_2.Ki = 30*K1;
+	pan_sys_2.Kd = 1*K1;
+	pan_sys_2.gain = K1;
+	pan_sys_2.integral = 0;
+	pan_sys_2.prev_error = 0;
 
 	tilt_sys.Kp = KP2;
 	tilt_sys.Ki = KI2;
 	tilt_sys.Kd = KD2;
+	tilt_sys.gain = K2;
 	tilt_sys.integral = 0;
 	tilt_sys.prev_error = 0;
 
-	tilt_sys_2.Kp = 150*K;
-	tilt_sys_2.Ki = 150*K;
-	tilt_sys_2.Kd = 1*K;
+	tilt_sys_2.Kp = 150*K2;
+	tilt_sys_2.Ki = 150*K2;
+	tilt_sys_2.Kd = 1*K2;
+	tilt_sys_2.gain = 0;
 	tilt_sys_2.integral = 0;
 	tilt_sys_2.prev_error = 0;
 }
@@ -168,12 +180,21 @@ void pid_update()
 	INT32S adjust;
 	INT8U dir;
 	INT16U duty_cycle;
-	static INT16U offset = 0;
+	//static INT16U offset = 0;
 
 	set_point 	= get_msg_state(SSM_SP_PAN);
 	actual 		= get_msg_state(SSM_POS_PAN);
 
-	adjust = pid_calc(set_point,actual,&pan_sys);
+	if(set_point - actual > 16 || set_point - actual < -16)
+		adjust = pid_calc(set_point,actual,&pan_sys);
+
+	else
+	{
+		pan_sys.integral = 0;
+		pan_sys.prev_error = 0;
+		adjust = pid_calc(set_point,actual,&pan_sys_2);
+	}
+
 
 	////
 	dir = 0;
@@ -203,18 +224,20 @@ void pid_update()
 	set_point 	= get_msg_state(SSM_SP_TILT);
 	actual	  	= get_msg_state(SSM_POS_TILT);
 
-	offset++;
+	//offset++;
 
-	set_point = set_point + offset/5;
+	//set_point = set_point + offset/5;
 
 	if(set_point - actual > 16 || set_point - actual < -16)
 		adjust = pid_calc(set_point,actual,&tilt_sys);
+
 	else
 	{
 		tilt_sys.integral = 0;
 		tilt_sys.prev_error = 0;
 		adjust = pid_calc(set_point,actual,&tilt_sys_2);
 	}
+
 
 	if(set_point != actual)
 	{

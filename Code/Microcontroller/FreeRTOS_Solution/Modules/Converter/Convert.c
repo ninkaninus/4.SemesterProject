@@ -32,9 +32,9 @@
 
 /*****************************    Defines    *******************************/
 
-#define INDEX			2048
-#define INDEX_PAN		1778
-#define INDEX_TILT		1778
+#define INDEX			2000
+#define INDEX_PAN		1730
+#define INDEX_TILT		1730
 #define PAN_DIRECTION_OFFSET 0
 #define	THETA_1			90
 #define	THETA_2			90
@@ -112,6 +112,8 @@ void convert_and_secure(void)
 
 	}
 
+	tilt = tilt + get_msg_state(SSM_OFFSET_TILT);
+	pan = pan + get_msg_state(SSM_OFFSET_PAN);
 	put_msg_state(SSM_SP_TILT,tilt);
 	put_msg_state(SSM_SP_PAN,pan);
 }
