@@ -2,8 +2,7 @@
 Clk
 HallA
 HallB
-WE
-=AdrBus[3:0]=
+HallIndex
 [Outputs]
 =DataBusToSlave[11:0]=
 [BiDir]

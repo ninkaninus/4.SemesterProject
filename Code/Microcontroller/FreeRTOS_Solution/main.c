@@ -45,6 +45,8 @@
 #include "RTC/rtc.h"
 #include "PID/pid.h"
 #include "SPI/SPI.h"
+#include "Drehimpulsgeber/drehimpulsgeber.h"
+#include "Menu/Menu.h"
 
 /*****************************    Defines    *******************************/
 #define USERTASK_STACK_SIZE configMINIMAL_STACK_SIZE
@@ -62,7 +64,7 @@ xQueueHandle GUI_queue;
 xQueueHandle UI_queue;
 xQueueHandle SPI_queue;
 xQueueHandle PID_queue;
-xQueueHandle MENU_queue;
+xQueueHandle menu_queue;
 
 xSemaphoreHandle adc_sem;
 xSemaphoreHandle scale_sem;
@@ -70,7 +72,6 @@ xSemaphoreHandle spi_access_sem;
 xSemaphoreHandle time_access_sem;
 xSemaphoreHandle rtc_update_sem;
 xSemaphoreHandle coordinate_access_sem;
-xSemaphoreHandle menu_input_sem;
 
 /*****************************   Functions   *******************************/
 
@@ -82,7 +83,8 @@ static void setupHardware(void)
   // Warning: If you do not initialize the hardware clock, the timings will be inaccurate
 
   GPIO_init();
-  UART0_init( 19200, 8, 1, 0 );
+  UART0_init( 115200, 8, 1, 0 );
+  dreh_init();
 }
 
 int main(void)
@@ -108,8 +110,8 @@ int main(void)
 
   // Start the tasks defined within this file/specific to this demo.
   return_value &= xTaskCreate( status_led_task, ( signed portCHAR * ) 	"Status LED", 	USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
-  //return_value &= xTaskCreate( LCD_task, ( signed portCHAR * ) 			"LCD", 			USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
-  //return_value &= xTaskCreate( numpad_task, ( signed portCHAR * ) 		"Keypad", 		USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
+  return_value &= xTaskCreate( LCD_task, ( signed portCHAR * ) 			"LCD", 			USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
+  return_value &= xTaskCreate( keypad_get_task, ( signed portCHAR * ) 		"Keypad", 		USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
   return_value &= xTaskCreate( gui_task, ( signed portCHAR * ) 			"GUI", 			USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
   return_value &= xTaskCreate( ui_task, ( signed portCHAR * ) 			"UI", 			USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
   //return_value &= xTaskCreate( adc_task, ( signed portCHAR * ) 			"ADC", 			USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
@@ -117,6 +119,8 @@ int main(void)
   return_value &= xTaskCreate( PID_task, ( signed portCHAR * ) 			"PID", 			USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
   return_value &= xTaskCreate( SPI_task, ( signed portCHAR * ) 			"SPI", 			USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
   return_value &= xTaskCreate( UART0_task, ( signed portCHAR * ) 		"UART",			USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
+  return_value &= xTaskCreate( dreh_task, ( signed portCHAR * ) 		"DrehImpulsgeber",	USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
+  return_value &= xTaskCreate( Menu_task, ( signed portCHAR * ) 		"Menu",	USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
 
   // test if all tasks started sucessfully
   if (return_value != pdTRUE)

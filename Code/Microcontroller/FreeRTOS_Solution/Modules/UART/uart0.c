@@ -39,6 +39,7 @@
 extern xQueueHandle uart0_rx_queue;
 extern xQueueHandle UI_queue;
 extern xQueueHandle PID_queue;
+extern xQueueHandle SPI_queue;
 
 enum uart_states {
 	IDLE,
@@ -162,44 +163,6 @@ void UART0_task(void *pvParameters)
 
 	while(1)
 	{
-//			received -= '0';
-//			switch(itr++)
-//			{
-//			case 0:
-//				temp = received*100;
-//				break;
-//
-//			case 1:
-//				temp += received*10;
-//				break;
-//
-//			case 2:
-//				temp += received;
-//				put_msg_state(SSM_SP_DEG_TILT, temp);
-//				received = PID_UPDATE_EVENT;
-//				xQueueSend(PID_queue,&received,50);
-//				break;
-//
-//			case 3:
-//				temp = received*100;
-//				break;
-//
-//			case 4:
-//				temp += received*10;
-//				break;
-//
-//			case 5:
-//				temp += received;
-//				put_msg_state(SSM_SP_DEG_PAN, temp);
-//				received = PID_UPDATE_EVENT;
-//				xQueueSend(PID_queue,&received,50);
-//				itr = 0;
-//				break;
-//
-//			default:
-//				break;
-//			}
-
 		switch(uart_state)
 		{
 		case IDLE:
@@ -244,6 +207,12 @@ void UART0_task(void *pvParameters)
 					address = SSM_SP_DEG_TILT;
 					n_max = 3;
 					uart_state = SET_DATA;
+					break;
+
+				case PAN_MAX_PWM:
+					address = MAX_PWM_EVENT;
+					xQueueSend(SPI_queue,&address,100);
+					uart_state = IDLE;
 					break;
 
 				default:
@@ -322,6 +291,8 @@ extern void UART0_init( INT32U baud_rate, INT8U databits, INT8U stopbits, INT8U 
   #define E_UART0
   SYSCTL_RCGC1_R |= SYSCTL_RCGC1_UART0;					// Enable clock for UART 0
   #endif
+
+  NVIC_PRI1_R |= 0x0000DF00; 			//Setting the priority of the uart0 interrup to 6, which is the same as 223.
 
   GPIO_PORTA_AFSEL_R |= 0x00000003;		// set PA0 og PA1 to alternativ function (uart0)
   GPIO_PORTA_DIR_R   |= 0x00000002;     // set PA1 (uart0 tx) to output

@@ -2,9 +2,8 @@
 
 \include{Sections/Preface}
 
-
 \tableofcontents
-
+\addtocontents{toc}{~\hfill\textbf{Side}\par}
 
 \newpage
 
@@ -29,7 +28,9 @@
 \input{Sections/Konklusion}
 
 \begin{singlespace}
-\include{Sections/Kildeliste}
+%%\include{Sections/Kildeliste}
+\bibliography{Bibtex/Kildeliste}
+\bibliographystyle{plain}
 \end{singlespace}
 
 \input{Sections/Bilag}

@@ -1,0 +1,15 @@
+[Inputs]
+Clk
+WE
+HallIndex
+ButtonPress
+ButtonToggle
+=Motor_Ticks[11:0]=
+=DataBusFromSlave[11:0]=
+=AdrBus[3:0]=
+[Outputs]
+MotorEnable
+Zeroed
+=MotorPins[1:0]=
+=StateOutput[1:0]=
+[BiDir]

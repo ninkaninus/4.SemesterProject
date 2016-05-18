@@ -1,63 +1,66 @@
 import serial
 import time
 
-ser = serial.Serial('COM3', 19200)  # open serial port
+ser = serial.Serial('COM7', 115200)  # open serial port
 print(ser.name)  # check which port was really used
-riseTime = 0.1
-fallTime = 0.1
-highTime = 0.1
-lowTime = 0.1
-topPwm = 210
-lowPwm = 150
-brakeTime = 0.1
+
+waitTime = 0.25
+
+iStep1 = 10
+iStep2 = 5
+
+panLimitHigh = 359
+panLimitLow = 0
+
+tiltLimitHigh = 95
+tiltLimitLow = 85
+
+i1 = panLimitLow
+i2 = tiltLimitLow
 
 try:
+
+    #ser.write(bytearray(map(ord,"\\st085")))
+
     while True:
 
-        ser.write(bytearray([32]))
-        ser.write(bytearray([0]))
+        s1 = "\\sp"
+        s2 = "\\st"
 
-        time.sleep(brakeTime)
+        if i1> panLimitHigh:
+            i1 = panLimitLow
 
-        ser.write(bytearray([32]))
-        ser.write(bytearray([1]))
-        i = lowPwm
-        while i < topPwm + 1:
-            ser.write(bytearray([16]))
-            ser.write(bytearray([i]))
-            i += 1
-            time.sleep(riseTime)
-        i = topPwm
-        time.sleep(highTime)
-        while i > lowPwm-1:
-            ser.write(bytearray([16]))
-            ser.write(bytearray([i]))
-            i -= 1
-            time.sleep(fallTime)
-        time.sleep(lowTime)
+        if i2> tiltLimitHigh:
+            i2 = tiltLimitLow
 
-        ser.write(bytearray([32]))
-        ser.write(bytearray([0]))
+        if i1 < 100:
+            s1 += '0'
 
-        time.sleep(brakeTime)
+        if i1 < 10:
+            s1 += '0'
 
-        ser.write(bytearray([32]))
-        ser.write(bytearray([2]))
+        if i2 < 100:
+            s2 += '0'
 
-        i = lowPwm
-        while i < topPwm + 1:
-            ser.write(bytearray([16]))
-            ser.write(bytearray([i]))
-            i += 1
-            time.sleep(riseTime)
-        i = topPwm
-        time.sleep(highTime)
-        while i > lowPwm-1:
-            ser.write(bytearray([16]))
-            ser.write(bytearray([i]))
-            i -= 1
-            time.sleep(fallTime)
-        time.sleep(lowTime)
+        if i2 < 10:
+            s2 += '0'
+
+        s1 += str(i1)
+        s2 += str(i2)
+
+        b1 = bytearray(map(ord,s1))
+        ser.write(b1)
+
+        b2 = bytearray(map(ord,s2))
+        ser.write(b2)
+
+        print("PAN: " + str(i1) + " " + "TILT: " + str(i2))
+
+        i1 += iStep1
+        i2 += iStep2
+
+        time.sleep(waitTime)
+
 except KeyboardInterrupt:
     pass
 ser.close()  # close port

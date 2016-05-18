@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <symbol version="7" name="Motor_Interface">
     <symboltype>BLOCK</symboltype>
-    <timestamp>2016-5-1T12:40:33</timestamp>
+    <timestamp>2016-5-1T15:42:40</timestamp>
     <pin polarity="Input" x="0" y="96" name="clk" />
     <pin polarity="Input" x="0" y="-96" name="pwm" />
     <pin polarity="Input" x="0" y="48" name="WE" />
@@ -9,6 +9,7 @@
     <pin polarity="Input" x="0" y="144" name="DataBusFromSlave(11:0)" />
     <pin polarity="Output" x="384" y="192" name="motorEnable" />
     <pin polarity="Output" x="384" y="-96" name="motor(1:0)" />
+    <pin polarity="Input" x="0" y="240" name="emergencyStop" />
     <graph>
         <attrtext style="alignment:BCENTER;fontsize:56;fontname:Arial" attrname="SymbolName" x="192" y="-136" type="symbol" />
         <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="96" type="pin clk" />
@@ -18,6 +19,8 @@
         <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="144" type="pin DataBusFromSlave(11:0)" />
         <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="312" y="192" type="pin motorEnable" />
         <attrtext style="alignment:RIGHT;fontsize:24;fontname:Arial" attrname="PinName" x="312" y="-96" type="pin motor(1:0)" />
+        <attrtext style="fontsize:24;fontname:Arial" attrname="PinName" x="72" y="240" type="pin emergencyStop" />
+        <line x2="0" y1="240" y2="240" x1="64" />
         <line x2="384" y1="192" y2="192" x1="320" />
         <rect width="64" x="0" y="132" height="24" />
         <line x2="0" y1="144" y2="144" x1="64" />
@@ -28,6 +31,6 @@
         <line x2="0" y1="-48" y2="-48" x1="64" />
         <line x2="0" y1="48" y2="48" x1="64" />
         <line x2="0" y1="96" y2="96" x1="64" />
-        <rect width="256" x="64" y="-128" height="344" />
+        <rect width="256" x="64" y="-128" height="388" />
     </graph>
 </symbol>

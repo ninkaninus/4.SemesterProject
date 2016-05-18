@@ -53,5 +53,6 @@
 #define PID_UPDATE_EVENT		7
 #define GET_POS_EVENT			8
 #define SET_PWM_EVENT			9
+#define MAX_PWM_EVENT			10
 
 #endif /* _TMODEL_H_ */

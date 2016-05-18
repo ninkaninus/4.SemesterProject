@@ -33,20 +33,21 @@
 
 /*****************************    Defines    *******************************/
 
-#define SCALE_FACTOR	1000
-#define DT 				5		//  5ms * 1000
-#define O_MAX			40
-#define O_MIN			-40
-#define I_MAX			7000
-#define I_MIN			-7000
-#define DC_MAX			150
-#define DC_MIN			60
-#define KP1				50
-#define KI1				1
-#define KD1				20
-#define KP2				40
-#define KI2				2
-#define KD2				20
+#define SCALE_FACTOR	10000
+#define DT 				50		//  50 * 0.0001 = 0,005s
+#define O_MAX			200000
+#define O_MIN			-200000
+#define I_MAX			5000000
+#define I_MIN			-5000000
+#define DC_MAX			255
+#define DC_MIN			40
+#define K				24		// 0.0024 * 10000
+#define KP1				6*K
+#define KI1				6*K
+#define KD1				1*K
+#define KP2				6*K
+#define KI2				6*K
+#define KD2				1*K
 
 /*****************************   Constants   *******************************/
 
@@ -54,6 +55,7 @@
 
 PID pan_sys;
 PID tilt_sys;
+PID tilt_sys_2;
 
 extern xQueueHandle SPI_queue;
 extern xQueueHandle PID_queue;
@@ -73,6 +75,12 @@ void init_pid()
 	tilt_sys.Kd = KD2;
 	tilt_sys.integral = 0;
 	tilt_sys.prev_error = 0;
+
+	tilt_sys_2.Kp = 150*K;
+	tilt_sys_2.Ki = 150*K;
+	tilt_sys_2.Kd = 1*K;
+	tilt_sys_2.integral = 0;
+	tilt_sys_2.prev_error = 0;
 }
 
 void PID_task(void *pvParameters)
@@ -120,9 +128,27 @@ INT32S pid_calc(INT32U desired, INT32U actual, PID *controller)
 
 	derivative = (error - controller->prev_error)/DT;
 
-	output = controller->Kp*error + controller->Ki*integral + controller->Kd*derivative;
+	INT32S P_term = controller->Kp*error;			// scaled by 10E4
 
-	output /= 1000;
+	INT32S I_term = controller->Ki*integral;		// scaled by 10E8
+	I_term /= SCALE_FACTOR;							// scaled by 10E4
+
+	INT32S D_term = controller->Kd*derivative;		// scaled by 10E0
+	D_term *= SCALE_FACTOR;							// scaled by 10E4
+
+	if(error > 300 || error < -300)					// integration is only active when close to the target
+	{
+		I_term = 0;
+		integral = 0;
+	}
+
+	output = P_term + I_term + D_term;
+
+	if(I_term > 80000)
+	{
+		output += 1;
+		output -= 1;
+	}
 
 	if(output > O_MAX)
 		output = O_MAX;
@@ -142,6 +168,7 @@ void pid_update()
 	INT32S adjust;
 	INT8U dir;
 	INT16U duty_cycle;
+	static INT16U offset = 0;
 
 	set_point 	= get_msg_state(SSM_SP_PAN);
 	actual 		= get_msg_state(SSM_POS_PAN);
@@ -175,7 +202,20 @@ void pid_update()
 
 	set_point 	= get_msg_state(SSM_SP_TILT);
 	actual	  	= get_msg_state(SSM_POS_TILT);
-	adjust = pid_calc(set_point,actual,&tilt_sys);
+
+	offset++;
+
+	set_point = set_point + offset/5;
+
+	if(set_point - actual > 16 || set_point - actual < -16)
+		adjust = pid_calc(set_point,actual,&tilt_sys);
+	else
+	{
+		tilt_sys.integral = 0;
+		tilt_sys.prev_error = 0;
+		adjust = pid_calc(set_point,actual,&tilt_sys_2);
+	}
+
 	if(set_point != actual)
 	{
 		if(adjust < 0)
@@ -184,13 +224,11 @@ void pid_update()
 			dir = 2;
 	}
 
-
-
 	duty_cycle = pwm_conv(adjust);
 
 	duty_cycle = (dir<<8) | duty_cycle;
-	//if(set_point != actual)
-		duty_cycle = 0x0400 | duty_cycle;
+
+	duty_cycle = 0x0400 | duty_cycle;
 
 	put_msg_state(SSM_PWM_DIR_EN_TILT,duty_cycle);
 
@@ -210,18 +248,24 @@ INT16U pwm_conv(INT32S output)
 	if(output < 0)
 		output *= -1;
 
-	INT32U ratio = (output*1000) / O_MAX ;
+	INT32U ratio = (output << 10) / O_MAX ;
 
-	INT32U result = 255 * ratio;
-	result /= 1000;
+	INT32U result;// = 255 * ratio;
 
+	result = (DC_MAX - DC_MIN) * ratio;
+
+	result = result >> 10;
+
+	result += DC_MIN;
+
+	/*
 	if(result > DC_MAX)
 		result = DC_MAX;
 	if(result < DC_MIN)
 		result = DC_MIN;
+	 */
 
 	return result;
-
 }
 
 

@@ -41,12 +41,14 @@ entity Motor_Interface is
 			  WE : 		in  	STD_LOGIC;
            DataBusFromSlave : in STD_LOGIC_VECTOR (11 downto 0);
 			  motorEnable : out STD_LOGIC;
+			  emergencyStop : in STD_LOGIC;
            motor : out  STD_LOGIC_VECTOR(1 downto 0));
 end Motor_Interface;
 
 architecture Behavioral of Motor_Interface is
 
 signal DataIn : STD_LOGIC_VECTOR (2 downto 0);
+signal runState : STD_LOGIC_VECTOR(2 downto 0);
 
 begin
 
@@ -61,13 +63,14 @@ begin
 	end if;
 end process;	
 
-with DataIn(1 downto 0) select motor <= 
-	'0' & pwm when "01",
-	pwm & '0' when "10",
+runState <= emergencyStop & DataIn(1 downto 0);
+
+with runState select motor <= 
+	'0' & pwm when "001",
+	pwm & '0' when "010",
 	"00" when others;
 
 with DataIn(2) select motorEnable <=
-	'0' when '0',
 	'1' when '1',
 	'0' when others;
 
