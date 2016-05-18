@@ -4,15 +4,15 @@ import time
 ser = serial.Serial('COM9', 9600, serial.EIGHTBITS, serial.PARITY_NONE, serial.STOPBITS_ONE, 0)  # open serial port
 print(ser.name)  # check which port was really used
 
-waitTime = 1
+waitTime = 0.1
 
-iStep1 = 3
-iStep2 = 3
+iStep1 = 1
+iStep2 = 1
 
 panLimitHigh = 359
 panLimitLow = 0
 
-tiltLimitHigh = 180
+tiltLimitHigh = 359
 tiltLimitLow = 0
 
 i1 = panLimitLow
@@ -54,7 +54,7 @@ try:
         b2 = bytearray(map(ord,s2))
         ser.write(b2)
 
-        print("PAN: " + str(i1) + " " + "TILT: " + str(i2))
+        print("PAN: " + s1 + " " + "TILT: " + s2)
 
         i1 += iStep1
         i2 += iStep2
