@@ -3,8 +3,8 @@
 clear
 clc
 
-P = 22;
-I = 123;
+P = 50;
+I = 30;
 D = 1;
 
 syms x;
@@ -44,12 +44,12 @@ test = 1/s*G
 
 %%
 
-sys = G*C*k;
-sys2 = G*C_Design2;
+sys = G*C*0.0161;
+%sys2 = G*C_Design2;
 %sys4 = G*C_Design4;
 
 sys=feedback(sys,1)
-sys2=feedback(sys2,1)
+%sys2=feedback(sys2,1)
 %sys4=feedback(sys4,1)
 
 DC = dcgain((s-p(2))*(s-p(3)));
@@ -57,7 +57,7 @@ DC = dcgain((s-p(2))*(s-p(3)));
 SOtf = DC/((s-p(2))*(s-p(3)))
 
 figure(2)
-step(sys,sys2,SOtf,5)
+step(sys,SOtf,5)
 
 %%
 
