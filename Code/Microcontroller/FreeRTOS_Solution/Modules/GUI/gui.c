@@ -36,7 +36,7 @@
 
 /*****************************   Variables   *******************************/
 
-INT8U images[4][36] = {
+INT8U images[5][36] = {
 		{' ','S','Y','S','T','E','M',' ','C','O','N','T','R','O','L',' ',
 		 ' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',
 		 0x00,0,0,0 },
@@ -50,8 +50,12 @@ INT8U images[4][36] = {
 		0x00,0,0,0 },
 
 		{' ',' ','P','I','D',' ','C','O','N','T','R','O','L',' ',' ',' ',
-		' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',
+		' ','P',':',' ',' ',' ','I',':',' ',' ',' ','D',':',' ',' ',' ',
 		0x00,0,0,0 },
+
+		{' ',' ','S','E','T',' ','P','O','S','I','T','I','O','N',' ',' ',
+		'X',':',' ',' ',' ',' ',' ',' ','Y',':',' ',' ',' ',' ',' ',' ',
+		0x12,0,0,0 },
 };
 
 INT8U current_image[36];
@@ -67,7 +71,8 @@ enum gui_states {
 	MAIN,
 	CONTROL,
 	POSITION,
-	CONTROL_PID
+	CONTROL_PID,
+	X_Y
 };
 
 /*****************************   Functions   *******************************/
@@ -130,6 +135,11 @@ void gui_task(void *pvParameters)
 					gui_state = CONTROL;
 					new_image(CONTROL);
 				}
+				if (received == '#')
+				{
+					gui_state = X_Y;
+					new_image(X_Y);
+				}
 			}
 			break;
 		case CONTROL_PID:
@@ -139,6 +149,30 @@ void gui_task(void *pvParameters)
 				{
 					gui_state = CONTROL;
 					new_image(CONTROL);
+				}
+			}
+			break;
+		case X_Y:
+			if (xQueueReceive(GUI_queue, &received,1000))
+			{
+				if (received == '*')
+				{
+					gui_state = POSITION;
+					new_image(POSITION);
+				}
+
+				if (received == 'R')
+				{
+					write_char('1');
+					write_char('2');
+					current_image[NEXT_CURSOR_POS] = 0x1A;
+					write_char('3');
+					current_image[CHAR_POS] = 0x1A;
+					write_char('4');
+					write_char('5');
+					current_image[NEXT_CURSOR_POS] = 0x12;
+					write_char('6');
+					current_image[CHAR_POS] = 0x12;
 				}
 			}
 			break;

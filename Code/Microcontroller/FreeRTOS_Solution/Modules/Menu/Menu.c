@@ -40,7 +40,8 @@ enum menu_states
 	MAIN,
 	CONTROL,
 	POSITION,
-	CONTROL_PID
+	CONTROL_PID,
+	X_Y
 };
 /*****************************   Functions   *******************************/
 void Menu_task(void *pvParameters)
@@ -111,6 +112,8 @@ void Menu_task(void *pvParameters)
 					menu_state = CONTROL;
 					break;
 				case '#':
+					xQueueSend(GUI_queue, &received, 100);
+					menu_state = X_Y;
 					break;
 				case '*':
 					break;
@@ -133,6 +136,26 @@ void Menu_task(void *pvParameters)
 				case '*':
 					xQueueSend(GUI_queue, &received, 100);
 					menu_state = CONTROL;
+					break;
+				default:
+					break;
+				}
+			}
+		case X_Y:
+			if (xQueueReceive(menu_queue, &received, 10000))
+			{
+				switch (received)
+				{
+				case 'R':
+					xQueueSend(GUI_queue, &received, 100);
+					break;
+				case 'L':
+					break;
+				case '#':
+					break;
+				case '*':
+					xQueueSend(GUI_queue, &received, 100);
+					menu_state = POSITION;
 					break;
 				default:
 					break;
