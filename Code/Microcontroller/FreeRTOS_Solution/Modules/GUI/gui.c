@@ -36,38 +36,22 @@
 
 /*****************************   Variables   *******************************/
 
-INT8U images[8][36] = {
-		{'W','e','l','c','o','m','e','!',' ','P','r','e','s','s',' ',' ',
-		 '"','*','"',' ','f','o','r',' ','m','e','n','u',' ',' ',' ',' ',
+INT8U images[4][36] = {
+		{' ','S','Y','S','T','E','M',' ','C','O','N','T','R','O','L',' ',
+		 ' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',
 		 0x00,0,0,0 },
 
-		{'E','n','t','e','r',' ','C','o','m','m','a','n','d',':',' ',' ',
+		{' ',' ',' ','R','E','G','U','L','A','T','I','O','N',' ',' ',' ',
 		 ' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',
-		 0x10,0,1,0 },
-
-		{'I','n','v','a','l','i','d',' ','I','n','p','u','t',' ',' ',' ',
-		 ' ',' ','T','r','y',' ','A','g','a','i','n','.','.','.',' ',' ',
 		 0x00,0,0,0 },
 
-		{'S','e','t',' ','t','h','e',' ','T','i','m','e',':',' ',' ',' ',
-		 ' ',' ',' ',' ','h','h',':','m','m',':','s','s',' ',' ',' ',' ',
-	     0x14,0,1,0 },
+		{' ',' ',' ',' ','P','O','S','I','T','I','O','N',' ',' ',' ',' ',
+		' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',
+		0x00,0,0,0 },
 
-		{'C','u','r','r','e','n','t',' ','T','i','m','e',':',' ',' ',' ',
-		 ' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',
-		 0x14,0,0,0 },
-
-		{'S','e','t',' ','S','c','a','l','e',':',' ',' ',' ',' ',' ',' ',
-		 ' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',
-		 0x10,0,1,0 },
-
-		{'S','e','t',' ','O','f','f','s','e','t',':',' ',' ',' ',' ',' ',
-		 ' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',
-		 0x10,0,1,0 },
-
-		{'K','n','o','b',' ','V','a','l','u','e',':',' ',' ',' ',' ',' ',
-		 ' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',
-		 0x18,0,0,0 }
+		{' ',' ','P','I','D',' ','C','O','N','T','R','O','L',' ',' ',' ',
+		' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',
+		0x00,0,0,0 },
 };
 
 INT8U current_image[36];
@@ -80,13 +64,10 @@ extern xSemaphoreHandle scale_sem;
 extern xSemaphoreHandle scale_update_sem;
 
 enum gui_states {
-	INIT,
-	ENTER_COMMAND,
-	SET_TIME,
-	SHOW_TIME,
-	SET_SCALE,
-	SET_OFFSET,
-	SHOW_KNOB
+	MAIN,
+	CONTROL,
+	POSITION,
+	CONTROL_PID
 };
 
 /*****************************   Functions   *******************************/
@@ -94,196 +75,75 @@ enum gui_states {
 void gui_task(void *pvParameters)
 {
 	INT8U received;
-	INT8U gui_state = INIT;
+	INT8U gui_state = MAIN;
 
-	set_image(WELCOME_MSG);
-	xQueueSend(LCD_image_queue,&current_image,10000);
-	while (1) {
-			switch (gui_state)
+	new_image(MAIN);
+	while (1)
+	{
+		switch (gui_state)
+		{
+		case MAIN:
+			if (xQueueReceive(GUI_queue,&received,1000))
 			{
-			case INIT:
-				if (xQueueReceive(GUI_queue, &received, 10000))
+				if (received == 'R')
 				{
-					if (received == CMD_EVENT)
-					{
-						gui_state = ENTER_COMMAND;
-						new_image(COMMAND_PROMPT);
-					}
+					gui_state = CONTROL;
+					new_image(CONTROL);
 				}
-				break;
-
-			case ENTER_COMMAND:
-				if (xQueueReceive(GUI_queue, &received, 10000))
+				if (received == 'L')
 				{
-					switch(received)
-					{
-					case ERROR_EVENT:
-						new_image(ERROR_MSG);
-						vTaskDelay(1000 / portTICK_RATE_MS);
-						new_image(COMMAND_PROMPT);
-						break;
-
-					case CMD_EVENT:
-						new_image(COMMAND_PROMPT);
-						break;
-
-					case SET_TIME_EVENT:
-						gui_state = SET_TIME;
-						new_image(TIME_PROMPT);
-						break;
-
-					case SHOW_TIME_EVENT:
-						gui_state = SHOW_TIME;
-						new_image(CURRENT_TIME);
-						break;
-
-					case SET_SCALE_EVENT:
-						gui_state = SET_SCALE;
-						new_image(SCALE_PROMPT);
-						break;
-
-					case SET_OFFSET_EVENT:
-						gui_state = SET_OFFSET;
-						new_image(OFFSET_PROMPT);
-						break;
-
-					case SHOW_KNOB_EVENT:
-						gui_state = SHOW_KNOB;
-						new_image(KNOB_VALUE);
-						break;
-
-					default:
-						if(current_image[NEXT_CURSOR_POS] < 32)
-						{
-							write_char(received);
-						}
-						break;
-					}
+					gui_state = POSITION;
+					new_image(POSITION);
 				}
-				break;
-
-			case SET_TIME:
-				if (xQueueReceive(GUI_queue, &received, 10000))
+			}
+			break;
+		case CONTROL:
+			if (xQueueReceive(GUI_queue,&received,1000))
+			{
+				if (received == 'R')
 				{
-					switch(received)
-					{
-					case ERROR_EVENT:
-						new_image(ERROR_MSG);
-						vTaskDelay(1000 / portTICK_RATE_MS);
-						new_image(TIME_PROMPT);
-						break;
-
-					case CMD_EVENT:
-						gui_state = ENTER_COMMAND;
-						new_image(COMMAND_PROMPT);
-						break;
-
-					case SHOW_TIME_EVENT:
-						gui_state = SHOW_TIME;
-						new_image(CURRENT_TIME);
-						break;
-
-					default:
-						if (current_image[NEXT_CURSOR_POS] == 0x16 || current_image[NEXT_CURSOR_POS] == 0x19) 	// positioner svarende til de to colonner
-						{
-							current_image[NEXT_CURSOR_POS]++;				// næste cursor skal være 1 position længere fremme
-							write_char(received);
-							current_image[CHAR_POS]++;					// næste karakter der skal skrives skal også være 1 position længere fremme
-						}
-						else
-							write_char(received);
-
-						break;
-					}
+					gui_state = POSITION;
+					new_image(POSITION);
 				}
-				break;
-
-			case SHOW_TIME:
-				if (xQueueReceive(GUI_queue, &received, 500 / portTICK_RATE_MS))
+				if (received == 'L')
 				{
-					if(received == CMD_EVENT)
-					{
-						gui_state = ENTER_COMMAND;
-						new_image(COMMAND_PROMPT);
-					}
+					gui_state = MAIN;
+					new_image(MAIN);
 				}
-				else if(xSemaphoreTake(rtc_update_sem,10000 / portTICK_RATE_MS))
+				if (received == '#')
 				{
-					INT8U sec = get_msg_state(SSM_RTC_SEC);
-					INT8U min = get_msg_state(SSM_RTC_MIN);
-					INT8U hour = get_msg_state(SSM_RTC_HOUR);
-					INT8U colon = ':';
-
-					if( sec & 0x01)
-						colon = ' ';
-
-					write_char(hour / 10 + '0');
-					write_char(hour % 10 + '0');
-					write_char(colon);
-					write_char(min / 10 + '0');
-					write_char(min % 10 + '0');
-					write_char(colon);
-					write_char(sec / 10 + '0');
-
-					current_image[NEXT_CURSOR_POS] = 0x14;
-					write_char(sec % 10 + '0');
-					current_image[CHAR_POS] = 0x13;
-
+					gui_state = CONTROL_PID;
+					new_image(CONTROL_PID);
 				}
-				break;
-
-			case SET_SCALE:
-				if (xQueueReceive(GUI_queue, &received, 500 / portTICK_RATE_MS))
+			}
+			break;
+		case POSITION:
+			if (xQueueReceive(GUI_queue,&received,1000))
+			{
+				if (received == 'R')
 				{
-					switch(received)
-					{
-					case CMD_EVENT:
-						gui_state = ENTER_COMMAND;
-						new_image(COMMAND_PROMPT);
-						break;
-
-					case SET_OFFSET_EVENT:
-						gui_state = SET_OFFSET;
-						new_image(OFFSET_PROMPT);
-						break;
-
-					default:
-						write_char(received);
-						break;
-					}
+					gui_state = MAIN;
+					new_image(MAIN);
 				}
-
-				break;
-
-			case SET_OFFSET:
-				if (xQueueReceive(GUI_queue, &received, 500 / portTICK_RATE_MS))
+				if (received == 'L')
 				{
-					switch(received)
-					{
-					case CMD_EVENT:
-						gui_state = ENTER_COMMAND;
-						new_image(COMMAND_PROMPT);
-						break;
-
-					case SHOW_KNOB_EVENT:
-						gui_state = SHOW_KNOB;
-						new_image(KNOB_VALUE);
-						break;
-
-					default:
-						write_char(received);
-						break;
-					}
+					gui_state = CONTROL;
+					new_image(CONTROL);
 				}
-
-				break;
-
-			case SHOW_KNOB:
-
-				break;
-
-			default:
-				break;
+			}
+			break;
+		case CONTROL_PID:
+			if (xQueueReceive(GUI_queue,&received,1000))
+			{
+				if (received == '*')
+				{
+					gui_state = CONTROL;
+					new_image(CONTROL);
+				}
+			}
+			break;
+		default:
+			break;
 		}
 	}
 }

@@ -118,14 +118,13 @@ void LCD_Set_Cursor(INT8U address)
 
 void LCD_task(void *pvParameters)
 {
-	LCD_init();
-
 	INT8U received[36];
 
 	while (1)
 	{
 		if (xQueueReceive(LCD_image_queue, &received, 10000))
 		{
+			  LCD_init();
 			if(received[35] == 0) // Et nyt image skal skrives
 			{
 				for (int i = 0; i < 35; i++)

@@ -55,7 +55,7 @@ INT8U iterator;
 INT8U output;
 enum KEYPAD_states Keypad_state = KEYPAD_INIT;
 extern struct Queue numpad_input_queue;
-extern xQueueHandle UI_queue;
+extern xQueueHandle menu_queue;
 /*****************************   Functions   *******************************/
 
 void keypad_init(void)
@@ -152,7 +152,7 @@ extern void keypad_get_task(void *pvParameters)
 	 {
 		my_state=KEYPAD_PUSHED;
 		output = keypad_output();
-		xQueueSend(UI_queue, &output ,10000);
+		xQueueSend(menu_queue, &output ,1000);
 
 	 }
 

@@ -36,7 +36,6 @@
 
 // Indexes for image array
 #define CHAR_POS		32
-
 #define NEXT_CURSOR_POS		35
 
 /*****************************   Constants   *******************************/

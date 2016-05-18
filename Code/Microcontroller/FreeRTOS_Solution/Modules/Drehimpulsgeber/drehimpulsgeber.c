@@ -19,10 +19,14 @@
 
 /***************************** Include files *******************************/
 #include <stdint.h>
-#include <EMP/emp_type.h>
 #include <tm4c123gh6pm.h>
-#include <UART/uart0.h>
+#include "FreeRTOS.h"
+#include "task.h"
+#include "queue.h"
+#include "semphr.h"
 
+/*Own include files*/
+#include "Modules/EMP/emp_type.h"
 /*****************************    Defines    *******************************/
 #define DREHIMPULSGEBER_A		5
 #define DREHIMPULSGEBER_B		6
@@ -38,7 +42,7 @@
 /*****************************   Constants   *******************************/
 
 /*****************************   Variables   *******************************/
-
+extern xQueueHandle menu_queue;
 /*****************************   Functions   *******************************/
 void dreh_init(void) {
 	// Enable the GPIO port that is used for Numpad
@@ -98,15 +102,17 @@ void dreh_init(void) {
  }
  */
 
-void dreh_task(INT8U my_id, INT8U my_state, INT8U event, INT8U data)
+void dreh_task(void *pvParameters)
 {
 	static INT8S enc_states[] = { 0, -1, 1, 0, 1, 0, 0, -1, -1, 0, 0, 1, 0, 1, -1, 0 };
 	static INT8U old_ab = 0;
 	static INT8U countTwo = 0;
+	INT8U Turn = 0;
 
+	while(1)
+	{
 	old_ab <<= 2;
 	old_ab |= (((DREH_A) << 1) | (DREH_B));
-
 	INT8S val = enc_states[(old_ab & 0x0F)];
 
 	if (val != 0)
@@ -115,11 +121,13 @@ void dreh_task(INT8U my_id, INT8U my_state, INT8U event, INT8U data)
 		{
 			if (val == 1)
 			{
-				uart0_putc('R');
+				Turn = 'R';
+				xQueueSend(menu_queue, &Turn, 10 / portTICK_RATE_MS);
 			}
 			else if (val == -1)
 			{
-				uart0_putc('L');
+				Turn = 'L';
+					xQueueSend(menu_queue, &Turn, 10 / portTICK_RATE_MS);
 			}
 			countTwo = 0;
 		}
@@ -127,6 +135,8 @@ void dreh_task(INT8U my_id, INT8U my_state, INT8U event, INT8U data)
 		{
 			countTwo++;
 		}
+		}
+	vTaskDelay(5 / portTICK_RATE_MS);
 	}
 }
 

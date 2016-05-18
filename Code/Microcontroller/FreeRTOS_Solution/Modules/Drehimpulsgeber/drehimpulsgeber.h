@@ -40,7 +40,7 @@ void dreh_isr();
 //  Output   : -
 //  Function : interrrupt rutine for interrupt prot A
 
-void dreh_task(INT8U my_id, INT8U my_state, INT8U event, INT8U data);
+void dreh_task(void *pvParameters);
 //	Input    : -
 //  Output   : -
 //  Function : manages the task
