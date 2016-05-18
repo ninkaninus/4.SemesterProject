@@ -152,7 +152,7 @@ extern void keypad_get_task(void *pvParameters)
 	 {
 		my_state=KEYPAD_PUSHED;
 		output = keypad_output();
-		xQueueSend(menu_queue, &output ,1000);
+		xQueueSend(MENU_queue, &output ,1000);
 
 	 }
 

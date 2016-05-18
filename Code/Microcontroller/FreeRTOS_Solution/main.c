@@ -64,7 +64,7 @@ xQueueHandle GUI_queue;
 xQueueHandle UI_queue;
 xQueueHandle SPI_queue;
 xQueueHandle PID_queue;
-xQueueHandle menu_queue;
+xQueueHandle MENU_queue;
 
 xSemaphoreHandle adc_sem;
 xSemaphoreHandle scale_sem;
@@ -72,6 +72,7 @@ xSemaphoreHandle spi_access_sem;
 xSemaphoreHandle time_access_sem;
 xSemaphoreHandle rtc_update_sem;
 xSemaphoreHandle coordinate_access_sem;
+xSemaphoreHandle menu_input_sem;
 
 /*****************************   Functions   *******************************/
 
