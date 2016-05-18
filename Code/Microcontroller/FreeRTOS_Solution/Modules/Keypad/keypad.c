@@ -55,7 +55,7 @@ INT8U iterator;
 INT8U output;
 enum KEYPAD_states Keypad_state = KEYPAD_INIT;
 extern struct Queue numpad_input_queue;
-extern xQueueHandle menu_queue;
+extern xQueueHandle MENU_queue;
 /*****************************   Functions   *******************************/
 
 void keypad_init(void)

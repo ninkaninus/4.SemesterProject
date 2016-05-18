@@ -172,11 +172,12 @@ void MENU_task(void *pvParameters)
 
 	while (1)
 	{
-		INT8U input_event = 0;
+		INT8U event = 0;
+		INT8U input = 0;
 
 		if( xSemaphoreTake( menu_input_sem, 100 ))
 		{
-			if( xQueueReceive( MENU_queue, &( input_event ), 0 ))
+			if( xQueueReceive( MENU_queue, &( input ), 0 ))
 			{
 				xSemaphoreGive(menu_input_sem);
 
@@ -186,7 +187,7 @@ void MENU_task(void *pvParameters)
 					switch (sub_state)
 					{
 					case MENU_RUN:
-						switch (input_event)
+						switch (event)
 						{
 							case BE_LEFT:
 								sub_state = MENU_OPTIONS;
@@ -210,7 +211,7 @@ void MENU_task(void *pvParameters)
 						break;
 
 					case MENU_SHOW:
-						switch (input_event)
+						switch (event)
 						{
 							case BE_LEFT:
 								sub_state = MENU_RUN;
@@ -234,7 +235,7 @@ void MENU_task(void *pvParameters)
 						break;
 
 					case MENU_OPTIONS:
-						switch (input_event)
+						switch (event)
 						{
 							case BE_LEFT:
 								sub_state = MENU_SHOW;
@@ -266,7 +267,7 @@ void MENU_task(void *pvParameters)
 					switch (sub_state)
 					{
 					case RUN_START:
-						switch (input_event)
+						switch (event)
 						{
 							case BE_LEFT:
 								sub_state = RUN_RETURN;
@@ -288,7 +289,7 @@ void MENU_task(void *pvParameters)
 						break;
 
 					case RUN_STOP:
-						switch (input_event)
+						switch (event)
 						{
 							case BE_LEFT:
 								sub_state = RUN_START;
@@ -310,7 +311,7 @@ void MENU_task(void *pvParameters)
 						break;
 
 					case RUN_MANUAL_JOG:
-						switch (input_event)
+						switch (event)
 						{
 							case BE_LEFT:
 								sub_state = RUN_STOP;
@@ -332,7 +333,7 @@ void MENU_task(void *pvParameters)
 						break;
 
 					case RUN_MANUAL_SET:
-						switch (input_event)
+						switch (event)
 						{
 							case BE_LEFT:
 								sub_state = RUN_MANUAL_JOG;
@@ -354,7 +355,7 @@ void MENU_task(void *pvParameters)
 						break;
 
 					case RUN_AUTO_PIC_ON_OFF:
-						switch (input_event)
+						switch (event)
 						{
 							case BE_LEFT:
 								sub_state = RUN_MANUAL_SET;
@@ -376,7 +377,7 @@ void MENU_task(void *pvParameters)
 						break;
 
 					case RUN_RETURN:
-						switch (input_event)
+						switch (event)
 						{
 							case BE_LEFT:
 								sub_state = RUN_AUTO_PIC_ON_OFF;
@@ -408,7 +409,7 @@ void MENU_task(void *pvParameters)
 					switch (sub_state)
 					{
 					case SHOW_PAN:
-						switch (input_event)
+						switch (event)
 						{
 							case BE_LEFT:
 								sub_state = SHOW_RETURN;
@@ -430,7 +431,7 @@ void MENU_task(void *pvParameters)
 						break;
 
 					case SHOW_TILT:
-						switch (input_event)
+						switch (event)
 						{
 							case BE_LEFT:
 								sub_state = SHOW_PAN;
@@ -452,7 +453,7 @@ void MENU_task(void *pvParameters)
 						break;
 
 					case SHOW_ERROR:
-						switch (input_event)
+						switch (event)
 						{
 							case BE_LEFT:
 								sub_state = SHOW_TILT;
@@ -474,7 +475,7 @@ void MENU_task(void *pvParameters)
 						break;
 
 					case SHOW_RETURN:
-						switch (input_event)
+						switch (event)
 						{
 							case BE_LEFT:
 								sub_state = SHOW_ERROR;
@@ -507,7 +508,7 @@ void MENU_task(void *pvParameters)
 					switch (sub_state)
 					{
 					case OPTIONS_SET_PAN_OFFSET:
-						switch (input_event)
+						switch (event)
 						{
 							case BE_LEFT:
 								sub_state = OPTIONS_RETURN;
@@ -529,7 +530,7 @@ void MENU_task(void *pvParameters)
 						break;
 
 					case OPTIONS_SET_TILT_OFFSET:
-						switch (input_event)
+						switch (event)
 						{
 							case BE_LEFT:
 								sub_state = OPTIONS_SET_PAN_OFFSET;
@@ -551,7 +552,7 @@ void MENU_task(void *pvParameters)
 						break;
 
 					case OPTIONS_PAN_PIDK:
-						switch (input_event)
+						switch (event)
 						{
 							case BE_LEFT:
 								sub_state = OPTIONS_SET_TILT_OFFSET;
@@ -573,7 +574,7 @@ void MENU_task(void *pvParameters)
 						break;
 
 					case OPTIONS_TILT_PIDK:
-						switch (input_event)
+						switch (event)
 						{
 							case BE_LEFT:
 								sub_state = OPTIONS_PAN_PIDK;
@@ -595,7 +596,7 @@ void MENU_task(void *pvParameters)
 						break;
 
 					case OPTIONS_KANIN_PID:
-						switch (input_event)
+						switch (event)
 						{
 							case BE_LEFT:
 								sub_state = OPTIONS_TILT_PIDK;
@@ -617,7 +618,7 @@ void MENU_task(void *pvParameters)
 						break;
 
 					case OPTIONS_RETURN:
-						switch (input_event)
+						switch (event)
 						{
 							case BE_LEFT:
 								sub_state = OPTIONS_KANIN_PID;
