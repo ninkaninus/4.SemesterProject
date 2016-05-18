@@ -100,7 +100,15 @@ void uart0_interrupt_enable()
 	UART0_IM_R |= UART_IM_RXIM;
 	UART0_IM_R |= 0x40;
 
-	NVIC_EN0_R = 0x00000020;
+	NVIC_EN0_R |= 0x00000020;
+}
+
+void uart5_interrupt_enable()
+{
+	UART5_IM_R |= UART_IM_RXIM;
+	UART5_IM_R |= 0x40;
+
+	NVIC_EN1_R |= (1<<29);
 }
 
 void uart0_interrupt_disable()
@@ -111,6 +119,11 @@ void uart0_interrupt_disable()
 void uart0_fifos_enable()
 {
   UART0_LCRH_R  |= 0x00000020;
+}
+
+void uart5_fifos_enable()
+{
+  UART5_LCRH_R  |= 0x00000020;
 }
 
 void uart0_fifos_disable()
@@ -145,9 +158,18 @@ void UART0_tx_isr()
 
 void UART0_rx_isr()
 {
-	while (RX_FIFO_NOT_EMPTY)
+	while (RX0_FIFO_NOT_EMPTY)
 	{
 		INT8U received = UART0_DR_R;
+		xQueueSendFromISR(uart0_rx_queue, &received, NULL);
+	}
+}
+
+void UART5_rx_isr()
+{
+	while (RX5_FIFO_NOT_EMPTY)
+	{
+		INT8U received = UART5_DR_R;
 		xQueueSendFromISR(uart0_rx_queue, &received, NULL);
 	}
 }
@@ -312,6 +334,41 @@ extern void UART0_init( INT32U baud_rate, INT8U databits, INT8U stopbits, INT8U 
   uart0_interrupt_enable();
 
   UART0_CTL_R  |= (UART_CTL_UARTEN | UART_CTL_TXE | UART_CTL_RXE );  // Enable UART
+
+}
+
+extern void UART5_init( INT32U baud_rate, INT8U databits, INT8U stopbits, INT8U parity )
+{
+  INT32U BRD;
+
+  SYSCTL_RCGC2_R |= SYSCTL_RCGC2_GPIOE;					// Enable clock for Port A
+
+  SYSCTL_RCGCUART_R |= SYSCTL_RCGCUART_R5;				// Enable clock for UART 0
+
+  NVIC_PRI15_R |= 0x0000DF00; 				//Setting the priority of the uart5 interrup to 6, which is the same as 223.
+
+  GPIO_PORTE_PCTL_R &= 0xFF00FFFF;					//Make sure that the pin setup is cleared
+  GPIO_PORTE_PCTL_R |= 0x00110000;					//Write one to PE4 and PE5 to make them uart0 tx and rx
+  GPIO_PORTE_AFSEL_R |= (1 << 4) | (1 << 5);		// set PA0 og PA1 to alternativ function (uart0)
+
+  GPIO_PORTE_DIR_R   |= (1 << 5);     // set PA5 (uart0 tx) to output
+  GPIO_PORTE_DIR_R   &= ~(1 << 4);     // set PA4 (uart0 rx) to input
+
+  GPIO_PORTE_DEN_R   |= (1 << 4) | (1 << 5); // enable digital operation of PA4 and PA5
+  //GPIO_PORTA_PUR_R   |= 0x00000002;
+
+  BRD = 64000000 / baud_rate;   	// X-sys*64/(16*baudrate) = 16M*4/baudrate
+  UART5_IBRD_R = BRD / 64;
+  UART5_FBRD_R = BRD & 0x0000003F;
+
+  UART5_LCRH_R  = lcrh_databits( databits );
+  UART5_LCRH_R += lcrh_stopbits( stopbits );
+  UART5_LCRH_R += lcrh_parity( parity );
+
+  uart5_fifos_enable();
+  uart5_interrupt_enable();
+
+  UART5_CTL_R  |= (UART_CTL_UARTEN | UART_CTL_TXE | UART_CTL_RXE );  // Enable UART
 
 }
 

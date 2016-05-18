@@ -25,7 +25,8 @@
 
 /*****************************    Defines    *******************************/
 
-#define RX_FIFO_NOT_EMPTY !(UART0_FR_R & 0x10)
+#define RX0_FIFO_NOT_EMPTY !(UART0_FR_R & 0x10)
+#define RX5_FIFO_NOT_EMPTY !(UART5_FR_R & 0x10)
 
 // addresses
 

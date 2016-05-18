@@ -66,6 +66,7 @@ void xPortPendSVHandler( void ) __attribute__ (( naked ));
 void xPortSysTickHandler( void );
 extern void SSI0_Interrupt();
 extern void UART0_rx_isr();
+extern void UART5_rx_isr();
 
 //*****************************************************************************
 //
@@ -155,7 +156,7 @@ void (* const g_pfnVectors[])(void) =
     IntDefaultHandler,                      // SSI3 Rx and Tx
     IntDefaultHandler,                      // UART3 Rx and Tx
     IntDefaultHandler,                      // UART4 Rx and Tx
-    IntDefaultHandler,                      // UART5 Rx and Tx
+	UART5_rx_isr,                      // UART5 Rx and Tx
     IntDefaultHandler,                      // UART6 Rx and Tx
     IntDefaultHandler,                      // UART7 Rx and Tx
     0,                                      // Reserved

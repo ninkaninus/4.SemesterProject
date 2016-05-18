@@ -84,6 +84,7 @@ static void setupHardware(void)
 
   GPIO_init();
   UART0_init( 115200, 8, 1, 0 );
+  UART5_init( 9600, 8, 1, 0 );
   dreh_init();
 }
 
