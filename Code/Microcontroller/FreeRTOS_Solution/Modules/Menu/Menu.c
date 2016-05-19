@@ -73,21 +73,21 @@
 #define OPTIONS_KANIN_PID		5
 
 //Input events
-#define KE_0		0
-#define KE_1		1
-#define KE_2		2
-#define KE_3		3
-#define KE_4		4
-#define KE_5		5
-#define KE_6		6
-#define KE_7		7
-#define KE_8		8
-#define KE_9		9
-#define KE_STAR		10
-#define KE_HASTTAG	11
-#define BE_LEFT		12
-#define BE_RIGHT	13
-#define BE_PUSH		14
+#define KE_0		'0'
+#define KE_1		'1'
+#define KE_2		'2'
+#define KE_3		'3'
+#define KE_4		'4'
+#define KE_5		'5'
+#define KE_6		'6'
+#define KE_7		'7'
+#define KE_8		'8'
+#define KE_9		'9'
+#define KE_STAR		'*'
+#define KE_HASTTAG	'#'
+#define BE_LEFT		'L'
+#define BE_RIGHT	'R'
+#define BE_PUSH		'P'
 
 extern xQueueHandle GUI_queue;
 extern xQueueHandle MENU_queue;
@@ -161,17 +161,23 @@ void options_kanin_pid_function(void)
 
 void send_image(INT8U besked)
 {
-	if (xQueueSend(GUI_queue, &besked, 10000));
+	if (xQueueSend(GUI_queue, &besked, 10000))
+	{
+		INT8U holder = besked;
+		holder++;
+		holder++;
+	}
 }
 
 void MENU_task(void *pvParameters)
 {
-	static INT8U super_state = 0;
-	static INT8U sub_state = 0;
+
 
 
 	while (1)
 	{
+		static INT8U super_state = 0;
+		static INT8U sub_state = 1;
 		INT8U event = 0;
 		INT8U input = 0;
 
@@ -179,6 +185,7 @@ void MENU_task(void *pvParameters)
 		{
 			if( xQueueReceive( MENU_queue, &( input ), 0 ))
 			{
+				event = input;
 				xSemaphoreGive(menu_input_sem);
 
 				switch (super_state)
@@ -199,7 +206,7 @@ void MENU_task(void *pvParameters)
 								send_image(IMAGE_MAIN_SHOW);
 								break;
 
-							case BE_PUSH:
+							case KE_STAR:
 								super_state = RUN;
 								sub_state = RUN_START;
 								send_image(IMAGE_RUN_START);
@@ -223,7 +230,7 @@ void MENU_task(void *pvParameters)
 								send_image(IMAGE_MAIN_OPTIONS);
 								break;
 
-							case BE_PUSH:
+							case KE_STAR:
 								super_state = SHOW;
 								sub_state = SHOW_PAN;
 								send_image(IMAGE_SHOW_PAN);
@@ -247,7 +254,7 @@ void MENU_task(void *pvParameters)
 								send_image(IMAGE_MAIN_RUN);
 								break;
 
-							case BE_PUSH:
+							case KE_STAR:
 								super_state = OPTIONS;
 								sub_state = OPTIONS_SET_PAN_OFFSET;
 								send_image(IMAGE_OPTIONS_PAN);
@@ -279,7 +286,7 @@ void MENU_task(void *pvParameters)
 								send_image(IMAGE_RUN_STOP);
 								break;
 
-							case BE_PUSH:
+							case KE_STAR:
 								run_start_function();
 								break;
 
@@ -301,7 +308,7 @@ void MENU_task(void *pvParameters)
 								send_image(IMAGE_RUN_JOG);
 								break;
 
-							case BE_PUSH:
+							case KE_STAR:
 								run_stop_function();
 								break;
 
@@ -323,7 +330,7 @@ void MENU_task(void *pvParameters)
 								send_image(IMAGE_RUN_SET);
 								break;
 
-							case BE_PUSH:
+							case KE_STAR:
 								run_manual_jog_function();
 								break;
 
@@ -345,7 +352,7 @@ void MENU_task(void *pvParameters)
 								send_image(IMAGE_RUN_AUTO);
 								break;
 
-							case BE_PUSH:
+							case KE_STAR:
 								run_manual_set_function();
 								break;
 
@@ -367,7 +374,7 @@ void MENU_task(void *pvParameters)
 								send_image(IMAGE_RUN_RETURN);
 								break;
 
-							case BE_PUSH:
+							case KE_STAR:
 								run_auto_pic_on_off_function();
 								break;
 
@@ -389,7 +396,7 @@ void MENU_task(void *pvParameters)
 								send_image(IMAGE_RUN_START);
 								break;
 
-							case BE_PUSH:
+							case KE_STAR:
 								super_state = MAIN_MENU;
 								sub_state = MENU_RUN;
 								send_image(IMAGE_MAIN_RUN);
@@ -421,7 +428,7 @@ void MENU_task(void *pvParameters)
 								send_image(IMAGE_SHOW_TILT);
 								break;
 
-							case BE_PUSH:
+							case KE_STAR:
 								show_pan_function();
 								break;
 
@@ -443,7 +450,7 @@ void MENU_task(void *pvParameters)
 								send_image(IMAGE_SHOW_ERROR);
 								break;
 
-							case BE_PUSH:
+							case KE_STAR:
 								show_tilt_function();
 								break;
 
@@ -465,7 +472,7 @@ void MENU_task(void *pvParameters)
 								send_image(IMAGE_SHOW_RETURN);
 								break;
 
-							case BE_PUSH:
+							case KE_STAR:
 								show_error_function();
 								break;
 
@@ -487,7 +494,7 @@ void MENU_task(void *pvParameters)
 								send_image(IMAGE_SHOW_PAN);
 								break;
 
-							case BE_PUSH:
+							case KE_STAR:
 								super_state = MAIN_MENU;
 								sub_state = MENU_SHOW;
 								send_image(IMAGE_MAIN_SHOW);
@@ -520,7 +527,7 @@ void MENU_task(void *pvParameters)
 								send_image(IMAGE_OPTIONS_TILT);
 								break;
 
-							case BE_PUSH:
+							case KE_STAR:
 								options_set_pan_offset_function();
 								break;
 
@@ -542,7 +549,7 @@ void MENU_task(void *pvParameters)
 								send_image(IMAGE_OPTIONS_PAN_PID);
 								break;
 
-							case BE_PUSH:
+							case KE_STAR:
 								options_set_tilt_offset_function();
 								break;
 
@@ -564,7 +571,7 @@ void MENU_task(void *pvParameters)
 								send_image(IMAGE_OPTIONS_TILT_PID);
 								break;
 
-							case BE_PUSH:
+							case KE_STAR:
 								options_pan_pidk_function();
 								break;
 
@@ -586,7 +593,7 @@ void MENU_task(void *pvParameters)
 								send_image(IMAGE_OPTIONS_KANIN);
 								break;
 
-							case BE_PUSH:
+							case KE_STAR:
 								options_tilt_pidk_function();
 								break;
 
@@ -608,7 +615,7 @@ void MENU_task(void *pvParameters)
 								send_image(IMAGE_OPTIONS_RETURN);
 								break;
 
-							case BE_PUSH:
+							case KE_STAR:
 								options_kanin_pid_function();
 								break;
 
@@ -630,7 +637,7 @@ void MENU_task(void *pvParameters)
 								send_image(IMAGE_OPTIONS_PAN);
 								break;
 
-							case BE_PUSH:
+							case KE_STAR:
 								super_state = MAIN_MENU;
 								sub_state = MENU_OPTIONS;
 								send_image(IMAGE_MAIN_OPTIONS);
