@@ -42,7 +42,7 @@
 #define DC_MAX			150
 #define DC_MIN			40
 #define K1				161
-#define K2				24		// 0.0024 * 10000
+#define K2				27		// 0.0024 * 10000
 #define KP1				2*K1
 #define KI1				1*K1
 #define KD1				1*K1

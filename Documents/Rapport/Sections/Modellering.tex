@@ -175,13 +175,13 @@ En I-controller er et integrator-led med et gain - integratoren svarer til at pl
 Y(s)=K_{I}\cdot\frac{1}{s}\cdot\frac{12K}{s(s\tau+1)}
 \end{equation}
 
-For at plotte root locus i matlab skal man bare bruge open loop overføringsfunktionen (ligning \ref{eq:I_OpenLoop}). På figur \ref{fig:I_rlocus} ses det med al tydelighed at systemet aldrig bliver stabilt med en I-controller, da polerne ikke kan trækkes over på den negative side af $j\omega$-aksen. Af denne grund kan en I-controller ikke bruges.
+For at plotte root locus i matlab skal man bare bruge open loop overføringsfunktionen (ligning \ref{eq:I_OpenLoop}). På figur \ref{fig:I_rlocus} ses det med al tydelighed at systemet aldrig bliver stabilt med en I-controller, da polerne ikke kan trækkes over på den negative side af $j\omega$-aksen. Af denne grund kan en ren I-controller ikke bruges.
 
 \begin{figure}[ht]
 	\begin{center}
 		\includegraphics[scale=0.35]{Billeder/I_rlocus.PNG}
 	\end{center}
-\caption{Her ses root locus plottet for vores system med en I-controller. Det er tydeligt at systemet aldrig kan stabiliseres med et gain alene.}
+\caption{Her ses root locus plottet for vores system med en I-controller. Det er tydeligt at systemet aldrig kan stabiliseres med et gain alene. Dette plot er lavet med en tidskonstant på 0.12 sekunder, hvilket vil svare til en pol i -8.33.}
 \label{fig:I_rlocus}
 \end{figure}
 
@@ -193,12 +193,42 @@ En PI controller har også en proportionel del, der summeres med integratoren. D
 Y(s)=\frac{K_{P}s+K_{I}}{s}\cdot\frac{12K}{s(s\tau+1)}
 \end{equation}
 
-Ud fra root locus beregninger kan det bevises at nullets placering skal ligge til højre for -1 for at de to branches fra polerne i origo mødes på den reelle akse. (XXXX de er ikke lavet endnu... fix). $K_{P}$ skal med andre ord helst være større end $K_{I}$. Hvis $K_{P}$ bliver for meget større end $K_{I}$ bliver systemet for langsomt da break-in punktet kommer til at ligge på den forkerte side af 0.8 som er $\omega_{n}\zeta$-grænsen for en settling time under 5 sekunder. 
+Ud fra root locus beregninger kan det bevises at nullets placering skal ligge til højre for $-0.93$ for at de to branches fra polerne i origo mødes på den reelle akse. (XXXX Skal beviset udpensles med ligninger eller er det fint bare at sige det passer?). $K_{P}$ skal med andre ord helst være større end $K_{I}$. Til gengæld må $K_{P}$ heller ikke blive for meget større end $K_{I}$ (knap $2.6$ gange) fordi det gør systemet for langsomt, da break-in punktet kommer til at ligge på den forkerte side af $0.8$, som er $\omega_{n}\zeta$-grænsen for en settling time under 5 sekunder. 
+
+\begin{equation}
+1+G\frac{(s+I/P)K}{s^2(\tau s+1)}=0
+\end{equation}
+
+\begin{equation}
+G=-\frac{s^2(\tau s+1)}{(s+I/P)K}
+\end{equation}
+
+\begin{equation}
+\frac{dG}{ds}=0
+\end{equation}
+
+
 
 \paragraph{PID Controller}
-
-Med PI-controlleren var margenen for P- og I-konstanterne og gainet ret snæver, hvis man vil overholde vores designmål. PID-controlleren giver lidt mere råderum, men man tager også et skridt længere væk fra den ideelle 2-ordensmodel. Differentieringsledet D tilføjer nemlig et ekstra nul til ligningen. 
 
 \begin{equation}\label{PID_OpenLoop}
 Y(s)=\frac{K_{P}s+K_{I}+K_{D}s^2}{s}\cdot\frac{12K}{s(s\tau+1)}
 \end{equation}
+
+Med PI-controlleren er margenen for P- og I-konstanterne og gainet ret snæver, hvis man vil overholde vores designmål. PID-controlleren giver lidt mere råderum, men man tager også et skridt længere væk fra den ideelle 2-ordensmodel. Differentieringsledet D tilføjer nemlig et ekstra nul til ligningen. Med to nuller er der ikke længere to branches, der går mod uendelig langs en lodret asymptote når gainet øges. Der er nu kun en branch der går mod minus uendelig, og det foregår langs den reelle akse. Dette har tre klare fordele:
+
+\begin{itemize}
+	\item 	En af polerne fra det modellerede 3-ordens-system glider væk fra de to 					andre poler ved højere gain. På den måde kan man lettere negligere 						effekten fra den i modellen.
+	\item  	Man kan altid sørge for at de to dominante poler befinder sig på den 				   	reelle akse (mindre overshoot), hvis de to tilføjede nuller også er 					reelle og gainet er tilpas stort. 
+	\item  	Man kan få de to dominante poler længere væk fra den imaginære akse 					(hurtigere settling time).
+\end{itemize}
+
+I de root locus-plots der har være vist indtil videre, har der været brugt en tidskonstant på 0.12 sekunder - denne værdi stammer fra forsøg på tilt-systemet. Med denne tidskonstant får man en pol på $-1/0.12=-8.33$. Hvis begge nuller placeres til højre for $-8.33$ vil den ene branch følge den reelle akse til venstre for $-8.33$ mod uendelig. På den måde kan man, med et forholdsvist lille gain, skubbe closed-loop-polen fra tidskonstanten så langt ud ad den reelle akse, at den ikke har nogen stor indflydelse på systemet. Det kan også lade sig gøre, hvis et af nullerne eller begge to er til venstre for $-8.33$, men det kræver bare et noget større gain.
+
+\begin{figure}[ht]
+	\begin{center}
+		\includegraphics[scale=0.45]{Billeder/PID_rlocus.PNG}
+	\end{center}
+\caption{Her ses root locus plottet for vores system med en PID-controller med P=6, I=6, D=1 og et gain på 0.0027}
+\label{fig:PID_rlocus}
+\end{figure}
