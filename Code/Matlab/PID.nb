@@ -1,0 +1,481 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 10.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     15662,        471]
+NotebookOptionsPosition[     14440,        423]
+NotebookOutlinePosition[     14781,        438]
+CellTagsIndexPosition[     14738,        435]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell[BoxData[
+ RowBox[{"G", "=", 
+  RowBox[{
+   RowBox[{"-", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"s", "^", "2"}], "*", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"0.12", "*", "s"}], "+", "1"}], ")"}]}], ")"}]}], "/", 
+   RowBox[{"(", 
+    RowBox[{"605", "*", 
+     RowBox[{"(", 
+      RowBox[{"s", "+", "IP"}], ")"}]}], ")"}]}]}]], "Input",
+ CellChangeTimes->{{3.672661124353631*^9, 3.672661193997661*^9}}],
+
+Cell[BoxData[
+ RowBox[{"-", 
+  FractionBox[
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{"1", "+", 
+      RowBox[{"0.12`", " ", "s"}]}], ")"}], " ", 
+    SuperscriptBox["s", "2"]}], 
+   RowBox[{"605", " ", 
+    RowBox[{"(", 
+     RowBox[{"IP", "+", "s"}], ")"}]}]]}]], "Output",
+ CellChangeTimes->{3.672661199868462*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"dK", "=", 
+  RowBox[{"D", "[", 
+   RowBox[{
+    RowBox[{
+     RowBox[{"-", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"s", "^", "2"}], "*", 
+        RowBox[{"(", 
+         RowBox[{
+          RowBox[{"0.12", "*", "s"}], "+", "1"}], ")"}]}], ")"}]}], "/", 
+     RowBox[{"(", 
+      RowBox[{"605", "*", 
+       RowBox[{"(", 
+        RowBox[{"s", "+", "IP"}], ")"}]}], ")"}]}], ",", "s"}], 
+   "]"}]}]], "Input",
+ CellChangeTimes->{{3.6726612228148108`*^9, 3.6726612968566875`*^9}}],
+
+Cell[BoxData[
+ RowBox[{
+  FractionBox[
+   RowBox[{
+    RowBox[{"(", 
+     RowBox[{"1", "+", 
+      RowBox[{"0.12`", " ", "s"}]}], ")"}], " ", 
+    SuperscriptBox["s", "2"]}], 
+   RowBox[{"605", " ", 
+    SuperscriptBox[
+     RowBox[{"(", 
+      RowBox[{"IP", "+", "s"}], ")"}], "2"]}]], "-", 
+  FractionBox[
+   RowBox[{"2", " ", 
+    RowBox[{"(", 
+     RowBox[{"1", "+", 
+      RowBox[{"0.12`", " ", "s"}]}], ")"}], " ", "s"}], 
+   RowBox[{"605", " ", 
+    RowBox[{"(", 
+     RowBox[{"IP", "+", "s"}], ")"}]}]], "-", 
+  FractionBox[
+   RowBox[{"0.00019834710743801652`", " ", 
+    SuperscriptBox["s", "2"]}], 
+   RowBox[{"IP", "+", "s"}]]}]], "Output",
+ CellChangeTimes->{{3.672661251046526*^9, 3.6726613170192966`*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"sol", "=", 
+  RowBox[{"Solve", "[", 
+   RowBox[{
+    RowBox[{"dK", "\[Equal]", "0"}], ",", "s"}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.6726613115733857`*^9, 3.672661348182826*^9}, {
+  3.672661424884203*^9, 3.672661426718454*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"s", "\[Rule]", "0.`"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"s", "\[Rule]", 
+     RowBox[{"0.08333333333333333`", " ", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"-", "25.`"}], "-", 
+        RowBox[{"9.`", " ", "IP"}], "-", 
+        RowBox[{"1.`", " ", 
+         SqrtBox[
+          RowBox[{"625.`", "\[VeryThinSpace]", "-", 
+           RowBox[{"750.`", " ", "IP"}], "+", 
+           RowBox[{"81.`", " ", 
+            SuperscriptBox["IP", "2"]}]}]]}]}], ")"}]}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"s", "\[Rule]", 
+     RowBox[{"0.08333333333333333`", " ", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"-", "25.`"}], "-", 
+        RowBox[{"9.`", " ", "IP"}], "+", 
+        SqrtBox[
+         RowBox[{"625.`", "\[VeryThinSpace]", "-", 
+          RowBox[{"750.`", " ", "IP"}], "+", 
+          RowBox[{"81.`", " ", 
+           SuperscriptBox["IP", "2"]}]}]]}], ")"}]}]}], "}"}]}], 
+  "}"}]], "Output",
+ CellChangeTimes->{3.672661349285105*^9, 3.672661427484994*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"N", "[", "sol", "]"}]], "Input",
+ CellChangeTimes->{{3.6726614311149993`*^9, 3.6726614333030114`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"s", "\[Rule]", "0.`"}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"s", "\[Rule]", 
+     RowBox[{"0.08333333333333333`", " ", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"-", "25.`"}], "-", 
+        RowBox[{"9.`", " ", "IP"}], "-", 
+        RowBox[{"1.`", " ", 
+         SqrtBox[
+          RowBox[{"625.`", "\[VeryThinSpace]", "-", 
+           RowBox[{"750.`", " ", "IP"}], "+", 
+           RowBox[{"81.`", " ", 
+            SuperscriptBox["IP", "2"]}]}]]}]}], ")"}]}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"s", "\[Rule]", 
+     RowBox[{"0.08333333333333333`", " ", 
+      RowBox[{"(", 
+       RowBox[{
+        RowBox[{"-", "25.`"}], "-", 
+        RowBox[{"9.`", " ", "IP"}], "+", 
+        SqrtBox[
+         RowBox[{"625.`", "\[VeryThinSpace]", "-", 
+          RowBox[{"750.`", " ", "IP"}], "+", 
+          RowBox[{"81.`", " ", 
+           SuperscriptBox["IP", "2"]}]}]]}], ")"}]}]}], "}"}]}], 
+  "}"}]], "Output",
+ CellChangeTimes->{3.672661433912639*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"sol2", "=", 
+  RowBox[{"0.08333333333333333`", " ", 
+   RowBox[{"(", 
+    RowBox[{
+     RowBox[{"-", "25.`"}], "-", 
+     RowBox[{"9.`", " ", "IP"}], "-", 
+     RowBox[{"1.`", " ", 
+      SqrtBox[
+       RowBox[{"625.`", "\[VeryThinSpace]", "-", 
+        RowBox[{"750.`", " ", "IP"}], "+", 
+        RowBox[{"81.`", " ", 
+         SuperscriptBox["IP", "2"]}]}]]}]}], ")"}]}]}]], "Input",
+ CellChangeTimes->{{3.6726616321930356`*^9, 3.6726616334271946`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"0.08333333333333333`", " ", 
+  RowBox[{"(", 
+   RowBox[{
+    RowBox[{"-", "25.`"}], "-", 
+    RowBox[{"9.`", " ", "IP"}], "-", 
+    RowBox[{"1.`", " ", 
+     SqrtBox[
+      RowBox[{"625.`", "\[VeryThinSpace]", "-", 
+       RowBox[{"750.`", " ", "IP"}], "+", 
+       RowBox[{"81.`", " ", 
+        SuperscriptBox["IP", "2"]}]}]]}]}], ")"}]}]], "Output",
+ CellChangeTimes->{3.672661541155717*^9, 3.6726616345036373`*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"sol2", "=", 
+  RowBox[{"Simplify", "[", 
+   RowBox[{"0.08333333333333333`", " ", 
+    RowBox[{"(", 
+     RowBox[{
+      RowBox[{"-", "25.`"}], "-", 
+      RowBox[{"9.`", " ", "IP"}], "-", 
+      RowBox[{"1.`", " ", 
+       SqrtBox[
+        RowBox[{"625.`", "\[VeryThinSpace]", "-", 
+         RowBox[{"750.`", " ", "IP"}], "+", 
+         RowBox[{"81.`", " ", 
+          SuperscriptBox["IP", "2"]}]}]]}]}], ")"}]}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.6726616778746047`*^9, 3.6726616793556056`*^9}},
+ NumberMarks->False],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"-", "2.083333333333333`"}], "-", 
+  RowBox[{"0.75`", " ", "IP"}], "-", 
+  RowBox[{"0.08333333333333333`", " ", 
+   SqrtBox[
+    RowBox[{"625.`", "\[VeryThinSpace]", "-", 
+     RowBox[{"750.`", " ", "IP"}], "+", 
+     RowBox[{"81.`", " ", 
+      SuperscriptBox["IP", "2"]}]}]]}]}]], "Output",
+ CellChangeTimes->{3.6726615455256634`*^9, 3.6726616806210775`*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Manipulate", "[", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"-", "2.083333333333333`"}], "-", 
+    RowBox[{"0.75`", " ", "IP"}], "+", 
+    RowBox[{"0.08333333333333333`", " ", 
+     SqrtBox[
+      RowBox[{"625.`", "\[VeryThinSpace]", "-", 
+       RowBox[{"750.`", " ", "IP"}], "+", 
+       RowBox[{"81.`", " ", 
+        SuperscriptBox["IP", "2"]}]}]]}]}], ",", 
+   RowBox[{"{", 
+    RowBox[{"IP", ",", "0.01", ",", "20", ",", "0.01"}], "}"}]}], 
+  "]"}]], "Input",
+ CellChangeTimes->{{3.672661626441748*^9, 3.672661658656783*^9}, 
+   3.672661693229171*^9, {3.672661995291251*^9, 3.6726619980756335`*^9}, {
+   3.672662032358882*^9, 3.672662058845866*^9}, {3.6726621697967606`*^9, 
+   3.6726621791031256`*^9}, {3.672662498029397*^9, 3.672662501816515*^9}}],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{Parallel`Palette`Private`IP$$ = 0.8800000000000001, 
+    Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
+    Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ = 
+    1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{
+      Hold[Parallel`Palette`Private`IP$$], 0.01, 20, 0.01}}, 
+    Typeset`size$$ = {65., {0., 8.}}, Typeset`update$$ = 0, 
+    Typeset`initDone$$, Typeset`skipInitDone$$ = True, 
+    Parallel`Palette`Private`IP$10744$$ = 0}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, "Variables" :> {Parallel`Palette`Private`IP$$ = 0.01}, 
+      "ControllerVariables" :> {
+        Hold[
+        Parallel`Palette`Private`IP$$, Parallel`Palette`Private`IP$10744$$, 
+         0]}, "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, 
+      "Body" :> -2.083333333333333 - 0.75 Parallel`Palette`Private`IP$$ + 
+       0.08333333333333333 (625. - 750. Parallel`Palette`Private`IP$$ + 
+          81. Parallel`Palette`Private`IP$$^2)^Rational[1, 2], 
+      "Specifications" :> {{Parallel`Palette`Private`IP$$, 0.01, 20, 0.01}}, 
+      "Options" :> {}, "DefaultOptions" :> {}],
+     ImageSizeCache->{260., {64., 71.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{{3.672662173065647*^9, 3.672662179941065*^9}, 
+   3.672662505066327*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{Parallel`Palette`Private`IP$$ = 1, Typeset`show$$ = True,
+     Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{
+      Hold[Parallel`Palette`Private`IP$$], 0.1, 100}}, Typeset`size$$ = {
+    155., {1., 9.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = True, Parallel`Palette`Private`IP$9491$$ = 0}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, "Variables" :> {Parallel`Palette`Private`IP$$ = 0.1}, 
+      "ControllerVariables" :> {
+        Hold[
+        Parallel`Palette`Private`IP$$, Parallel`Palette`Private`IP$9491$$, 
+         0]}, "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, 
+      "Body" :> -2.083333333333333 - 0.75 Parallel`Palette`Private`IP$$ + 
+       0.08333333333333333 (625. - 750. Parallel`Palette`Private`IP$$ + 
+          81. Parallel`Palette`Private`IP$$^2)^Rational[1, 2], 
+      "Specifications" :> {{Parallel`Palette`Private`IP$$, 0.1, 100}}, 
+      "Options" :> {}, "DefaultOptions" :> {}],
+     ImageSizeCache->{260., {64., 71.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Input",
+ CellChangeTimes->{3.6726621625099363`*^9}],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{Parallel`Palette`Private`IP$$ = 1, Typeset`show$$ = True,
+     Typeset`bookmarkList$$ = {}, Typeset`bookmarkMode$$ = "Menu", 
+    Typeset`animator$$, Typeset`animvar$$ = 1, Typeset`name$$ = 
+    "\"untitled\"", Typeset`specs$$ = {{{
+       Hold[Parallel`Palette`Private`IP$$], 1}, 0.1, 100}}, Typeset`size$$ = {
+    155., {1., 9.}}, Typeset`update$$ = 0, Typeset`initDone$$, 
+    Typeset`skipInitDone$$ = True, Parallel`Palette`Private`IP$10028$$ = 0}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, "Variables" :> {Parallel`Palette`Private`IP$$ = 1}, 
+      "ControllerVariables" :> {
+        Hold[
+        Parallel`Palette`Private`IP$$, Parallel`Palette`Private`IP$10028$$, 
+         0]}, "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, 
+      "Body" :> -2.083333333333333 - 0.75 Parallel`Palette`Private`IP$$ + 
+       0.08333333333333333 (625. - 750. Parallel`Palette`Private`IP$$ + 
+          81. Parallel`Palette`Private`IP$$^2)^Rational[1, 2], 
+      "Specifications" :> {{{Parallel`Palette`Private`IP$$, 1}, 0.1, 100}}, 
+      "Options" :> {}, "DefaultOptions" :> {}],
+     ImageSizeCache->{260., {51., 58.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    SynchronousInitialization->True,
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{3.6726621625789256`*^9}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"P", "=", "8"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Int", "=", "16"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Der", "=", "1"}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{"N", "[", 
+  RowBox[{
+   RowBox[{"Solve", "[", 
+    RowBox[{
+     RowBox[{
+      RowBox[{
+       RowBox[{"P", "*", "s"}], "+", "Int", "+", 
+       RowBox[{"Der", "*", 
+        RowBox[{"s", "^", "2"}]}]}], "\[Equal]", "0"}], ",", "s"}], "]"}], 
+   ",", "10"}], "]"}]}], "Input",
+ CellChangeTimes->{{3.672664983872932*^9, 3.672665045641766*^9}, {
+  3.672669938627939*^9, 3.6726699405130663`*^9}, {3.6726699755738955`*^9, 
+  3.6726699767255826`*^9}}],
+
+Cell[BoxData[
+ RowBox[{"{", 
+  RowBox[{
+   RowBox[{"{", 
+    RowBox[{"s", "\[Rule]", 
+     RowBox[{"-", "4.`10."}]}], "}"}], ",", 
+   RowBox[{"{", 
+    RowBox[{"s", "\[Rule]", 
+     RowBox[{"-", "4.`10."}]}], "}"}]}], "}"}]], "Output",
+ CellChangeTimes->{{3.672665026981679*^9, 3.672665046410449*^9}, 
+   3.672669945162668*^9, 3.6726699773278446`*^9}]
+}, Open  ]]
+},
+WindowSize->{767, 871},
+WindowMargins->{{Automatic, 21}, {36, Automatic}},
+FrontEndVersion->"10.0 for Microsoft Windows (64-bit) (July 1, 2014)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 427, 14, 31, "Input"],
+Cell[1010, 38, 318, 11, 51, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[1365, 54, 512, 17, 31, "Input"],
+Cell[1880, 73, 720, 24, 52, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2637, 102, 257, 6, 31, "Input"],
+Cell[2897, 110, 1063, 31, 86, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[3997, 146, 126, 2, 31, "Input"],
+Cell[4126, 150, 1041, 31, 86, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[5204, 186, 480, 13, 48, "Input"],
+Cell[5687, 201, 441, 12, 48, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[6165, 218, 547, 15, 48, "Input"],
+Cell[6715, 235, 394, 10, 40, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[7146, 250, 772, 18, 73, "Input"],
+Cell[7921, 270, 1850, 37, 152, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[9808, 312, 1765, 35, 152, InheritFromParent],
+Cell[11576, 349, 1777, 35, 126, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[13390, 389, 680, 19, 92, "Input"],
+Cell[14073, 410, 351, 10, 88, "Output"]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
+
