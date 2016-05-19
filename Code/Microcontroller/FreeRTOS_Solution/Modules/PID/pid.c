@@ -62,6 +62,8 @@ PID tilt_sys_2;
 extern xQueueHandle SPI_queue;
 extern xQueueHandle PID_queue;
 
+extern xSemaphoreHandle coordinate_access_sem;
+
 /*****************************   Functions   *******************************/
 
 void init_pid()
@@ -182,78 +184,82 @@ void pid_update()
 	INT16U duty_cycle;
 	//static INT16U offset = 0;
 
-	set_point 	= get_msg_state(SSM_SP_PAN);
-	actual 		= get_msg_state(SSM_POS_PAN);
-
-	if(set_point - actual > 16 || set_point - actual < -16)
-		adjust = pid_calc(set_point,actual,&pan_sys);
-
-	else
+	if(xSemaphoreTake(coordinate_access_sem,1000000))
 	{
-		pan_sys.integral = 0;
-		pan_sys.prev_error = 0;
-		adjust = pid_calc(set_point,actual,&pan_sys_2);
-	}
+		set_point 	= get_msg_state(SSM_SP_PAN);
+		actual 		= get_msg_state(SSM_POS_PAN);
 
+		if(set_point - actual > 16 || set_point - actual < -16)
+			adjust = pid_calc(set_point,actual,&pan_sys);
 
-	////
-	dir = 0;
-	////
-
-	if(set_point != actual)
-	{
-		if(adjust < 0)
-			dir = 1;
 		else
-			dir = 2;
-	}
+		{
+			pan_sys.integral = 0;
+			pan_sys.prev_error = 0;
+			adjust = pid_calc(set_point,actual,&pan_sys_2);
+		}
 
-	duty_cycle = pwm_conv(adjust);
 
-	duty_cycle = (dir<<8) | duty_cycle;		// direction is ored to the 9-10th bit
-	//if(set_point != actual)
+		////
+		dir = 0;
+		////
+
+		if(set_point != actual)
+		{
+			if(adjust < 0)
+				dir = 1;
+			else
+				dir = 2;
+		}
+
+		duty_cycle = pwm_conv(adjust);
+
+		duty_cycle = (dir<<8) | duty_cycle;		// direction is ored to the 9-10th bit
+		//if(set_point != actual)
+			duty_cycle = 0x0400 | duty_cycle;
+
+		put_msg_state(SSM_PWM_DIR_EN_PAN,duty_cycle);
+
+		// send duty cycle og direction til SPI
+		dir = 0;
+		// hent ny v�rdi fra feedback for TILT
+		// udregn PWM v�rdi fra pid_calc() og send til SPI modul
+
+		set_point 	= get_msg_state(SSM_SP_TILT);
+		actual	  	= get_msg_state(SSM_POS_TILT);
+
+		//offset++;
+
+		//set_point = set_point + offset/5;
+
+		if(set_point - actual > 16 || set_point - actual < -16)
+			adjust = pid_calc(set_point,actual,&tilt_sys);
+
+		else
+		{
+			tilt_sys.integral = 0;
+			tilt_sys.prev_error = 0;
+			adjust = pid_calc(set_point,actual,&tilt_sys_2);
+		}
+
+
+		if(set_point != actual)
+		{
+			if(adjust < 0)
+				dir = 1;
+			else
+				dir = 2;
+		}
+
+		duty_cycle = pwm_conv(adjust);
+
+		duty_cycle = (dir<<8) | duty_cycle;
+
 		duty_cycle = 0x0400 | duty_cycle;
 
-	put_msg_state(SSM_PWM_DIR_EN_PAN,duty_cycle);
-
-	// send duty cycle og direction til SPI
-	dir = 0;
-	// hent ny v�rdi fra feedback for TILT
-	// udregn PWM v�rdi fra pid_calc() og send til SPI modul
-
-	set_point 	= get_msg_state(SSM_SP_TILT);
-	actual	  	= get_msg_state(SSM_POS_TILT);
-
-	//offset++;
-
-	//set_point = set_point + offset/5;
-
-	if(set_point - actual > 16 || set_point - actual < -16)
-		adjust = pid_calc(set_point,actual,&tilt_sys);
-
-	else
-	{
-		tilt_sys.integral = 0;
-		tilt_sys.prev_error = 0;
-		adjust = pid_calc(set_point,actual,&tilt_sys_2);
+		put_msg_state(SSM_PWM_DIR_EN_TILT,duty_cycle);
+		xSemaphoreGive(coordinate_access_sem);
 	}
-
-
-	if(set_point != actual)
-	{
-		if(adjust < 0)
-			dir = 1;
-		else
-			dir = 2;
-	}
-
-	duty_cycle = pwm_conv(adjust);
-
-	duty_cycle = (dir<<8) | duty_cycle;
-
-	duty_cycle = 0x0400 | duty_cycle;
-
-	put_msg_state(SSM_PWM_DIR_EN_TILT,duty_cycle);
 
 	// send duty cycle og direction til SPI
 	INT8U event;

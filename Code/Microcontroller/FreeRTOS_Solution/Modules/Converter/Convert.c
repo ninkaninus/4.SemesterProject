@@ -66,7 +66,7 @@ void convert_and_secure(void)
 		tilt = tilt-360;
 	}
 
-	if ((tilt > TILT_MIN && tilt < TILT_MAX) || (pan > THETA_1 && pan < THETA_2) || (pan > THETA_3 && pan < THETA_4) || pan > 360 || tilt > 360)
+	if (0)//(tilt > TILT_MIN && tilt < TILT_MAX) || (pan > THETA_1 && pan < THETA_2) || (pan > THETA_3 && pan < THETA_4) || pan > 360 || tilt > 360)
 	{
 		tilt = INDEX;
 		pan = INDEX;

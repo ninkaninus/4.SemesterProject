@@ -30,6 +30,7 @@
 #include "FreeRTOS.h"
 #include "queue.h"
 #include "task.h"
+#include "semphr.h"
 /*****************************    Defines    *******************************/
 
 /*****************************   Constants   *******************************/
@@ -40,6 +41,8 @@ extern xQueueHandle uart0_rx_queue;
 extern xQueueHandle UI_queue;
 extern xQueueHandle PID_queue;
 extern xQueueHandle SPI_queue;
+
+extern xSemaphoreHandle coordinate_access_sem;
 
 enum uart_states {
 	IDLE,
@@ -161,7 +164,10 @@ void UART0_rx_isr()
 	while (RX0_FIFO_NOT_EMPTY)
 	{
 		INT8U received = UART0_DR_R;
-		xQueueSendFromISR(uart0_rx_queue, &received, NULL);
+		if(!(xQueueIsQueueFullFromISR(uart0_rx_queue)))
+			xQueueSendFromISR(uart0_rx_queue, &received, NULL);
+		received = PID_UPDATE_EVENT;
+		xQueueSendFromISR(PID_queue,&received,NULL);
 	}
 }
 
@@ -170,7 +176,8 @@ void UART5_rx_isr()
 	while (RX5_FIFO_NOT_EMPTY)
 	{
 		INT8U received = UART5_DR_R;
-		xQueueSendFromISR(uart0_rx_queue, &received, NULL);
+		if(!(xQueueIsQueueFullFromISR(uart0_rx_queue)))
+			xQueueSendFromISR(uart0_rx_queue, &received, NULL);
 	}
 }
 
@@ -272,9 +279,16 @@ void UART0_task(void *pvParameters)
 					break;
 				}
 			}
-
-			put_msg_state(address, data);
-			uart_state = SEND_EVENTS;
+			if(data > 359 || data < 0)
+				uart_state = IDLE;
+			else
+			{
+				if(xSemaphoreTake(coordinate_access_sem,100000))
+				{
+					put_msg_state(address, data);
+					uart_state = SEND_EVENTS;
+				}
+			}
 			break;
 
 		case SEND_EVENTS:
@@ -291,8 +305,9 @@ void UART0_task(void *pvParameters)
 					}
 					put_msg_state(SSM_OFFSET_PAN,received);
 					convert_and_secure();
-					received = PID_UPDATE_EVENT;
-					xQueueSend(PID_queue,&received,50);
+					xSemaphoreGive(coordinate_access_sem);
+					//received = PID_UPDATE_EVENT;
+					//xQueueSend(PID_queue,&received,50);
 				}
 				break;
 
@@ -306,8 +321,9 @@ void UART0_task(void *pvParameters)
 					}
 					put_msg_state(SSM_OFFSET_TILT,received);
 					convert_and_secure();
-					received = PID_UPDATE_EVENT;
-					xQueueSend(PID_queue,&received,50);
+					xSemaphoreGive(coordinate_access_sem);
+					//received = PID_UPDATE_EVENT;
+					//xQueueSend(PID_queue,&received,50);
 				}
 
 				break;

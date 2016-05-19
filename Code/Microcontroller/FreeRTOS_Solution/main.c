@@ -94,7 +94,7 @@ int main(void)
 
   setupHardware();
 
-  uart0_rx_queue 		= xQueueCreate(128,sizeof(INT8U));
+  uart0_rx_queue 		= xQueueCreate(512,sizeof(INT8U));
   LCD_image_queue 	 	= xQueueCreate(10, sizeof(INT8U[36]));
   GUI_queue  			= xQueueCreate(16, sizeof(INT8U));
   UI_queue  			= xQueueCreate(16, sizeof(INT8U));
@@ -102,7 +102,7 @@ int main(void)
   SPI_queue  			= xQueueCreate(8, sizeof(INT8U));
   menu_queue  			= xQueueCreate(8, sizeof(INT8U));
 
-
+  coordinate_access_sem	= xSemaphoreCreateMutex();
   adc_sem 				= xSemaphoreCreateMutex();
   time_access_sem 		= xSemaphoreCreateMutex();
   rtc_update_sem  		= xSemaphoreCreateMutex();
