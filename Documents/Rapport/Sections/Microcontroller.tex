@@ -1,7 +1,18 @@
 \section{Microcontroller}
 
 \subsection{OS}
+
+\subsubsection{RTCS}
+
+
+\subsubsection{FreeRTOS}
+
+FreeRTOS er et realtid operativsystem (RTOS), som er en standard løsning som bliver brugt i en mikroprocesser. FreeRTOS giver os muligheden for at bruge preemptiv skedulering, Det vil sige at den ikke køre alle task igennem, men at den kan hoppe i mellem de forskellig task's
+
 \subsection{Scheduling}
+
+Overvej rækkefølge
+\\
 Det er vigtigt i enhver kode situation, der inkluderer flere tasks, at kunne skifte mellem dem på en fornuftig måde; Dette gøres med en scheduler. Når der skal implementeres en scheduler skal det overvejes hvorvidt det er nødvendigt at lave en designed specielt til projektet, eller om der en en eksisterende der er i stand til at udfører opgaven tilstrækkeligt. I dette project havde vi tre muligheder til rådighed: RTCS, FreeRTOS, og at lave vores egen.
 \\
 Den simple løsning er at bruge RTCS. Denne er simpel at benytte, og kan godt opfylde de grundlæggende krav vi har til systemet. Dog har denne ikke prioritering, preemption, eller mutex.
