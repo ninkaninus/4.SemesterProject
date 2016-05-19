@@ -36,7 +36,7 @@ T_{slice}=\dfrac{T_{PWM}}{256}=156ns
 
 En clock-periode med FPGA'ens krystal på 50 MHz er $20ns$ lang, så hvis man tæller en variabel op hver 8. clock-periode til den når 256, så får man en samlet periodetid på $20ns*8*256=40.96 \mu s=24.414kHz$. Denne variabel sammenlignes så med den lagrede 8 bits duty cycle værdi, for at afgøre om signalet på udgangen skal være højt eller lavt.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\begin{center}
 		\includegraphics[scale=0.5]{Billeder/PWM_Timing.png}
 	\end{center}
@@ -53,7 +53,7 @@ Hver gang en hall sensor går fra høj til lav, eller lav til høj, vil et regis
 
 For at kunne finde ud af hvilken vej motoren kører, kigges der på hvordan hall sensorerne går høj og lav i forhold til hinanden.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\begin{center}
 		\includegraphics[scale=0.5]{Billeder/Hall_sensorer.png}
 	\end{center}

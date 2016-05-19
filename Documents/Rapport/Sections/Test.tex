@@ -7,7 +7,7 @@ Hver hall sensor giver 3 pulser på en omgang - det svarer til $\pi/3$ radianer 
 
 Når målingerne fra hall-sensorerne er regnet om til $rad/s$ og slået sammen til ét plot, produceres et plot der er meget støjet. Ud fra plottet på figur \ref{fig:Ubehandlet} kan man se at støjen er periodisk - det skyldes primært to faktorer: Hvis hall sensorerne ikke sidder præcist 90 grader forskudt, vil afstanden imellem flankerne på signalet heller ikke altid passe med $\pi/3$ radianer, som det er antaget i udregningen af vinkelhastigheden. Det vil resultere i hastigheder, der er enten for høje eller for lave i forhold til virkeligheden - denne fejl vil gentage sig periodisk fordi afvigelsen fra $\pi/3$ radianer vil være den samme altid. Den anden faktor, der har samme effekt på plottet, er polerne i rotoren - de vil heller aldrig være forskudt med helt den samme vinkel.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\begin{center}
 		\includegraphics[scale=0.35]{Billeder/Untreated_Response.jpg}
 	\end{center}
@@ -17,7 +17,7 @@ Når målingerne fra hall-sensorerne er regnet om til $rad/s$ og slået sammen t
 
 Hvis man nærstuderer figur \ref{fig:Ubehandlet}, kan man se at udsvingene gentager sig selv hver 12. sample. Det passer perfekt med at hver hall sensor har 6 halvperioder, hvor der bliver målt en tid, pr omgang. Det er med andre ord muligt at justere for fejlen ved at gange en faktor på alle samples, der tager højde for afvigelsen fra de $\pi/3$ radianer. I matlab kan man relativt simpelt finde de 12 faktorer, ved at undersøge hvor meget 12 konsekutive samples afviger fra gennemsnittet, så længe det bliver gjort i et område hvor responsen har nået steady state. Så er det bare et spørgsmål om at gange faktorerne på alle samples med det rette offset for at justere for fejlen. 
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\begin{center}
 		\includegraphics[scale=0.35]{Billeder/Treated_Response.jpg}
 	\end{center}
@@ -29,12 +29,12 @@ På det nye plot det noget lettere at aflæse tidskonstanten for systemet. Den e
 
 Samme metode kan bruges til at måle step-responsen for motoren med belastning, så man kan få et billede af hvilken effekt den ekstra modstand har på systemet. På figur \ref{fig:Combined} kan man se responsen for motoren uden belastning, motoren kun med tilt-rammen, motoren med tilt-rammen og kamerabeslag og motoren med tilt-rammen, beslag og kamera monteret. Det er tydeligt at rammernes afbalancering har en stor indflydelse på responsen.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\begin{center}
 		\includegraphics[scale=0.35]{Billeder/Response_Combined.jpg}
 	\end{center}
-\label{fig:Combined}
-\caption{Step Respons for tilt-rammen med forskellig belastning.}
+	\caption{Step Respons for tilt-rammen med forskellig belastning.}
+	\label{fig:Combined}
 \end{figure}
 
 Det kan også ses, at responsen for motoren, når den er forbundet med rammen, følger responsen for motoren uden belastning det første korte stykke tid, hvorefter hastigheden falder markant. En forklaring kunne være slør i forbindelsen mellem motoren og rammen - i den situation kan den fysiske modstand fra rammen først mærkes af motoren, når bælterne er blevet trukket helt i spænd. En anden ting der også er tydelig er, at selv når der ikke er monteret ekstra udstyr på rammen, så er der stadig en ubalance i rammen, der får hastigheden til at være ujævn over en hel omgang.

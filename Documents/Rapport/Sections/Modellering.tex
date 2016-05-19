@@ -16,8 +16,8 @@ Den elektroniske del af motoren kan modelleres simpelt som en modstand $R_{a}$, 
 	\includegraphics[scale=0.9]{Billeder/Motormodel.png}
 	\end{center}
 	\vspace{-10pt}
-	\label{fig:motor_sch}
 	\caption{Her ses diagrammet af den omtalte motormodel}
+	\label{fig:motor_sch}
 \vspace{-20pt}
 \end{wrapfigure}
 
@@ -63,7 +63,7 @@ G(s)=\dfrac{\omega(s)}{V_{a}(s)}=\dfrac{K}{\tau*s+1}
 
 Hvis man tager udgangspunkt i black box-modellen af systemet, kan man lave et closed-loop-system, der ser ud som på figur \ref{fig:BB_Model}. 
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\begin{center}
 		\includegraphics[scale=0.7]{Billeder/BB_Model.PNG}
 	\end{center}
@@ -94,11 +94,11 @@ Hele ideen med at benytte et 2-ordens-system til den indledende analyse, er at m
 \begin{wrapfigure}[15]{r}{0.4\textwidth}
 \vspace{-20pt}
 	\begin{center}
-	\includegraphics[scale=0.9]{Billeder/SO_system.PNG}
+		\includegraphics[scale=0.8]{Billeder/SO_system.PNG}
 	\end{center}
 	\vspace{-10pt}
-	\label{fig:SO_system}
 	\caption{Her kan man se hvordan damping ratio og den naturlige frekvens påvirker polernes placering i et 2-ordens-system.}
+	\label{fig:SO_system}
 \vspace{0pt}
 \end{wrapfigure}
 
@@ -137,7 +137,7 @@ Det kan altså konkluderes, at man er nødt til at have mindst en integrator i c
 
 \paragraph{Overshoot}
 
-Percent Overshoot (P.O.) er defineret som den procentdel systemets største respons afviger fra den ønskede værdi - det er et udtryk for, hvor meget systemet skyder forbi målet når det påvirkes af et step input. Ved hjælp af lidt algebra, differentiering og et par laplace-transformeringer, kan man udlede ligning (\ref{eq:P.O.}) fra ligning (\ref{eq:SO_system}) (se Modern Control Systems bog XXXX), og på den måde finde ud af, hvor meget overshoot systemet har udelukkende ud fra damping ratio. En anden måde at se på problemet, er at man, ved at finde zeta til et bestemt overshoot, også kan finde den vinkel til de komplekse polers placering, hvor man får netop den mængde overshoot - store vinkler giver stort overshoot og omvendt (se figur \ref{fig:SO_system}). Man kan altså ud fra denne udregning definere et klart område, hvor alle polplaceringer vil opfylde ens krav til overshoot. 
+Percent Overshoot (P.O.) er defineret som den procentdel systemets største respons afviger fra den ønskede værdi - det er et udtryk for, hvor meget systemet skyder forbi målet når det påvirkes af et step input. Ved hjælp af lidt algebra, differentiering og et par laplace-transformeringer, kan man udlede ligning (\ref{eq:P.O.}) fra ligning (\ref{eq:SO_system}) (se Modern Control Systems\cite{ModernControlSystem}), og på den måde finde ud af, hvor meget overshoot systemet har udelukkende ud fra damping ratio. En anden måde at se på problemet, er at man, ved at finde zeta til et bestemt overshoot, også kan finde den vinkel til de komplekse polers placering, hvor man får netop den mængde overshoot - store vinkler giver stort overshoot og omvendt (se figur \ref{fig:SO_system}). Man kan altså ud fra denne udregning definere et klart område, hvor alle polplaceringer vil opfylde ens krav til overshoot. 
 
 \begin{equation}\label{eq:P.O.}
 P.O.=100*e^{-\dfrac{\zeta\pi}{\sqrt{1-\zeta^2}}}
@@ -145,7 +145,7 @@ P.O.=100*e^{-\dfrac{\zeta\pi}{\sqrt{1-\zeta^2}}}
 
 For at få 15 $\%$ overshoot eller derunder kan det beregnes at $\zeta$ skal være større end 0.517. Det vil sige at polerne skal placeres indenfor det skraverede område på figur \ref{fig:Overshoot} for at opfylde designmålene. Det er værd at nævne igen, at dette kun viser opførslen for et 2-ordens-system, så man kan ikke præcist beskrive opførslen for vores system på denne måde. Til gengæld kan man, hvis man tænker sig om under controller-designet, komme meget tæt på. Det er dog stadigvæk smart at vælge polplaceringer med en god margen op til grænseværdien for at være på den sikre side.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\begin{center}
 		\includegraphics[scale=0.5]{Billeder/Overshoot.PNG}
 	\end{center}
@@ -177,7 +177,7 @@ Y(s)=K_{I}\cdot\frac{1}{s}\cdot\frac{12K}{s(s\tau+1)}
 
 For at plotte root locus i matlab skal man bare bruge open loop overføringsfunktionen (ligning \ref{eq:I_OpenLoop}). På figur \ref{fig:I_rlocus} ses det med al tydelighed at systemet aldrig bliver stabilt med en I-controller, da polerne ikke kan trækkes over på den negative side af $j\omega$-aksen. Af denne grund kan en I-controller ikke bruges.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\begin{center}
 		\includegraphics[scale=0.35]{Billeder/I_rlocus.PNG}
 	\end{center}
