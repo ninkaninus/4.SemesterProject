@@ -125,6 +125,7 @@ INT8U images[26][36] = {
 		 'R','e','t','u','r','n',' ','t','o',' ','m','a','i','n',' ',' ',
 		 0x00,0,0,0 },
 
+// Functions
 ///////////////
 
 		{'I','n','v','a','l','i','d',' ','I','n','p','u','t',' ',' ',' ',
@@ -163,6 +164,25 @@ extern xSemaphoreHandle scale_update_sem;
 
 enum gui_states {
 	INIT,
+	IMAGE_MAIN_RUN,
+	IMAGE_MAIN_SHOW,
+	IMAGE_MAIN_OPTIONS,
+	IMAGE_RUN_START,
+	IMAGE_RUN_STOP,
+	IMAGE_RUN_JOG,
+	IMAGE_RUN_SET,
+	IMAGE_RUN_AUTO,
+	IMAGE_RUN_RETURN,
+	IMAGE_SHOW_PAN,
+	IMAGE_SHOW_TILT,
+	IMAGE_SHOW_ERROR,
+	IMAGE_SHOW_RETURN,
+	IMAGE_OPTIONS_PAN,
+	IMAGE_OPTIONS_TILT,
+	IMAGE_OPTIONS_PAN_PID,
+	IMAGE_OPTIONS_TILT_PID,
+	IMAGE_OPTIONS_KANIN,
+	IMAGE_OPTIONS_RETURN,
 	ENTER_COMMAND,
 	SET_TIME,
 	SHOW_TIME,
@@ -180,9 +200,47 @@ void gui_task(void *pvParameters)
 
 	set_image(WELCOME_MSG);
 	xQueueSend(LCD_image_queue,&current_image,10000);
-	while (1) {
+	while (1)
+	{
+
+		if (xQueueReceive(GUI_queue, &received, 10000))
+		{
+			gui_state = received;
 			switch (gui_state)
 			{
+				case INIT:
+					new_image(INIT);
+					break;
+
+				case IMAGE_MAIN_RUN:
+				case IMAGE_MAIN_SHOW:
+				case IMAGE_MAIN_OPTIONS:
+				case IMAGE_RUN_START:
+				case IMAGE_RUN_STOP:
+				case IMAGE_RUN_JOG:
+				case IMAGE_RUN_SET:
+				case IMAGE_RUN_AUTO:
+				case IMAGE_RUN_RETURN:
+				case IMAGE_SHOW_PAN:
+				case IMAGE_SHOW_TILT:
+				case IMAGE_SHOW_ERROR:
+				case IMAGE_SHOW_RETURN:
+				case IMAGE_OPTIONS_PAN:
+				case IMAGE_OPTIONS_TILT:
+				case IMAGE_OPTIONS_PAN_PID:
+				case IMAGE_OPTIONS_TILT_PID:
+				case IMAGE_OPTIONS_KANIN:
+				case IMAGE_OPTIONS_RETURN:
+					new_image(gui_state);
+					break;
+
+				default:
+					break;
+			}
+		}
+	}
+}
+/*
 			case INIT:
 				if (xQueueReceive(GUI_queue, &received, 10000))
 				{
@@ -192,6 +250,30 @@ void gui_task(void *pvParameters)
 						new_image(COMMAND_PROMPT);
 					}
 				}
+				break;
+
+			case IMAGE_MAIN_RUN:
+			case IMAGE_MAIN_SHOW:
+			case IMAGE_MAIN_OPTIONS:
+			case IMAGE_RUN_START:
+			case IMAGE_RUN_STOP:
+			case IMAGE_RUN_JOG:
+			case IMAGE_RUN_SET:
+			case IMAGE_RUN_AUTO:
+			case IMAGE_RUN_RETURN:
+			case IMAGE_SHOW_PAN:
+			case IMAGE_SHOW_TILT:
+			case IMAGE_SHOW_ERROR:
+			case IMAGE_SHOW_RETURN:
+			case IMAGE_OPTIONS_PAN:
+			case IMAGE_OPTIONS_TILT:
+			case IMAGE_OPTIONS_PAN_PID:
+			case IMAGE_OPTIONS_TILT_PID:
+			case IMAGE_OPTIONS_KANIN:
+			case IMAGE_OPTIONS_RETURN:
+
+				new_image(gui_state);
+
 				break;
 
 			case ENTER_COMMAND:
@@ -369,8 +451,7 @@ void gui_task(void *pvParameters)
 		}
 	}
 }
-
-
+*/
 void set_image(INT8U image)
 {
 	for(int i = 0; i < 36; i++)

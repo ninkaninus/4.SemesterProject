@@ -18,27 +18,6 @@
 #include "Tasking/tmodel.h"
 #include "Tasking/messages.h"
 
-//beskeder
-#define IMAGE_MAIN_RUN			1
-#define IMAGE_MAIN_SHOW			2
-#define IMAGE_MAIN_OPTIONS		3
-#define IMAGE_RUN_START			4
-#define IMAGE_RUN_STOP			5
-#define IMAGE_RUN_JOG			6
-#define IMAGE_RUN_SET			7
-#define IMAGE_RUN_AUTO			8
-#define IMAGE_RUN_RETURN		9
-#define IMAGE_SHOW_PAN			10
-#define IMAGE_SHOW_TILT			11
-#define IMAGE_SHOW_ERROR		12
-#define IMAGE_SHOW_RETURN		13
-#define IMAGE_OPTIONS_PAN		14
-#define IMAGE_OPTIONS_TILT		15
-#define IMAGE_OPTIONS_PAN_PID	16
-#define IMAGE_OPTIONS_TILT_PID	17
-#define IMAGE_OPTIONS_KANIN		18
-#define IMAGE_OPTIONS_RETURN	19
-
 //What menu we are in - super state
 #define MAIN_MENU	0
 #define RUN			1
@@ -89,6 +68,30 @@
 #define BE_RIGHT	'R'
 #define BE_PUSH		'P'
 
+//beskeder
+#define IMAGE_MAIN_RUN			1
+#define IMAGE_MAIN_SHOW			2
+#define IMAGE_MAIN_OPTIONS		3
+#define IMAGE_RUN_START			4
+#define IMAGE_RUN_STOP			5
+#define IMAGE_RUN_JOG			6
+#define IMAGE_RUN_SET			7
+#define IMAGE_RUN_AUTO			8
+#define IMAGE_RUN_RETURN		9
+#define IMAGE_SHOW_PAN			10
+#define IMAGE_SHOW_TILT			11
+#define IMAGE_SHOW_ERROR		12
+#define IMAGE_SHOW_RETURN		13
+#define IMAGE_OPTIONS_PAN		14
+#define IMAGE_OPTIONS_TILT		15
+#define IMAGE_OPTIONS_PAN_PID	16
+#define IMAGE_OPTIONS_TILT_PID	17
+#define IMAGE_OPTIONS_KANIN		18
+#define IMAGE_OPTIONS_RETURN	19
+
+#define IMAGE_START_FUNCTION	20
+#define IMAGE_STOP_FUNCTION		21
+
 extern xQueueHandle GUI_queue;
 extern xQueueHandle MENU_queue;
 
@@ -96,12 +99,28 @@ extern xSemaphoreHandle menu_input_sem;
 
 void run_start_function(void)
 {
+	send_image(IMAGE_START_FUNCTION);
+	INT8U input;
+	//do stuff
 
+	if( xQueueReceive( MENU_queue, &( input ), 1000 )))
+	{
+
+	}
+	send_image(IMAGE_RUN_START);
 }
 
 void run_stop_function(void)
 {
+	send_image(IMAGE_STOP_FUNCTION);
+	INT8U input;
+	//do stuff
 
+	if( xQueueReceive( MENU_queue, &( input ), 1000 )))
+	{
+
+	}
+	send_image(IMAGE_RUN_STOP);
 }
 
 void run_manual_jog_function(void)
