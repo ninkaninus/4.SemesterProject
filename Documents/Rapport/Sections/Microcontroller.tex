@@ -1,11 +1,7 @@
 \section{Microcontroller}
 
 \subsection{OS}
-Det er vigtigt i enhver kode situation, der inkluderer flere tasks, at kunne skifte mellem dem på en fornuftig måde; Dette gøres med en scheduler. Når der skal implementeres en scheduler skal det overvejes hvorvidt det er nødvendigt at lave en designed specielt til projektet, eller om der en en eksisterende der er i stand til at udfører opgaven tilstrækkeligt. I dette project havde vi tre muligheder til rådighed: RTCS eller FreeRTOS.
-\\
-Den simple løsning er at bruge RTCS. Denne er simpel at benytte, og kan godt opfylde de grundlæggende krav vi har til systemet. Dog har denne ikke prioritering, preemption, eller mutex.
-\\
-Den sidste løsning er at benytte FreeRTOS. Denne har meget mere funktionalitet, sikkerhed, og støtter at projectet udviddes ud over de nuværnde krav uden at shceduleren skulle genovervejes.
+Det er vigtigt i enhver kode situation, der inkluderer flere tasks, at kunne skifte mellem dem på en fornuftig måde; Dette gøres med en scheduler. Når der skal implementeres en scheduler skal det overvejes hvorvidt det er nødvendigt at lave en designed specielt til projektet, eller om der en en eksisterende der er i stand til at udfører opgaven tilstrækkeligt. I dette project har vi to muligheder til rådighed: RTCS eller FreeRTOS.
 
 \subsubsection{RTCS}
 
