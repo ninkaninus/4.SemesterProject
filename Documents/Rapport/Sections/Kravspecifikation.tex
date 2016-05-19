@@ -24,54 +24,71 @@ Ovennævnte fokusområder tilfører projektet en vis værdi, dog har nogle opgav
 \end{itemize}
 
 \subsection{Primære opgaver}
-\begin{itemize}
-	\item Skal pege på et bestemt punkt på himlen givet ved astronomiske koordinater omregnet til angulære koordinater.
-	\item Manuelt input af koordinater
-	\item COS/EMP
-	\begin{itemize}[noitemsep]
-		\item Feedback på LCD med nuværende position i astronomiske koordinater
-		\item Input fra knapper på EMP board
-		\item UART-forbindelse til en terminal på en computer
-		\item UART-protokol
-	\end{itemize}
-	\item REG
-	\begin{itemize}[noitemsep]
-		\item PID-controller
-		\item Intet overshoot eller steady state fejl
-		\item 0-180 grader på 5 sekunder
-		\item skal ramme koordinater inden for 1 grad
-	\end{itemize}
-	\item DIG
-	\begin{itemize}[noitemsep]
-		\item FPGA'en skal udelukkende være en slave som microcontrolleren kan spørge om oplysninger og ændre tilstand på
-		\item Sikkerhed der forhindrer motoren i at køre den forkerte vej (retning og ticks skal stemme overens)
-		\item Sikkerhed der forhindrer Pan/Tilt-systemet i at gå ud over sine mekaniske begrænsninger
-	\end{itemize}		
-\end{itemize}
+
+Som krav til systemet skal det kunne tage et input i form af et horizontalt koordinatsæt, som systemet så omsætter til angulære koordinater således dette kan benyttes af systemet. Yderligere er det nødvendigt at systemet kan tage manuelt indtastning af koordinater som alternativt input.
+
+Som en del af COS/EMP faget sættes der som krav at systemet skal kunne give feedback gennem LCD komponenten i form af den nuværende position i astronomiske koordinater. Der skal kunne tages input fra knapper på EMP bordet, og en UART forbindelse, med tilsvarende UART protokol, skal kunne forbinde boardet med en computer.
+
+Der skal laves en PID controler, som beskrevet i REG, som er foruden både overshoot og steady state fejl. Yderligere skal denne kunne bevæge sig 180 grader og stoppe på under fem sekunder, med en usikkerhed på højst én grad.
+
+Samtidig skal der laves et stykke funktionelt digitalt programmeret elektronik, i form af et FPGA board, der skal fungerer som en ``slave'' for microcontrolleren og give denne information om positionen af systemet samt benytte denne til at sætte hastighed or retning på motorerne. Denne skal også fungerer som en sikkerhed der endegyldigt sikre at der ikke kan ske uheld ved at systemet kører ud over sine mekaniske begrændsninger.
+
+%\begin{itemize}
+%	\item Skal pege på et bestemt punkt på himlen givet ved astronomiske koordinater omregnet til angulære koordinater.
+%	\item Manuelt input af koordinater
+%	\item COS/EMP
+%	\begin{itemize}[noitemsep]
+%		\item Feedback på LCD med nuværende position i astronomiske koordinater
+%		\item Input fra knapper på EMP board
+%		\item UART-forbindelse til en terminal på en computer
+%		\item UART-protokol
+%	\end{itemize}
+%	\item REG
+%	\begin{itemize}[noitemsep]
+%		\item PID-controller
+%		\item Intet overshoot eller steady state fejl
+%		\item 0-180 grader på 5 sekunder
+%		\item skal ramme koordinater inden for 1 grad
+%	\end{itemize}
+%	\item DIG
+%	\begin{itemize}[noitemsep]
+%		\item FPGA'en skal udelukkende være en slave som microcontrolleren kan spørge om oplysninger og ændre tilstand på
+%		\item Sikkerhed der forhindrer motoren i at køre den forkerte vej (retning og ticks skal stemme overens)
+%		\item Sikkerhed der forhindrer Pan/Tilt-systemet i at gå ud over sine mekaniske begrænsninger
+%	\end{itemize}		
+%\end{itemize}
 
 \subsection{Sekundære opgaver}
 
-\begin{itemize}[noitemsep]
-	\item Udledning af koordinater (applikation)
-	\begin{itemize}[noitemsep]
-		\item ligninger for himmellegemer
-		\item Live oplysninger fra internettet
-	\end{itemize}
-	\item Jog funktion
-	\item Bluetooth til UART
-	\item Montering af kamera
-	
-	\item COS/EMP
-	\begin{itemize}[noitemsep]
-		\item Overvågning af systemet igennem UART
-	\end{itemize}
-	\item REG
-	\begin{itemize}[noitemsep]
-		\item Selvkalibrerende PID controller
-		\item Et nogenlunde præcist open loop system
-	\end{itemize}
-	\item DIG
-	\begin{itemize}[noitemsep]
-		\item FPGA'en skal omregne koordinaterne til grader
-	\end{itemize}		
-\end{itemize}
+De sekundære krav til systemet som helhed, og tilsvarende applikation, er at dette kan udregne baner for himmellegemer og hente live oplysninger fra internettet om legemers position. Yderligere skal systemet kunne styres ved brug af en direkte kontrol af position uden brug af koordinater, og et kamera skal monteres i pan tilt systemet. Endeligt skal et bluetooth modul kunne benyttes til UART kommunikation.
+
+Til COS/EMP fagene er det sekundære krav at systemet kan overvåges gennem UART, således at der kan holdes styr på performance af kontroleren og hvorvidt den ønskede position er overholdt, således at der kan tages automatiske billeder.
+
+Det sekundære krav til REG er at PID controlleren er i stand til at selvkalibrerer til et givent system.
+
+Ti DIG er det sekundære krav at denne er i stand til at omregne til omregne systemets koordinater til grader.
+
+%\begin{itemize}[noitemsep]
+%	\item Udledning af koordinater (applikation)
+%	\begin{itemize}[noitemsep]
+%		\item ligninger for himmellegemer
+%		\item Live oplysninger fra internettet
+%	\end{itemize}
+%	\item Jog funktion
+%	\item Bluetooth til UART
+%	\item Montering af kamera
+%	
+%	\item COS/EMP
+%	\begin{itemize}[noitemsep]
+%		\item Overvågning af systemet igennem UART
+%	\end{itemize}
+%	\item REG
+%	\begin{itemize}[noitemsep]
+%		\item Selvkalibrerende PID controller
+%		\item Et nogenlunde præcist open loop system
+%	\end{itemize}
+%	\item DIG
+%	\begin{itemize}[noitemsep]
+%		\item FPGA'en skal omregne koordinaterne til grader
+%	\end{itemize}		
+%\end{itemize}
