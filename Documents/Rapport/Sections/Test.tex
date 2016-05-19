@@ -1,6 +1,6 @@
 \section{Test}
 
-\subsection{Step Respons}
+\subsection{Step Respons Tilt}
 
 For at lave en black box model af motoren, skal step responsen for omdrejningerne i forhold til spændingen over motorterminalerne findes. Det vil, med andre ord, sige at ændringen i motoromdrejningerne over tid skal måles ved en konstant spænding. Da motoren allerede er udstyret med en encoder, er det muligt at måle omdrejningshastigheden fra de to hall sensorer ved hjælp af en logic analyzer. Denne analyzer gør det muligt, at se hvor lang tid der går imellem flankerne på pulserne fra hall sensorerne, og på den måde udregne vinkelhastigheden derfra. 
 Hver hall sensor giver 3 pulser på en omgang - det svarer til $\pi/3$ radianer fra en rising edge til en falling edge og omvendt. Logic analyzeren tilsluttes de to hall sensorer, og måler motorens respons i det øjeblik en konstant spænding på 12V sættes over motorterminalerne. Testen udføres 5 gange for at kunne sammenligne resultaterne. 
@@ -41,6 +41,22 @@ Det kan også ses, at responsen for motoren, når den er forbundet med rammen, f
 
 Det er stadigvæk muligt at approksimere systemet som et 1.-ordenssystem, men modellen vil udelukkende beskrive, hvor hurtigt systemet reagerer på inputs og ikke så meget om den præcise opførsel. Det vil dog være en rigtig god ide, at få afbalanceret rammerne så godt som muligt og gøre modstanden nogenlunde konstant over en hel omgang, for at modellen kan afspejle virkeligheden så godt som muligt. Med rammen forbundet med motoren er tidskonstanten omkring 125 ms.
 
+\subsection{Step Respons Pan}
+
+
+
 \subsection{Omdrejningshastighed vs Duty Cycle}
 
-En af antagelserne der bliver gjort i modellen af systemet, er at der findes en nogenlunde lineær sammenhæng imellem duty cycle og omdrejningshastigheden. For at påvise denne sammenhæng er det også nødvendigt at foretage målingerne. 
+En af antagelserne der bliver gjort i modellen af systemet, er at der findes en nogenlunde lineær sammenhæng imellem duty cycle og omdrejningshastigheden. For at påvise denne sammenhæng kan man plotte hastigheden, når motoren har nået steady state, ved forskellige duty cycles. 
+
+XXXX Do your stuffs here, Jonas/William
+
+Hvis man plotter step responsen ved forskellige duty cycles (figur \ref{fig:RPM_DC}), kan det også påvises at tidskonstanten forbliver nogenlunde konstant. 
+
+\begin{figure}[ht]
+	\begin{center}
+		\includegraphics[scale=0.35]{Billeder/RPM_vs_DC.jpg}
+	\end{center}
+	\caption{Step Respons for tilt-rammen ved forskellige duty cycles}
+	\label{fig:RPM_DC}
+\end{figure}
