@@ -18,6 +18,9 @@
 #include "Tasking/tmodel.h"
 #include "Tasking/messages.h"
 
+#define PAN			0
+#define TILT		1
+
 //What menu we are in - super state
 #define MAIN_MENU	0
 #define RUN			1
@@ -125,6 +128,81 @@ void run_stop_function(void)
 
 void run_manual_jog_function(void)
 {
+	INT8U active = PAN;
+	INT8U input = 0;
+	INT8U event;
+	INT8U range = 0;
+
+	while (1)
+	{
+		if( xQueueReceive( MENU_queue, &( input ), 1 ))
+		{
+			event  = input;
+			switch (event)
+			{
+				case BE_LEFT:
+
+					break;
+
+				case BE_RIGHT:
+
+					break;
+
+				case KE_STAR:
+
+					if (active == PAN)
+						active = TILT;
+					else
+						active = PAN;
+
+					break;
+
+				case KE_1:
+
+				break;
+
+				case KE_2:
+
+				break;
+
+				case KE_3:
+
+				break;
+
+				case KE_4:
+
+				break;
+
+				case KE_5:
+
+				break;
+
+				case KE_6:
+
+				break;
+
+				case KE_7:
+
+				break;
+
+				case KE_8:
+
+				break;
+
+				case KE_9:
+
+				break;
+
+				case KE_0:
+					return;
+				break;
+
+				default:
+					break;
+			}
+
+		}
+	}
 
 }
 
