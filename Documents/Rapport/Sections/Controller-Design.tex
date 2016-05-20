@@ -146,8 +146,6 @@ G=-\frac{s^2(\tau s+1)}{(s+I/P)K}
 \frac{dG}{ds}=0
 \end{equation}
 
-
-
 \paragraph{PID Controller}
 
 \begin{equation}\label{PID_OpenLoop}
@@ -157,8 +155,8 @@ Y(s)=\frac{K_{P}s+K_{I}+K_{D}s^2}{s}\cdot\frac{12K}{s(s\tau+1)}
 Med PI-controlleren er margenen for P- og I-konstanterne og gainet ret snæver, hvis man vil overholde vores designmål. PID-controlleren giver lidt mere råderum, men man tager også et skridt længere væk fra den ideelle 2-ordensmodel. Differentieringsledet D tilføjer nemlig et ekstra nul til ligningen. Med to nuller er der ikke længere to branches, der går mod uendelig langs en lodret asymptote når gainet øges. Der er nu kun en branch der går mod minus uendelig, og det foregår langs den reelle akse. Dette har tre klare fordele:
 
 \begin{itemize}
-	\item 	En af polerne fra det modellerede 3-ordens-system glider væk fra de to 					andre poler ved højere gain. På den måde kan man lettere negligere 						effekten fra den i modellen.
-	\item  	Man kan altid sørge for at de to dominante poler befinder sig på den 				   	reelle akse (mindre overshoot), hvis de to tilføjede nuller også er 					reelle og gainet er tilpas stort. 
+	\item 	En af polerne fra det modellerede 3-ordens-system glider væk fra de to andre poler ved højere gain. På den måde kan man lettere negligere effekten fra den i modellen.
+	\item  	Man kan altid sørge for at de to dominante poler befinder sig på den 				   	reelle akse (mindre overshoot), hvis de to tilføjede nuller også er reelle og gainet er tilpas stort. 
 	\item  	Man kan få de to dominante poler længere væk fra den imaginære akse 					(hurtigere settling time).
 \end{itemize}
 

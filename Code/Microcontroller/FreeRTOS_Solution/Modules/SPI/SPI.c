@@ -117,8 +117,8 @@ void SSI_init()
 	SSI2_CR1_R |= (1<<1) | (0<<0);
 	//SSI0_IM_R |= SSI_IM_RXIM;
 
-	put_msg_state(SSM_SP_PAN, 1900);
-	put_msg_state(SSM_SP_TILT, 1900);
+	put_msg_state(SSM_SP_PAN, 2000);
+	put_msg_state(SSM_SP_TILT, 2000);
 }
 
 void SSI0_Interrupt() {
