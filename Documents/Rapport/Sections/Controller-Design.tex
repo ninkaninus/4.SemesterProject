@@ -1,12 +1,32 @@
 \section{Design af Controller}
 
-Hvis man tager udgangspunkt i black box-modellen af systemet, kan man lave et closed-loop-system, der ser ud som på figur \ref{fig:BB_Model}. 
+Det endelige mål med kontrolsystemet er at kunne styre orienteringen af rammerne præcist ved at give et vinkel-input. Dette input konverteres så til et fejlsignal som er forskellen imellem den ønskede vinkel og den faktiske vinkel som systemet står i. Controllerens opgave er så, at holde øje med fejlen og derigennem beregne sig til en passende PWM duty cycle, så input og output til sidst stemmer overens. 
 
 \begin{figure}[ht]
 	\begin{center}
-		\includegraphics[scale=0.7]{Billeder/BB_Model.PNG}
+		\includegraphics[scale=0.5]{Billeder/Controller_Blok.png}
 	\end{center}
-\caption{Closed-Loop kontrolsystem til black box-modellen}
+\caption{Her ses data flowet for kontrolløkken.}
+\label{fig:Blok_Model}
+\end{figure}
+
+På figur \ref{fig:Blok_Model} kan man se de vigtigste elementer i kontrolløkken fra microcontrolleren og ud til selve systemet. Ud fra et modelleringsperspektiv er de fire mest interessante dele af systemet som følger:
+
+\begin{itemize}
+\item \textbf{H-bro}: Sørger for at regulere forsyningsspændingen på 12V til motoren alt afhængig af den duty cycle som PWM-modulet sender ud. Duty cycle styrer den gennemsnitlige spænding over motorterminalerne. H-broen kan også vende strømmen igennem motoren for at skifte omdrejningsretningen.
+\item \textbf{Motor og Pan/Tilt-system}: Producerer en omdrejningshastighed, som er relateret til spændingen over motorterminalerne ved overføringsfunktionen beskrevet i ligning (\ref{eq:tf_pan_tilt}).
+\item \textbf{Encoder og Positionsmodul}: To hall sensorer i encoderen genererer pulser, der gør det muligt at bestemme omdrejningsretningen for motoren. Positionsmodulet sørger for at holde styr på pulserne, for at afkode hvilken stilling motoren har stillet sig i. Dette er muligt hvis man starter med at have en fast reference man tæller fra.
+\item \textbf{Controller}: Sørger for at generere et passende PWM-signal, så motoren kan flytte rammerne over i den ønskede position. Dette skal foregå på en måde, så designmålene for projektet overholdes.
+\end{itemize}
+
+Modelleringen af systemet viste at motoren og pan/tilt-systemet kunne approksimeres nogenlunde som et 1.-ordenssystem.
+Hvis man tager udgangspunkt i grey box-modellen af systemet, kan man lave et closed-loop-system, der ser ud som på figur \ref{fig:BB_Model}. På denne model er H-broen modelleret som et gain på 12. PWM-signalet kan variere fra $-1$ til $1$. Encoderen og positionsmodulet fungerer i praksis lidt som en integrator i den forstand at alle ticks summeres op og giver en relativ position. Der er ikke noget gain igennem feedback-løkken da set point'et til controlleren også opgives i ticks. Det vides på forhånd at et tick svarer til $1/3$ af en grad (XXXX se reference her), så for at holde kontrolsystemet simpelt, foretages den omregning inden set point'et gives til controlleren.
+
+\begin{figure}[ht]
+	\begin{center}
+		\includegraphics[scale=0.5]{Billeder/Control_Loop.PNG}
+	\end{center}
+\caption{Closed-Loop kontrolsystem til grey box-modellen}
 \label{fig:BB_Model}
 \end{figure}
 
@@ -20,7 +40,7 @@ Hvis man tager udgangspunkt i black box-modellen af systemet, kan man lave et cl
 
 \end{itemize}
 
-\subsection{2-ordens-system}
+\subsection{2.-ordenssystem}
 
 Når man designer en controller, kan det være praktisk at approksimere hele systemet som et ideelt 2-ordens-system (se ligning \ref{eq:SO_system}). Disse systemer er meget veldefinerede og forholdsvis lette at beregne på. Parametre som overshoot, settling time, rise time m.m. kan beregnes analytisk og kan give et godt udgangspunkt til ens valg af controller. $\omega_{n}$ er systemets naturlige frekvens og $\zeta$ er systemets damping ratio - jo større en damping ratio, jo bedre en dæmpning af systemets respons har man.
 
@@ -30,51 +50,42 @@ Y(s)=\frac{\omega_{n}^2}{s^2+2\zeta\omega_{n}s+\omega_{n}^2}
 
 Hele ideen med at benytte et 2-ordens-system til den indledende analyse, er at man kan finde de områder i s-planet, hvor systemet vil holde sig inden for designmålene, så længe systemets poler placeres der. Disse antagelser gælder naturligvis kun præcist for et 2-ordens-system uden nuller, men det kan sagtens være en udemærket approksimering, hvis man har et system af højere orden med to dominante poler der ligger tæt på $j\omega$-aksen. Som tommelfinger-regel kan man godt tillade sig at kalde to poler for dominante, hvis de er 5 gange tættere på den imaginære akse end resten af polerne. Grunden til at man kigger mest på de dominante poler, er at jo længere man kommer væk fra $j\omega$-aksen jo hurtigere aftager effekten på systemet fra polerne over tid. Derfor ender det med at være de langsomme poler, der dominerer systemets respons.
 
-\begin{wrapfigure}[15]{r}{0.4\textwidth}
-\vspace{-20pt}
-	\begin{center}
-		\includegraphics[scale=0.8]{Billeder/SO_system.PNG}
-	\end{center}
-	\vspace{-10pt}
-	\caption{Her kan man se hvordan damping ratio og den naturlige frekvens påvirker polernes placering i et 2-ordens-system.}
-	\label{fig:SO_system}
-\vspace{0pt}
-\end{wrapfigure}
+
 
 På figur \ref{fig:SO_system} kan man se hvordan man alene ud fra polernes placering kan beskrive en masse om damping ratio og den naturlige frekvens. En ting der ikke fremgår af figuren, er at damping ratio også fortæller noget om, om polerne er komplekse konjugerede eller reelle. Hvis $1>\zeta>0$ er polerne komplekse; hvis $\zeta=1$ ligger der to reelle poler oven i hinanden; hvis $\zeta>1$ er polerne reelle og unikke. Disse tre situationer bliver også ofte beskrevet som henholdsvis underdæmpet, kritisk dæmpet og overdæmpet.
 
-%\begin{wrapfigure}[15]{r}{0.4\textwidth}
-%\vspace{-20pt}
-%	\begin{center}
-%	\includegraphics[scale=0.9]{Billeder/Damping_Ratio.PNG}
-%	\end{center}
-%	\vspace{-10pt}
-%	\label{fig:SO_system}
-%	\caption{Her kan man se at man ud fra damping ratio kan bestemme om et system består af to komplekse konjugerede, en eller to reelle poler}
-%\vspace{-20pt}
-%\end{wrapfigure}
+\begin{wrapfigure}[15]{l}{0.5\textwidth}
+\vspace{-20pt}	
+	\includegraphics[scale=0.5]{Billeder/Damping_Ratio.PNG}
+	\centering
+	\vspace{-10pt}
+	\caption{Her kan man se hvordan damping ratio og den naturlige frekvens påvirker polernes placering i et 2-ordens-system.}
+	\label{fig:SO_system}
+\vspace{-20pt}
+\end{wrapfigure}
 
-\subsection{Steady State Fejl}
 
-For at undersøge om systemet kan drive fejlen i 0, er det nødvendigt at finde et udtryk for $E_{1}(s)$, kan ses på figur \ref{fig:BB_Model}, og ved hjælp af \textit{Final Value Theorem} (ligning \ref{eq:FVT}), finde ud af hvad der er tilbage, når systemet går i steady state. 
+\subsubsection{Steady State Fejl}
+
+For at undersøge om systemet kan drive fejlen i 0, er det nødvendigt at finde et udtryk for $E(s)$, som kan ses på figur \ref{fig:BB_Model}, og ved hjælp af \textit{Final Value Theorem} (ligning \ref{eq:FVT}), finde ud af hvad der er tilbage, når systemet går i steady state. 
 
 \begin{equation} \label{eq:FVT}
 lim_{t \to \infty} f(t) = lim_{s \to 0} sF(s)
 \end{equation}
 
 \begin{equation} \label{eq:ess}
-E_{1}(s)=R(s)\frac{s(\tau s+1)}{s(\tau s+1)+12K_{c}KH}+T_{d}(s)\frac{(\tau s+1)H}{s(\tau s+1)+12K_{c}KH}
+E(s)=R(s)\frac{s(\tau s+1)}{s(\tau s+1)+12K_{c}KH}+T_{d}(s)\frac{(\tau s+1)H}{s(\tau s+1)+12K_{c}KH}
 \end{equation}
 
 Ved et step-input ($A/s$) bliver fejlen drevet i 0, så længe der ikke er nogen disturbance. 
 
 \begin{equation}
-e_{ss}=lim_{s \to 0} sE_{1}(s)=AH\frac{1}{12K_{c}KH} , T_{d}(s)=\dfrac{A}{s}
+e_{ss}=lim_{s \to 0} sE(s)=AH\frac{1}{12K_{c}KH} , T_{d}(s)=\dfrac{A}{s}
 \end{equation}
 
 Det kan altså konkluderes, at man er nødt til at have mindst en integrator i controlleren ($K_{c}$), for at opfylde kriteriet om en steady state-fejl på 0. 
 
-\subsection{Overshoot}
+\subsubsection{Overshoot}
 
 Percent Overshoot (P.O.) er defineret som den procentdel systemets største respons afviger fra den ønskede værdi - det er et udtryk for, hvor meget systemet skyder forbi målet når det påvirkes af et step input. Ved hjælp af lidt algebra, differentiering og et par laplace-transformeringer, kan man udlede ligning (\ref{eq:P.O.}) fra ligning (\ref{eq:SO_system}) (se Modern Control Systems\cite{ModernControlSystem}), og på den måde finde ud af, hvor meget overshoot systemet har udelukkende ud fra damping ratio. En anden måde at se på problemet, er at man, ved at finde zeta til et bestemt overshoot, også kan finde den vinkel til de komplekse polers placering, hvor man får netop den mængde overshoot - store vinkler giver stort overshoot og omvendt (se figur \ref{fig:SO_system}). Man kan altså ud fra denne udregning definere et klart område, hvor alle polplaceringer vil opfylde ens krav til overshoot. 
 
@@ -92,7 +103,7 @@ For at få 15 $\%$ overshoot eller derunder kan det beregnes at $\zeta$ skal væ
 \label{fig:Overshoot}
 \end{figure}
 
-\subsection{Settling Time}
+\subsubsection{Settling Time}
 
 Settling time er defineret som den tid det tager systemet at falde til ro inden for 2 procent af den ønskede værdi. Hvis man kigger på formlen for impulsresponsen (ligning (\ref{eq:impulse_response}))  til et 2-ordens-system i tidsdomænet, kan det ses at den dæmpende faktor for systemet er $e^{-\zeta\omega_{n}t}$ - settling time så beskrives ved $e^{-\zeta\omega_{n}T_{s}}<0.02$ og herfra kan man udlede ligning (\ref{eq:settling_time}).
 
@@ -164,7 +175,7 @@ G=-\frac{s^2(\tau s+1)}{(s+I/P)K}
 Y(s)=\frac{K_{P}s+K_{I}+K_{D}s^2}{s}\cdot\frac{12K}{s(s\tau+1)}
 \end{equation}
 
-Med PI-controlleren er margenen for P- og I-konstanterne og gainet ret snæver, hvis man vil overholde vores designmål. PID-controlleren giver lidt mere råderum, men man tager også et skridt længere væk fra den ideelle 2-ordensmodel. Differentieringsledet D tilføjer nemlig et ekstra nul til ligningen. Med to nuller er der ikke længere to branches, der går mod uendelig langs en lodret asymptote når gainet øges. Der er nu kun en branch der går mod minus uendelig, og det foregår langs den reelle akse. Dette har tre klare fordele:
+Med PI-controlleren er margenen for P- og I-konstanterne og gainet ret snæver, hvis projektets designmål skal overholdes. PID-controlleren giver lidt mere råderum, men man tager også et skridt længere væk fra den ideelle 2.-ordensmodel. Differentieringsledet D tilføjer nemlig et ekstra nul til ligningen. Med to nuller er der ikke længere to branches, der går mod uendelig langs en lodret asymptote når gainet øges. Der er nu kun en branch der går mod minus uendelig, og det foregår langs den reelle akse. Dette har tre klare fordele:
 
 \begin{itemize}
 	\item 	En af polerne fra det modellerede 3-ordens-system glider væk fra de to andre poler ved højere gain. På den måde kan man lettere negligere effekten fra den i modellen.
