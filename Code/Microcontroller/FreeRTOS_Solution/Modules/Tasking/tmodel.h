@@ -40,6 +40,8 @@
 #define SSM_SP_TILT				55
 #define SSM_SP_DEG_TILT			56
 #define SSM_SP_DEG_PAN			57
+#define SSM_POS_DEG_TILT		58
+#define SSM_POS_DEG_PAN			59
 
 
 // Events
