@@ -1,9 +1,13 @@
 \section{Indledning}
-Der er til dette projekt ønsket et tracking system, et sådan system kan bruges til tracking af lydkilder, personer og/eller afstandsmåling, fælles for disse former for tracking er at de er styret af et pan-tilt system.
+Der er til dette projekt ønsket et system som kan tracke et objekt som er i bevægelse.\\
+Et sådan system kan bruges til tracking af lydkilder, personer og/eller afstandsmåling, fælles for disse former for tracking er at de grundlæggende er styret af et pan-tilt system.
 
-Dette projekt vil fokusere på at følge himmellegemer med en teleskop-platform. Dette bliver implementeret ved at give systemet angulære koordinater, enten udregnet via en computer som kan sende koordinaterne videre gennem UART, eller ved manuelt input fra et keyboard. Ved input fra computeren, vil der være mulighed for at lave en applikation, der automatisk følger et himmellegeme, ved at ændre koordinat inputtet hele tiden.
-Systemet vil sende data tilbage til brugeren og vise dette på et LCD, her vil det være muligt at se hvilke grader systemet står på.
+%Mangler at beskrive hvilket koordinatsæt vi fodrer systemet med
+Dette projekt vil fokusere på at følge himmellegemer med en platform magen til et observatorium. Dette bliver implementeret ved at give systemet et horisontalt koordinatpar, enten udregnet via en computer som kan sende vinklerne via UART, eller ved manuelt input fra det numeriske tastatur som sidder på det udleverede Tiva EMP board.\\
+Ved input fra UART, vil der være mulighed for at lave en applikation, der automatisk følger et himmellegeme, ved at ændre koordinatparet kontinuert.
+Systemet vil vise data på Tiva EMP boardets LCD, her vil det være muligt at observere hvilke nuværende koordinatpar systemet har.\\
+%Eventuelt nævne menu systemet herunder.
 
-Pan-tilt systemet styres af en FPGA, som sender et PWM signal til en H-bro og videre til motoren som styrer hhv. pan og tilt.
-FPGA’en skal modtage kommandoer fra en microprocessor via en SPI forbindelse.
-Her har brugeren mulighed for at sende inputs, samt få feedback af systemparametre.
+Pan-tilt systemet styres af en Field Programmable Gate Array (FPGA), som sender to Pulse-width modulation (PWM) signaler til et par H-broer som styrer motorene på hhv. panorerings- og tilt-rammen.
+FPGA’en skal modtage kommandoer fra den udleverede TIVA microprocessor via en Serial Peripheral Interface (SPI) forbindelse.
+Her har brugeren mulighed for styre, samt få feedback af systemparametre.
