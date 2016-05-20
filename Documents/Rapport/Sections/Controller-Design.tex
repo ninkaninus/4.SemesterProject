@@ -1,4 +1,4 @@
-\subsection{Design af Controller}
+\section{Design af Controller}
 
 Hvis man tager udgangspunkt i black box-modellen af systemet, kan man lave et closed-loop-system, der ser ud som på figur \ref{fig:BB_Model}. 
 
@@ -10,7 +10,7 @@ Hvis man tager udgangspunkt i black box-modellen af systemet, kan man lave et cl
 \label{fig:BB_Model}
 \end{figure}
 
-\paragraph{Designmål}
+\subsection{Designmål}
 
 \begin{itemize}
 
@@ -20,7 +20,7 @@ Hvis man tager udgangspunkt i black box-modellen af systemet, kan man lave et cl
 
 \end{itemize}
 
-\paragraph{2-ordens-system}
+\subsection{2-ordens-system}
 
 Når man designer en controller, kan det være praktisk at approksimere hele systemet som et ideelt 2-ordens-system (se ligning \ref{eq:SO_system}). Disse systemer er meget veldefinerede og forholdsvis lette at beregne på. Parametre som overshoot, settling time, rise time m.m. kan beregnes analytisk og kan give et godt udgangspunkt til ens valg af controller. $\omega_{n}$ er systemets naturlige frekvens og $\zeta$ er systemets damping ratio - jo større en damping ratio, jo bedre en dæmpning af systemets respons har man.
 
@@ -54,7 +54,7 @@ På figur \ref{fig:SO_system} kan man se hvordan man alene ud fra polernes place
 %\vspace{-20pt}
 %\end{wrapfigure}
 
-\paragraph{Steady State Fejl}
+\subsection{Steady State Fejl}
 
 For at undersøge om systemet kan drive fejlen i 0, er det nødvendigt at finde et udtryk for $E_{1}(s)$, kan ses på figur \ref{fig:BB_Model}, og ved hjælp af \textit{Final Value Theorem} (ligning \ref{eq:FVT}), finde ud af hvad der er tilbage, når systemet går i steady state. 
 
@@ -74,7 +74,7 @@ e_{ss}=lim_{s \to 0} sE_{1}(s)=AH\frac{1}{12K_{c}KH} , T_{d}(s)=\dfrac{A}{s}
 
 Det kan altså konkluderes, at man er nødt til at have mindst en integrator i controlleren ($K_{c}$), for at opfylde kriteriet om en steady state-fejl på 0. 
 
-\paragraph{Overshoot}
+\subsection{Overshoot}
 
 Percent Overshoot (P.O.) er defineret som den procentdel systemets største respons afviger fra den ønskede værdi - det er et udtryk for, hvor meget systemet skyder forbi målet når det påvirkes af et step input. Ved hjælp af lidt algebra, differentiering og et par laplace-transformeringer, kan man udlede ligning (\ref{eq:P.O.}) fra ligning (\ref{eq:SO_system}) (se Modern Control Systems\cite{ModernControlSystem}), og på den måde finde ud af, hvor meget overshoot systemet har udelukkende ud fra damping ratio. En anden måde at se på problemet, er at man, ved at finde zeta til et bestemt overshoot, også kan finde den vinkel til de komplekse polers placering, hvor man får netop den mængde overshoot - store vinkler giver stort overshoot og omvendt (se figur \ref{fig:SO_system}). Man kan altså ud fra denne udregning definere et klart område, hvor alle polplaceringer vil opfylde ens krav til overshoot. 
 
@@ -92,7 +92,7 @@ For at få 15 $\%$ overshoot eller derunder kan det beregnes at $\zeta$ skal væ
 \label{fig:Overshoot}
 \end{figure}
 
-\paragraph{Settling Time}
+\subsection{Settling Time}
 
 Settling time er defineret som den tid det tager systemet at falde til ro inden for 2 procent af den ønskede værdi. Hvis man kigger på formlen for impulsresponsen (ligning (\ref{eq:impulse_response}))  til et 2-ordens-system i tidsdomænet, kan det ses at den dæmpende faktor for systemet er $e^{-\zeta\omega_{n}t}$ - settling time så beskrives ved $e^{-\zeta\omega_{n}T_{s}}<0.02$ og herfra kan man udlede ligning (\ref{eq:settling_time}).
 
@@ -106,7 +106,7 @@ T_{s}=\frac{4}{\omega_{n}\zeta}
 
 For at få en settling time på under $5s$ kan det ud fra ligning (\ref{eq:settling_time}) bestemmes at $\omega_{n}\zeta > 0.8$. Det vil med andre ord sige at polerne skal befinde sig til venstre for -0.8 - her refereres der igen til figur \ref{fig:SO_system}. Ligesom det var tilfældet for overshoot-kriterierne, er det også her en god ide at vælge sine poler med en god margen til grænseværdien.
 
-\paragraph{I Controller}
+\subsection{I Controller}
 
 En I-controller er et integrator-led med et gain - integratoren svarer til at placere endnu en pol i origo. For at undersøge hvordan denne controller vil opføre sig, kan man bruge root locus metoden for at se, hvordan polerne flytter sig, når controller-gainet øges. 
 
@@ -124,7 +124,7 @@ For at plotte root locus i matlab skal man bare bruge open loop overføringsfunk
 \label{fig:I_rlocus}
 \end{figure}
 
-\paragraph{PI Controller}
+\subsection{PI Controller}
 
 En PI controller har også en proportionel del, der summeres med integratoren. Det resulterer i praksis i at der, udover polen i origo fra integratoren, også tilføjes et nul på ventstre side af den imaginære akse. Nullets placering bestemmes af forholdet imellem $K_{I}$ og $K_{P}$.
 
@@ -146,7 +146,7 @@ G=-\frac{s^2(\tau s+1)}{(s+I/P)K}
 \frac{dG}{ds}=0
 \end{equation}
 
-\paragraph{PID Controller}
+\subsection{PID Controller}
 
 \begin{equation}\label{PID_OpenLoop}
 Y(s)=\frac{K_{P}s+K_{I}+K_{D}s^2}{s}\cdot\frac{12K}{s(s\tau+1)}
