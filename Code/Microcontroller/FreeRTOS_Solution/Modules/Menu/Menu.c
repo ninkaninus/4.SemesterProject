@@ -94,6 +94,8 @@
 
 #define IMAGE_START_FUNCTION	20
 #define IMAGE_STOP_FUNCTION		21
+#define IMAGE_JOG_PAN			22
+#define IMAGE_JOG_TILT			23
 
 extern xQueueHandle GUI_queue;
 extern xQueueHandle MENU_queue;
@@ -129,10 +131,11 @@ void run_stop_function(void)
 void run_manual_jog_function(void)
 {
 	INT8U active = PAN;
-	INT8U input = 0;
+	INT8U input;
 	INT8U event;
-	INT8U range = 0;
-
+	INT32U range = 0;
+	INT32U pos = 0;
+	send_image(IMAGE_JOG_PAN);
 	while (1)
 	{
 		if( xQueueReceive( MENU_queue, &( input ), 1 ))
@@ -142,58 +145,91 @@ void run_manual_jog_function(void)
 			{
 				case BE_LEFT:
 
+					if(active == PAN)
+					{
+						pos = get_msg_state(SSM_SP_PAN);
+						pos = pos + range;
+						put_msg_state(SSM_SP_PAN,pos);
+					}
+					else
+					{
+						pos = get_msg_state(SSM_SP_TILT);
+						pos = pos + range;
+						put_msg_state(SSM_SP_TILT,pos);
+					}
+
 					break;
 
 				case BE_RIGHT:
+
+					if(active == PAN)
+					{
+						pos = get_msg_state(SSM_SP_PAN);
+						pos = pos - range;
+						put_msg_state(SSM_SP_PAN,pos);
+					}
+					else
+					{
+						pos = get_msg_state(SSM_SP_TILT);
+						pos = pos - range;
+						put_msg_state(SSM_SP_TILT,pos);
+					}
 
 					break;
 
 				case KE_STAR:
 
 					if (active == PAN)
+						{
+						send_image(IMAGE_JOG_TILT);
 						active = TILT;
+						}
 					else
+						{
+						send_image(IMAGE_JOG_PAN);
 						active = PAN;
+						}
 
 					break;
 
 				case KE_1:
-
+					range = 1;
 				break;
 
 				case KE_2:
-
+					range = 2;
 				break;
 
 				case KE_3:
-
+					range = 3;
 				break;
 
 				case KE_4:
-
+					range = 4;
 				break;
 
 				case KE_5:
-
+					range = 5;
 				break;
 
 				case KE_6:
-
+					range = 6;
 				break;
 
 				case KE_7:
-
+					range = 7;
 				break;
 
 				case KE_8:
-
+					range = 8;
 				break;
 
 				case KE_9:
-
+					range = 9;
 				break;
 
 				case KE_0:
+					send_image(IMAGE_RUN_JOG);
 					return;
 				break;
 
