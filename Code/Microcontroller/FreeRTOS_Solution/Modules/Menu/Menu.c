@@ -96,6 +96,9 @@
 #define IMAGE_STOP_FUNCTION		21
 #define IMAGE_JOG_PAN			22
 #define IMAGE_JOG_TILT			23
+#define IMAGE_SET_PAN			24
+#define IMAGE_SET_TILT			25
+#define IMAGE_ABORTED			26
 
 extern xQueueHandle GUI_queue;
 extern xQueueHandle MENU_queue;
@@ -150,12 +153,14 @@ void run_manual_jog_function(void)
 						pos = get_msg_state(SSM_SP_PAN);
 						pos = pos + range;
 						put_msg_state(SSM_SP_PAN,pos);
+						//convert_and_secure();
 					}
 					else
 					{
 						pos = get_msg_state(SSM_SP_TILT);
 						pos = pos + range;
 						put_msg_state(SSM_SP_TILT,pos);
+						//convert_and_secure();
 					}
 
 					break;
@@ -167,12 +172,14 @@ void run_manual_jog_function(void)
 						pos = get_msg_state(SSM_SP_PAN);
 						pos = pos - range;
 						put_msg_state(SSM_SP_PAN,pos);
+						convert_and_secure();
 					}
 					else
 					{
 						pos = get_msg_state(SSM_SP_TILT);
 						pos = pos - range;
 						put_msg_state(SSM_SP_TILT,pos);
+						convert_and_secure();
 					}
 
 					break;
@@ -245,6 +252,92 @@ void run_manual_jog_function(void)
 void run_manual_set_function(void)
 {
 
+	INT8U active = PAN;
+	INT8U input;
+	INT8U event;
+	INT32U half = 0;
+	INT32U pos[8] = {0,0,0,0,0,0,0,0};
+	send_image(IMAGE_SET_PAN);
+	for (INT8U i = 0; i <= 7; i++)
+	{
+		if ( i == 4 && half == 0)
+		{
+			send_image(IMAGE_SET_TILT);
+			half = 1;
+		}
+
+		if( xQueueReceive( MENU_queue, &( input ), 1 ))
+		{
+			event  = input;
+
+			switch (event)
+				{
+					case KE_STAR:
+
+						send_image(IMAGE_ABORTED);
+						if( xQueueReceive( MENU_queue, &( input ), 1000 ))
+						{
+
+						}
+						send_image(IMAGE_RUN_SET);
+
+						return;
+
+						break;
+
+					case KE_1:
+						pos[i] = 1;
+					break;
+
+					case KE_2:
+						pos[i] = 2;
+					break;
+
+					case KE_3:
+						pos[i] = 3;
+					break;
+
+					case KE_4:
+						pos[i] = 4;
+					break;
+
+					case KE_5:
+						pos[i] = 5;
+					break;
+
+					case KE_6:
+						pos[i] = 6;
+					break;
+
+					case KE_7:
+						pos[i] = 7;
+					break;
+
+					case KE_8:
+						pos[i] = 8;
+					break;
+
+					case KE_9:
+						pos[i] = 9;
+					break;
+
+					case KE_0:
+						pos[i] = 0;
+					break;
+
+					default:
+						break;
+				}
+		}
+		else
+		{
+			i--;
+		}
+	}
+	put_msg_state(SSM_SP_DEG_PAN,pos[0]*1000+pos[1]*100+pos[2]*10+pos[3]);
+	put_msg_state(SSM_SP_DEG_TILT,pos[4]*1000+pos[5]*100+pos[6]*10+pos[7]);
+	convert_and_secure();
+	send_image(IMAGE_RUN_SET);
 }
 
 void run_auto_pic_on_off_function(void)
