@@ -58,8 +58,8 @@ void convert_and_secure(void)
 	INT32U tilt =	get_msg_state(SSM_SP_DEG_TILT);
 	INT8U pan_modulus = 0;
 	INT8U tilt_modulus = 0;
-	pan_thirds = pan % 10;
-	tilt_thirds = tilt % 10;
+	pan_modulus = pan % 10;
+	tilt_modulus = tilt % 10;
 
 	while (pan >= 3600)
 	{
