@@ -1,7 +1,7 @@
 \section{Microcontroller}
 
 \subsection{OS}
-Det er vigtigt i enhver kode situation, der inkluderer flere tasks, at kunne skifte mellem dem på en fornuftig måde; Dette gøres med en scheduler. Når der skal implementeres en scheduler skal det overvejes hvorvidt det er nødvendigt at lave en designed specielt til projektet, eller om der en en eksisterende der er i stand til at udfører opgaven tilstrækkeligt. I dette project har vi to muligheder til rådighed: RTCS eller FreeRTOS.
+Det er vigtigt i enhver kode situation, der inkluderer flere tasks, at kunne skifte mellem dem på en fornuftig måde; Dette gøres med en scheduler. Når der skal implementeres en scheduler skal det overvejes hvorvidt det er nødvendigt at lave en designed specielt til projektet, eller om der en en eksisterende der er i stand til at udfører opgaven tilstrækkeligt. I dette project har vi to muligheder til rådighed: FreeRTOS eller RTCS.
 
 \subsubsection{RTCS}
 
@@ -10,12 +10,25 @@ Det er vigtigt i enhver kode situation, der inkluderer flere tasks, at kunne ski
 
 FreeRTOS er et realtid operativsystem (RTOS), som er en standard løsning som bliver brugt i en mikroprocesser. FreeRTOS giver os muligheden for at bruge preemptiv skedulering, Det vil sige at CPU'en kan sprænge i mellem task og hoppe ud af en task efter behov. Dette bliver styret ud af hvilken prioritet taskén har eller om der en anden task, der for et interrupt den skal holde øje med.
 \\
-Udover dette har freeRTOS også mange andre funktioner dette projekt kan udnytte. Der er mulighed for at oprette køer, som vil blive nævnt som queues, disse queues kan man sende events og data til ved hjælp af en funktion der hedder xQueueSend. Hvor der så samtidig med at der en der kan tage noget fra denne queue. 
+Udover dette har freeRTOS også mange andre funktioner dette projekt kan udnytte. Der er mulighed for at oprette køer, som vil blive nævnt som queues. Disse queues kan man sende events og data til ved hjælp af en funktion der hedder xQueueSend. Hvor der så samtidig med at der en der kan tage noget fra denne queue. 
 \\
 For at kunne gøre det muligt at flere task's skal kunne til gå disse queue's, dette kan gøres ved at bruge noget det hedder en semafor, som gør at kun en task der har adgang til queue'en indtil semaforen bliver frigjort igen. For at ungå at at styre systemet ikke bliver fastlåst i denne semafor for evigt sætte man en tid, den kan være inde i semaforen.
 \\
 For at nogle af disse ting kan bliver aktiveret skal der føre oprettes en xQueueHandle og xSemaphoreHandle. Hvorefter de bliver kreeret hved hjælp af xQueueCreate og xSemaphoreCreateMutex. For at bruge xQueueCreate skal der også bruges størrelse af queue'en og hvilken parameter den skal indeholde. 
 
+\subsubsection{RTCS}
+
+Run To Complete Scheduler (RTCS) er en måde at køre ens styresystem på. Den køre som en non preemtiv skedulering, det vil sige at lige så snart CPU'en har forbindelse til en proces/task, så kan den ikke hoppe ud af denne proces/task. I dette system kan der oprettes queue's.
+//
+Den har mulighed for at oprette semafoere, som gør at det er kun en queue som kan have adgang til queue'en. For at tilføje data til en queue skal funktion put\textunderscore queue. wait\textunderscore sem bruges til at tilføje en semafor til den specifikke queue.
+
+\subsubsection{Del konklusion}
+
+Efter vi har set på disse to valg muligheder kan vi se at RTCS vil være næmmere at få til at virker, men at det heller ikke er lige så sikkert, som freeRTOS. Den største begrundelse for at vi vælger at arbjede med freeRTOS over RTCS er at den køre preemtiv. Dette gøre det muligt vis der kommer et vigtigt interrupt at den kan tage CPU'en fra den proces den er i gang med og flytte den over det den mere vigtige proces.
+
+\subsection{Koordinatoversættelse}
+
+For at overholde modularitets princippet er det besluttet systemet skal benytte polære koordinater. For så at kunne benytte de horizontale koordinater som de objekter vi følger skal der laves en transformation fra det horizontale koordinat rum til det polære koordinat rum.
 
 \subsection{Tasks}
 
@@ -79,7 +92,6 @@ Dette keypad kan blive brugt til at sende data eller manuelt indsætte nogle væ
 
 
 \subsection{Serial Peripheral Interface}
-\label{subsec:SPI}
 
 Microcontrolleren der blev udleveret dette semester (TM4C123GH6PM) indeholder 4 SSI (Synchronous Serial Interface) da disse 4 interfaces alle er ens, på undtagelse deres pins, er SSI0 blevet valgt som interface, dvs. port A pin 2 er til SSI0Clk (modulets clock), pin 3 er SSI0Fss (frame signalet), pin 4 er SSI0Rx (modtagelse), og pin 5 er SSI0Tx (afsendelse)
 
