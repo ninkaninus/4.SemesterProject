@@ -54,6 +54,11 @@
 
 /*****************************   Variables   *******************************/
 
+enum pid_states{
+	IDLE,
+	RUN
+};
+
 PID pan_sys;
 PID pan_sys_2;
 PID tilt_sys;
@@ -89,8 +94,8 @@ void init_pid()
 	tilt_sys.integral = 0;
 	tilt_sys.prev_error = 0;
 
-	tilt_sys_2.Kp = 150*K2;
-	tilt_sys_2.Ki = 150*K2;
+	tilt_sys_2.Kp = 8*K2;
+	tilt_sys_2.Ki = 16*K2;
 	tilt_sys_2.Kd = 1*K2;
 	tilt_sys_2.gain = 0;
 	tilt_sys_2.integral = 0;
@@ -102,10 +107,29 @@ void PID_task(void *pvParameters)
 	init_pid();
 
 	INT8U received;
+	INT8U pid_state = IDLE;
 
 	while(1)
 	{
+	switch(pid_state)
+	{
+	case IDLE:
+		if (xQueueReceive(PID_queue, &received, 20500 / portTICK_RATE_MS))
+		{
+			switch(received)
+			{
+			case PID_START_EVENT:
+				pid_state = RUN;
+				pid_update();
+				break;
 
+			default:
+				break;
+			}
+		}
+		break;
+
+	case RUN:
 		if (xQueueReceive(PID_queue, &received, 20500 / portTICK_RATE_MS))
 		{
 			switch(received)
@@ -114,10 +138,15 @@ void PID_task(void *pvParameters)
 				pid_update();
 				break;
 
+			case PID_STOP_EVENT:
+				pid_state = IDLE;
+				break;
+
 			default:
 				break;
 			}
 		}
+	}
 	}
 }
 
@@ -137,8 +166,8 @@ INT32S pid_calc(INT32U desired, INT32U actual, PID *controller)
 	if(integral < I_MIN)
 		integral = I_MIN;
 		
-	//if(error == 0)			// nulstiller integral-delen når målet er nået.
-		//integral = 0;
+	if(error == 0)			// nulstiller integral-delen når målet er nået.
+		integral = 0;
 
 	derivative = (error - controller->prev_error)/DT;
 

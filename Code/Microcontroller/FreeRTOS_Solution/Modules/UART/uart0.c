@@ -166,8 +166,6 @@ void UART0_rx_isr()
 		INT8U received = UART0_DR_R;
 		if(!(xQueueIsQueueFullFromISR(uart0_rx_queue)))
 			xQueueSendFromISR(uart0_rx_queue, &received, NULL);
-		received = PID_UPDATE_EVENT;
-		xQueueSendFromISR(PID_queue,&received,NULL);
 	}
 }
 
@@ -244,9 +242,21 @@ void UART0_task(void *pvParameters)
 					uart_state = IDLE;
 					break;
 
-				case STOP:
+				case STOP_SPI:
 					address = STOP_EVENT;
 					xQueueSend(SPI_queue,&address,100);
+					uart_state = IDLE;
+					break;
+
+				case STOP_PID:
+					address = PID_STOP_EVENT;
+					xQueueSend(PID_queue,&address,100);
+					uart_state = IDLE;
+					break;
+
+				case START_PID:
+					address = PID_START_EVENT;
+					xQueueSend(PID_queue,&address,100);
 					uart_state = IDLE;
 					break;
 

@@ -116,8 +116,8 @@ int main(void)
   return_value &= xTaskCreate( ui_task, ( signed portCHAR * ) 			"UI", 			USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
   //return_value &= xTaskCreate( adc_task, ( signed portCHAR * ) 			"ADC", 			USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
  // return_value &= xTaskCreate( RTC_task, ( signed portCHAR * ) 			"RTC", 			USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
-  return_value &= xTaskCreate( PID_task, ( signed portCHAR * ) 			"PID", 			USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
-  return_value &= xTaskCreate( SPI_task, ( signed portCHAR * ) 			"SPI", 			USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
+  return_value &= xTaskCreate( PID_task, ( signed portCHAR * ) 			"PID", 			USERTASK_STACK_SIZE, NULL, HIGH_PRIO, NULL );
+  return_value &= xTaskCreate( SPI_task, ( signed portCHAR * ) 			"SPI", 			USERTASK_STACK_SIZE, NULL, HIGH_PRIO, NULL );
   return_value &= xTaskCreate( UART0_task, ( signed portCHAR * ) 		"UART",			USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
   return_value &= xTaskCreate( dreh_task, ( signed portCHAR * ) 		"DrehImpulsgeber",	USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
   //return_value &= xTaskCreate( Menu_task, ( signed portCHAR * ) 		"Menu",	USERTASK_STACK_SIZE, NULL, LOW_PRIO, NULL );
