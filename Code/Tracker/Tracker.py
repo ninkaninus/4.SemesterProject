@@ -26,11 +26,20 @@ try:
     while True:
         home.date = datetime.utcnow()
         iss.compute(home)
+
         altitude = iss.alt * degrees_per_radian
         azimuth = iss.az * degrees_per_radian
 
-        if altitude<0:
-            altitude = 180 + (altitude + 180)
+        #Program coordinates are between -180 and 180. Convert to between 0 and 360
+        if altitude < 0:
+            altitude = 360 + altitude
+
+        #Correct for the different definitions of where 0 is
+        altitude = 90 - altitude
+
+        #Correct if former correction went negative
+        if altitude < 0:
+            altitude = 360 + altitude
 
         azimuth = 360 - azimuth
 
