@@ -137,8 +137,8 @@ INT32S pid_calc(INT32U desired, INT32U actual, PID *controller)
 	if(integral < I_MIN)
 		integral = I_MIN;
 		
-	if(error == 0)			// nulstiller integral-delen når målet er nået.
-		integral = 0;
+	//if(error == 0)			// nulstiller integral-delen når målet er nået.
+		//integral = 0;
 
 	derivative = (error - controller->prev_error)/DT;
 
