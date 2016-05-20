@@ -1,7 +1,7 @@
 clear
 clc
 
-load('Pan-Tilt/Tilt Motor.mat')
+load('Pan-Tilt/Pan Motor.mat')
 
 [Time1,W1] = combine_vectors(digital_channel_0,digital_channel_1,digital_sample_rate_hz);
 
