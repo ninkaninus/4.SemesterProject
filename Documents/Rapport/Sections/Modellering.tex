@@ -2,13 +2,13 @@
 I denne sektion vil der blive udarbejdet matematiske modeller for alle dele af systemet. Der vil være tale om et elektronisk system (motor og feedback), der er koblet til et mekanisk system (motorakslen, rammerne og den udveksling der forbinder dem). 
 
 \subsection{Motor}
-Motoren består af en rotor med flere XXXX poler, og en stator med en permanent magnet. Den permanente magnet sørger for at feltet, der påvirker rotoren, er nogenlunde konstant - dette forsimpler udregningen af motormomentet, da det er lineært afhængigt af magnetfeltet og strømmen igennem rotorvindingerne se ligning \ref{eq:motormoment}. Motorkonstanten $K_{m}$ er afhængig af permeabiliteten i det magnetiske materiale og kan bestemmes eksperimentielt - se reference her XXXX.
+Motoren består af en rotor med flere XXXX poler, og en stator med en permanent magnet. Den permanente magnet sørger for at feltet, der påvirker rotoren, er nogenlunde konstant - dette forsimpler udregningen af motormomentet, da det er lineært afhængigt af magnetfeltet og strømmen igennem rotorvindingerne se ligning \ref{eq:motormoment}. Motorkonstanten $K_{m}$ er afhængig af permeabiliteten i det magnetiske materiale og kan bestemmes eksperimentielt - se reference \cite{azevedoAmerico2013} XXXX.
 
 \begin{equation}\label{eq:motormoment}
 T_{m}=K_{m}i_{a}(t)
 \end{equation}
 
-Den elektroniske del af motoren kan modelleres simpelt som en modstand $R_{a}$, som beskriver den samlede modstand i vindingerne, i serie med en spole $L_{a}$, som beskriver motorens induktans. Problemet med denne model er at den ikke tager højde for den modsatrettede spænding, der genereres i motorvindingerne, når rotoren er i bevægelse. Denne spænding er lineært afhængig af rotorens omdrejningshastighed og kan modelleres som en spændingskilde i serie med modstanden og spolen se figur \ref{fig:motor_sch}. $V_{b}=K_{e}\omega(t)$
+Den elektroniske del af motoren kan modelleres simpelt som en modstand $R_{a}$, som beskriver den samlede modstand i vindingerne, i serie med en spole $L_{a}$, som beskriver motorens induktans. Problemet med denne model er at den ikke tager højde for den modsatrettede spænding, der genereres i motorvindingerne, når rotoren er i bevægelse. Denne spænding er lineært afhængig af rotorens omdrejningshastighed og kan modelleres som en spændingskilde i serie med modstanden og spolen se figur \ref{fig:motor_sch}. $V_{b}=K_{e}\omega(t)$, hvor $V_{b}$ er den modsatrettede spænding, $K_{e}$ er motorens elektriske konstant og $w(t)$ er omdrejningshastigheden i rad/s.
 
 \begin{wrapfigure}[15]{r}{0.4\textwidth}
 \vspace{-20pt}
@@ -16,8 +16,8 @@ Den elektroniske del af motoren kan modelleres simpelt som en modstand $R_{a}$, 
 	\includegraphics[scale=0.9]{Billeder/Motormodel.png}
 	\end{center}
 	\vspace{-10pt}
-	\label{fig:motor_sch}
 	\caption{Her ses diagrammet af den omtalte motormodel}
+	\label{fig:motor_sch}
 \vspace{-20pt}
 \end{wrapfigure}
 
@@ -33,7 +33,7 @@ Den mekaniske del af motoren kan beskrives som det moment der genereres og drive
 T_{netto}=T_{m}-T_{f}
 \end{equation}
 
-Ligning \ref{eq:motormoment} kunne fortælle noget om momentet fra motoren, men det er også nødvendigt at have en dæmpende effekt i form a friktion med i modellen, for at den kan svare nogenlunde til virkeligheden. Heldigvis hænger det sådan sammen at det modsatrettede moment fra friktionen kan approksimeres ret præcist til at være lineært afhængigt af akslens omdrejningshastighed - denne linearitet kan beskrives ved $T_{f}=b\omega(t)$. Hvis man kombinerer alle tre ligninger ved at substituere dem ind i ligning \ref{eq:nettomoment}, er det muligt at danne endnu en differentialligning, der afhænger af rotoren's omdrejningshastighed.
+Ligning \ref{eq:motormoment} kunne fortælle noget om momentet fra motoren, men det er også nødvendigt at have en dæmpende effekt i form a friktion med i modellen, for at den kan svare nogenlunde til virkeligheden. Heldigvis hænger det sådan sammen at det modsatrettede moment fra friktionen kan approksimeres ret præcist til at være lineært afhængigt af akslens omdrejningshastighed - denne linearitet kan beskrives ved $T_{f}=b\omega(t)$, hvor $b$ er en friktionskonstant. Hvis man kombinerer alle tre ligninger ved at substituere dem ind i ligning \ref{eq:nettomoment}, hvor et friktionsmoment trækkes fra motormomentet, er det muligt at danne endnu en differentialligning, der afhænger af rotoren's omdrejningshastighed.
 
 \begin{equation}\label{DE_motor_2}
 J\dfrac{d\omega(t)}{dt}=K_{m}i(t)-b\omega(t)
@@ -57,148 +57,4 @@ Man har nu to muligheder for at realisere sit system: Man kan lave en \textit{Wh
 
 \begin{equation}
 G(s)=\dfrac{\omega(s)}{V_{a}(s)}=\dfrac{K}{\tau*s+1}
-\end{equation}
-
-\subsubsection{Design af Controller}
-
-Hvis man tager udgangspunkt i black box-modellen af systemet, kan man lave et closed-loop-system, der ser ud som på figur \ref{fig:BB_Model}. 
-
-\begin{figure}[h]
-	\begin{center}
-		\includegraphics[scale=0.7]{Billeder/BB_Model.PNG}
-	\end{center}
-\caption{Closed-Loop kontrolsystem til black box-modellen}
-\label{fig:BB_Model}
-\end{figure}
-
-\paragraph{Designmål}
-
-\begin{itemize}
-
-\item Steady state fejl på 0
-\item Overshoot $<$ 15 $\%$
-\item Settling time $<$ 5 sekunder
-
-\end{itemize}
-
-\paragraph{2-ordens-system}
-
-Når man designer en controller, kan det være praktisk at approksimere hele systemet som et ideelt 2-ordens-system (se ligning \ref{eq:SO_system}). Disse systemer er meget veldefinerede og forholdsvis lette at beregne på. Parametre som overshoot, settling time, rise time m.m. kan beregnes analytisk og kan give et godt udgangspunkt til ens valg af controller. $\omega_{n}$ er systemets naturlige frekvens og $\zeta$ er systemets damping ratio - jo større en damping ratio, jo bedre en dæmpning af systemets respons har man.
-
-\begin{equation}\label{eq:SO_system}
-Y(s)=\frac{\omega_{n}^2}{s^2+2\zeta\omega_{n}s+\omega_{n}^2}
-\end{equation}
-
-Hele ideen med at benytte et 2-ordens-system til den indledende analyse, er at man kan finde de områder i s-planet, hvor systemet vil holde sig inden for designmålene, så længe systemets poler placeres der. Disse antagelser gælder naturligvis kun præcist for et 2-ordens-system uden nuller, men det kan sagtens være en udemærket approksimering, hvis man har et system af højere orden med to dominante poler der ligger tæt på $j\omega$-aksen. Som tommelfinger-regel kan man godt tillade sig at kalde to poler for dominante, hvis de er 5 gange tættere på den imaginære akse end resten af polerne. Grunden til at man kigger mest på de dominante poler, er at jo længere man kommer væk fra $j\omega$-aksen jo hurtigere aftager effekten på systemet fra polerne over tid. Derfor ender det med at være de langsomme poler, der dominerer systemets respons.
-
-\begin{wrapfigure}[15]{r}{0.4\textwidth}
-\vspace{-20pt}
-	\begin{center}
-	\includegraphics[scale=0.9]{Billeder/SO_system.PNG}
-	\end{center}
-	\vspace{-10pt}
-	\label{fig:SO_system}
-	\caption{Her kan man se hvordan damping ratio og den naturlige frekvens påvirker polernes placering i et 2-ordens-system.}
-\vspace{0pt}
-\end{wrapfigure}
-
-På figur \ref{fig:SO_system} kan man se hvordan man alene ud fra polernes placering kan beskrive en masse om damping ratio og den naturlige frekvens. En ting der ikke fremgår af figuren, er at damping ratio også fortæller noget om, om polerne er komplekse konjugerede eller reelle. Hvis $1>\zeta>0$ er polerne komplekse; hvis $\zeta=1$ ligger der to reelle poler oven i hinanden; hvis $\zeta>1$ er polerne reelle og unikke. Disse tre situationer bliver også ofte beskrevet som henholdsvis underdæmpet, kritisk dæmpet og overdæmpet.
-
-%\begin{wrapfigure}[15]{r}{0.4\textwidth}
-%\vspace{-20pt}
-%	\begin{center}
-%	\includegraphics[scale=0.9]{Billeder/Damping_Ratio.PNG}
-%	\end{center}
-%	\vspace{-10pt}
-%	\label{fig:SO_system}
-%	\caption{Her kan man se at man ud fra damping ratio kan bestemme om et system består af to komplekse konjugerede, en eller to reelle poler}
-%\vspace{-20pt}
-%\end{wrapfigure}
-
-\paragraph{Steady State Fejl}
-
-For at undersøge om systemet kan drive fejlen i 0, er det nødvendigt at finde et udtryk for $E_{1}(s)$, kan ses på figur \ref{fig:BB_Model}, og ved hjælp af \textit{Final Value Theorem} (ligning \ref{eq:FVT}), finde ud af hvad der er tilbage, når systemet går i steady state. 
-
-\begin{equation} \label{eq:FVT}
-lim_{t \to \infty} f(t) = lim_{s \to 0} sF(s)
-\end{equation}
-
-\begin{equation} \label{eq:ess}
-E_{1}(s)=R(s)\frac{s(\tau s+1)}{s(\tau s+1)+12K_{c}KH}+T_{d}(s)\frac{(\tau s+1)H}{s(\tau s+1)+12K_{c}KH}
-\end{equation}
-
-Ved et step-input ($A/s$) bliver fejlen drevet i 0, så længe der ikke er nogen disturbance. 
-
-\begin{equation}
-e_{ss}=lim_{s \to 0} sE_{1}(s)=AH\frac{1}{12K_{c}KH} , T_{d}(s)=\dfrac{A}{s}
-\end{equation}
-
-Det kan altså konkluderes, at man er nødt til at have mindst en integrator i controlleren ($K_{c}$), for at opfylde kriteriet om en steady state-fejl på 0. 
-
-\paragraph{Overshoot}
-
-Percent Overshoot (P.O.) er defineret som den procentdel systemets største respons afviger fra den ønskede værdi - det er et udtryk for, hvor meget systemet skyder forbi målet når det påvirkes af et step input. Ved hjælp af lidt algebra, differentiering og et par laplace-transformeringer, kan man udlede ligning (\ref{eq:P.O.}) fra ligning (\ref{eq:SO_system}) (se Modern Control Systems bog XXXX), og på den måde finde ud af, hvor meget overshoot systemet har udelukkende ud fra damping ratio. En anden måde at se på problemet, er at man, ved at finde zeta til et bestemt overshoot, også kan finde den vinkel til de komplekse polers placering, hvor man får netop den mængde overshoot - store vinkler giver stort overshoot og omvendt (se figur \ref{fig:SO_system}). Man kan altså ud fra denne udregning definere et klart område, hvor alle polplaceringer vil opfylde ens krav til overshoot. 
-
-\begin{equation}\label{eq:P.O.}
-P.O.=100*e^{-\dfrac{\zeta\pi}{\sqrt{1-\zeta^2}}}
-\end{equation}
-
-For at få 15 $\%$ overshoot eller derunder kan det beregnes at $\zeta$ skal være større end 0.517. Det vil sige at polerne skal placeres indenfor det skraverede område på figur \ref{fig:Overshoot} for at opfylde designmålene. Det er værd at nævne igen, at dette kun viser opførslen for et 2-ordens-system, så man kan ikke præcist beskrive opførslen for vores system på denne måde. Til gengæld kan man, hvis man tænker sig om under controller-designet, komme meget tæt på. Det er dog stadigvæk smart at vælge polplaceringer med en god margen op til grænseværdien for at være på den sikre side.
-
-\begin{figure}[h]
-	\begin{center}
-		\includegraphics[scale=0.5]{Billeder/Overshoot.PNG}
-	\end{center}
-\caption{Det skraverede område viser alle punkter med en zeta-værdi over 0.517. Denne værdi svarer også til en vinkel til den reelle akse på 58.87 grader til begge sider}
-\label{fig:Overshoot}
-\end{figure}
-
-\paragraph{Settling Time}
-
-Settling time er defineret som den tid det tager systemet at falde til ro inden for 2 procent af den ønskede værdi. Hvis man kigger på formlen for impulsresponsen (ligning (\ref{eq:impulse_response}))  til et 2-ordens-system i tidsdomænet, kan det ses at den dæmpende faktor for systemet er $e^{-\zeta\omega_{n}t}$ - settling time så beskrives ved $e^{-\zeta\omega_{n}T_{s}}<0.02$ og herfra kan man udlede ligning (\ref{eq:settling_time}).
-
-\begin{equation}\label{eq:impulse_response}
-y(t)=\frac{\omega_{n}}{\beta}e^{-\zeta\omega_{n}t}Sin(\omega_{n}\beta t)
-\end{equation}
-
-\begin{equation}\label{eq:settling_time}
-T_{s}=\frac{4}{\omega_{n}\zeta}
-\end{equation}
-
-For at få en settling time på under $5s$ kan det ud fra ligning (\ref{eq:settling_time}) bestemmes at $\omega_{n}\zeta > 0.8$. Det vil med andre ord sige at polerne skal befinde sig til venstre for -0.8 - her refereres der igen til figur \ref{fig:SO_system}. Ligesom det var tilfældet for overshoot-kriterierne, er det også her en god ide at vælge sine poler med en god margen til grænseværdien.
-
-\paragraph{I Controller}
-
-En I-controller er et integrator-led med et gain - integratoren svarer til at placere endnu en pol i origo. For at undersøge hvordan denne controller vil opføre sig, kan man bruge root locus metoden for at se, hvordan polerne flytter sig, når controller-gainet øges. 
-
-\begin{equation}\label{eq:I_OpenLoop}
-Y(s)=K_{I}\cdot\frac{1}{s}\cdot\frac{12K}{s(s\tau+1)}
-\end{equation}
-
-For at plotte root locus i matlab skal man bare bruge open loop overføringsfunktionen (ligning \ref{eq:I_OpenLoop}). På figur \ref{fig:I_rlocus} ses det med al tydelighed at systemet aldrig bliver stabilt med en I-controller, da polerne ikke kan trækkes over på den negative side af $j\omega$-aksen. Af denne grund kan en I-controller ikke bruges.
-
-\begin{figure}[h]
-	\begin{center}
-		\includegraphics[scale=0.35]{Billeder/I_rlocus.PNG}
-	\end{center}
-\caption{Her ses root locus plottet for vores system med en I-controller. Det er tydeligt at systemet aldrig kan stabiliseres med et gain alene.}
-\label{fig:I_rlocus}
-\end{figure}
-
-\paragraph{PI Controller}
-
-En PI controller har også en proportionel del, der summeres med integratoren. Det resulterer i praksis i at der, udover polen i origo fra integratoren, også tilføjes et nul på ventstre side af den imaginære akse. Nullets placering bestemmes af forholdet imellem $K_{I}$ og $K_{P}$.
-
-\begin{equation}\label{PI_OpenLoop}
-Y(s)=\frac{K_{P}s+K_{I}}{s}\cdot\frac{12K}{s(s\tau+1)}
-\end{equation}
-
-Ud fra root locus beregninger kan det bevises at nullets placering skal ligge til højre for -1 for at de to branches fra polerne i origo mødes på den reelle akse. (XXXX de er ikke lavet endnu... fix). $K_{P}$ skal med andre ord helst være større end $K_{I}$. Hvis $K_{P}$ bliver for meget større end $K_{I}$ bliver systemet for langsomt da break-in punktet kommer til at ligge på den forkerte side af 0.8 som er $\omega_{n}\zeta$-grænsen for en settling time under 5 sekunder. 
-
-\paragraph{PID Controller}
-
-Med PI-controlleren var margenen for P- og I-konstanterne og gainet ret snæver, hvis man vil overholde vores designmål. PID-controlleren giver lidt mere råderum, men man tager også et skridt længere væk fra den ideelle 2-ordensmodel. Differentieringsledet D tilføjer nemlig et ekstra nul til ligningen. 
-
-\begin{equation}\label{PID_OpenLoop}
-Y(s)=\frac{K_{P}s+K_{I}+K_{D}s^2}{s}\cdot\frac{12K}{s(s\tau+1)}
 \end{equation}

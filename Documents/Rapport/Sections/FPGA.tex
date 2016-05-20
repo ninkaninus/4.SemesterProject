@@ -22,26 +22,26 @@ Driveren har også brug for et clock-signal til at regulere timingen i den samt 
 
 \subsubsection{PWM Frekvens}
 
-Der er en række ting man skal være opmærksom på, når man vælger frekvensen pulserne skal sendes ved. Jo højere frekvensen er, jo mere tid tilbringer man i switching transistoren's aktive område - det vil sammenlagt give et større effekttab. Frekvensen er til gengæld også nødt til at være høj nok til at motoren's inerti kan bløde de elektriske pulser ud rent mekanisk. Derudover er det også nemmere for motorspolerne at holde strømmen nogenlunde konstant ved en højere frekvens - det er blandt andet en af antagelserne fra den matematiske motormodel. Der skal også tages højde for de vibrationer, der genereres når motorinputtet kommer i pulser. Hvis frekvensen er mindre end 20 kHz, ligger vibrationerne inden for det hørbare område for mennesker, og det er ikke altid hensigtsmæssigt. Motoren og ophængets egenfrekvens skal også undgås - denne frekvens vil være højere jo mere stift ophæng motoren har, men den vil typisk ikke ligge i det supersoniske område. Alle disse ting peger tilsammen imod en PWM frekvens på den anden side af 20 kHz, men ikke meget derover. 
+Der er en række ting man skal være opmærksom på, når man vælger frekvensen pulserne skal sendes ved. Jo højere frekvensen er, jo mere tid tilbringer man i switching transistoren's aktive område - det vil sammenlagt give et større effekttab. Frekvensen er til gengæld også nødt til at være høj nok til at motoren's inerti kan glatte de elektriske pulser ud rent mekanisk. Derudover er det også nemmere for motorspolerne at holde strømmen nogenlunde konstant ved en højere frekvens - det er blandt andet en af antagelserne fra den matematiske motormodel. Der skal også tages højde for de vibrationer, der genereres når motorinputtet kommer i pulser. Hvis frekvensen er mindre end 20 kHz, ligger vibrationerne inden for det hørbare område for mennesker, og det er ikke altid hensigtsmæssigt. Motoren og ophængets egenfrekvens skal også undgås - denne frekvens vil være højere jo mere stift ophæng motoren har, men den vil typisk ikke ligge i det supersoniske område. Alle disse ting peger tilsammen imod en PWM frekvens på den anden side af 20 kHz, men ikke meget derover. 
 
-Med et 8 bits input skal hver pulsperiode deles ind i 256 lige store dele, så det er muligt at flytte tidspunktet, hvor der skiftes fra høj til lav og dermed få en anden duty cycle. 
+Med et 8 bits input skal hver pulsperiode deles ind i 256 lige store dele (se ligning \ref{eq:pwm_slice}, hvor $T_{slice}$ er bredden i $\mu s$), så det er muligt at flytte tidspunktet, hvor der skiftes fra høj til lav og dermed få en anden duty cycle. 
 
-\begin{equation}
+\begin{equation}\label{eq:pwm_period}
 T_{PWM}=\dfrac{1}{25 kHz} = 40 \mu s
 \end{equation}
 
-\begin{equation}
+\begin{equation}\label{eq:pwm_slice}
 T_{slice}=\dfrac{T_{PWM}}{256}=156ns
 \end{equation}
 
-En clock-periode med FPGA'ens krystal på 50 MHz er $20ns$ lang, så hvis man tæller en variabel op hver 8. clock-periode til den når 256, så får man en samlet periodetid på $20ns*8*256=40.96 \mu s=24.414kHz$. Denne variabel sammenlignes så med den lagrede 8 bits duty cycle værdi, for at afgøre om signalet på udgangen skal være højt eller lavt.
+En clock-periode med FPGA'ens krystal på 50 MHz er $20ns$ lang, så hvis man tæller en variabel op hver 8. clock-periode til den når 256, så får man en samlet periodetid på $20ns*8*256=40.96 \mu s=24.414kHz$. Denne variabel sammenlignes så med den lagrede 8 bits duty cycle værdi, for at afgøre om signalet på udgangen skal være højt eller lavt. På figur \ref{fig:PWM_timing} kan man se en grafisk repræsentation af modulets virkemåde.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\begin{center}
 		\includegraphics[scale=0.5]{Billeder/PWM_Timing.png}
 	\end{center}
-\label{fig:PWM_timing}
 \caption{Ramperne på den øverste graf repræsenterer variablen der tælles op fra 0 til 255. På den nederste graf ses det resulterende PWM-signal}
+\label{fig:PWM_timing}
 \end{figure}
 
 \subsubsection{Positions modul}
@@ -53,7 +53,7 @@ Hver gang en hall sensor går fra høj til lav, eller lav til høj, vil et regis
 
 For at kunne finde ud af hvilken vej motoren kører, kigges der på hvordan hall sensorerne går høj og lav i forhold til hinanden.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 	\begin{center}
 		\includegraphics[scale=0.5]{Billeder/Hall_sensorer.png}
 	\end{center}
@@ -69,3 +69,33 @@ Og hvis hall sensor 1 bliver lav først, så er det mod uret.\\
 Når hall sensor 1 er lav, og hall sensor 2 er lav\\
 Hvis hall sensor 2 så bliver høj først, så er det en rotation med uret.\\
 Hvis hall sensor 1 bliver høj først, så er det en rotation mod uret.\\
+
+\subsection{Intern kommunikation}
+
+\subsubsection{Signaler til master controller}
+
+\subsubsection{Intern databus med addressering}
+
+\paragraph{Intern RAM blok med specificerede addresser}
+
+\paragraph{Et datasæt per addresseXXXX}
+
+\subsection{MotorController}
+
+\subsection{SPI}
+Der skal foregå en kommunikation mellem microcontrolleren og FPGA'en. Til dette formål er der i opgaven specificieret at grænsefladenXXXX SPI skal bruges. GrænsefladenXXXXs overordnede virkemåde er beskrevet nærmere i afsnit \ref{subsec:SPI}. I dette afsnit vil der blive beskrevet fordele og ulemper ved forskellige måder at implementerer denne grænseflade i FPGA'en. Dernæst vil der blive foretaget en dybere gennemgang af den valgte implementation. Og konkluderes på, hvordan denne implementation har fungeret rent praktisk.
+\subsubsection{Implementationer}
+
+\paragraph{XXXX8-bit pakker med kommunikationsprotokol}
+
+\paragraph{XXXX16-bit pakker med 4-bit addressering}
+
+\subsection{Diverse undermoduler}
+
+\subsubsection{NumberToBCD}
+
+\subsubsection{MultiplexDisplay}
+
+\subsubsection{ToggleXXXXBrugForUnderscoreButton3}
+
+\subsection{Overordnede System XXXX}

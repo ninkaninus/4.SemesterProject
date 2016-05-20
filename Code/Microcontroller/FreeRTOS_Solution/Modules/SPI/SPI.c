@@ -117,8 +117,8 @@ void SSI_init()
 	SSI2_CR1_R |= (1<<1) | (0<<0);
 	//SSI0_IM_R |= SSI_IM_RXIM;
 
-	put_msg_state(SSM_SP_PAN, 1900);
-	put_msg_state(SSM_SP_TILT, 1900);
+	put_msg_state(SSM_SP_PAN, 2000);
+	put_msg_state(SSM_SP_TILT, 2000);
 }
 
 void SSI0_Interrupt() {
@@ -219,12 +219,22 @@ void SPI_task(void *pvParameters)
 				case MAX_PWM_EVENT:
 					send = 255;					// 100% duty cycle
 					send |= (2<<8);				// positiv retning
-					send |= ADDR_PAN_PWM;		// adresse
+					send |= ADDR_TILT_PWM;		// adresse
+					send |= 0x0400;
 
 					SPI_write(send);
 					send = SPI_read();
+
+					//vTaskDelay(1300 / portTICK_RATE_MS);
 					break;
 
+				case STOP_EVENT:
+					send = 0;					// 100% duty cycle
+					send |= (2<<8);				// positiv retning
+					send |= ADDR_TILT_PWM;		// adresse
+
+					SPI_write(send);
+					send = SPI_read();
 				default:
 					break;
 				}

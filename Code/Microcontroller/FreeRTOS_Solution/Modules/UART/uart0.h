@@ -25,13 +25,15 @@
 
 /*****************************    Defines    *******************************/
 
-#define RX_FIFO_NOT_EMPTY !(UART0_FR_R & 0x10)
+#define RX0_FIFO_NOT_EMPTY !(UART0_FR_R & 0x10)
+#define RX5_FIFO_NOT_EMPTY !(UART5_FR_R & 0x10)
 
 // addresses
 
 #define PAN_SP			'p' // 0x70
 #define TILT_SP			't' // 0x74
-#define PAN_MAX_PWM		'm'
+#define MAX_PWM			'm'
+#define STOP			's'
 
 /*****************************   Constants   *******************************/
 

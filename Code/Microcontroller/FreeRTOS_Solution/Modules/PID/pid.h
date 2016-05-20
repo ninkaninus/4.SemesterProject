@@ -31,6 +31,7 @@ typedef struct
 	INT32U Ki;				// Integral Gain
 	INT32U Kd;				// Derivative Gain
 	
+	INT32S gain;
 	INT32S integral;			// Integral Term
 	INT32S back_calc;
 	INT32S prev_error;		// Previous error term

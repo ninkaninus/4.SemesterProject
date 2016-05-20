@@ -30,6 +30,7 @@
 #include "FreeRTOS.h"
 #include "queue.h"
 #include "task.h"
+#include "semphr.h"
 /*****************************    Defines    *******************************/
 
 /*****************************   Constants   *******************************/
@@ -40,6 +41,8 @@ extern xQueueHandle uart0_rx_queue;
 extern xQueueHandle UI_queue;
 extern xQueueHandle PID_queue;
 extern xQueueHandle SPI_queue;
+
+extern xSemaphoreHandle coordinate_access_sem;
 
 enum uart_states {
 	IDLE,
@@ -100,7 +103,15 @@ void uart0_interrupt_enable()
 	UART0_IM_R |= UART_IM_RXIM;
 	UART0_IM_R |= 0x40;
 
-	NVIC_EN0_R = 0x00000020;
+	NVIC_EN0_R |= 0x00000020;
+}
+
+void uart5_interrupt_enable()
+{
+	UART5_IM_R |= UART_IM_RXIM;
+	UART5_IM_R |= 0x40;
+
+	NVIC_EN1_R |= (1<<29);
 }
 
 void uart0_interrupt_disable()
@@ -111,6 +122,11 @@ void uart0_interrupt_disable()
 void uart0_fifos_enable()
 {
   UART0_LCRH_R  |= 0x00000020;
+}
+
+void uart5_fifos_enable()
+{
+  UART5_LCRH_R  |= 0x00000020;
 }
 
 void uart0_fifos_disable()
@@ -145,10 +161,23 @@ void UART0_tx_isr()
 
 void UART0_rx_isr()
 {
-	while (RX_FIFO_NOT_EMPTY)
+	while (RX0_FIFO_NOT_EMPTY)
 	{
 		INT8U received = UART0_DR_R;
-		xQueueSendFromISR(uart0_rx_queue, &received, NULL);
+		if(!(xQueueIsQueueFullFromISR(uart0_rx_queue)))
+			xQueueSendFromISR(uart0_rx_queue, &received, NULL);
+		received = PID_UPDATE_EVENT;
+		xQueueSendFromISR(PID_queue,&received,NULL);
+	}
+}
+
+void UART5_rx_isr()
+{
+	while (RX5_FIFO_NOT_EMPTY)
+	{
+		INT8U received = UART5_DR_R;
+		if(!(xQueueIsQueueFullFromISR(uart0_rx_queue)))
+			xQueueSendFromISR(uart0_rx_queue, &received, NULL);
 	}
 }
 
@@ -199,18 +228,24 @@ void UART0_task(void *pvParameters)
 				{
 				case PAN_SP:
 					address = SSM_SP_DEG_PAN;
-					n_max = 3;
+					n_max = 4;
 					uart_state = SET_DATA;
 					break;
 
 				case TILT_SP:
 					address = SSM_SP_DEG_TILT;
-					n_max = 3;
+					n_max = 4;
 					uart_state = SET_DATA;
 					break;
 
-				case PAN_MAX_PWM:
+				case MAX_PWM:
 					address = MAX_PWM_EVENT;
+					xQueueSend(SPI_queue,&address,100);
+					uart_state = IDLE;
+					break;
+
+				case STOP:
+					address = STOP_EVENT;
 					xQueueSend(SPI_queue,&address,100);
 					uart_state = IDLE;
 					break;
@@ -244,9 +279,18 @@ void UART0_task(void *pvParameters)
 					break;
 				}
 			}
-
-			put_msg_state(address, data);
-			uart_state = SEND_EVENTS;
+			if(data > 3599 || data < 0)
+				uart_state = IDLE;
+			else
+			{
+				if(xSemaphoreTake(coordinate_access_sem,100000))
+				{
+					put_msg_state(address, data);
+					convert_and_secure();
+					xSemaphoreGive(coordinate_access_sem);
+					uart_state = IDLE;
+				}
+			}
 			break;
 
 		case SEND_EVENTS:
@@ -254,10 +298,31 @@ void UART0_task(void *pvParameters)
 			switch(address)
 			{
 			case SSM_SP_DEG_PAN:
+//				if (xQueueReceive(uart0_rx_queue, &received, 50000 / portTICK_RATE_MS))
+//				{
+//					received -= '0';
+//					if(received < 0 || received > 2)
+//					{
+//						received = 0;
+//					}
+			//		put_msg_state(SSM_OFFSET_PAN,received);
+
+//				}
+//				break;
+
 			case SSM_SP_DEG_TILT:
-				convert_and_secure();
-				received = PID_UPDATE_EVENT;
-				xQueueSend(PID_queue,&received,50);
+//				if (xQueueReceive(uart0_rx_queue, &received, 50000 / portTICK_RATE_MS))
+//				{
+//					received -= '0';
+//					if(received < 0 || received > 2)
+//					{
+//						received = 0;
+//					}
+//					put_msg_state(SSM_OFFSET_TILT,received);
+					convert_and_secure();
+					xSemaphoreGive(coordinate_access_sem);
+//				}
+
 				break;
 
 			default:
@@ -312,6 +377,41 @@ extern void UART0_init( INT32U baud_rate, INT8U databits, INT8U stopbits, INT8U 
   uart0_interrupt_enable();
 
   UART0_CTL_R  |= (UART_CTL_UARTEN | UART_CTL_TXE | UART_CTL_RXE );  // Enable UART
+
+}
+
+extern void UART5_init( INT32U baud_rate, INT8U databits, INT8U stopbits, INT8U parity )
+{
+  INT32U BRD;
+
+  SYSCTL_RCGC2_R |= SYSCTL_RCGC2_GPIOE;					// Enable clock for Port A
+
+  SYSCTL_RCGCUART_R |= SYSCTL_RCGCUART_R5;				// Enable clock for UART 0
+
+  NVIC_PRI15_R |= 0x0000DF00; 				//Setting the priority of the uart5 interrup to 6, which is the same as 223.
+
+  GPIO_PORTE_PCTL_R &= 0xFF00FFFF;					//Make sure that the pin setup is cleared
+  GPIO_PORTE_PCTL_R |= 0x00110000;					//Write one to PE4 and PE5 to make them uart0 tx and rx
+  GPIO_PORTE_AFSEL_R |= (1 << 4) | (1 << 5);		// set PA0 og PA1 to alternativ function (uart0)
+
+  GPIO_PORTE_DIR_R   |= (1 << 5);     // set PE5 (uart0 tx) to output
+  GPIO_PORTE_DIR_R   &= ~(1 << 4);     // set PE4 (uart0 rx) to input
+
+  GPIO_PORTE_DEN_R   |= (1 << 4) | (1 << 5); // enable digital operation of PA4 and PA5
+  //GPIO_PORTA_PUR_R   |= 0x00000002;
+
+  BRD = 64000000 / baud_rate;   	// X-sys*64/(16*baudrate) = 16M*4/baudrate
+  UART5_IBRD_R = BRD / 64;
+  UART5_FBRD_R = BRD & 0x0000003F;
+
+  UART5_LCRH_R  = lcrh_databits( databits );
+  UART5_LCRH_R += lcrh_stopbits( stopbits );
+  UART5_LCRH_R += lcrh_parity( parity );
+
+  uart5_fifos_enable();
+  uart5_interrupt_enable();
+
+  UART5_CTL_R  |= (UART_CTL_UARTEN | UART_CTL_TXE | UART_CTL_RXE );  // Enable UART
 
 }
 
