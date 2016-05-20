@@ -14,8 +14,8 @@ home.elevation = 15 # meters
 # Always get the latest ISS TLE data from:
 # http://spaceflight.nasa.gov/realdata/sightings/SSapplications/Post/JavaSSOP/orbit/ISS/SVPOST.html
 iss = ephem.readtle('ISS',
-    '1 25544U 98067A   16141.43532379  .00016717  00000-0  10270-3 0  9028',
-    '2 25544  51.6417 196.4833 0001609 119.2724 240.8590 15.54673668   663'
+    '1 25544U 98067A   16141.62816457  .00016717  00000-0  10270-3 0  9032',
+    '2 25544  51.6405 195.5226 0001738 107.9306 252.2036 15.54677601   695'
 )
 
 ser = serial.Serial('COM7', 115200, serial.EIGHTBITS, serial.PARITY_NONE, serial.STOPBITS_ONE, 0)  # open serial port
@@ -46,22 +46,24 @@ try:
         s1 = "\\st"
         s2 = "\\sp"
 
-        t1 =  '{:04.1f}'.format(altitude)
-        t2 = '{:04.1f}'.format(azimuth)
+        t1 =  '{:03.1f}'.format(altitude)
+        t2 = '{:03.1f}'.format(azimuth)
 
-        s1 += t1 + '0'
-        s2 += t2 + '0'
+        print('|AZI: {:05.1f} deg, ALT:  {:06.1f} deg|'.format(iss.az * degrees_per_radian, iss.alt * degrees_per_radian))
+        print('|PAN: {:<5} deg, TILT:  {:<5} deg|'.format(t2, t1))
+        print("*--------------------------------*")
+
+        t1 = t1.replace(".","")
+        t2 = t2.replace(".","")
+
+        s1 += t1
+        s2 += t2
 
         b2 = bytearray(map(ord,s2))
         ser.write(b2)
 
         b1 = bytearray(map(ord,s1))
         ser.write(b1)
-
-
-        print('|AZI: {:05.1f} deg, ALT:  {:06.1f} deg|'.format(iss.az * degrees_per_radian, iss.alt * degrees_per_radian))
-        print('|PAN: {:<5} deg, TILT:  {:<5} deg|'.format(t1, t2))
-        print("*--------------------------------*")
 
         time.sleep(1)
 
