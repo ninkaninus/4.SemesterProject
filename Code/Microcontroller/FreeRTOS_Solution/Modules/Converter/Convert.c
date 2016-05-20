@@ -56,10 +56,10 @@ void convert_and_secure(void)
 {
 	INT32U pan = 	get_msg_state(SSM_SP_DEG_PAN);
 	INT32U tilt =	get_msg_state(SSM_SP_DEG_TILT);
-	INT8U pan_thirds = 0;
-	INT8U tilt_thirds = 0;
-	pan_thirds = pan % 3;
-	tilt_thirds = tilt % 3;
+	INT8U pan_modulus = 0;
+	INT8U tilt_modulus = 0;
+	pan_thirds = pan % 10;
+	tilt_thirds = tilt % 10;
 
 	while (pan >= 3600)
 	{
@@ -102,48 +102,48 @@ void convert_and_secure(void)
 			pan = pan-1800;
 
 			tilt = 3600 - tilt;
-			/*
-			if(tilt > 180)
-			{
-				tilt =
-				tilt = tilt - 2*(tilt-180);
-			}
-			else
-			{
-				tilt = tilt + 2*(180-tilt);
-			}
-			*/
+
 		}
 
 
-		pan = pan * 3;
-		tilt = tilt * 3;
-		if (pan % 10 < 5)
+		pan = pan / 10 * 3;
+		tilt = tilt / 10 * 3;
+		switch (pan_modulus)
 		{
-			pan = pan / 10;
+			case 9:
+				pan++;
+			case 8:
+			case 7:
+			case 6:
+			case 5:
+				pan++;
+			case 4:
+			case 3:
+			case 2:
+				pan++;
+				break;
+
+			default:
+				break;
 		}
-		else
+		switch (tilt_modulus)
 		{
-			pan = pan / 10;
-			pan++;
+			case 9:
+				tilt++;
+			case 8:
+			case 7:
+			case 6:
+			case 5:
+				tilt++;
+			case 4:
+			case 3:
+			case 2:
+				tilt++;
+				break;
+
+			default:
+				break;
 		}
-
-		if (tilt % 10 < 5)
-		{
-			tilt = tilt / 10;
-		}
-		else
-		{
-			tilt = tilt / 10;
-			tilt++;
-		}
-
-
-		if (pan_thirds == 2)
-			pan++;
-
-		if (tilt_thirds == 2)
-			tilt++;
 
 		pan =  pan + INDEX_PAN + PAN_DIRECTION_OFFSET;
 		tilt = tilt + INDEX_TILT;
