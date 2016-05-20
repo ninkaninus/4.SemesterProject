@@ -6,29 +6,57 @@ import serial
 
 degrees_per_radian = 180.0 / math.pi
 
+updateTime = 0.01
+updatedValues = False
+
+t1prev = ""
+t2prev = ""
+
 home = ephem.Observer()
-home.lon = '10.421308'   # +E
-home.lat = '55.377526'   # +N
+home.lon = '10.431900'   # +E
+home.lat = '55.367129'   # +N
 home.elevation = 15 # meters
+
+#Bodies
 
 # Always get the latest ISS TLE data from:
 # http://spaceflight.nasa.gov/realdata/sightings/SSapplications/Post/JavaSSOP/orbit/ISS/SVPOST.html
 iss = ephem.readtle('ISS',
-    '1 25544U 98067A   16141.62816457  .00016717  00000-0  10270-3 0  9032',
-    '2 25544  51.6405 195.5226 0001738 107.9306 252.2036 15.54677601   695'
+     '1 25544U 98067A   16141.62816457  .00016717  00000-0  10270-3 0  9032',
+     '2 25544  51.6405 195.5226 0001738 107.9306 252.2036 15.54677601   695'
 )
+
+pcSat = ephem.readtle('PCSAT',
+     '1 26931U 01043C   16140.32055899  .00000037  00000-0  45874-4 0  9994',
+     '2 26931  67.0527  27.3826 0007086 262.9280  97.1015 14.30406980764014'
+)
+
+tiSat1 = ephem.readtle('TISAT1',
+     '1 36799U 10035E   16141.11196898  .00001251  00000-0  13642-3 0  9997',
+     '2 36799  98.0277 250.9616 0012879 171.7734 188.3697 14.89772933317247'
+)
+
+beeSat2 = ephem.readtle('BEESAT2',
+     '1 39136U 13015G   16141.17435292  .00003036  00000-0  17901-3 0  9991',
+     '2 39136  64.8733  58.7697 0007773 267.9007  92.1227 15.13522545169767'
+)
+
+
+itemToTrack = beeSat2
 
 ser = serial.Serial('COM7', 115200, serial.EIGHTBITS, serial.PARITY_NONE, serial.STOPBITS_ONE, 0)  # open serial port
 print(ser.name)  # check which port was really used
+
+ser.write(bytearray(map(ord,"\\sg")))
 
 try:
 
     while True:
         home.date = datetime.utcnow()
-        iss.compute(home)
+        itemToTrack.compute(home)
 
-        altitude = iss.alt * degrees_per_radian
-        azimuth = iss.az * degrees_per_radian
+        altitude = itemToTrack.alt * degrees_per_radian
+        azimuth = itemToTrack.az * degrees_per_radian
 
         #Program coordinates are between -180 and 180. Convert to between 0 and 360
         if altitude < 0:
@@ -46,12 +74,15 @@ try:
         s1 = "\\st"
         s2 = "\\sp"
 
-        t1 =  '{:03.1f}'.format(altitude)
-        t2 = '{:03.1f}'.format(azimuth)
+        t1 =  '{:05.1f}'.format(altitude)
+        t2 = '{:05.1f}'.format(azimuth)
 
-        print('|AZI: {:05.1f} deg, ALT:  {:06.1f} deg|'.format(iss.az * degrees_per_radian, iss.alt * degrees_per_radian))
-        print('|PAN: {:<5} deg, TILT:  {:<5} deg|'.format(t2, t1))
-        print("*--------------------------------*")
+        if updatedValues == True:
+            print('|AZI: {:05.1f} deg, ALT:  {:06.1f} deg|'.format(itemToTrack.az * degrees_per_radian, itemToTrack.alt * degrees_per_radian))
+            print('|PAN: {:<5} deg, TILT:  {:<5} deg|'.format(t2, t1))
+            print("*--------------------------------*")
+            updatedValues = False
+
 
         t1 = t1.replace(".","")
         t2 = t2.replace(".","")
@@ -59,14 +90,21 @@ try:
         s1 += t1
         s2 += t2
 
-        b2 = bytearray(map(ord,s2))
-        ser.write(b2)
+        if t1prev != t1:
+            t1prev = t1
+            updatedValues = True
+            b1 = bytearray(map(ord,s1))
+            ser.write(b1)
 
-        b1 = bytearray(map(ord,s1))
-        ser.write(b1)
+        if t2prev != t2:
+            t2prev = t2
+            updatedValues = True
+            b2 = bytearray(map(ord,s2))
+            ser.write(b2)
 
-        time.sleep(1)
+        time.sleep(updateTime)
 
 except KeyboardInterrupt:
     pass
+ser.write(bytearray(map(ord,"\\sn")))
 ser.close()  # close port
