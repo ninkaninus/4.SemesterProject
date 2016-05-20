@@ -33,15 +33,15 @@
 /*****************************    Defines    *******************************/
 
 #define INDEX			2000
-#define INDEX_PAN		1730
-#define INDEX_TILT		1730
+#define INDEX_PAN		1730;//1700
+#define INDEX_TILT		1190;//1970
 #define PAN_DIRECTION_OFFSET 0
 #define	THETA_1			90
 #define	THETA_2			90
 #define THETA_3			270
 #define	THETA_4			270
-#define TILT_MIN		250
-#define TILT_MAX		290
+#define TILT_MIN		160
+#define TILT_MAX		200
 
 
 /*****************************   Constants   *******************************/
@@ -56,14 +56,18 @@ void convert_and_secure(void)
 {
 	INT32U pan = 	get_msg_state(SSM_SP_DEG_PAN);
 	INT32U tilt =	get_msg_state(SSM_SP_DEG_TILT);
+	INT8U pan_thirds = 0;
+	INT8U tilt_thirds = 0;
+	pan_thirds = pan % 3;
+	tilt_thirds = tilt % 3;
 
-	while (pan >= 360)
+	while (pan >= 3600)
 	{
-		pan = pan-360;
+		pan = pan-3600;
 	}
-	while (tilt >= 360)
+	while (tilt >= 3600)
 	{
-		tilt = tilt-360;
+		tilt = tilt-3600;
 	}
 
 	if (0)//(tilt > TILT_MIN && tilt < TILT_MAX) || (pan > THETA_1 && pan < THETA_2) || (pan > THETA_3 && pan < THETA_4) || pan > 360 || tilt > 360)
@@ -74,48 +78,84 @@ void convert_and_secure(void)
 	}
 	else
 	{
-		// Pan transformation
-		if (pan >= 270)
+		//Pan transformation
+		if (pan >= 2700)
 		{
-			pan = pan-270;
+			pan = pan-2700;
 		}
 		else
 		{
-			pan = pan+90;
+			pan = pan+900;
 		}
 		// Tilt transformation
-		if (tilt >= 270)
+		if (tilt >= 1800)
 		{
-			tilt = tilt-270;
+			tilt = tilt-1800;
 		}
 		else
 		{
-			tilt = tilt+90;
+			tilt = tilt+1800;
 		}
 		// Flip hvis pan er større end 180 grader
-		if (pan > 180)
+		if (pan > 1800)
 		{
-			pan = pan-180;
+			pan = pan-1800;
 
+			tilt = 3600 - tilt;
+			/*
 			if(tilt > 180)
 			{
+				tilt =
 				tilt = tilt - 2*(tilt-180);
 			}
 			else
 			{
 				tilt = tilt + 2*(180-tilt);
 			}
+			*/
 		}
 
-		tilt = 3 * tilt + INDEX_TILT;
-		pan = 3 * pan + INDEX_PAN + PAN_DIRECTION_OFFSET;
+
+		pan = pan * 3;
+		tilt = tilt * 3;
+		if (pan % 10 < 5)
+		{
+			pan = pan / 10;
+		}
+		else
+		{
+			pan = pan / 10;
+			pan++;
+		}
+
+		if (tilt % 10 < 5)
+		{
+			tilt = tilt / 10;
+		}
+		else
+		{
+			tilt = tilt / 10;
+			tilt++;
+		}
+
+
+		if (pan_thirds == 2)
+			pan++;
+
+		if (tilt_thirds == 2)
+			tilt++;
+
+		pan =  pan + INDEX_PAN + PAN_DIRECTION_OFFSET;
+		tilt = tilt + INDEX_TILT;
 
 	}
 
-	tilt = tilt + get_msg_state(SSM_OFFSET_TILT);
 	pan = pan + get_msg_state(SSM_OFFSET_PAN);
-	put_msg_state(SSM_SP_TILT,tilt);
+	tilt = tilt + get_msg_state(SSM_OFFSET_TILT);
+//	pan = 2000;
+//	tilt = 2000;
 	put_msg_state(SSM_SP_PAN,pan);
+	put_msg_state(SSM_SP_TILT,tilt);
 }
 
 /****************************** End Of Module *******************************/

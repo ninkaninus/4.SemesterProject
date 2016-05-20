@@ -228,13 +228,13 @@ void UART0_task(void *pvParameters)
 				{
 				case PAN_SP:
 					address = SSM_SP_DEG_PAN;
-					n_max = 3;
+					n_max = 4;
 					uart_state = SET_DATA;
 					break;
 
 				case TILT_SP:
 					address = SSM_SP_DEG_TILT;
-					n_max = 3;
+					n_max = 4;
 					uart_state = SET_DATA;
 					break;
 
@@ -279,14 +279,16 @@ void UART0_task(void *pvParameters)
 					break;
 				}
 			}
-			if(data > 359 || data < 0)
+			if(data > 3599 || data < 0)
 				uart_state = IDLE;
 			else
 			{
 				if(xSemaphoreTake(coordinate_access_sem,100000))
 				{
 					put_msg_state(address, data);
-					uart_state = SEND_EVENTS;
+					convert_and_secure();
+					xSemaphoreGive(coordinate_access_sem);
+					uart_state = IDLE;
 				}
 			}
 			break;
@@ -296,35 +298,30 @@ void UART0_task(void *pvParameters)
 			switch(address)
 			{
 			case SSM_SP_DEG_PAN:
-				if (xQueueReceive(uart0_rx_queue, &received, 50000 / portTICK_RATE_MS))
-				{
-					received -= '0';
-					if(received < 0 || received > 2)
-					{
-						received = 0;
-					}
-					put_msg_state(SSM_OFFSET_PAN,received);
-					convert_and_secure();
-					xSemaphoreGive(coordinate_access_sem);
-					//received = PID_UPDATE_EVENT;
-					//xQueueSend(PID_queue,&received,50);
-				}
-				break;
+//				if (xQueueReceive(uart0_rx_queue, &received, 50000 / portTICK_RATE_MS))
+//				{
+//					received -= '0';
+//					if(received < 0 || received > 2)
+//					{
+//						received = 0;
+//					}
+			//		put_msg_state(SSM_OFFSET_PAN,received);
+
+//				}
+//				break;
 
 			case SSM_SP_DEG_TILT:
-				if (xQueueReceive(uart0_rx_queue, &received, 50000 / portTICK_RATE_MS))
-				{
-					received -= '0';
-					if(received < 0 || received > 2)
-					{
-						received = 0;
-					}
-					put_msg_state(SSM_OFFSET_TILT,received);
+//				if (xQueueReceive(uart0_rx_queue, &received, 50000 / portTICK_RATE_MS))
+//				{
+//					received -= '0';
+//					if(received < 0 || received > 2)
+//					{
+//						received = 0;
+//					}
+//					put_msg_state(SSM_OFFSET_TILT,received);
 					convert_and_secure();
 					xSemaphoreGive(coordinate_access_sem);
-					//received = PID_UPDATE_EVENT;
-					//xQueueSend(PID_queue,&received,50);
-				}
+//				}
 
 				break;
 
