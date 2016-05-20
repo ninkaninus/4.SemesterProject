@@ -42,7 +42,7 @@
 #define DC_MAX			150
 #define DC_MIN			40
 #define K1				161
-#define K2				27		// 0.0024 * 10000
+#define K2				27		// 0.0027 * 10000
 #define KP1				2*K1
 #define KI1				1*K1
 #define KD1				1*K1
@@ -53,6 +53,11 @@
 /*****************************   Constants   *******************************/
 
 /*****************************   Variables   *******************************/
+
+enum pid_states{
+	IDLE,
+	RUN
+};
 
 PID pan_sys;
 PID pan_sys_2;
@@ -75,8 +80,8 @@ void init_pid()
 	pan_sys.integral = 0;
 	pan_sys.prev_error = 0;
 
-	pan_sys_2.Kp = 50*K1;
-	pan_sys_2.Ki = 30*K1;
+	pan_sys_2.Kp = 100*K1;
+	pan_sys_2.Ki = 100*K1;
 	pan_sys_2.Kd = 1*K1;
 	pan_sys_2.gain = K1;
 	pan_sys_2.integral = 0;
@@ -89,8 +94,8 @@ void init_pid()
 	tilt_sys.integral = 0;
 	tilt_sys.prev_error = 0;
 
-	tilt_sys_2.Kp = 150*K2;
-	tilt_sys_2.Ki = 150*K2;
+	tilt_sys_2.Kp = 100*K2;
+	tilt_sys_2.Ki = 100*K2;
 	tilt_sys_2.Kd = 1*K2;
 	tilt_sys_2.gain = 0;
 	tilt_sys_2.integral = 0;
@@ -102,10 +107,29 @@ void PID_task(void *pvParameters)
 	init_pid();
 
 	INT8U received;
+	INT8U pid_state = IDLE;
 
 	while(1)
 	{
+	switch(pid_state)
+	{
+	case IDLE:
+		if (xQueueReceive(PID_queue, &received, 20500 / portTICK_RATE_MS))
+		{
+			switch(received)
+			{
+			case PID_START_EVENT:
+				pid_state = RUN;
+				pid_update();
+				break;
 
+			default:
+				break;
+			}
+		}
+		break;
+
+	case RUN:
 		if (xQueueReceive(PID_queue, &received, 20500 / portTICK_RATE_MS))
 		{
 			switch(received)
@@ -114,10 +138,15 @@ void PID_task(void *pvParameters)
 				pid_update();
 				break;
 
+			case PID_STOP_EVENT:
+				pid_state = IDLE;
+				break;
+
 			default:
 				break;
 			}
 		}
+	}
 	}
 }
 
@@ -137,8 +166,8 @@ INT32S pid_calc(INT32U desired, INT32U actual, PID *controller)
 	if(integral < I_MIN)
 		integral = I_MIN;
 		
-	//if(error == 0)			// nulstiller integral-delen når målet er nået.
-		//integral = 0;
+	if(error == 0)			// nulstiller integral-delen når målet er nået.
+		integral = 0;
 
 	derivative = (error - controller->prev_error)/DT;
 

@@ -57,5 +57,7 @@
 #define SET_PWM_EVENT			9
 #define MAX_PWM_EVENT			10
 #define STOP_EVENT				11
+#define PID_START_EVENT			12
+#define PID_STOP_EVENT			13
 
 #endif /* _TMODEL_H_ */
