@@ -26,7 +26,7 @@ for j = 1:n
          err = err + temp;
     end
     
-    if err < 50
+    if err < 120
         break
     end
     err = 0;

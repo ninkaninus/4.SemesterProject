@@ -106,6 +106,18 @@ T_{s}=\frac{4}{\omega_{n}\zeta}
 
 For at få en settling time på under $5s$ kan det ud fra ligning (\ref{eq:settling_time}) bestemmes at $\omega_{n}\zeta > 0.8$. Det vil med andre ord sige at polerne skal befinde sig til venstre for -0.8 - her refereres der igen til figur \ref{fig:SO_system}. Ligesom det var tilfældet for overshoot-kriterierne, er det også her en god ide at vælge sine poler med en god margen til grænseværdien.
 
+\paragraph{Delkonklusion}
+
+For at overholde designmålene vedrørende settling time, overshoot og steady state fejl, kan det følgende konkluderes:
+
+\begin{itemize}
+\item Damping ratio for et 2.-ordenssystem skal være større end $0.517$.
+\item Produktet $\omega_{n}\zeta$ for et 2.-ordenssystem skal være større end $0.8$. Dette produkt svarer til den reelle komponent af to komplekse poler.
+\item For at holde steady state fejlen i 0, skal man have en controller med et integrator led. Derfor skal det undersøges hvordan en I-, en PI- og en PID-controller påvirker systemet. P- og PD-controllere ignoreres pga af kravet til steady state fejlen.
+\end{itemize}
+
+Grænserne skal ses som et absolut minimumskrav, da systemet ikke er et ideelt 2.ordenssystem. Der skal helst være en god margen.
+
 \subsection{I Controller}
 
 En I-controller er et integrator-led med et gain - integratoren svarer til at placere endnu en pol i origo. For at undersøge hvordan denne controller vil opføre sig, kan man bruge root locus metoden for at se, hvordan polerne flytter sig, når controller-gainet øges. 
