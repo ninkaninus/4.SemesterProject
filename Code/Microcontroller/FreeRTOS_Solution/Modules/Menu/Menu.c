@@ -103,7 +103,7 @@ void run_start_function(void)
 	INT8U input;
 	//do stuff
 
-	if( xQueueReceive( MENU_queue, &( input ), 1000 )))
+	if( xQueueReceive( MENU_queue, &( input ), 1000 ))
 	{
 
 	}
@@ -116,7 +116,7 @@ void run_stop_function(void)
 	INT8U input;
 	//do stuff
 
-	if( xQueueReceive( MENU_queue, &( input ), 1000 )))
+	if( xQueueReceive( MENU_queue, &( input ), 1000 ))
 	{
 
 	}

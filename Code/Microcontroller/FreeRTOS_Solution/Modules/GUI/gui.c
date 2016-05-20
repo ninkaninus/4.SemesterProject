@@ -36,7 +36,7 @@
 
 /*****************************   Variables   *******************************/
 
-INT8U images[26][36] = {
+INT8U images[28][36] = {
 		{' ',' ',' ',' ','W','e','l','c','o','m','e','!',' ',' ',' ',' ',
 		 ' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',
 		 0x00,0,0,0 },	// cursor, 1= _ under cursor, 1=blink , næste karakter
@@ -128,6 +128,16 @@ INT8U images[26][36] = {
 // Functions
 ///////////////
 
+		 {'C','o','n','t','r','o','l','l','e','r',' ','s','t','a','r','t',
+		  'P','r','e','s','s',' ','t','o',' ','r','e','t','u','r','n',' ',
+		  0x00,0,0,0 },
+
+		 {'C','o','n','t','r','o','l','l','e','r',' ','s','t','o','p','!',
+		  'P','r','e','s','s',' ','t','o',' ','r','e','t','u','r','n',' ',
+		  0x00,0,0,0 },
+
+///////////////
+
 		{'I','n','v','a','l','i','d',' ','I','n','p','u','t',' ',' ',' ',
 		 ' ',' ','T','r','y',' ','A','g','a','i','n','.','.','.',' ',' ',
 		 0x00,0,0,0 },
@@ -183,6 +193,8 @@ enum gui_states {
 	IMAGE_OPTIONS_TILT_PID,
 	IMAGE_OPTIONS_KANIN,
 	IMAGE_OPTIONS_RETURN,
+	IMAGE_START_FUNCTION,
+	IMAGE_STOP_FUNCTION,
 	ENTER_COMMAND,
 	SET_TIME,
 	SHOW_TIME,
@@ -231,6 +243,8 @@ void gui_task(void *pvParameters)
 				case IMAGE_OPTIONS_TILT_PID:
 				case IMAGE_OPTIONS_KANIN:
 				case IMAGE_OPTIONS_RETURN:
+				case IMAGE_START_FUNCTION:
+				case IMAGE_STOP_FUNCTION:
 					new_image(gui_state);
 					break;
 
