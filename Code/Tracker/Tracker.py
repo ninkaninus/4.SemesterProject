@@ -14,8 +14,8 @@ home.elevation = 15 # meters
 # Always get the latest ISS TLE data from:
 # http://spaceflight.nasa.gov/realdata/sightings/SSapplications/Post/JavaSSOP/orbit/ISS/SVPOST.html
 iss = ephem.readtle('ISS',
-    '1 25544U 98067A   16138.54268332  .00016717  00000-0  10270-3 0  9010',
-    '2 25544  51.6427 210.9129 0001457 112.1474 247.9834 15.54660751   218'
+    '1 25544U 98067A   16141.43532379  .00016717  00000-0  10270-3 0  9028',
+    '2 25544  51.6417 196.4833 0001609 119.2724 240.8590 15.54673668   663'
 )
 
 ser = serial.Serial('COM7', 115200, serial.EIGHTBITS, serial.PARITY_NONE, serial.STOPBITS_ONE, 0)  # open serial port
@@ -37,8 +37,8 @@ try:
         s1 = "\\st"
         s2 = "\\sp"
 
-        t1 =  '{:03.0f}'.format(altitude)
-        t2 = '{:03.0f}'.format(azimuth)
+        t1 =  '{:04.1f}'.format(altitude)
+        t2 = '{:04.1f}'.format(azimuth)
 
         s1 += t1 + '0'
         s2 += t2 + '0'
