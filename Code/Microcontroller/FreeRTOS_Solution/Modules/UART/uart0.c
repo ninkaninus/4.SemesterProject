@@ -394,8 +394,8 @@ extern void UART5_init( INT32U baud_rate, INT8U databits, INT8U stopbits, INT8U 
   GPIO_PORTE_PCTL_R |= 0x00110000;					//Write one to PE4 and PE5 to make them uart0 tx and rx
   GPIO_PORTE_AFSEL_R |= (1 << 4) | (1 << 5);		// set PA0 og PA1 to alternativ function (uart0)
 
-  GPIO_PORTE_DIR_R   |= (1 << 5);     // set PA5 (uart0 tx) to output
-  GPIO_PORTE_DIR_R   &= ~(1 << 4);     // set PA4 (uart0 rx) to input
+  GPIO_PORTE_DIR_R   |= (1 << 5);     // set PE5 (uart0 tx) to output
+  GPIO_PORTE_DIR_R   &= ~(1 << 4);     // set PE4 (uart0 rx) to input
 
   GPIO_PORTE_DEN_R   |= (1 << 4) | (1 << 5); // enable digital operation of PA4 and PA5
   //GPIO_PORTA_PUR_R   |= 0x00000002;
