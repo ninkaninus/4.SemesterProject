@@ -1,16 +1,42 @@
 \section{FPGA}
-FPGA'en fungerer som en del af den hardware der styrer pan/tilt-systemet. FPGA'ens opgaver er bl.a. dataopsamling fra hall sensorene på motorerne.
+FPGA'en fungerer som en del af den hardware der styrer pan/tilt-systemet. FPGA'ens opgaver er bl.a. dataopsamling fra hall sensorene på motorerne, sende styre signaler til H-broerne, genererer pwm signaler, implementerer en form for sikkerhedsbegrænsning på hvor mege pan og tilt kan dreje rundt samt at kommunikerer med MPU'en.\\
 
-\subsection{Intern kommunikation}
-I forbindelse med at FPGA'en internt er opdelt i flere individuelle moduler. Så kræves det at der udvikles en form for kommunikation mellem disse moduler. Der er flere bud på ,hvordan dette kan foregå og i de følgende afsnit vil fordele og ulemper ved de forskellige metoder blive beskrevet.
+\subsection{SPI}
+Der skal foregå en kommunikation mellem microcontrolleren og FPGA'en. Til dette formål er der i opgaven specificieret at grænsefladen SPI skal bruges. Grænsefladens overordnede virkemåde er beskrevet nærmere i afsnit \ref{subsec:SPI}. I dette afsnit vil der blive beskrevet fordele og ulemper ved forskellige måder at implementerer denne grænseflade i FPGA'en. Dernæst vil der blive foretaget en dybere gennemgang af den valgte implementation. Og konkluderes på, hvordan denne implementation har fungeret rent praktisk.
 
-\subsubsection{Signalering til master controller}
+\subsubsection{Kommunikation med MPU}
+Kommunikationen fra FPGA'en til MPU'en foregår over SPI, men da SPI kun er en grænseflade. Skal der defineres, hvordan de datapakker der sendes frem og tilbage tolkes. Til at gøre dette er det blevet overvejet to forskellige metoder som er beskrevet i de følgende afsnit.
 
-\subsubsection{Intern databus med addressering}
+\paragraph*{8-bit pakker med kommunikationsprotokol}
+Dette var den første implementation der blev overvejet. Her sendes data mellem FPGA og MPU i pakker af størrelsen 8-bit. Der skal så fastsættes en kommunikationsprotokol der består af telegrammer med et vidst antal bytes i. Og i hver ende skal der være en controller der kan afkode de telegrammer der kommer ind. Og ud fra det bestemme hvad der skal foretages i FPGA'en. Fordelen ved denne implementation er at alt afhængig af hvordan telegrammerne designes så kan der både implementeres crc-check af beskederne og en masse kommandoer. Ulempen er at man skal opstille en protokol for kommunikationen og at der skal overføres flere pakker før at der reelt set sker noget samt at selve kommunikationen bliver mere kompliceret.
 
-\paragraph*{Intern RAM blok med specificerede addresser}
+\paragraph*{16-bit pakker med 4-bit addressering}
+Denne implementering involverer at man bruger 16-bit per overførsel. De øverste 4-bit bliver brugt til at addresserer, hvilket modul inde i FPGA'en der ønskes kommunikation med. Og de resterende 12-bit kan bruges til at overfører data med. En 4-bit addresser giver mulighed for at kunne addresserer op til 16 moduler i FPGA'en.
 
-\paragraph*{Et datasæt per addresseXXXX}
+\subsubsection{Kommunikation internt med moduler}
+Når datapakkerne fra SPI er modtaget i FPGA'en skal de på en eller anden måde tolkes. Og ud fra denne tolkning skal der enten sendes data til et modul eller hentes data fra et modul. Her beskrives to måder at håndterer den interne kommunikation mellem FPGA'en moduler.
+
+\paragraph*{Master Controller}
+Ved denne måde at kommunikerer på skal der internt i FPGA'en opbygges et "master" modul der har forbindelse til alle de forskellige andre moduler igennem individuelle busser. På den måde vil der aldrig kunne opstå data kollisioner pga. at flere moduler forsøger at sende data på samme tid. Master modulet vil så altid have alt data fra alle moduler tilgængeligt, men det vil i sidste ende give voldsomt mange forbindelser som det kan ses på figur \ref{fig:FPGA_MasterController}. Da der skal være en bus per signal. Master controlleren skal også stå for at afkode det der kommer fra SPI og sende/sætte det rigtige data i de andre moduler. Så denne bliver meget kompleks og ikke særlig modulær idet at der skal ændres en hel del når der sker en ændring i modulerne.
+
+\begin{figure}[ht]
+	\begin{center}
+		\includegraphics[scale=0.75]{Billeder/FPGA_MasterController.png}
+	\end{center}
+\caption{Grafisk afbilding af et system, hvor de interne moduler alle er koblet til et master modul. Her modtages data fra MPU'en via en 8-bit protokol der afkoder hvilket modul der skal kommunikeres med}
+\label{fig:FPGA_MasterController}
+\end{figure}
+
+\paragraph*{Databus og addressering}
+Ved at have en intern data- og addresse-bus kan alle modulerne kobles op på den samme databus. For at der ikke opstår data sammenstød fordi to moduler forsøger at skrive til bussen, bliver der også nødt til at være en form for kontrol af hvornår der må skrives til bussen. Denne kontrol udføres ved hjælp af en addresse. Modulerne tilgår kun databusen når det er deres addresse der står på addressebussen samt et read/write signal der styrer, hvornår et modul må skrive til bussen og hvornår det data der står på bussen er klar til at blive læst. For nemmest at implementerer dette indføres der et modul som agerer master og som er den eneste enhed der kan bestemme, hvad der står på addressebussen, samt hvilken tilstand read/write signalet er sat til.
+
+\begin{figure}[ht]
+	\begin{center}
+		\includegraphics[scale=0.75]{Billeder/FPGA_Databus.png}
+	\end{center}
+\caption{Grafisk afbildning af et system, hvor de interne moduler sidder på en fælles databus med styring af denne via en addressebus og et read/write signal. Og addressering sker direkte via de modtagne 16-bit fra SPI}
+\label{fig:FPGA_Databus}
+\end{figure}
 
 \subsection{MotorController}
 
@@ -84,14 +110,6 @@ Når hall sensor 1 er lav, og hall sensor 2 er lav\\
 Hvis hall sensor 2 så bliver høj først, så er det en rotation med uret.\\
 Hvis hall sensor 1 bliver høj først, så er det en rotation mod uret.\\
 
-\subsection{SPI}
-Der skal foregå en kommunikation mellem microcontrolleren og FPGA'en. Til dette formål er der i opgaven specificieret at grænsefladenXXXX SPI skal bruges. GrænsefladenXXXXs overordnede virkemåde er beskrevet nærmere i afsnit \ref{subsec:SPI}. I dette afsnit vil der blive beskrevet fordele og ulemper ved forskellige måder at implementerer denne grænseflade i FPGA'en. Dernæst vil der blive foretaget en dybere gennemgang af den valgte implementation. Og konkluderes på, hvordan denne implementation har fungeret rent praktisk.
-\subsubsection{Implementationer}
-
-\paragraph{XXXX8-bit pakker med kommunikationsprotokol}
-
-\paragraph{XXXX16-bit pakker med 4-bit addressering}
-
 \subsection{Diverse undermoduler}
 
 \subsubsection{NumberToBCD}
@@ -100,4 +118,5 @@ Der skal foregå en kommunikation mellem microcontrolleren og FPGA'en. Til dette
 
 \subsubsection{ToggleXXXXBrugForUnderscoreButton3}
 
-\subsection{Overordnede System XXXX}
+\subsection{Endeligt design}
+Når man kigger på, hvilke behov der er i forhold til kommunikation med FPGA'en så kan det ses at der kun foregår dataudvekslinger mellemm FPGA og MPU dvs. at MPU'en enten henter en værdi ud af FPGA'en eller sætter en værdi i denne. Der er derfor ikke behov for en protokol der kan tage imod deciderede kommandoer og udfører komplekse ting i FPGA'en, men nærmere behov for at der hurtigt kan sættes/hentes en værdi. Hele SPI interfacet skal kun fungerer som en udvidelses af den funktionalitet der allerede ligger i MPU'en dvs. at der skrives til et register for at få en enhed til at gøre noget eller læses fra et register for at få en værdi ud af en enhed.
