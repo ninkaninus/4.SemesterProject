@@ -15,7 +15,9 @@ Udover dette har freeRTOS også mange andre funktioner dette projekt kan udnytte
 \\
 For at kunne gøre det muligt at flere task's skal kunne til gå disse queue's, dette kan gøres ved at bruge noget det hedder en semafor, som gør at kun en task der har adgang til queue'en indtil semaforen bliver frigjort igen. For at ungå at at styre systemet ikke bliver fastlåst i denne semafor for evigt sætte man en tid, den kan være inde i semaforen.
 \\
-For at nogle af disse ting kan bliver aktiveret skal der føre oprettes en xQueueHandle og xSemaphoreHandle. Hvorefter de bliver kreeret hved hjælp af xQueueCreate og xSemaphoreCreateMutex. For at bruge xQueueCreate skal der også bruges størrelse af queue'en og hvilken parameter den skal indeholde.  
+For at nogle af disse ting kan bliver aktiveret skal der føre oprettes en xQueueHandle og xSemaphoreHandle. Hvorefter de bliver kreeret hved hjælp af xQueueCreate og xSemaphoreCreateMutex. For at bruge xQueueCreate skal der også bruges størrelse af queue'en og hvilken parameter den skal indeholde.
+\\
+FreeRTOS tilbyder også et shared state memory(SSM), Dette gør det muligt at CPU'en kan hoppe i mellem de forskellige task. F.eks. at det kommer et nød event på UART, som kunne være "STOP\textunderscore EVENT". Dette event gør at den med det samme går over til den case hvor eventet er, og gør som der står, som i dette tilfælde er at bremse motoren.
 
 \subsubsection{RTCS}
 
@@ -46,7 +48,15 @@ Vores Uart pinde sider på PORT A, derved skal sysctl aktiveres på port a før 
 \\
 For at sende data kalder vi funktion uart0\textunderscore putc som tager en karakter. Dette kan både være tal og bogstaver. Der en funktion der hedder uart0\textunderscore rx\textunderscore rdy som venter på at den modstager noget.
 \\
-Uart er en god måde til at sende information når man f.eks. skal debugge eller vil have nogen bestemte data hen til ens computer.
+For at gøre det nemmer har vi lavet en lille protokol, som skal overholder før du sender noget over UART. I figur \ref{fig:UARTCMD} kan ses en liste over de forskellige commands. Et eks. på en UART kald kunne være \texttt{\char`\\}st1803 , som vil sætte tilt delen i 180,3 grader.
+
+\begin{figure}[ht]
+			\begin{center}
+			\includegraphics[scale=0.5]{Billeder/UARTCMD.png}
+			\end{center}
+			\caption{UART commands}
+			\label{fig:UARTCMD}
+\end{figure}
 
 \subsubsection{LCD}
 
