@@ -48,7 +48,7 @@ Vores Uart pinde sider på PORT A, derved skal sysctl aktiveres på port a før 
 \\
 For at sende data kalder vi funktion uart0\textunderscore putc som tager en karakter. Dette kan både være tal og bogstaver. Der en funktion der hedder uart0\textunderscore rx\textunderscore rdy som venter på at den modstager noget.
 \\
-For at gøre det nemmer har vi lavet en lille protokol, som skal overholder før du sender noget over UART. I figur \ref{fig:UARTCMD} kan ses en liste over de forskellige commands. Et eks. på en UART kald kunne være \texttt{\char`\\}st1803 , som vil sætte tilt delen i 180,3 grader.
+For at gøre det nemmer har vi lavet en lille protokol, som skal overholdes før der sendes noget over UART. I figur \ref{fig:UARTCMD} kan ses en liste over de forskellige commands. Et eks. på en UART kald kunne være \texttt{\char`\\}st1803 , som vil sætte tilt delen i 180,3 grader.
 
 \begin{figure}[ht]
 			\begin{center}
