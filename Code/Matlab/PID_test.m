@@ -3,8 +3,8 @@
 clear
 clc
 
-P = 1;
-I = 0.925;
+P = 6;
+I = 6;
 D = 1;
 
 syms x;
@@ -12,8 +12,8 @@ sol = solve(P*x+I+D*x^2==0,x)
 
 sol = double(sol)
 
-%z1 = -sol(1);
-%z2 = -sol(2);
+z1 = -sol(1);
+z2 = -sol(2);
 
 %%
 

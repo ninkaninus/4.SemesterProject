@@ -15,20 +15,26 @@ På figur \ref{fig:Blok_Model} kan man se de vigtigste elementer i kontrolløkke
 \begin{itemize}
 \item \textbf{H-bro}: Sørger for at regulere forsyningsspændingen på 12V til motoren alt afhængig af den duty cycle som PWM-modulet sender ud. Duty cycle styrer den gennemsnitlige spænding over motorterminalerne. H-broen kan også vende strømmen igennem motoren for at skifte omdrejningsretningen.
 \item \textbf{Motor og Pan/Tilt-system}: Producerer en omdrejningshastighed, som er relateret til spændingen over motorterminalerne ved overføringsfunktionen beskrevet i ligning (\ref{eq:tf_pan_tilt}).
-\item \textbf{Encoder og Positionsmodul}: To hall sensorer i encoderen genererer pulser, der gør det muligt at bestemme omdrejningsretningen for motoren. Positionsmodulet sørger for at holde styr på pulserne, for at afkode hvilken stilling motoren har stillet sig i. Dette er muligt hvis man starter med at have en fast reference man tæller fra.
+\item \textbf{Encoder og Positionsmodul}: To hall sensorer i encoderen genererer pulser, der gør det muligt at bestemme omdrejningsretningen for motoren. Positionsmodulet sørger for at holde styr på pulserne, for at afkode hvilken position motoren har stillet sig i. Dette er muligt hvis man starter med at have en fast reference man tæller fra.
 \item \textbf{Controller}: Sørger for at generere et passende PWM-signal, så motoren kan flytte rammerne over i den ønskede position. Dette skal foregå på en måde, så designmålene for projektet overholdes.
 \end{itemize}
 
 Modelleringen af systemet viste at motoren og pan/tilt-systemet kunne approksimeres nogenlunde som et 1.-ordenssystem.
-Hvis man tager udgangspunkt i grey box-modellen af systemet, kan man lave et closed-loop-system, der ser ud som på figur \ref{fig:BB_Model}. På denne model er H-broen modelleret som et gain på 12. PWM-signalet kan variere fra $-1$ til $1$. Encoderen og positionsmodulet fungerer i praksis lidt som en integrator i den forstand at alle ticks summeres op og giver en relativ position. Der er ikke noget gain igennem feedback-løkken da set point'et til controlleren også opgives i ticks. Det vides på forhånd at et tick svarer til $1/3$ af en grad (XXXX se reference her), så for at holde kontrolsystemet simpelt, foretages den omregning inden set point'et gives til controlleren.
+Hvis man tager udgangspunkt i grey box-modellen af systemet, kan man lave et closed-loop-system, der ser ud som på figur \ref{fig:GB_Model}. På denne model er H-broen modelleret som et gain på 12. PWM-signalet kan variere fra $-1$ til $1$. Encoderen og positionsmodulet fungerer i praksis lidt som en integrator i den forstand at alle ticks summeres op og giver en relativ position. Der er ikke noget gain igennem feedback-løkken da set point'et til controlleren også opgives i ticks. Det vides på forhånd at et tick svarer til $1/3$ af en grad (XXXX se reference her), så for at holde kontrolsystemet simpelt, foretages den omregning inden set point'et gives til controlleren. På den måde skal controlleren kun regne i ticks.
 
 \begin{figure}[ht]
 	\begin{center}
 		\includegraphics[scale=0.5]{Billeder/Control_Loop.PNG}
 	\end{center}
 \caption{Closed-Loop kontrolsystem til grey box-modellen}
-\label{fig:BB_Model}
+\label{fig:GB_Model}
 \end{figure}
+
+Blokdiagrammet på figur \ref{fig:GB_Model} kan koges ned til overføringsfunktionen beskrevet i ligning (\ref{eq:GB_tf}). Her er H-broen forsimplet til et gain på 12, under den antagelse at PWM-signalet varierer fra $-1$ til $1$.
+
+\begin{equation}\label{eq:GB_tf}
+Y(s)=R(s)\frac{12K_{c}K}{s(\tau s+1)+12K_{c}K}-T_{d}(s)\frac{\tau s+1}{s(\tau s+1)+12K_{c}K}
+\end{equation}
 
 \subsection{Designmål}
 
@@ -68,23 +74,23 @@ På figur \ref{fig:SO_system} kan man se hvordan man alene ud fra polernes place
 
 \subsubsection{Steady State Fejl}
 
-For at undersøge om systemet kan drive fejlen i 0, er det nødvendigt at finde et udtryk for $E(s)$, som kan ses på figur \ref{fig:BB_Model}, og ved hjælp af \textit{Final Value Theorem} (ligning \ref{eq:FVT}), finde ud af hvad der er tilbage, når systemet går i steady state. 
+For at undersøge om systemet kan drive fejlen i 0, er det nødvendigt at finde et udtryk for $E(s)$, som kan ses på figur \ref{fig:GB_Model}, og ved hjælp af \textit{Final Value Theorem} (ligning \ref{eq:FVT}), finde ud af hvad der er tilbage, når systemet går i steady state. $E(s)$ kan udledes på samme måde som ligning (\ref{eq:GB_tf}) blev det.
 
 \begin{equation} \label{eq:FVT}
 lim_{t \to \infty} f(t) = lim_{s \to 0} sF(s)
 \end{equation}
 
 \begin{equation} \label{eq:ess}
-E(s)=R(s)\frac{s(\tau s+1)}{s(\tau s+1)+12K_{c}KH}+T_{d}(s)\frac{(\tau s+1)H}{s(\tau s+1)+12K_{c}KH}
+E(s)=R(s)\frac{s(\tau s+1)}{s(\tau s+1)+12K_{c}K}-T_{d}(s)\frac{\tau s+1}{s(\tau s+1)+12K_{c}K}
 \end{equation}
 
-Ved et step-input ($A/s$) bliver fejlen drevet i 0, så længe der ikke er nogen disturbance. 
+Ved et step-input ($R(s)=A/s$) bliver fejlen drevet i 0, så længe der ikke er nogen disturbance ($T_{d}=0$). Til gengæld vil der, lige så snart der er en disturbance til stede, være en steady state fejl. I ligning (\ref{eq:td_ess}) kan man se resultatet af et disturbance step-input ($T_{d}=A/s$). I virkeligheden vil man kunne se ubalance i tilt-systemet, for eksempel, som en step-disturbance. Hvis man monterer ekstra vægt og flytter tyngdepunktet væk fra rotationsaksen, vil tyngdekraften modarbejde systemet i nogle positioner og hjælpe systemet i andre. Denne ubalance tilføjer et nyt moment, der påvirker systemet og kan også godt ses som en ny vinkelhastighed, som det er modelleret i figur \ref{fig:GB_Model}.
 
-\begin{equation}
-e_{ss}=lim_{s \to 0} sE(s)=AH\frac{1}{12K_{c}KH} , T_{d}(s)=\dfrac{A}{s}
+\begin{equation}\label{eq:td_ess}
+e_{ss}=lim_{s \to 0} sE(s)=-\frac{A}{12K_{c}K}
 \end{equation}
 
-Det kan altså konkluderes, at man er nødt til at have mindst en integrator i controlleren ($K_{c}$), for at opfylde kriteriet om en steady state-fejl på 0. 
+Det kan altså konkluderes, at man er nødt til at have mindst en integrator i controlleren ($K_{c}$), for at opfylde kriteriet om en steady state-fejl på 0. Med et ramp-input skal der bruges to integratorer, men det er ikke så interessant for dette projekt, da det kun er forholdsvist langsomme objekter der skal følges. Systemet vil, under normale forhold, kun skulle flytte sig fra et punkt til et andet og falde til ro der. Det vil meget sjældent være nødvendigt for systemet at skulle flytte sig kontinuerligt.
 
 \subsubsection{Overshoot}
 
@@ -106,11 +112,19 @@ For at få 15 $\%$ overshoot eller derunder kan det beregnes at $\zeta$ skal væ
 
 \subsubsection{Settling Time}
 
-Settling time er defineret som den tid det tager systemet at falde til ro inden for 2 procent af den ønskede værdi. Hvis man kigger på formlen for impulsresponsen (ligning (\ref{eq:impulse_response}))  til et 2-ordens-system i tidsdomænet, kan det ses at den dæmpende faktor for systemet er $e^{-\zeta\omega_{n}t}$ - settling time så beskrives ved $e^{-\zeta\omega_{n}T_{s}}<0.02$ og herfra kan man udlede ligning (\ref{eq:settling_time}).
+Settling time er defineret som den tid det tager systemet at falde til ro inden for 2 procent af den ønskede værdi. Hvis man kigger på formlen for impulsresponsen (ligning \ref{eq:impulse_response})  til et 2-ordens-system i tidsdomænet, kan det ses at den dæmpende faktor for systemet er $e^{-\zeta\omega_{n}t}$ - settling time så beskrives ved $e^{-\zeta\omega_{n}T_{s}}<0.02$ og herfra kan man udlede ligning (\ref{eq:settling_time}).
 
 \begin{equation}\label{eq:impulse_response}
 y(t)=\frac{\omega_{n}}{\beta}e^{-\zeta\omega_{n}t}Sin(\omega_{n}\beta t)
 \end{equation}
+
+\begin{figure}[ht]
+	\begin{center}
+		\includegraphics[scale=0.45]{Billeder/Damped_Oscillations.png}
+	\end{center}
+\caption{Her kan man se hvordan en eksponentiel dæmpende faktor vil påvirke svingninger.}
+\label{fig:Damped_Oscillations}
+\end{figure}
 
 \begin{equation}\label{eq:settling_time}
 T_{s}=\frac{4}{\omega_{n}\zeta}
@@ -129,7 +143,7 @@ For at overholde designmålene vedrørende settling time, overshoot og steady st
 \end{itemize}
 
 Grænserne skal ses som et absolut minimumskrav, da systemet ikke er et ideelt 2.ordenssystem. Der skal helst være en god margen.
-
+\pagebreak
 \subsection{I Controller}
 
 En I-controller er et integrator-led med et gain - integratoren svarer til at placere endnu en pol i origo. For at undersøge hvordan denne controller vil opføre sig, kan man bruge root locus metoden for at se, hvordan polerne flytter sig, når controller-gainet øges. 
