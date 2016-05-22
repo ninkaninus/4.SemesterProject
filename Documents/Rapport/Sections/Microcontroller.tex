@@ -3,7 +3,7 @@
 Denne sektion kommer omkring det forskellige moduler, som vores mikroprocesser håndtere. Udover dette konmmer vi også igennem hvilket styresystem vi har valgt og hvorfor.
 
 \subsection{OS}
-Det er vigtigt i enhver kode situation, der inkluderer flere tasks, at kunne skifte mellem dem på en fornuftig måde; Dette gøres med en scheduler. Når der skal implementeres en scheduler skal det overvejes hvorvidt det er nødvendigt at lave en designed specielt til projektet, eller om der en en eksisterende der er i stand til at udfører opgaven tilstrækkeligt. I dette project har vi to muligheder til rådighed: FreeRTOS eller RTCS.
+Det er vigtigt i enhver kode situation, der inkluderer flere tasks, at kunne skifte mellem dem på en fornuftig måde; Dette gøres med en scheduler. Når der skal implementeres en scheduler skal det overvejes hvorvidt det er nødvendigt at lave en designet specielt til projektet, eller om der en en eksisterende der er i stand til at udfører opgaven tilstrækkeligt. I dette project har vi to muligheder til rådighed: FreeRTOS\cite{FreeRTOSorg} eller RTCS.
 
 
 
@@ -22,10 +22,10 @@ FreeRTOS tilbyder også et shared state memory(SSM), Dette gør det muligt at CP
 \subsubsection{RTCS}
 
 Run To Complete Scheduler (RTCS) er en måde at køre ens styresystem på. Den køre som en non preemtiv skedulering, det vil sige at lige så snart CPU'en har forbindelse til en proces/task, så kan den ikke hoppe ud af denne proces/task. I dette system kan der oprettes queue's.
-\\
+//
 Den har mulighed for at oprette semafoere, som gør at det er kun en queue som kan have adgang til queue'en. For at tilføje data til en queue skal funktion put\textunderscore queue. wait\textunderscore sem bruges til at tilføje en semafor til den specifikke queue.
 
-\subsubsection{Delkonklusion}
+\subsubsection{Del konklusion}
 
 Efter vi har set på disse to valg muligheder kan vi se at RTCS vil være næmmere at få til at virker, men at det heller ikke er lige så sikkert, som freeRTOS. Den største begrundelse for at vi vælger at arbjede med freeRTOS over RTCS er at den køre preemtiv. Dette gøre det muligt vis der kommer et vigtigt interrupt at den kan tage CPU'en fra den proces den er i gang med og flytte den over det den mere vigtige proces.
 
