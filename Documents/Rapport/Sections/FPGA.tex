@@ -114,7 +114,24 @@ Hvis hall sensor 1 bliver høj først, så er det en rotation mod uret.\\
 
 \subsubsection{NumberToBCD}
 
+Lad os først definerer BCD. BCD, eller Binary Coded Decimal, er et format hvor hver decimal ciffer er beskrevet ved et 4 ciffer binært tal. 1234 vil således være 0001 0010 0011 0100.
+\\
+Det er meget brugbart at benytte nettop denne notation til at give decimal tal videre mellem moduler. Dette bliver brugt til MultiplexDisplayet, som nettop skal displaye decimal tal, og derfor har brug for at tallene bliver lavet om fra de binære tal der arbejdes med til noget der kan repræsenterer hvert display enkeltvis.
+\\
+Måden dette gøres på er ved brug af en algorithme. Denne fungerer således:
+
+\begin{enumerate}
+\item Hvis et tal i en kolonne er større end 4 lægges der 3 til.
+\item Logical shift left
+\item Hvis der er foretaget $3 \cdot n - 1$ skift, hvor n er antal kollonner, så afsluttes der
+\item Gå til 1.
+\end{enumerate}
+
 \subsubsection{MultiplexDisplay}
+
+MultiplexDisplayet har to primære funktioner. Den ene, og ironisk nok den vigtigeste, er ikke display funktionalitet, men i stedet clock scaling. Denne fungerer ved at tage det indbyggede clock signal med en frekvens på $50 MHz$ og skalere det ned til $1 kHz$. Dette sendes ud som et signal til alle de andre moduler, så det er sikret at hele FPGA'en er synkroniseret, så meget som det nu er muligt.
+\\
+Den anden funktionalitet er så at tage et input i from af BCD kode og lave det om til de tilsvarende display karakterer. Da displayet fungerer ved at man outputter en enkelt karaktere ad gangen skiftes der mellem de fire displays, og dermed også de fire dele som inputtet er indelt i.
 
 \subsubsection{ToggleButton}
 
