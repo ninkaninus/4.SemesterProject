@@ -191,16 +191,13 @@ Selve udregningen af outputtet sker ved, at controlleren med jævne mellemrum ki
 
 Når de tre termer er fundet, summeres de for at finde det endelige output fra udregningen. Dette output er i sig selv ikke brugbart til at finde en duty cycle som motoren skal reguleres med. Man er nødt til at definere et interval som outputtet kan operere indenfor. På den måde kan man, ved at finde ud af hvor outputtet befinder sig i intervallet, mappe denne position til en duty cycle mellem 0 og 255. På figur \ref{fig:Mapping} kan man se en visualisering af denne mapping. Hvis outputtet er negativt betyder det at retningen skal ændres på motoren, men det ændrer ikke noget på hvilken duty cycle, der skal sendes i sidste ende.
 
-%\begin{wrapfigure}[15]{r}{0.4\textwidth}
-%\vspace{-10pt}	
-%	\begin{center}
-%	\includegraphics[scale=0.8]{Billeder/Mapping.png}
-%	\end{center}	
-%	\vspace{-20pt}		
-%	\caption{Her ses hvordan PID-outputtet mappes til en tilsvarende duty cycle}
-%	\label{fig:Mapping}
-%	\vspace{-20pt}	
-%\end{wrapfigure}
+\begin{wrapfigure}{R}{0.5\textwidth}
+	\begin{center}
+	\includegraphics[scale=0.8]{Billeder/Mapping.png}
+	\end{center}		
+	\caption{Her ses hvordan PID-outputtet mappes til en tilsvarende duty cycle}
+	\label{fig:Mapping}	
+\end{wrapfigure}
 \paragraph{Duty Cycle}
 
 Det har en ret stor betydning hvilke duty cycles man kan sætte som output. Med duty cycles under 15 $\%$ kan man, for eksempel næsten ikke slæbe systemet rundt, og når man over 75 $\%$ kan systemet justere så voldsomt at selve platformen, rammerne er monteret på, begynder at flytte sig rundt på bordet. Af den grund blev der sat et interval mellem 15 $\%$ og 60 $\%$ som controlleren kunne justere indenfor. For at forhindre systemet i at oscillere omkring set point'et med en duty cycle på 15 $\%$ låses motoren, når fejlen er 0.
