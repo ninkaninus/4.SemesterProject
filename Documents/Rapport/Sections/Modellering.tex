@@ -8,9 +8,18 @@ Motoren består af en rotor med flere XXXX poler, og en stator med en permanent 
 T_{m}=K_{m}i_{a}(t)
 \end{equation}
 
-Den elektroniske del af motoren kan modelleres simpelt som en modstand $R_{a}$, som beskriver den samlede modstand i vindingerne, i serie med en spole $L_{a}$, som beskriver motorens induktans. Problemet med denne model er at den ikke tager højde for den modsatrettede spænding, der genereres i motorvindingerne, når rotoren er i bevægelse. Denne spænding er lineært afhængig af rotorens omdrejningshastighed og kan modelleres som en spændingskilde i serie med modstanden og spolen se figur \ref{fig:motor_sch}. $V_{b}=K_{e}\omega(t)$, hvor $V_{b}$ er den modsatrettede spænding, $K_{e}$ er motorens elektriske konstant og $w(t)$ er omdrejningshastigheden i rad/s.
+Den elektroniske del af motoren kan modelleres simpelt som en modstand $R_{a}$, som beskriver den samlede modstand i vindingerne, i serie med en spole $L_{a}$, som beskriver motorens induktans. Problemet med denne model er at den ikke tager højde for den modsatrettede spænding, der genereres i motorvindingerne, når rotoren er i bevægelse. Denne spænding er lineært afhængig af rotorens omdrejningshastighed og kan modelleres som en spændingskilde i serie med modstanden og spolen se figur \ref{fig:motor_sch}. $V_{b}=K_{e}\omega(t)$, hvor $V_{b}$ er den modsatrettede spænding, $K_{e}$ er motorens elektriske konstant og $w(t)$ er omdrejningshastigheden i rad/s.\\
 
 
+
+\begin{wrapfigure}[15]{TR}{0.5\textwidth}
+	\begin{center}
+		\includegraphics[scale=0.8]{Billeder/Motormodel.png}
+	\end{center}
+	\caption{Her ses diagrammet af den omtalte motormodel}
+	\label{fig:motor_sch}
+\end{wrapfigure}
+\lipsum[15]
 
 Ved hjælp af Kirchoff's lov om spænding kan man nu udlede en differentialligning der relaterer alle elementerne efter spændingen over dem.
 
@@ -23,16 +32,6 @@ Den mekaniske del af motoren kan beskrives som det moment der genereres og drive
 \begin{equation}\label{eq:nettomoment}
 T_{netto}=T_{m}-T_{f}
 \end{equation}
-
-\begin{wrapfigure}{R}{0.4\textwidth}
-\vspace{-20pt}
-	\centering 
-	\includegraphics[width=0.4\textwidth]{Billeder/Motormodel.png}
-	\vspace{-10pt}
-	\caption{Her ses diagrammet af den omtalte motormodel}
-	\label{fig:motor_sch}
-\vspace{-20pt}
-\end{wrapfigure}
 
 Ligning \ref{eq:motormoment} kunne fortælle noget om momentet fra motoren, men det er også nødvendigt at have en dæmpende effekt i form a friktion med i modellen, for at den kan svare nogenlunde til virkeligheden. Heldigvis hænger det sådan sammen at det modsatrettede moment fra friktionen kan approksimeres ret præcist til at være lineært afhængigt af akslens omdrejningshastighed - denne linearitet kan beskrives ved $T_{f}=b\omega(t)$, hvor $b$ er en friktionskonstant. Hvis man kombinerer alle tre ligninger ved at substituere dem ind i ligning \ref{eq:nettomoment}, hvor et friktionsmoment trækkes fra motormomentet, er det muligt at danne endnu en differentialligning, der afhænger af rotoren's omdrejningshastighed.
 
