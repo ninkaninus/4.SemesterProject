@@ -240,9 +240,7 @@ Et problem med PID-controlleren er integral windup. Integral windup er, når are
 
 \subsubsection{PID Task}
 
-PID task'en har to tilstande: idle og running. I idle-tilstanden ventes der på et \texttt{PID\_START\_EVENT}, der skifter tilstanden til running. I running-tilstanden køres funktionen \texttt{PID\_update()} med faste intervaller. Denne funktion sørger for at hente set point og den fysiske position af rammerne for både pan- og tilt-systemet. Det kræver kommunikation med SPI-task'en der fungerer som bindeledet til selve systemet. Kommunikationen er styret fuldstændig af PID-task'en, der bare benytter de services som SPI-task'en tilbyder. Når \texttt{PID\_update()} bliver kaldt, beregnes outputtet for pan-systemet og derefter for tilt-systemet. Når det er sket sendes et \texttt{SET\_PWM\_EVENT} til SPI-task'en som sender informationen videre til FPGA'en. Efter eventet er sendt sover PID-tasken i 5 ms, hvorefter den sender et \texttt{GET\_POS\_EVENT} til SPI-task'en, som henter den nuværende position af både pan- og tilt-systemet fra FPGA'en og gemmer den i shared state memory. Når den er færdig med det sendes et \texttt{PID\_UPDATE\_EVENT} tilbage til PID-task'en som starter cycklusen forfra. Hele processen kan ses på figur \ref{fig:PID_update}.
-
-\begin{wrapfigure}{L}{0.5\textwidth}
+\begin{wrapfigure}{r}{0.5\textwidth}
 \vspace{-20pt}
 	\begin{center}
 	\includegraphics[scale=0.5]{Billeder/PID_update.png}
@@ -250,8 +248,12 @@ PID task'en har to tilstande: idle og running. I idle-tilstanden ventes der på 
 	\vspace{-10pt}
 	\caption{Her ses en visualisering af den cyklus som PID-task'en styrer, når den er i running-tilstanden}
 	\label{fig:PID_update}
-	\vspace{-20pt}
+	\vspace{-10pt}
 \end{wrapfigure}
+
+PID task'en har to tilstande: idle og running. I idle-tilstanden ventes der på et \texttt{PID\_START\_EVENT}, der skifter tilstanden til running. I running-tilstanden køres funktionen \texttt{PID\_update()} med faste intervaller. Denne funktion sørger for at hente set point og den fysiske position af rammerne for både pan- og tilt-systemet. Det kræver kommunikation med SPI-task'en der fungerer som bindeledet til selve systemet. Kommunikationen er styret fuldstændig af PID-task'en, der bare benytter de services som SPI-task'en tilbyder. Når \texttt{PID\_update()} bliver kaldt, beregnes outputtet for pan-systemet og derefter for tilt-systemet. Når det er sket sendes et \texttt{SET\_PWM\_EVENT} til SPI-task'en som sender informationen videre til FPGA'en. Efter eventet er sendt sover PID-tasken i 5 ms, hvorefter den sender et \texttt{GET\_POS\_EVENT} til SPI-task'en, som henter den nuværende position af både pan- og tilt-systemet fra FPGA'en og gemmer den i shared state memory. Når den er færdig med det sendes et \texttt{PID\_UPDATE\_EVENT} tilbage til PID-task'en som starter cycklusen forfra. Hele processen kan ses på figur \ref{fig:PID_update}.
+
+
 
 \paragraph{Filter}
 En alternativ måde at gribe implementeringen an på, er at lave controlleren som et filter. Det kan lade sig gøre ved at mappe overføringsfunktionen over i z-domænet og den vej igennem finde filterkoefficienterne. Denne metodik tillader implementeringen af andre controller-typer som fx lead- og lag-controllere, da lettere man kan implementerer flere slags overføringsfunktioner.

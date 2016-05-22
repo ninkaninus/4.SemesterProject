@@ -30,7 +30,7 @@ Hvis man tager udgangspunkt i grey box-modellen af systemet, kan man lave et clo
 \label{fig:GB_Model}
 \end{figure}
 
-Blokdiagrammet på figur \ref{fig:GB_Model} kan koges ned til overføringsfunktionen beskrevet i ligning (\ref{eq:GB_tf}). Her er H-broen forsimplet til et gain på 12, under den antagelse at PWM-signalet varierer fra $-1$ til $1$.
+Blokdiagrammet på figur \ref{fig:GB_Model} kan koges ned til overføringsfunktionen beskrevet i (\ref{eq:GB_tf}). Her er H-broen forsimplet til et gain på 12, under den antagelse at PWM-signalet varierer fra $-1$ til $1$.
 
 \begin{equation}\label{eq:GB_tf}
 Y(s)=R(s)\frac{12K_{c}K}{s(\tau s+1)+12K_{c}K}-T_{d}(s)\frac{\tau s+1}{s(\tau s+1)+12K_{c}K}
@@ -48,7 +48,7 @@ Y(s)=R(s)\frac{12K_{c}K}{s(\tau s+1)+12K_{c}K}-T_{d}(s)\frac{\tau s+1}{s(\tau s+
 
 \subsection{2.-ordenssystem}
 
-Når man designer en controller, kan det være praktisk at approksimere hele systemet som et ideelt 2-ordens-system (se ligning \ref{eq:SO_system}). Disse systemer er meget veldefinerede og forholdsvis lette at beregne på. Parametre som overshoot, settling time, rise time m.m. kan beregnes analytisk og kan give et godt udgangspunkt til ens valg af controller. $\omega_{n}$ er systemets naturlige frekvens og $\zeta$ er systemets damping ratio - jo større en damping ratio, jo bedre en dæmpning af systemets respons har man.
+Når man designer en controller, kan det være praktisk at approksimere hele systemet som et ideelt 2-ordens-system (\ref{eq:SO_system}). Disse systemer er meget veldefinerede og forholdsvis lette at beregne på. Parametre som overshoot, settling time, rise time m.m. kan beregnes analytisk og kan give et godt udgangspunkt til ens valg af controller. $\omega_{n}$ er systemets naturlige frekvens og $\zeta$ er systemets damping ratio - jo større en damping ratio, jo bedre en dæmpning af systemets respons har man.
 
 \begin{equation}\label{eq:SO_system}
 Y(s)=\frac{\omega_{n}^2}{s^2+2\zeta\omega_{n}s+\omega_{n}^2}
@@ -71,7 +71,7 @@ På figur \ref{fig:SO_system} kan man se hvordan man alene ud fra polernes place
 
 \subsubsection{Steady State Fejl}
 
-For at undersøge om systemet kan drive fejlen i 0, er det nødvendigt at finde et udtryk for $E(s)$, som kan ses på figur \ref{fig:GB_Model}, og ved hjælp af \textit{Final Value Theorem} (ligning \ref{eq:FVT}), finde ud af hvad der er tilbage, når systemet går i steady state. $E(s)$ kan udledes på samme måde som ligning (\ref{eq:GB_tf}) blev det.
+For at undersøge om systemet kan drive fejlen i 0, er det nødvendigt at finde et udtryk for $E(s)$, som kan ses på figur \ref{fig:GB_Model}, og ved hjælp af \textit{Final Value Theorem} (\ref{eq:FVT}), finde ud af hvad der er tilbage, når systemet går i steady state. $E(s)$ kan udledes på samme måde som (\ref{eq:GB_tf}) blev det.
 
 \begin{equation} \label{eq:FVT}
 lim_{t \to \infty} f(t) = lim_{s \to 0} sF(s)
@@ -91,7 +91,7 @@ Det kan altså konkluderes, at man er nødt til at have mindst en integrator i c
 
 \subsubsection{Overshoot}
 
-Percent Overshoot (P.O.) er defineret som den procentdel systemets største respons afviger fra den ønskede værdi - det er et udtryk for, hvor meget systemet skyder forbi målet når det påvirkes af et step input. Ved hjælp af lidt algebra, differentiering og et par laplace-transformeringer, kan man udlede ligning (\ref{eq:P.O.}) fra ligning (\ref{eq:SO_system}) (se Modern Control Systems\cite{ModernControlSystem}), og på den måde finde ud af, hvor meget overshoot systemet har udelukkende ud fra damping ratio. En anden måde at se på problemet, er at man, ved at finde zeta til et bestemt overshoot, også kan finde den vinkel til de komplekse polers placering, hvor man får netop den mængde overshoot - store vinkler giver stort overshoot og omvendt (se figur \ref{fig:SO_system}). Man kan altså ud fra denne udregning definere et klart område, hvor alle polplaceringer vil opfylde ens krav til overshoot. 
+Percent Overshoot (P.O.) er defineret som den procentdel systemets største respons afviger fra den ønskede værdi - det er et udtryk for, hvor meget systemet skyder forbi målet når det påvirkes af et step input. Ved hjælp af lidt algebra, differentiering og et par laplace-transformeringer, kan man udlede ligning (\ref{eq:P.O.}) fra (\ref{eq:SO_system}) (se Modern Control Systems\cite{ModernControlSystem}), og på den måde finde ud af, hvor meget overshoot systemet har udelukkende ud fra damping ratio. En anden måde at se på problemet, er at man, ved at finde zeta til et bestemt overshoot, også kan finde den vinkel til de komplekse polers placering, hvor man får netop den mængde overshoot - store vinkler giver stort overshoot og omvendt (se figur \ref{fig:SO_system}). Man kan altså ud fra denne udregning definere et klart område, hvor alle polplaceringer vil opfylde ens krav til overshoot. 
 
 \begin{equation}\label{eq:P.O.}
 P.O.=100*e^{-\dfrac{\zeta\pi}{\sqrt{1-\zeta^2}}}
@@ -127,7 +127,7 @@ y(t)=\frac{\omega_{n}}{\beta}e^{-\zeta\omega_{n}t}Sin(\omega_{n}\beta t)
 T_{s}=\frac{4}{\omega_{n}\zeta}
 \end{equation}
 
-For at få en settling time på under $5s$ kan det ud fra ligning (\ref{eq:settling_time}) bestemmes at $\omega_{n}\zeta > 0.8$. Det vil med andre ord sige at polerne skal befinde sig til venstre for -0.8 - her refereres der igen til figur \ref{fig:SO_system}. Ligesom det var tilfældet for overshoot-kriterierne, er det også her en god ide at vælge sine poler med en god margen til grænseværdien.
+For at få en settling time på under $5s$ kan det ud fra (\ref{eq:settling_time}) bestemmes at $\omega_{n}\zeta > 0.8$. Det vil med andre ord sige at polerne skal befinde sig til venstre for -0.8 - her refereres der igen til figur \ref{fig:SO_system}. Ligesom det var tilfældet for overshoot-kriterierne, er det også her en god ide at vælge sine poler med en god margen til grænseværdien.
 
 \subsubsection{Delkonklusion}
 
@@ -143,7 +143,7 @@ Grænserne skal ses som et absolut minimumskrav, da systemet ikke er et ideelt 2
 
 \subsection{Controller-typer}
 
-I denne sektion vil det blive undersøgt, hvilke forskellige controller-typer (I, PI og PID), der bedst kan opfylde projektets krav. Der vil blive set bort fra P- og PD-controllere, da der ønskes en steady state fejl på 0.
+I denne sektion vil det blive undersøgt, hvilke forskellige controller-typer (I, PI og PID), der bedst kan opfylde projektets krav. Der vil blive set bort fra P- og PD-controllere, da der ønskes en steady state fejl på 0. 
 
 \subsubsection{I Controller}
 
@@ -163,11 +163,33 @@ For at plotte root locus i matlab skal man bare bruge open loop overføringsfunk
 \label{fig:I_rlocus}
 \end{figure}
 
+\subsubsection{ID Controller}
+
+ID-controlleren tilføjer to nuller til systemet (\ref{eq:ID_OpenLoop}). Hvis man solver for de to nuller vil man se at de altid ligger på $j\omega$-aksen (\ref{eq:quad}).
+
+\begin{equation}\label{eq:ID_OpenLoop}
+Y(s)=\frac{K_{D}s^2+K_{I}}{s}\cdot\frac{12K}{s(s\tau+1)}
+\end{equation}
+
+\begin{equation}\label{eq:quad}
+\dfrac{0-\sqrt{0-4K_{D}K_{I}}}{2K_{D}}
+\end{equation}
+
+\begin{wrapfigure}[12]{TR}{0.5\textwidth}	
+	\begin{center}
+		\includegraphics[scale=0.35]{Billeder/ID_rlocus.PNG}
+	\end{center}
+\caption{Her ses root locus plottet for vores system med en ID-controller.}
+\label{fig:ID_rlocus}
+\end{wrapfigure}
+
+Denne controller kan heller ikke bruges, da ingen af de to branches fra polerne i origo nogensinde kommer over på den venstre side af den imaginære akse (se figur \ref{fig:ID_rlocus}).
+
 \subsubsection{PI Controller}
 
 En PI controller har også en proportionel del, der summeres med integratoren. Det resulterer i praksis i at der, udover polen i origo fra integratoren, også tilføjes et nul på ventstre side af den imaginære akse. Nullets placering bestemmes af forholdet imellem $K_{I}$ og $K_{P}$.
 
-\begin{equation}\label{PI_OpenLoop}
+\begin{equation}\label{eq:PI_OpenLoop}
 Y(s)=\frac{K_{P}s+K_{I}}{s}\cdot\frac{12K}{s(s\tau+1)}
 \end{equation}
 
@@ -187,7 +209,7 @@ G=-\frac{s^2(\tau s+1)}{(s+I/P)K}
 
 \subsubsection{PID Controller}
 
-\begin{equation}\label{PID_OpenLoop}
+\begin{equation}\label{eq:PID_OpenLoop}
 Y(s)=\frac{K_{P}s+K_{I}+K_{D}s^2}{s}\cdot\frac{12K}{s(s\tau+1)}
 \end{equation}
 

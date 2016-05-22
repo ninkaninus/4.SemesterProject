@@ -56,5 +56,15 @@ G(s)=\dfrac{\omega(s)}{V_{a}(s)}=\dfrac{K_{m}}{R_{a}(Js+b)+K_{m}K_{e}}
 Man har nu er par muligheder for at realisere sit system: Man kan lave en \textit{White Box Model}, hvor man, gennem forsøg, finder frem til alle konstanterne i motoren og derigennem bestemmer en passende controller. Man kan også lave en \textit{Grey Box Model}, hvor man måler step responsen for motorens omdrejningshastighed i forhold til spændingen over motorterminalerne. Ud fra denne respons kan man så aflæse en tidskonstant og et dc-gain, og det er alt der behøves for at kunne beskrive et 1.-ordens system. 
 
 \begin{equation}\label{eq:tf_pan_tilt}
-G(s)=\dfrac{\omega(s)}{V_{a}(s)}=\dfrac{K}{\tau*s+1}
+G(s)=\dfrac{\omega(s)}{V_{a}(s)}=\dfrac{K}{\tau s+1}
 \end{equation}
+
+På figur \ref{fig:time_constant} kan responsen for et 1.-ordenssystem. Alene ud fra denne graf kan man finde frem til DC-gain'et $K$ og tidskonstanten $\tau$.
+
+\begin{figure}[H]
+			\begin{center}
+			\includegraphics[width=0.9\textwidth]{Billeder/Time_Constant.PNG}
+			\end{center}
+			\caption{Her ses responsen for et 1.-ordenssystem, der gør det muligt at aflæse konstanterne $K$ og $\tau$.}
+			\label{fig:time_constant}
+\end{figure}
