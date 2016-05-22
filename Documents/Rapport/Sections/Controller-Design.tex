@@ -143,7 +143,7 @@ Grænserne skal ses som et absolut minimumskrav, da systemet ikke er et ideelt 2
 
 \subsection{Controller-typer}
 
-I denne sektion vil det blive undersøgt, hvilke forskellige controller-typer (I, PI og PID), der bedst kan opfylde projektets krav. Der vil blive set bort fra P- og PD-controllere, da der ønskes en steady state fejl på 0. 
+I denne sektion vil det blive undersøgt, hvilke forskellige controller-typer (I, ID, PI og PID), der bedst kan opfylde projektets krav. Der vil blive set bort fra P- og PD-controllere, da der ønskes en steady state fejl på 0. 
 
 \subsubsection{I Controller}
 
@@ -177,7 +177,7 @@ Y(s)=\frac{K_{D}s^2+K_{I}}{s}\cdot\frac{12K}{s(s\tau+1)}
 
 \begin{wrapfigure}[12]{TR}{0.5\textwidth}	
 	\begin{center}
-		\includegraphics[scale=0.35]{Billeder/ID_rlocus.PNG}
+		\includegraphics[width=0.5\textwidth]{Billeder/ID_rlocus.PNG}
 	\end{center}
 \caption{Her ses root locus plottet for vores system med en ID-controller.}
 \label{fig:ID_rlocus}
@@ -233,4 +233,4 @@ I de root locus-plots der har være vist indtil videre, har der været brugt en 
 
 \subsection{Delkonklusion}
 
-Det endelige valg af controller falder på PID, da det er den mest fleksible controller i den forstand, at man kan manipulere step responsen meget mere i den retning der ønskes. PI-controlleren kan også opfylde projektets designmål, men det er et meget snævert område polerne skal placeres i for det kan lade sig gøre. Med tanke på at controllerens implementering ikke er ideel og at de faktiske system ikke er et 2.-ordenssystem, så giver det ikke mening at vælge PI-controlleren, når man kan designe en PID-controller, der kan placere closed-loop polerne mere solidt i det sikre område. I-controlleren er ikke en mulighed, da den gør systemet ustabilt.
+Det endelige valg af controller falder på PID, da det er den mest fleksible controller i den forstand, at man kan manipulere step responsen meget mere i den retning der ønskes. PI-controlleren kan også opfylde projektets designmål, men det er et meget snævert område polerne skal placeres i for det kan lade sig gøre. Med tanke på at controllerens implementering ikke er ideel og at de faktiske system ikke er et 2.-ordenssystem, så giver det ikke mening at vælge PI-controlleren, når man kan designe en PID-controller, der kan placere closed-loop polerne mere solidt i det sikre område. I- og ID-controlleren er ikke en mulighed, da den gør systemet ustabilt.
