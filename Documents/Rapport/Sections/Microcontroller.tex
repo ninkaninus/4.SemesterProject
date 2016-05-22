@@ -3,7 +3,8 @@
 Denne sektion kommer omkring det forskellige moduler, som vores mikroprocesser håndtere. Udover dette konmmer vi også igennem hvilket styresystem vi har valgt og hvorfor.
 
 \subsection{OS}
-Det er vigtigt i enhver kode situation, der inkluderer flere tasks, at kunne skifte mellem dem på en fornuftig måde; Dette gøres med en scheduler. Når der skal implementeres en scheduler skal det overvejes hvorvidt det er nødvendigt at lave en designet specielt til projektet, eller om der en en eksisterende der er i stand til at udfører opgaven tilstrækkeligt. I dette project har vi to muligheder til rådighed: FreeRTOS\cite{FreeRTOSorg} eller RTCS.
+Det er vigtigt i enhver kode situation, der inkluderer flere tasks, at kunne skifte mellem dem på en fornuftig måde; Dette gøres med en scheduler. Når der skal implementeres en scheduler skal det overvejes hvorvidt det er nødvendigt at lave en designed specielt til projektet, eller om der en en eksisterende der er i stand til at udfører opgaven tilstrækkeligt. I dette project har vi to muligheder til rådighed: FreeRTOS eller RTCS.
+
 
 
 \subsubsection{FreeRTOS}
@@ -14,7 +15,7 @@ Udover dette har freeRTOS også mange andre funktioner dette projekt kan udnytte
 \\
 For at kunne gøre det muligt at flere task's skal kunne til gå disse queue's, dette kan gøres ved at bruge noget det hedder en semafor, som gør at kun en task der har adgang til queue'en indtil semaforen bliver frigjort igen. For at ungå at at styre systemet ikke bliver fastlåst i denne semafor for evigt sætte man en tid, den kan være inde i semaforen.
 \\
-For at nogle af disse ting kan bliver aktiveret skal der først oprettes en xQueueHandle og xSemaphoreHandle. Hvorefter de bliver kreeret hved hjælp af xQueueCreate og xSemaphoreCreateMutex. For at bruge xQueueCreate skal der også bruges størrelse af queue'en og hvilken parameter den skal indeholde.
+For at nogle af disse ting kan bliver aktiveret skal der føre oprettes en xQueueHandle og xSemaphoreHandle. Hvorefter de bliver kreeret hved hjælp af xQueueCreate og xSemaphoreCreateMutex. For at bruge xQueueCreate skal der også bruges størrelse af queue'en og hvilken parameter den skal indeholde.
 \\
 FreeRTOS tilbyder også et shared state memory(SSM), Dette gør det muligt at CPU'en kan hoppe i mellem de forskellige task. F.eks. at det kommer et nød event på UART, som kunne være "STOP\textunderscore EVENT". Dette event gør at den med det samme går over til den case hvor eventet er, og gør som der står, som i dette tilfælde er at bremse motoren.
 
@@ -24,9 +25,9 @@ Run To Complete Scheduler (RTCS) er en måde at køre ens styresystem på. Den k
 \\
 Den har mulighed for at oprette semafoere, som gør at det er kun en queue som kan have adgang til queue'en. For at tilføje data til en queue skal funktion put\textunderscore queue. wait\textunderscore sem bruges til at tilføje en semafor til den specifikke queue.
 
-\subsubsection{Del konklusion}
+\subsubsection{Delkonklusion}
 
-Efter vi har set på disse to valg muligheder kan vi se at RTCS vil være næmmere at få til at virker, men at det heller ikke er lige så sikkert, som freeRTOS. Den største begrundelse for at vi vælger at arbjede med freeRTOS over RTCS er at den køre preemtiv. Dette gøre det muligt vis der kommer et vigtigt interrupt at den kan tage CPU'en fra den proces den er i gang med og flytte den over til den mere vigtige proces.
+Efter vi har set på disse to valg muligheder kan vi se at RTCS vil være næmmere at få til at virker, men at det heller ikke er lige så sikkert, som freeRTOS. Den største begrundelse for at vi vælger at arbjede med freeRTOS over RTCS er at den køre preemtiv. Dette gøre det muligt vis der kommer et vigtigt interrupt at den kan tage CPU'en fra den proces den er i gang med og flytte den over det den mere vigtige proces.
 
 \subsection{Tasks}
 
@@ -103,28 +104,12 @@ Den har to porte til knyttet som er PORT A og PORT E. Det betyder at vi kan læs
 \label{fig:Keypad}
 \end{figure}
 
+
 På figur \ref{fig:Keypad} kan vi se at vi har givet de forskellige knapper unikke værdier. Dette gøres fordi vi har et array som indeholder alle værdier på keypad’et, som vi så sender ind i bufferen og læse på. For at finde en karakter kigger vi først på alle X værdier (PORT A) igennem og ser om en Y værdi (PORT E) er aktiv og ud fra hvilken X og Y værdi kan vi finde hvilket plads i arrayet ud fra figur \ref{fig:Keypad}
 \\
 Dette keypad kan blive brugt til at sende data eller manuelt indsætte nogle værdier i mens programmet kører.
 
 
-
-\subsubsection{DrehImpulsGeber}
-
-Ved at skrue på drehimpulsgeber kan man inkrementere eller dekrementere en variabel eller sende et event.
-Drehimpulsgeberen er en roterende knap som også kan trykkes ned.\\
-Drehimpulsgeberen kan sende 30 pulser per rotation.
-
-\begin{figure}[ht]
-			\begin{center}
-			\includegraphics[scale=0.40]{Billeder/DrehImpulsGeber_events.jpg}
-			\end{center}
-			\label{fig:Impulsgeber_events}
-			\caption{Drehimpulsgeber states}
-		\end{figure}
-
-for at finde ud af hvilken retning der bliver skruet på impulsgeberen, kigges der på de tidligere states af switchen.
-eksempelvist hvis der kigges på figur \ref{Impulsgeber_events} ses det at hvis ben B er højt, og A samtiddig er høj, OG B så falder først og A stadig er høj, så er rotationen en rotation mod uret.
 
 
 \subsection{Serial Peripheral Interface}
@@ -211,14 +196,11 @@ Selve udregningen af outputtet sker ved, at controlleren med jævne mellemrum ki
 Når de tre termer er fundet, summeres de for at finde det endelige output fra udregningen. Dette output er i sig selv ikke brugbart til at finde en duty cycle som motoren skal reguleres med. Man er nødt til at definere et interval som outputtet kan operere indenfor. På den måde kan man, ved at finde ud af hvor outputtet befinder sig i intervallet, mappe denne position til en duty cycle mellem 0 og 255. På figur \ref{fig:Mapping} kan man se en visualisering af denne mapping. Hvis outputtet er negativt betyder det at retningen skal ændres på motoren, men det ændrer ikke noget på hvilken duty cycle, der skal sendes i sidste ende.
 
 \begin{wrapfigure}{R}{0.5\textwidth}
-\vspace{-20pt}
 	\begin{center}
-	\includegraphics[width=0.5\textwidth]{Billeder/Mapping.png}
+	\includegraphics[scale=0.8]{Billeder/Mapping.png}
 	\end{center}		
-	\vspace{-10pt}
 	\caption{Her ses hvordan PID-outputtet mappes til en tilsvarende duty cycle}
 	\label{fig:Mapping}	
-\vspace{-10pt}
 \end{wrapfigure}
 \paragraph{Duty Cycle}
 
@@ -240,17 +222,13 @@ Et problem med PID-controlleren er integral windup. Integral windup er, når are
 
 PID task'en har to tilstande: idle og running. I idle-tilstanden ventes der på et \texttt{PID\_START\_EVENT}, der skifter tilstanden til running. I running-tilstanden køres funktionen \texttt{PID\_update()} med faste intervaller. Denne funktion sørger for at hente set point og den fysiske position af rammerne for både pan- og tilt-systemet. Det kræver kommunikation med SPI-task'en der fungerer som bindeledet til selve systemet. Kommunikationen er styret fuldstændig af PID-task'en, der bare benytter de services som SPI-task'en tilbyder. Når \texttt{PID\_update()} bliver kaldt, beregnes outputtet for pan-systemet og derefter for tilt-systemet. Når det er sket sendes et \texttt{SET\_PWM\_EVENT} til SPI-task'en som sender informationen videre til FPGA'en. Efter eventet er sendt sover PID-tasken i 5 ms, hvorefter den sender et \texttt{GET\_POS\_EVENT} til SPI-task'en, som henter den nuværende position af både pan- og tilt-systemet fra FPGA'en og gemmer den i shared state memory. Når den er færdig med det sendes et \texttt{PID\_UPDATE\_EVENT} tilbage til PID-task'en som starter cycklusen forfra. Hele processen kan ses på figur \ref{fig:PID_update}.
 
-\begin{wrapfigure}{L}{0.5\textwidth}
-%\begin{figure}[ht]
-\vspace{-20pt}
+\begin{figure}[ht]
 	\begin{center}
 	\includegraphics[scale=0.5]{Billeder/PID_update.png}
 	\end{center}		
-	\vspace{-10pt}
 	\caption{Her ses en visualisering af den cyklus som PID-task'en styrer, når den er i running-tilstanden}
 	\label{fig:PID_update}
-	\vspace{-10pt}
-\end{wrapfigure}
+\end{figure}
 
 \paragraph{Filter}
 En alternativ måde at gribe implementeringen an på, er at lave controlleren som et filter. Det kan lade sig gøre ved at mappe overføringsfunktionen over i z-domænet og den vej igennem finde filterkoefficienterne. Denne metodik tillader implementeringen af andre controller-typer som fx lead- og lag-controllere, da lettere man kan implementerer flere slags overføringsfunktioner.
