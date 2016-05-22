@@ -187,12 +187,6 @@ INT32S pid_calc(INT32U desired, INT32U actual, PID *controller)
 
 	output = P_term + I_term + D_term;
 
-	if(I_term > 80000)
-	{
-		output += 1;
-		output -= 1;
-	}
-
 	if(output > O_MAX)
 		output = O_MAX;
 	if(output < O_MIN)
