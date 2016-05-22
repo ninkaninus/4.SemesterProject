@@ -135,6 +135,16 @@ Den anden funktionalitet er så at tage et input i from af BCD kode og lave det 
 
 \subsubsection{ToggleButton}
 
+Ved hver af de brugte knapper er der et modul der holder styr på outputtet af knappen, og inddelere det i tre forskellige signaler.
+
+\begin{itemize}
+\item Pulse
+\item Debounce
+\item Toggle
+\end{itemize}
+
+Disse er implementeret i form af en state machine der benytter et fire bit shift register der afhænger af input til at ændre tilstand. Når knappen bliver trykket ned i fire clock pulser i træk skifter state machinen over i den tilstand der svarer til at alle output er tændt. Puls signalet bliver slukket næste clock puls, mens debounce signalet bliver slukket når knappen ikke har været trykket ned i fire signaler i træk. Toggle signalet bliver selvsigende slukket næste gang der bliver trykket på knappen i fire clock signaler i træk, hvor pulse og debounce naturligvis også bliver aktiveret.
+
 \subsection{Endeligt design}
 Når man kigger på, hvilke behov der er i forhold til kommunikation med FPGA'en så kan det ses at der kun foregår dataudvekslinger mellemm FPGA og MPU dvs. at MPU'en enten henter en værdi ud af FPGA'en eller sætter en værdi i denne. Der er derfor ikke behov for en protokol der kan tage imod deciderede kommandoer og udfører komplekse ting i FPGA'en, men nærmere behov for at der hurtigt kan sættes/hentes en værdi. Hele SPI interfacet skal kun fungerer som en udvidelses af den funktionalitet der allerede ligger i MPU'en dvs. at der skrives til et register for at få en enhed til at gøre noget eller læses fra et register for at få en værdi ud af en enhed. På den måde behøver grænsefladen set fra MPU'ens side ikke være særligt avanceret. Ved at kigge på dette behov blev det besluttet at et 16-bit datagram format, hvor de første 4 bit angiver en addresse på et modul, ville være tilstrækkeligt. Da FPGA'en kører med en clockfrekvens på 50MHz og SPI clocken vil kører væsentligt langsommere. Så er det muligt at implementerer protokollen således at data kan hentes fra FPGA'en, i samme datagram udveksling som addressen på det modul dataen skal hentes ud fra bliver modtaget. Da der både bliver clocked data ud fra MPU'en samtidig med at data bliver clocked ind fra FPGA'en. Så skal FPGA'en sende addressen ud når de første 4 bit er modtaget og sætte et write signal som tillader det modul der har addressen at sende sin data ud på databussen. Et eksempel herpå kan ses i figur \ref{fig:FPGA_Transfer}.\\
 I selve FPGA'en er det blevet valgt at implementerer to databusser. En til data der kommer fra moduler og skal ud på SPI. Og en til data der kommer fra SPI og skal ind til et modul. Dette er gjort fot at undgå at bruge et INOUT signal internt i FPGA'en da der ikke forefindes hardware til at tristatte interne signaler. Så i sidste ende får man warnings i Xilinx og det bliver lavet om til logiske kredse. Som har nogenlunde samme funktionalitet, men så kan man ligeså godt designe det sådan til at starte med. XXXXIkke færdig skrevet
