@@ -3,8 +3,8 @@
 clear
 clc
 
-P = 6;
-I = 6;
+P = 2;
+I = 1;
 D = 1;
 
 syms x;
@@ -26,18 +26,18 @@ T1 = 0.44;
 
 G = 12*K/(s*(T*s+1));
 G1= 12*K1/(s*(T1*s+1));
-%C = ((s+z1)*(s+z2))/s;
+C = ((s+z1)*(s+z2))/s;
 
-C = (P*s+I)/s;
+%C = (P*s+I)/s;
 C1 = 1/s;
 %%
 
 figure(1)
-rlocus(G*C)
+rlocus(G1*C)
 title('Root Locus - PI Control')
 sgrid(.517, 0)
 sigrid(0.8)
-ylim([-40 40])
+ylim([-10 10])
 
 test = 1/s*G
 
@@ -47,17 +47,21 @@ test = 1/s*G
 
 %%
 
-sys = G*C*0.0161;
+sys = G1*C*0.0350;
 %sys2 = G*C_Design2;
 %sys4 = G*C_Design4;
 
-sys=feedback(sys,1)
+sys=feedback(sys,1);
 %sys2=feedback(sys2,1)
 %sys4=feedback(sys4,1)
 
+
+step(sys,5)
+%%
+
 DC = dcgain((s-p(2))*(s-p(3)));
 
-SOtf = DC/((s-p(2))*(s-p(3)))
+SOtf = DC/((s-p(2))*(s-p(3)));
 
 figure(2)
 step(sys,SOtf,5)

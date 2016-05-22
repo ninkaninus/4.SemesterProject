@@ -140,8 +140,12 @@ For at overholde designmålene vedrørende settling time, overshoot og steady st
 \end{itemize}
 
 Grænserne skal ses som et absolut minimumskrav, da systemet ikke er et ideelt 2.ordenssystem. Der skal helst være en god margen.
-\pagebreak
-\subsection{I Controller}
+
+\subsection{Controller-typer}
+
+I denne sektion vil det blive undersøgt, hvilke forskellige controller-typer (I, PI og PID), der bedst kan opfylde projektets krav. Der vil blive set bort fra P- og PD-controllere, da der ønskes en steady state fejl på 0.
+
+\subsubsection{I Controller}
 
 En I-controller er et integrator-led med et gain - integratoren svarer til at placere endnu en pol i origo. For at undersøge hvordan denne controller vil opføre sig, kan man bruge root locus metoden for at se, hvordan polerne flytter sig, når controller-gainet øges. 
 
@@ -159,7 +163,7 @@ For at plotte root locus i matlab skal man bare bruge open loop overføringsfunk
 \label{fig:I_rlocus}
 \end{figure}
 
-\subsection{PI Controller}
+\subsubsection{PI Controller}
 
 En PI controller har også en proportionel del, der summeres med integratoren. Det resulterer i praksis i at der, udover polen i origo fra integratoren, også tilføjes et nul på ventstre side af den imaginære akse. Nullets placering bestemmes af forholdet imellem $K_{I}$ og $K_{P}$.
 
@@ -181,7 +185,7 @@ G=-\frac{s^2(\tau s+1)}{(s+I/P)K}
 \frac{dG}{ds}=0
 \end{equation}
 
-\subsection{PID Controller}
+\subsubsection{PID Controller}
 
 \begin{equation}\label{PID_OpenLoop}
 Y(s)=\frac{K_{P}s+K_{I}+K_{D}s^2}{s}\cdot\frac{12K}{s(s\tau+1)}
@@ -204,3 +208,7 @@ I de root locus-plots der har være vist indtil videre, har der været brugt en 
 \caption{Her ses root locus plottet for vores tilt-system med en PID-controller med P=6, I=6, D=1 og et gain på 0.0027}
 \label{fig:PID_rlocus}
 \end{figure}
+
+\subsection{Delkonklusion}
+
+Det endelige valg af controller falder på PID, da det er den mest fleksible controller i den forstand, at man kan manipulere step responsen meget mere i den retning der ønskes. PI-controlleren kan også opfylde projektets designmål, men det er et meget snævert område polerne skal placeres i for det kan lade sig gøre. Med tanke på at controllerens implementering ikke er ideel og at de faktiske system ikke er et 2.-ordenssystem, så giver det ikke mening at vælge PI-controlleren, når man kan designe en PID-controller, der kan placere closed-loop polerne mere solidt i det sikre område. I-controlleren er ikke en mulighed, da den gør systemet ustabilt.
