@@ -91,7 +91,7 @@ Det kan altså konkluderes, at man er nødt til at have mindst en integrator i c
 
 \subsubsection{Overshoot}
 
-Percent Overshoot (P.O.) er defineret som den procentdel systemets største respons afviger fra den ønskede værdi - det er et udtryk for, hvor meget systemet skyder forbi målet når det påvirkes af et step input. Ved hjælp af lidt algebra, differentiering og et par laplace-transformeringer, kan man udlede ligning (\ref{eq:P.O.}) fra (\ref{eq:SO_system}) (se Modern Control Systems\cite{ModernControlSystem}), og på den måde finde ud af, hvor meget overshoot systemet har udelukkende ud fra damping ratio. En anden måde at se på problemet, er at man, ved at finde zeta til et bestemt overshoot, også kan finde den vinkel til de komplekse polers placering, hvor man får netop den mængde overshoot - store vinkler giver stort overshoot og omvendt (se figur \ref{fig:SO_system}). Man kan altså ud fra denne udregning definere et klart område, hvor alle polplaceringer vil opfylde ens krav til overshoot. 
+Percent Overshoot (P.O.) er defineret som den procentdel systemets største respons afviger fra den ønskede værdi - det er et udtryk for, hvor meget systemet skyder forbi målet når det påvirkes af et step input. Ved hjælp af lidt algebra, differentiering og et par laplace-transformeringer, kan man udlede ligning (\ref{eq:P.O.}) fra (\ref{eq:SO_system}) (se Modern Control Systems\cite{ModernControlSystem}), og på den måde finde ud af, hvor meget overshoot systemet har udelukkende ud fra damping ratio. En anden måde at se på problemet, er at man, ved at finde $\zeta$ til et bestemt overshoot, også kan finde den vinkel til de komplekse polers placering, hvor man får netop den mængde overshoot - store vinkler giver stort overshoot og omvendt (se figur \ref{fig:SO_system}). Man kan altså ud fra denne udregning definere et klart område, hvor alle polplaceringer vil opfylde ens krav til overshoot. 
 
 \begin{equation}\label{eq:P.O.}
 P.O.=100*e^{-\dfrac{\zeta\pi}{\sqrt{1-\zeta^2}}}
@@ -103,7 +103,7 @@ For at få 15 $\%$ overshoot eller derunder kan det beregnes at $\zeta$ skal væ
 	\begin{center}
 		\includegraphics[scale=0.5]{Billeder/Overshoot.PNG}
 	\end{center}
-\caption{Det skraverede område viser alle punkter med en zeta-værdi over 0.517. Denne værdi svarer også til en vinkel til den reelle akse på 58.87 grader til begge sider}
+\caption{Det skraverede område viser alle punkter med en $\zeta$-værdi over 0.517. Denne værdi svarer også til en vinkel til den reelle akse på 58.87 grader til begge sider}
 \label{fig:Overshoot}
 \end{figure}
 
@@ -155,13 +155,13 @@ Y(s)=K_{I}\cdot\frac{1}{s}\cdot\frac{12K}{s(s\tau+1)}
 
 For at plotte root locus i matlab skal man bare bruge open loop overføringsfunktionen (ligning \ref{eq:I_OpenLoop}). På figur \ref{fig:I_rlocus} ses det med al tydelighed at systemet aldrig bliver stabilt med en I-controller, da polerne ikke kan trækkes over på den negative side af $j\omega$-aksen. Af denne grund kan en ren I-controller ikke bruges.
 
-\begin{figure}[ht]
+\begin{wrapfigure}[12]{TR}{0.5\textwidth}	
 	\begin{center}
-		\includegraphics[scale=0.35]{Billeder/I_rlocus.PNG}
+		\includegraphics[width=0.5\textwidth]{Billeder/I_rlocus.PNG}
 	\end{center}
 \caption{Her ses root locus plottet for vores system med en I-controller. Det er tydeligt at systemet aldrig kan stabiliseres med et gain alene. Dette plot er lavet med en tidskonstant på 0.12 sekunder, hvilket vil svare til en pol i -8.33.}
 \label{fig:I_rlocus}
-\end{figure}
+\end{wrapfigure}
 
 \subsubsection{ID Controller}
 
@@ -172,7 +172,7 @@ Y(s)=\frac{K_{D}s^2+K_{I}}{s}\cdot\frac{12K}{s(s\tau+1)}
 \end{equation}
 
 \begin{equation}\label{eq:quad}
-\dfrac{0-\sqrt{0-4K_{D}K_{I}}}{2K_{D}}
+\dfrac{0\pm\sqrt{0-4K_{D}K_{I}}}{2K_{D}}
 \end{equation}
 
 \begin{wrapfigure}[12]{TR}{0.5\textwidth}	
@@ -227,7 +227,7 @@ I de root locus-plots der har være vist indtil videre, har der været brugt en 
 	\begin{center}
 		\includegraphics[scale=0.45]{Billeder/PID_rlocus.PNG}
 	\end{center}
-\caption{Her ses root locus plottet for vores tilt-system med en PID-controller med P=6, I=6, D=1 og et gain på 0.0027}
+\caption{Her ses root locus plottet for vores tilt-system med en PID-controller med $K_{P}=6$, $K_{I}=6$, $K_{D}=1$ og et gain på 0.0027}
 \label{fig:PID_rlocus}
 \end{figure}
 
