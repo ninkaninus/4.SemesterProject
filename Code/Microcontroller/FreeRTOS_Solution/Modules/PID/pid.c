@@ -39,15 +39,15 @@
 #define O_MIN			-200000
 #define I_MAX			5000000
 #define I_MIN			-5000000
-#define DC_MAX			150
+#define DC_MAX			100
 #define DC_MIN			40
-#define K1				161
-#define K2				27		// 0.0027 * 10000
+#define K1				1307
+#define K2				1300		// 0.0027 * 10000
 #define KP1				2*K1
 #define KI1				1*K1
 #define KD1				1*K1
-#define KP2				6*K2
-#define KI2				6*K2
+#define KP2				8*K2
+#define KI2				16*K2
 #define KD2				1*K2
 
 /*****************************   Constants   *******************************/
@@ -80,9 +80,9 @@ void init_pid()
 	pan_sys.integral = 0;
 	pan_sys.prev_error = 0;
 
-	pan_sys_2.Kp = 100*K1;
-	pan_sys_2.Ki = 100*K1;
-	pan_sys_2.Kd = 1*K1;
+	pan_sys_2.Kp = KP1*3;
+	pan_sys_2.Ki = KI1*3;
+	pan_sys_2.Kd = KD1*K1*3;
 	pan_sys_2.gain = K1;
 	pan_sys_2.integral = 0;
 	pan_sys_2.prev_error = 0;
@@ -94,9 +94,9 @@ void init_pid()
 	tilt_sys.integral = 0;
 	tilt_sys.prev_error = 0;
 
-	tilt_sys_2.Kp = 100*K2;
-	tilt_sys_2.Ki = 100*K2;
-	tilt_sys_2.Kd = 1*K2;
+	tilt_sys_2.Kp = KP2*4;
+	tilt_sys_2.Ki = KI2*4;
+	tilt_sys_2.Kd = KD2*4;
 	tilt_sys_2.gain = 0;
 	tilt_sys_2.integral = 0;
 	tilt_sys_2.prev_error = 0;
@@ -166,8 +166,8 @@ INT32S pid_calc(INT32U desired, INT32U actual, PID *controller)
 	if(integral < I_MIN)
 		integral = I_MIN;
 		
-	if(error == 0)			// nulstiller integral-delen når målet er nået.
-		integral = 0;
+	//if(error == 0)			// nulstiller integral-delen når målet er nået.
+		//integral = 0;
 
 	derivative = (error - controller->prev_error)/DT;
 
@@ -179,7 +179,7 @@ INT32S pid_calc(INT32U desired, INT32U actual, PID *controller)
 	INT32S D_term = controller->Kd*derivative;		// scaled by 10E0
 	D_term *= SCALE_FACTOR;							// scaled by 10E4
 
-	if(error > 300 || error < -300)					// integration is only active when close to the target
+	if(error > 16 || error < -16)					// integration is only active when close to the target
 	{
 		I_term = 0;
 		integral = 0;
@@ -212,16 +212,16 @@ void pid_update()
 		set_point 	= get_msg_state(SSM_SP_PAN);
 		actual 		= get_msg_state(SSM_POS_PAN);
 
-		if(set_point - actual > 16 || set_point - actual < -16)
+//		if(set_point - actual > 16 || set_point - actual < -16)
 			adjust = pid_calc(set_point,actual,&pan_sys);
-
+/*
 		else
 		{
 			pan_sys.integral = 0;
 			pan_sys.prev_error = 0;
 			adjust = pid_calc(set_point,actual,&pan_sys_2);
 		}
-
+*/
 
 		////
 		dir = 0;
@@ -255,16 +255,16 @@ void pid_update()
 
 		//set_point = set_point + offset/5;
 
-		if(set_point - actual > 16 || set_point - actual < -16)
+//		if(set_point - actual > 16 || set_point - actual < -16)
 			adjust = pid_calc(set_point,actual,&tilt_sys);
-
+/*
 		else
 		{
 			tilt_sys.integral = 0;
 			tilt_sys.prev_error = 0;
 			adjust = pid_calc(set_point,actual,&tilt_sys_2);
 		}
-
+*/
 
 		if(set_point != actual)
 		{

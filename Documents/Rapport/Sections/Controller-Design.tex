@@ -56,13 +56,12 @@ Y(s)=\frac{\omega_{n}^2}{s^2+2\zeta\omega_{n}s+\omega_{n}^2}
 
 Hele ideen med at benytte et 2-ordens-system til den indledende analyse, er at man kan finde de områder i s-planet, hvor systemet vil holde sig inden for designmålene, så længe systemets poler placeres der. Disse antagelser gælder naturligvis kun præcist for et 2-ordens-system uden nuller, men det kan sagtens være en udemærket approksimering, hvis man har et system af højere orden med to dominante poler der ligger tæt på $j\omega$-aksen. Som tommelfinger-regel kan man godt tillade sig at kalde to poler for dominante, hvis de er 5 gange tættere på den imaginære akse end resten af polerne. Grunden til at man kigger mest på de dominante poler, er at jo længere man kommer væk fra $j\omega$-aksen jo hurtigere aftager effekten på systemet fra polerne over tid. Derfor ender det med at være de langsomme poler, der dominerer systemets respons.
 
-\begin{wrapfigure}[12]{TR}{0.5\textwidth}	
+\begin{wrapfigure}[11]{TR}{0.5\textwidth}	
 	\includegraphics[scale=0.5]{Billeder/Damping_Ratio.PNG}
 	\centering
 	\caption{Her kan man se hvordan damping ratio og den naturlige frekvens påvirker polernes placering i et 2-ordens-system.}
 	\label{fig:SO_system}
 \end{wrapfigure}
-\lipsum[12]
 
 På figur \ref{fig:SO_system} kan man se hvordan man alene ud fra polernes placering kan beskrive en masse om damping ratio og den naturlige frekvens. En ting der ikke fremgår af figuren, er at damping ratio også fortæller noget om, om polerne er komplekse konjugerede eller reelle. Hvis $1>\zeta>0$ er polerne komplekse; hvis $\zeta=1$ ligger der to reelle poler oven i hinanden; hvis $\zeta>1$ er polerne reelle og unikke. Disse tre situationer bliver også ofte beskrevet som henholdsvis underdæmpet, kritisk dæmpet og overdæmpet.
 
@@ -155,15 +154,12 @@ Y(s)=K_{I}\cdot\frac{1}{s}\cdot\frac{12K}{s(s\tau+1)}
 
 For at plotte root locus i matlab skal man bare bruge open loop overføringsfunktionen (ligning \ref{eq:I_OpenLoop}). På figur \ref{fig:I_rlocus} ses det med al tydelighed at systemet aldrig bliver stabilt med en I-controller, da polerne ikke kan trækkes over på den negative side af $j\omega$-aksen. Af denne grund kan en ren I-controller ikke bruges.
 
-\begin{wrapfigure}{hr}{0.5\textwidth}	
-\vspace{-20pt}
+\begin{wrapfigure}[18]{TL}{0.5\textwidth}	
 	\begin{center}
 	\includegraphics[width=0.5\textwidth]{Billeder/I_rlocus.PNG}
 	\end{center}
-	\vspace{-5pt}
 \caption{Her ses root locus plottet for vores system med en I-controller. Det er tydeligt at systemet aldrig kan stabiliseres med et gain alene. Dette plot er lavet med en tidskonstant på 0.12 sekunder, hvilket vil svare til en pol i -8.33.}
 \label{fig:I_rlocus}
-\vspace{-20pt}
 \end{wrapfigure}
 
 \subsubsection{ID Controller}
@@ -178,14 +174,11 @@ Y(s)=\frac{K_{D}s^2+K_{I}}{s}\cdot\frac{12K}{s(s\tau+1)}
 \dfrac{0\pm\sqrt{0-4K_{D}K_{I}}}{2K_{D}}
 \end{equation}
 
-\begin{wrapfigure}{hR}{0.5\textwidth}	
-\vspace{-20pt}
+\begin{wrapfigure}[17]{TL}{0.5\textwidth}
 	\includegraphics[width=0.5\textwidth]{Billeder/ID_rlocus.PNG}
 	\centering
-	\vspace{-20pt}
 \caption{Her ses root locus plottet for vores system med en ID-controller.}
 \label{fig:ID_rlocus}
-\vspace{-20pt}
 \end{wrapfigure}
 
 Denne controller kan heller ikke bruges, da ingen af de to branches fra polerne i origo nogensinde kommer over på den venstre side af den imaginære akse (se figur \ref{fig:ID_rlocus}).
