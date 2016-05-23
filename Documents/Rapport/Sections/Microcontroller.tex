@@ -25,7 +25,7 @@ Den har mulighed for at oprette semafoere, som gør at det er kun en queue som k
 
 \subsubsection{Valg af OS}
 
-Efter vi har set på disse to valg muligheder kan vi se at RTCS vil være næmmere at få til at virker, men at det heller ikke er lige så sikkert, som freeRTOS. Den største begrundelse for at vi vælger at arbjede med freeRTOS over RTCS er at den køre preemtiv. Dette gøre det muligt vis der kommer et vigtigt interrupt at den kan tage CPU'en fra den proces den er i gang med og flytte den over det den mere vigtige proces.
+Efter vi har set på disse to valg muligheder kan vi se at RTCS vil være næmmere at få til at virker, fordi det ikke er så komplicert og har ikke lige så mange udvidelser. RTCS tilbyder ikke de samme sikkerhed udvidelser, som freeRTOS gør. Den største begrundelse for at vi vælger at arbjede med freeRTOS over RTCS er at den køre preemtiv. Dette gøre det muligt vis der kommer et vigtigt interrupt at den kan tage CPU'en fra den proces den er i gang med og flytte den over det den mere vigtige proces.
 
 \subsection{Tasks}
 
@@ -43,10 +43,10 @@ Den centrale task i systemet er det menu styrede UI system. Denne har primært t
 
 I figur \ref{fig:Taskdiagram} kan vi se vores task diagram over modulerne i mikroprocesseren.
 
-\subsubsection{Uart}
+\subsubsection{UART}
 
-Uart står for universal asynchronous receiver/transmitter. Dette laver kommunikation mellem to enheder. Så være enhed skal være i stand til at bruge funktion UART. UART transmittere data i form af bytes og deler dem op i bits og sender dem. Modtager skal så kunne samle dem sammen igen til bytes for at læse det.
-Vores Uart pinde sider på PORT A, derved skal sysctl aktiveres på port a før den viker. Uart har en init. funktion som bliver kaldt en gang hvor alle register bliver sat up som, f.eks. send og modtag. Der bliver også sat en baut rate, som skal være den samme for sender og modtager.
+UART står for universal asynchronous receiver/transmitter. Dette laver kommunikation mellem to enheder. Så hver enhed skal være i stand til at bruge funktion UART. UART transmittere data i form af bytes og deler dem op i bits og sender dem. Modtager skal så kunne samle dem sammen igen til bytes for at læse det.
+Vores Uart pinde sider på port A, derved skal sysctl aktiveres på port A før den virker. Uart har en init. funktion som bliver kaldt en gang hvor alle registre bliver sat up som, f.eks. send og modtag. Der bliver også sat en baut rate, som skal være den samme for sender og modtager.
 \\
 For at sende data kalder vi funktion uart0\textunderscore putc som tager en karakter. Dette kan både være tal og bogstaver. Der en funktion der hedder uart0\textunderscore rx\textunderscore rdy som venter på at den modstager noget.
 \\
@@ -72,7 +72,7 @@ Den fysiske opsætning af LCD'et kan ses på figur \ref{fig:LCD}, og viser bland
 			\label{fig:LCD}
 \end{figure}
 
-Selve LCD-tasken arbejder sammen med resten af systemet ved at afkode et særligt image-format (se figur \ref{fig:LCD_array}), så det vises korrekt på skærmen. Dette image bliver sendt fra display-tasken og indeholder oplysninger om, hvilke karakterer, hvis nogen, der skal skrives til alle 32 synlige adresser på displayet. Udover de 32 karakterer, er der også fire kontrolfelter, som fortæller tasken, hvor cursoren skal placeres efter karaktererne er skrevet ud; om cursoren skal blinke eller bare highlighte nuværende adresse med en streg under karakteren. Det sidste felt bliver sat til at vise adressen, hvor næste karakter skal skrives, når alle 32 karakterer er blevet skrevet første gang. På den måde kan LCD-tasken afgøre om den skal skrive et helt image fra starten, eller bare tilføje en ny karakter til et image der allerede er vist på displayet. Med dette setup kan LCD-tasken finde ud af hvilken ny karakter, der skal tilføjes ud fra den første kontrol-bit, og også hvor cursoren skal placeres efter den er skrevet - hvis den næste adresse, der skal skrives på, er mere end en plads væk, skal cursoren flyttes aktivt. Manipuleringen af images og kontrol-bits foregår i display-tasken - LCD-tasken afkoder bare images, når de bliver tilføjet til dens input-kø.
+Selve LCD-tasken arbejder sammen med resten af systemet ved at afkode et særligt image-format (se figur \ref{fig:LCD_array}), så det vises korrekt på skærmen. Dette image bliver sendt fra display-tasken og indeholder oplysninger om, hvilke karakterer, hvis nogen, der skal skrives til alle 32 synlige adresser på displayet. Udover de 32 karakterer, er der også fire kontrolfelter, som fortæller task'en, hvor cursoren skal placeres efter karaktererne er skrevet ud; om cursoren skal blinke eller bare highlighte nuværende adresse med en streg under karakteren. Det sidste felt bliver sat til at vise adressen, hvor næste karakter skal skrives, når alle 32 karakterer er blevet skrevet første gang. På den måde kan LCD-tasken afgøre om den skal skrive et helt image fra starten, eller bare tilføje en ny karakter til et image der allerede er vist på displayet. Med dette setup kan LCD-tasken finde ud af hvilken ny karakter, der skal tilføjes ud fra den første kontrol-bit, og også hvor cursoren skal placeres efter den er skrevet - hvis den næste adresse, der skal skrives på, er mere end en plads væk, skal cursoren flyttes aktivt. Manipuleringen af images og kontrol-bits foregår i display-task'en - LCD-task'en afkoder bare images, når de bliver tilføjet til dens input-kø.
 
 
 \begin{figure}[ht]
@@ -85,25 +85,25 @@ Selve LCD-tasken arbejder sammen med resten af systemet ved at afkode et særlig
 
 \subsubsection{Keypad}
 
-Det udleverede Kit er der tilhørende keypad med 12 knapper fra 0 til 9 og *,\#. Dette keypad virker som knapper, Da er derfor nødvendigt at definere hvad de forskellige knapper skal gøre. For at gøre det simpelt bliver hver knap det som der står på keypad'et. figur \ref{fig:Keypadpins} viser hvordan dens pins at tilsluttet.
+Det udleverede Kit har et tilhørende keypad med 12 knapper fra 0 til 9 og *,\#. Dette keypad virker som knapper, det er derfor nødvendigt at definere hvad de forskellige knapper skal gøre. For at gøre det simpelt bliver hver knap det som der står på keypad'et. figur \ref{fig:Keypadpins} viser hvordan dens pins er tilsluttet.
 \begin{figure}[ht]
 	\begin{center}
 		\includegraphics[scale=0.7]{Billeder/Keypadpins.PNG}
 	\end{center}
-\caption{Keypad pins}
+\caption{Keypad pinout}
 \label{fig:Keypadpins}
 \end{figure}
-Den har to porte til knyttet som er PORT A og PORT E. Det betyder at vi kan læse på PORT E hvis GPIO pinden på PORT A er aktiv.
+Den har to porte til knyttet som er PORT A og PORT E. Det betyder at vi kan læse på port E hvis GPIO pinden på port A er aktiv.
 \begin{figure}[ht]
 	\begin{center}
 		\includegraphics[scale=0.7]{Billeder/Keypad.PNG}
 	\end{center}
-\caption{Keypad struktur}
+\caption{Giver de fysiske værdier et tal, som svare et en placering i et array, så som at 1 for placering 24}
 \label{fig:Keypad}
 \end{figure}
 
 
-På figur \ref{fig:Keypad} kan vi se at vi har givet de forskellige knapper unikke værdier. Dette gøres fordi vi har et array som indeholder alle værdier på keypad’et, som vi så sender ind i bufferen og læse på. For at finde en karakter kigger vi først på alle X værdier (PORT A) igennem og ser om en Y værdi (PORT E) er aktiv og ud fra hvilken X og Y værdi kan vi finde hvilket plads i arrayet ud fra figur \ref{fig:Keypad}
+På figur \ref{fig:Keypad} kan vi se at vi har givet de forskellige knapper unikke værdier. Dette gøres fordi vi har et array som indeholder alle fysikske værdier på keypad’et, som bliver placeret i den plads i array som kan ses på figur \ref{fig:Keypad} . For at finde en karakter kigger vi først på alle X værdier (port A) igennem og ser om en Y værdi (port E) er aktiv og ud fra hvilken X og Y værdi kan vi finde ud fra hvilket plads i arrayet, som blivet definert i figur \ref{fig:Keypad}
 \\
 Dette keypad kan blive brugt til at sende data eller manuelt indsætte nogle værdier i mens programmet kører.
 
