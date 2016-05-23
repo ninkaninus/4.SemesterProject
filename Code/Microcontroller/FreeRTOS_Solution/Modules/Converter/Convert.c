@@ -161,19 +161,19 @@ void position_convert(void)
 	INT32U pan = 	get_msg_state(SSM_POS_PAN);
 	INT32U tilt =	get_msg_state(SSM_POS_TILT);
 
-	if (pan <= 2540)
+	if (pan >= 2000)
 		pan = pan - 2000;
 	else
-	{
 		pan = 3*360 - (2000 - pan);
-	}
-	if (tilt <= 2270)
+
+	if (tilt >= 1730)
 		tilt = tilt - 1730;
 	else
 	{
 		tilt = 3*360 - (1730 - tilt);
 	}
 
+	pan++;
 	pan  = pan/3;
 	tilt = tilt/3;
 
