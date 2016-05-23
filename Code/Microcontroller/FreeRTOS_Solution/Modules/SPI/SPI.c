@@ -174,6 +174,12 @@ void get_position()
 	data = SPI_read();
 	put_msg_state(SSM_POS_PAN,data);
 
+	data &= 0x0FFF;
+	INT8U temp = data >> 8;
+	uart0_putc(temp);
+	temp = data;
+	uart0_putc(temp);
+
 	data = 0;
 	//vTaskDelay(2 / portTICK_RATE_MS);
 
@@ -219,19 +225,19 @@ void SPI_task(void *pvParameters)
 				case MAX_PWM_EVENT:
 					send = 255;					// 100% duty cycle
 					send |= (2<<8);				// positiv retning
-					send |= ADDR_PAN_PWM;		// adresse
+					send |= ADDR_TILT_PWM;		// adresse
 					send |= 0x0400;
 
 					SPI_write(send);
 					send = SPI_read();
 
-					vTaskDelay(1300 / portTICK_RATE_MS);
-					//break;
+					//vTaskDelay(1300 / portTICK_RATE_MS);
+					break;
 
 				case STOP_EVENT:
 					send = 0;					// 100% duty cycle
 					send |= (2<<8);				// positiv retning
-					send |= ADDR_PAN_PWM;		// adresse
+					send |= ADDR_TILT_PWM;		// adresse
 
 					SPI_write(send);
 					send = SPI_read();
