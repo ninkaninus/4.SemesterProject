@@ -1,5 +1,10 @@
 \section{Diskussion}
 
+Forsøget på at udvikle et pan og tilt system der er i stand til at følge satelitter og himmellegemer er blevet opfyldt tilfredsstillende. Der er fundet gode koordinat systemer til både selve systemet og applikationen, og der er lavet en oversætter mellem disse. I forsøget på at skabe en controler med lav steady state fejl og overshoot er der blevet valgt en controller der indeholder både P, I og D led, da disse alle har vist sig at være vigtige for at lave en rubust controler med lavt overshoot og steady state fejl. De mekaniske grændser i systemet er der taget højde for, da der både er en 
+
+
+
+
 Sammenlagt er projektet end med at blive meget lig hvad der blev sat ud på at skabe. Der er ikke mange ting der kunne være gjort meget anderledes, og som regel er det de mest optimale løsninger der er blevet valgt. Dette skal ikke være at sige at der ikke kan laves forbedringer, og som en næste itteration ville det mest optimale skridt nok være at lave om på pan og tilt systemet således at denne fik en større præcision og havde mindre slør, samt at udbygge brugervenligheden af systemet ved at bygge en GUI applikation der mere automatisk kunne tilbyde mulige mål samt give en mere overskuelig repræsentation af systemets tilstand ved brug af UART feedback.
 
 Hvad der dog skulle gøres som afslutning af denne itteration ville være at udbygge systemet således at der benyttes et kamara der benytter fuld zoom, hvilket indebærer at der skal tages højde for at tilt systemet ikke kan bevæge sig frit rundt, så der skal sættes grændser så der er absolut sikkerhed for at kameraet ikke rammer rammen. Denne funktionalitet er inkorporeret, men skal blot aktiveres og justeres. Det indebærer dog at kontrol systemet skal rekalibreres, samt at der skal tilføjes en del vægt justering så systemet er balanceret.
