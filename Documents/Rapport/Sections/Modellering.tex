@@ -2,7 +2,7 @@
 I denne sektion vil der blive udarbejdet matematiske modeller for alle dele af systemet. Der vil være tale om et elektronisk system (motor og feedback), der er koblet til et mekanisk system (motorakslen, rammerne og den udveksling der forbinder dem). 
 
 \subsection{Motor}
-Motoren består af en rotor med flere XXXX poler, og en stator med en permanent magnet. Den permanente magnet sørger for at feltet, der påvirker rotoren, er nogenlunde konstant - dette forsimpler udregningen af motormomentet, da det er lineært afhængigt af magnetfeltet og strømmen igennem rotorvindingerne se ligning \ref{eq:motormoment}. Motorkonstanten $K_{m}$ er afhængig af permeabiliteten i det magnetiske materiale og kan bestemmes eksperimentielt - se reference \cite{azevedo2013} XXXX.
+Motoren består af en rotor med flere XXXX poler, og en stator med en permanent magnet. Den permanente magnet sørger for at feltet, der påvirker rotoren, er nogenlunde konstant - dette forsimpler udregningen af motormomentet $T_{m}$, da det er lineært afhængigt af magnetfeltet og strømmen $i_{a}$ igennem rotorvindingerne se ligning \ref{eq:motormoment}. Motorkonstanten $K_{m}$ er afhængig af permeabiliteten i det magnetiske materiale og kan bestemmes eksperimentielt - se reference \cite{azevedo2013} XXXX.
 
 \begin{equation}\label{eq:motormoment}
 T_{m}=K_{m}i_{a}(t)
@@ -19,7 +19,6 @@ Den elektroniske del af motoren kan modelleres simpelt som en modstand $R_{a}$, 
 	\caption{Her ses diagrammet af den omtalte motormodel}
 	\label{fig:motor_sch}
 \end{wrapfigure}
-\lipsum[15]
 
 Ved hjælp af Kirchoff's lov om spænding kan man nu udlede en differentialligning der relaterer alle elementerne efter spændingen over dem.
 
@@ -27,13 +26,21 @@ Ved hjælp af Kirchoff's lov om spænding kan man nu udlede en differentialligni
 V_{a}=i(t)R_{a}+L_{a}\dfrac{di(t)}{dt}+K_{e}\omega(t)
 \end{equation}
 
-Den mekaniske del af motoren kan beskrives som det moment der genereres og driver en belastning. Momentet for enhver roterende masse kan beskrives ved Newton's 2. lov $T_{netto}=J\alpha(t)$, hvor $J$ er intertimomentet og $\alpha$ er vinkelaccelerationen. Denne ligning kan bruges til at beskrive nettomomentet for motoren og belastningen. 
+Den mekaniske del af motoren kan beskrives som det moment der genereres og driver en belastning. Momentet for enhver roterende masse kan beskrives ved Newton's 2. lov \\
+\begin{equation}\label{eq:newtons_2.Lov}
+T_{netto}=J\alpha(t)
+\end{equation}
+hvor $J$ er intertimomentet og $\alpha$ er vinkelaccelerationen. Denne ligning kan bruges til at beskrive nettomomentet for motoren og belastningen. 
 
 \begin{equation}\label{eq:nettomoment}
 T_{netto}=T_{m}-T_{f}
 \end{equation}
 
-Ligning \ref{eq:motormoment} kunne fortælle noget om momentet fra motoren, men det er også nødvendigt at have en dæmpende effekt i form a friktion med i modellen, for at den kan svare nogenlunde til virkeligheden. Heldigvis hænger det sådan sammen at det modsatrettede moment fra friktionen kan approksimeres ret præcist til at være lineært afhængigt af akslens omdrejningshastighed - denne linearitet kan beskrives ved $T_{f}=b\omega(t)$, hvor $b$ er en friktionskonstant. Hvis man kombinerer alle tre ligninger ved at substituere dem ind i ligning \ref{eq:nettomoment}, hvor et friktionsmoment trækkes fra motormomentet, er det muligt at danne endnu en differentialligning, der afhænger af rotoren's omdrejningshastighed.
+Ligning \ref{eq:motormoment} kunne fortælle noget om momentet fra motoren, men det er også nødvendigt at have en dæmpende effekt i form a friktion med i modellen, for at den kan svare til virkeligheden. Det modsatrettede moment fra friktionen kan approksimeres til at være lineært afhængigt af akslens omdrejningshastighed - denne linearitet kan beskrives ved ligning
+\begin{equation}\label{eq:modsatfriktion}
+T_{f}=b\omega(t)
+\end{equation}
+hvor $b$ er en friktionskonstant. Hvis man substituere ligning \ref{eq:motormoment},\ref{eq:newtons_2.Lov} og \ref{eq:modsatfriktion} ind i ligning \ref{eq:nettomoment}, hvor et friktionsmoment trækkes fra motormomentet, er det muligt at danne endnu en differentialligning, der afhænger af rotorens omdrejningshastighed.
 
 \begin{equation}\label{DE_motor_2}
 J\dfrac{d\omega(t)}{dt}=K_{m}i(t)-b\omega(t)

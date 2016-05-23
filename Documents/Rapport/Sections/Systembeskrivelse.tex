@@ -1,7 +1,9 @@
 \section{Systembeskrivelse}
+Til projektet er der anvendt det tildelte pan tilt system som har påmonteret de 2 hall sensorer samt h-broer som styrer motorerne som sidder på hhv pan og tilt.\\
+Til at styre denne opsætning er der udleveret èt stk Field Programmable Gate Array (FPGA) og èn Microprocessor unit.\\
 
-Pan-tilt systemet styres af en Field Programmable Gate Array (FPGA), som sender to Pulse-width modulation (PWM) signaler til et par H-broer som styrer motorene på hhv. panorerings- og tilt-rammen.
-FPGA’en skal modtage kommandoer fra den udleverede TIVA microprocessor via en Serial Peripheral Interface (SPI) forbindelse.
-Her har brugeren mulighed for at styre, samt få feedback af systemparametre.
+På FPGA'en er der 4 knapper, 8 switches, og 4 7-segment displays som bliver anvendt i projektet, se figur XXXXX evt reference til datablad
 
-EMG30\cite{emg30Data} er en motor med en indbygget gearing på 1:30, og to hall-sensorer til at give feedback omkring dens omdrejningshastighed. Den er forbundet til rammerne med bælter som har en udveksling på 1:3. Hver motor bliver styret af FPGA'en med PWM igennem en H-bro, der giver mulighed for at kontrollere omdrejningsretningen.
+På Microcontrolleren er der 2 knapper, et keypad, et lcd og en drehimpulsgeber, samt en SPI udgang som bliver anvendt, se figur XXXXX evt reference til datablad
+
+FPGA'en vil styre motorerne med et Pulse-width modulation (PWM) signal som sendes til h-broerne som bestemmer hvilken retning strømmen skal sendes til motoren så de både kan køre med og mod uret.
