@@ -158,6 +158,17 @@ INT8U images[33][36] = {
 		 'P','r','e','s','s',' ','t','o',' ','r','e','t','u','r','n',' ',
 		 0x00,0,0,0 },
 
+// Show variable
+///////////////
+
+		{'P','a','n',' ','p','o','s','i','t','i','o','n',':',' ',' ',' ',
+		 ' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',
+		 0x13,0,0,0 },
+
+		{'T','i','l','t',' ','p','o','s','i','t','i','o','n',':',' ',' ',
+		 ' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',
+		 0x13,0,0,0 },
+
 ///////////////
 
 		{'I','n','v','a','l','i','d',' ','I','n','p','u','t',' ',' ',' ',
@@ -222,6 +233,8 @@ enum gui_states {
 	IMAGE_SET_PAN,
 	IMAGE_SET_TILT,
 	IMAGE_ABORTED,
+	SHOW_PAN_POS,
+	SHOW_TILT_POS,
 	ENTER_COMMAND,
 	SET_TIME,
 	SHOW_TIME,
@@ -235,7 +248,12 @@ enum gui_states {
 void gui_task(void *pvParameters)
 {
 	INT8U received;
+	INT32U pos;
+	INT8U pos100;
+	INT8U pos10;
+	INT8U pos1;
 	INT8U gui_state = INIT;
+	INT8U display_number = 0;
 
 	set_image(WELCOME_MSG);
 	xQueueSend(LCD_image_queue,&current_image,10000);
@@ -244,7 +262,11 @@ void gui_task(void *pvParameters)
 
 		if (xQueueReceive(GUI_queue, &received, 10000))
 		{
-			gui_state = received;
+			if (received != gui_state)
+			{
+				gui_state = received;
+				display_number = 0;
+			}
 			switch (gui_state)
 			{
 				case INIT:
@@ -278,6 +300,73 @@ void gui_task(void *pvParameters)
 				case IMAGE_SET_TILT:
 				case IMAGE_ABORTED:
 					new_image(gui_state);
+					break;
+
+				case SHOW_PAN_POS:
+					pos = (get_msg_state(SSM_POS_PAN) - 1730) / 3;
+					//pos = 123;
+					pos1 = pos % 10;
+					pos10 = pos % 100 / 10;
+					pos100 = pos / 100;
+					switch(display_number)
+					{
+						case 0:
+							new_image(gui_state);
+							display_number++;
+							break;
+
+						case 1:
+							write_char(pos100 + 48);
+							display_number++;
+							break;
+						case 2:
+							write_char(pos10 + 48);
+							display_number++;
+							break;
+						case 3:
+							current_image[NEXT_CURSOR_POS] = 0x13;
+							write_char(pos1 + 48);
+							current_image[CHAR_POS] = 0x13;
+							display_number = 1;
+						default:
+							display_number = 1;
+							break;
+					}
+
+					break;
+				case SHOW_TILT_POS:
+					pos = (get_msg_state(SSM_POS_TILT) - 1190) / 3;
+					//pos++;// = 123;
+//					if (pos> 200)
+//						pos = 0;
+					pos1 = pos % 10;
+					pos10 = pos % 100 / 10;
+					pos100 = pos / 100;
+					switch(display_number)
+					{
+						case 0:
+							new_image(gui_state);
+							display_number++;
+							break;
+
+						case 1:
+							write_char(pos100 + 48);
+							display_number++;
+							break;
+						case 2:
+							write_char(pos10 + 48);
+							display_number++;
+							break;
+						case 3:
+							current_image[NEXT_CURSOR_POS] = 0x13;
+							write_char(pos1 + 48);
+							current_image[CHAR_POS] = 0x13;
+							display_number = 1;
+						default:
+							display_number = 1;
+							break;
+					}
+
 					break;
 
 				default:
@@ -520,6 +609,7 @@ void write_char(INT8U character)
 	current_image[CHAR_POS]++;
 	current_image[NEXT_CURSOR_POS]++;
 }
+
 
 void show_knob()
 {

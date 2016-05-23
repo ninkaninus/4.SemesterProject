@@ -99,6 +99,8 @@
 #define IMAGE_SET_PAN			24
 #define IMAGE_SET_TILT			25
 #define IMAGE_ABORTED			26
+#define SHOW_PAN_POS			27
+#define SHOW_TILT_POS			28
 
 extern xQueueHandle GUI_queue;
 extern xQueueHandle MENU_queue;
@@ -169,18 +171,18 @@ void run_manual_jog_function(void)
 
 					if(active == PAN)
 					{
-						pos = get_msg_state(SSM_SP_PAN);
+						pos = get_msg_state(SSM_SP_DEG_PAN);
 						pos = pos - range;
-						put_msg_state(SSM_SP_PAN,pos);
-						convert_and_secure();
+						put_msg_state(SSM_SP_DEG_PAN,pos);
 					}
 					else
 					{
-						pos = get_msg_state(SSM_SP_TILT);
+						pos = get_msg_state(SSM_SP_DEG_TILT);
 						pos = pos - range;
-						put_msg_state(SSM_SP_TILT,pos);
-						convert_and_secure();
+						put_msg_state(SSM_SP_DEG_TILT,pos);
+
 					}
+					convert_and_secure();
 
 					break;
 
@@ -347,12 +349,31 @@ void run_auto_pic_on_off_function(void)
 
 void show_pan_function(void)
 {
+	INT8U input;
+	while(1)
+	{
+		send_image(SHOW_PAN_POS);
+		if( xQueueReceive( MENU_queue, &( input ), 100 ))
+		{
 
+			break;
+		}
+	}
+	send_image(IMAGE_SHOW_PAN);
 }
 
 void show_tilt_function(void)
 {
-
+	INT8U input;
+	while(1)
+	{
+		send_image(SHOW_TILT_POS);
+		if( xQueueReceive( MENU_queue, &( input ), 100 ))
+		{
+			break;
+		}
+	}
+	send_image(IMAGE_SHOW_TILT);
 }
 
 void show_error_function(void)
@@ -397,7 +418,10 @@ void send_image(INT8U besked)
 
 void MENU_task(void *pvParameters)
 {
-
+	if( xQueueReceive( MENU_queue, &( input ), 1000 ))
+	{
+	}
+	send_image(IMAGE_MAIN_RUN);
 
 
 	while (1)
