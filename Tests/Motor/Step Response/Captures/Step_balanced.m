@@ -1,14 +1,14 @@
 clear
 clc
 
-load('Pan-Tilt/Pan Motor.mat')
+load('Pan-Tilt/Tilt Motor.mat')
 
 [Time1,W1] = combine_vectors(digital_channel_0,digital_channel_1,digital_sample_rate_hz);
 
 ratio = ratio_vector(W1,12);
 W1 = fit_ratio(ratio,W1);
 
-figure(5)
+figure(1)
 plot(Time1,W1);
 xlabel('Time[s]');ylabel('rad/s');
 title('Step Response at 12V');
@@ -48,7 +48,7 @@ W4 = fit_ratio(ratio,W4);
 figure(1)
 plot(Time1,W1);
 hold on;
-%plot(Time2,W2);
+plot(Time2,W2);
 hold on;
 %plot(Time3,W3);
 hold on;
@@ -70,6 +70,7 @@ end
 
 figure(1)
 plot(Time1,new_vector);
+xlim([0 2.5]);
 xlabel('Time[s]');ylabel('rad/s');
 title('Step Response at 12V');
 grid on;

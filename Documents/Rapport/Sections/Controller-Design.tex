@@ -231,4 +231,42 @@ I de root locus-plots der har være vist indtil videre, har der været brugt en 
 
 \subsection{Delkonklusion}
 
-Det endelige valg af controller falder på PID, da det er den mest fleksible controller i den forstand, at man kan manipulere step responsen meget mere i den retning der ønskes. PI-controlleren kan også opfylde projektets designmål, men det er et meget snævert område polerne skal placeres i for det kan lade sig gøre. Med tanke på at controllerens implementering ikke er ideel og at de faktiske system ikke er et 2.-ordenssystem, så giver det ikke mening at vælge PI-controlleren, når man kan designe en PID-controller, der kan placere closed-loop polerne mere solidt i det sikre område. I- og ID-controlleren er ikke en mulighed, da den gør systemet ustabilt.
+Det endelige valg af controller falder på PID, da det er den mest fleksible controller i den forstand, at man kan manipulere step responsen meget mere i den retning der ønskes.
+
+%PI-controlleren kan også opfylde projektets designmål, men det er et meget snævert område polerne skal placeres i for det kan lade sig gøre. Med tanke på at controllerens implementering ikke er ideel og at de faktiske system ikke er et 2.-ordenssystem, så giver det ikke mening at vælge PI-controlleren, når man kan designe en PID-controller, der kan placere closed-loop polerne mere solidt i det sikre område. I- og ID-controlleren er ikke en mulighed, da den gør systemet ustabilt.
+
+\subsection{Endeligt Controller design}
+
+For at bestemme den endelige controller til systemet, laves der root locus plots til både pan- og tilt-systemet. Afsnit (XXXX reference her) viser at der er ret stor forskel på de to systemer - derfor skal de have hver deres tilpassede controller.
+
+\subsubsection{Tilt-system}
+
+Controlleren til tilt-systemet designes efter at kameraet skal være monteret. Med denne konfiguration fås en tidskonstant på 130 ms og et DC-gain på 605. DC-gain'et er resultatet af outputtet fra controlleren ganget med 12, som er gainet fra H-broen (se figur \ref{fig:Blok_Model}). så $K=605/12$. Dette giver en overføringsfunktion for tilt-systemet som kan ses i ligning (\ref{eq:tilt_tf}). 
+
+\begin{equation}\label{eq:tilt_tf}
+\frac{\omega(s)}{V_{a}(s)}=\frac{605/12}{0.13s+1}
+\end{equation}
+
+Ud fra ovenstånde ligning kan open loop overføringsfunktionen nu findes. Denne overføringsfunktion (\ref{eq:tilt_ol_tf}) kan bruges til at lave de root locus plots som PID-konstanterne designes efter.
+
+\begin{equation}\label{eq:tilt_ol_tf}
+\frac{Y(s)}{R(s)}=\frac{K_{P}s+K_{I}+K_{D}s^2}{s}\cdot\frac{605}{s(0.13s+1)}
+\end{equation}
+
+Som beskrevet tidligere, kan man se på PID-controlleren som to nuller og en pol i origo. Ved at placere de to nuller i et værktøj som rltool fra matlab kan man aflæse konstanterne direkte. Hvis begge nuller placeres på højre side af den ene open loop pol ($-1/0.13=-7.69$), vil closed loop polen der originere fra den, bevæge sig til venstre mod uendelig, som man også kan se på figur \ref{fig:PID_rlocus}. Derfor er strategien at finde to placeringer til nullerne til højre for $-7.69$, der trækker closed loop polerne, der kommer fra origo, ned mod den reelle akse når gainet øges. På den måde kan alle closed loop poler let placeres indenfor det definerede område fra analysen af 2.ordenssystemer, og jo større gainet bliver, jo længere vil den tredje pol bevæge sig væk fra de to andre.
+
+Med denne metode har man en masse frihed til at vælge PID-konstanterne og samtidig få et respons, der opfylder projektets mål. Det vil sige at der er mange mulige løsninger, så ved at eksperimentere en smule med placeringerne, mens man holder øje med step responsen (igen er rltool et meget nyttigt redskab), kan man finde de konstanter, der bedst opfylder kravene. En af de løsninger der gav de bedste resultater var ved at placere to nuller i $s=-4$. Det giver formlen $(s+4)^2=s^2+8s+16$ som kan aflæses til konstanterne $K_{P}=8$, $K_{I}=16$ og $K_{D}=1$. 
+
+\subsubsection{Pan-system}
+
+Controlleren til pan systemet designes på samme måde som for tilt-systemet. Tidskonstanten er aflæst til 0.44 og DC-gain'et er $505/12$ (se figur \ref{fig:Pan_Response}). 
+
+\begin{equation}\label{eq:pan_tf}
+\frac{\omega(s)}{V_{a}(s)}=\frac{505/12}{0.44s+1}
+\end{equation}
+
+\begin{equation}\label{eq:pan_ol_tf}
+\frac{Y(s)}{R(s)}=\frac{K_{P}s+K_{I}+K_{D}s^2}{s}\cdot\frac{505}{s(0.44s+1)}
+\end{equation}
+
+Pan-systemet tilføjer en pol i $-1/0.45=-2.22$. Dette gør det lidt sværere at holde closed-loop polerne på højre side af denne open-loop pol. Men hvis man placerer begge nullerne fra PID-controlleren i $s=-1$ kan man få et respons der ser fornuftigt ud. Dette giver formlen $(s+1)^2=s^2+2s+1$ som kan aflæses til konstanterne $K_{P}=2$, $K_{I}=1$ og $K_{D}=1$. 

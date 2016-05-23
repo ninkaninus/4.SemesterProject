@@ -238,7 +238,7 @@ void pid_update()
 		duty_cycle = pwm_conv(adjust);
 
 		duty_cycle = (dir<<8) | duty_cycle;		// direction is ored to the 9-10th bit
-		//if(set_point != actual)
+
 			duty_cycle = 0x0400 | duty_cycle;
 
 		put_msg_state(SSM_PWM_DIR_EN_PAN,duty_cycle);
@@ -251,9 +251,6 @@ void pid_update()
 		set_point 	= get_msg_state(SSM_SP_TILT);
 		actual	  	= get_msg_state(SSM_POS_TILT);
 
-		//offset++;
-
-		//set_point = set_point + offset/5;
 
 //		if(set_point - actual > 16 || set_point - actual < -16)
 			adjust = pid_calc(set_point,actual,&tilt_sys);
