@@ -1,14 +1,13 @@
 \section{Microcontroller}
 
-Denne sektion kommer omkring det forskellige moduler, som vores mikroprocessor håndterer. Udover dette konmmer vi også igennem hvilket styresystem (OS) vi har valgt og hvorfor.
+Denne sektion kommer omkring det forskellige moduler, som vores mikroprocesser håndtere. Udover dette konmmer vi også igennem hvilket styresystem vi har valgt og hvorfor.
 
-\subsection{OS}
-Det er vigtigt i enhver kode situation, der inkluderer flere tasks, at kunne skifte mellem dem på en fornuftig måde; Dette gøres med en scheduler. Når der skal implementeres en scheduler skal det overvejes hvorvidt det er nødvendigt at lave en designet specielt til projektet, eller om der findes en eksisterende der er i stand til at udfører opgaven tilstrækkeligt. I dette project har vi to muligheder til rådighed: FreeRTOS eller RTCS.
-
+\subsection{Operativ System}
+når der skal skiftes mellem flere tasks som en processor skal udføre er det vigtigt at kunne skifte mellem dem på en fornuftig måde, dette udføres ved hjælp af en schedulerings algoritme. Når der skal implementeres en schedulerings algoritme skal det overvejes hvorvidt det er nødvendigt at lave en designet specielt til projektet, eller om der en en eksisterende der er i stand til at udfører opgaven tilstrækkeligt. I dette project har vi to muligheder til rådighed: FreeRTOS\cite{FreeRTOSorg} eller RTCS.
 
 \subsubsection{FreeRTOS}
 
-FreeRTOS \cite{FreeRTOSorg} er et realtid operativsystem (RTOS), som er en standard løsning som bliver brugt i en mikroprocessor. FreeRTOS giver os muligheden for at bruge preemptiv skedulering, det vil sige at CPU'en kan springe i-mellem tasks og hoppe ud af en task efter behov. Dette bliver styret ud fra hvilken prioritet task'en har, eller om der er en anden task, der får et interrupt den skal holde øje med.
+FreeRTOS \cite{FreeRTOSorg} er et realtids operativsystem (RTOS), som er en standard løsning som bliver brugt i en mikroprocesser. FreeRTOS giver os muligheden for at bruge preemptiv skedulering, Det vil sige at CPU'en kan sprænge i mellem task og hoppe ud af en task efter behov. Dette bliver styret ud af hvilken prioritet taskén har eller om der en anden task, der for et interrupt den skal holde øje med.
 \\
 Udover dette har freeRTOS også mange andre funktioner dette projekt kan udnytte. Der er mulighed for at oprette køer, som vil blive nævnt som queues. Disse queues kan man sende events og data til ved hjælp af en funktion der hedder xQueueSend. 
 \\
