@@ -83,10 +83,10 @@ NET "SPI_MOSI"	LOC = "M16"; #JA10
 
 #JB1
 
-#NET "NOC"	 LOC = "M13"; #JB1
-#NET "MotorA<0>"	 LOC = "R18"; #JB2
-#NET "MotorAE"	 LOC = "R15"; #JB3
-#NET "MotorB<1>"	 LOC = "T17"; #JB4
+NET "Motor1AB<0>"	 LOC = "M13"; #JB1
+NET "Motor1AB<1>"	 LOC = "R18"; #JB2
+NET "Motor2AB<0>"	 LOC = "R15"; #JB3
+NET "Motor2AB<1>"	 LOC = "T17"; #JB4
 #NET "NOC"	 LOC = "P17"; #JB7
 #NET "MotorA<1>"	 LOC = "R16"; #JB8
 #NET "MotorB<0>"	 LOC = "T18"; #JB9

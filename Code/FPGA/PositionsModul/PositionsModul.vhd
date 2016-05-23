@@ -14,7 +14,8 @@ entity PositionsModul is
 		  HallB    :	in STD_LOGIC;
 		  HallIndex : in STD_LOGIC;
         DataBusToSlave : out STD_LOGIC_VECTOR (11 downto 0);
-		  MotorZeroed : in STD_LOGIC
+		  MotorZeroed : in STD_LOGIC;
+		  HallOut : out STD_LOGIC_VECTOR(1 downto 0)
 		  );
 		  
 end PositionsModul;
@@ -24,6 +25,7 @@ Signal HallAState		: 		STD_LOGIC_VECTOR (1 downto 0) := "00";
 Signal HallBState		: 		STD_LOGIC_VECTOR (1 downto 0) := "00";
 Signal ticks			:		integer range 0 to 4096 := 0;
 signal HallIndexEdge : STD_LOGIC_VECTOR(1 downto 0) := "11";
+signal HallOutput : STD_LOGIC_VECTOR(1 downto 0) := "00";
 
 type States is(
 	Init,
@@ -39,10 +41,15 @@ signal State: States := Init;
 --signal Ciffer_tu	:		integer range 0 to 15 := 0;
 begin
 
+HallOut <= HallA & HallB;
+
+
 --	Bcd <= Conv_std_logic_vector(Ciffer_tu,4) & 
 --			 Conv_std_logic_vector(Ciffer_hun,4) &
 --			 Conv_std_logic_vector(Ciffer_ti,4)&
 --			 Conv_std_logic_vector(Ciffer_et,4);
+
+
 
 DataBustoSlave <= STD_LOGIC_VECTOR(TO_UNSIGNED(ticks, DataBusToSlave'length));
 

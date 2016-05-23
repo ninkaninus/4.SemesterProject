@@ -55,7 +55,9 @@ Port(	Clk : in  STD_LOGIC;
 			M1_Led : out STD_LOGIC_VECTOR(1 downto 0);
 			M2_Led : out STD_LOGIC_VECTOR(1 downto 0);
 			Seg : out STD_LOGIC_VECTOR(7 downto 0);
-			Enable : out STD_LOGIC_VECTOR(3 downto 0)
+			Enable : out STD_LOGIC_VECTOR(3 downto 0);
+			Motor1AB : out STD_LOGIC_VECTOR(1 downto 0);
+			Motor2AB : out STD_LOGIC_VECTOR(1 downto 0)
 	);
 
 end DesignVHDL;
@@ -182,7 +184,8 @@ begin
 		HallB=>M1_H_B,
 		HallIndex=>H_I_0_Pan,
 		DataBusToSlave=>M1_Pan_Ticks,
-		MotorZeroed=>M1_Pan_Zeroed
+		MotorZeroed=>M1_Pan_Zeroed,
+		HallOut => Motor1AB
 	);
 	
 	M2_PM_Tilt : entity work.PositionsModul
@@ -195,7 +198,8 @@ begin
 		HallB=>M2_H_B,
 		HallIndex=>H_I_1_Tilt,
 		DataBusToSlave=>M2_Tilt_Ticks,
-		MotorZeroed=>M2_Tilt_Zeroed
+		MotorZeroed=>M2_Tilt_Zeroed,
+		HallOut => Motor2AB
 	);
 	
 	NTB_M1_Pan_Ticks : entity work.NumberToBcd
