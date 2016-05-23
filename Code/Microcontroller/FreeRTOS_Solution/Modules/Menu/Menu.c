@@ -353,7 +353,7 @@ void show_pan_function(void)
 	while(1)
 	{
 		send_image(SHOW_PAN_POS);
-		if( xQueueReceive( MENU_queue, &( input ), 100 ))
+		if( xQueueReceive( MENU_queue, &( input ), 10 ))
 		{
 
 			break;
@@ -368,7 +368,7 @@ void show_tilt_function(void)
 	while(1)
 	{
 		send_image(SHOW_TILT_POS);
-		if( xQueueReceive( MENU_queue, &( input ), 100 ))
+		if( xQueueReceive( MENU_queue, &( input ), 10 ))
 		{
 			break;
 		}

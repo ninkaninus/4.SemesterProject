@@ -173,7 +173,6 @@ void position_convert(void)
 		tilt = 3*360 - (1730 - tilt);
 	}
 
-	pan++;
 	pan  = pan/3;
 	tilt = tilt/3;
 
