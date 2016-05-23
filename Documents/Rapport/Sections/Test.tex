@@ -61,7 +61,24 @@ Det kan ses på figur \ref{fig:Pan_Response} at responsen er noget langsommere, 
 
 \subsection{Afbalancering}
 
-På figur \ref{fig:Balanced_Response} ses sammenligningen mellem tilt-systemet før og efter afbalancering. Det endelige resultat er stadigvæk ikke ideelt, men det er en del tættere på modellen.
+Der blev erfaret at det var svært at placere det påmonterede kamera så tilt delen af systemet var i balance. Der blev besluttede at prøve at afbalancere systemet ved at tilføje vægt. På figur \ref{fig:Afbalancering} kan man se den tilføjede vægt på systemet
+
+\begin{figure}[!hb]
+	\begin{center}
+		\includegraphics[scale=0.1]{Billeder/Afbalancering.jpg}
+		\caption{Den tilføjede vægt, der opvejer misplaceringen af kameraet}
+		\label{fig:Afbalancering}
+	\end{center}
+\end{figure}
+
+Systemerne der er blevet udleveret, er rimelig godt afbalanceret, men efter der er blevet påmontere 1.4kg kamera er systemet ude af balance, dette kan ses på figur \ref{fig:Balanced_Response} hvor den orange graf er steprespons for systemet påmonteret kamera.\\
+
+Kameraet vejer med ophænget 1.4kg, men er placeret en lille smule fra omdrejningspunktet, hvilket kunne ses ved at det altid faldt tilbage til et bestemt punkt når systemet blev frigjort fra motoren.
+Ud fra den observation blev der placeredet vægt i den modsatte ende af tilt delen, til systemet ikke faldt tilbage til samme punkt hver gang. Efterfølgende er det blevet vejet til at være 0.17kg.
+
+På figur \ref{fig:Afbalancering} kan man med den blå graf se stepresponset for tilt delen af systemet efter afbalanceringen. Hvis man sammenligner det med den røde graf på figur\ref{fig:Behandlet} så kan man se at systemet er tæt på at have samme steprespons som efter kameraet blev monteret.\\
+
+%På figur \ref{fig:Balanced_Response} ses sammenligningen mellem tilt-systemet før og efter afbalancering. Det endelige resultat er stadigvæk ikke ideelt, men det er en del tættere på modellen.
 
 \begin{figure}[!hb]
 	\begin{center}
@@ -75,7 +92,7 @@ På figur \ref{fig:Balanced_Response} ses sammenligningen mellem tilt-systemet f
 
 En af antagelserne der bliver gjort i modellen af systemet, er at der findes en nogenlunde lineær sammenhæng imellem duty cycle og omdrejningshastigheden. For at påvise denne sammenhæng kan man plotte hastigheden, når motoren har nået steady state, ved forskellige duty cycles. 
 
-XXXX Do your stuffs here, Jonas/William
+XXXX Do your stuffs here Jonas
 
 Hvis man plotter step responsen ved forskellige duty cycles (figur \ref{fig:RPM_DC}), kan det også påvises at tidskonstanten forbliver nogenlunde konstant. 
 
