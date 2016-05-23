@@ -119,7 +119,6 @@ void LCD_Set_Cursor(INT8U address)
 void LCD_task(void *pvParameters)
 {
 	INT8U received[36];
-
 	LCD_init();
 	while (1)
 	{

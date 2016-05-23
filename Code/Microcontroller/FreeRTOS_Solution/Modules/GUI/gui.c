@@ -24,6 +24,7 @@
 #include "Modules/LCD/lcd.h"
 #include "Modules/Tasking/tmodel.h"
 #include "Modules/Tasking/messages.h"
+#include "Modules/Converter/Convert.h"
 #include "GUI/gui.h"
 #include "FreeRTOS.h"
 #include "task.h"
@@ -36,30 +37,164 @@
 
 /*****************************   Variables   *******************************/
 
-INT8U images[6][36] = {
-		{' ','S','Y','S','T','E','M',' ','C','O','N','T','R','O','L',' ',
+INT8U images[33][36] = {
+		{' ',' ',' ',' ','W','e','l','c','o','m','e','!',' ',' ',' ',' ',
 		 ' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',
+		 0x00,0,0,0 },	// cursor, 1= _ under cursor, 1=blink , næste karakter
+
+//Run menu
+////////////////////////
+		{'E','n','t','e','r',' ','m','e','n','u',':',' ',' ',' ',' ',' ',
+		 'R','u','n',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',
 		 0x00,0,0,0 },
 
-		{' ',' ',' ','R','E','G','U','L','A','T','I','O','N',' ',' ',' ',
-		 ' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',
+		{'E','n','t','e','r',' ','m','e','n','u',':',' ',' ',' ',' ',' ',
+		 'S','h','o','w',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',
 		 0x00,0,0,0 },
 
-		{' ',' ',' ',' ','P','O','S','I','T','I','O','N',' ',' ',' ',' ',
-		' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',
-		0x00,0,0,0 },
+		{'E','n','t','e','r',' ','m','e','n','u',':',' ',' ',' ',' ',' ',
+		 'O','p','t','i','o','n','s',' ',' ',' ',' ',' ',' ',' ',' ',' ',
+		 0x00,0,0,0 },
 
-		{' ',' ','P','I','D',' ','C','O','N','T','R','O','L',' ',' ',' ',
-		' ','P',':',' ',' ',' ','I',':',' ',' ',' ','D',':',' ',' ',' ',
-		0x00,0,0,0 },
+//Run menu
+////////////////////////
+		{'R','u','n',' ','m','e','n','u',':',' ',' ',' ',' ',' ',' ',' ',
+		 'S','t','a','r','t',' ','s','y','s','t','e','m',' ',' ',' ',' ',
+		 0x00,0,0,0 },
 
-		{' ',' ','S','E','T',' ','P','O','S','I','T','I','O','N',' ',' ',
-		'X',':',' ',' ',' ',' ',' ',' ','Y',':',' ',' ',' ',' ',' ',' ',
-		0x12,0,0,0 },
+		{'R','u','n',' ','m','e','n','u',':',' ',' ',' ',' ',' ',' ',' ',
+		 'S','t','o','p',' ','s','y','s','t','e','m',' ',' ',' ',' ',' ',
+		 0x00,0,0,0 },
 
-		{'P','a','n',':',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',
-		 'T','i','l','t',':',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',
-		0x0B,0,0,0 }
+		{'R','u','n',' ','m','e','n','u',':',' ',' ',' ',' ',' ',' ',' ',
+		 'M','a','n','u','a','l',' ','J','o','g',' ',' ',' ',' ',' ',' ',
+		 0x00,0,0,0 },
+
+		{'R','u','n',' ','m','e','n','u',':',' ',' ',' ',' ',' ',' ',' ',
+		 'M','a','n','u','a','l',' ','S','e','t',' ',' ',' ',' ',' ',' ',
+		 0x00,0,0,0 },
+
+		{'R','u','n',' ','m','e','n','u',':',' ',' ',' ',' ',' ',' ',' ',
+		 'A','u','t','o','p','i','c',' ','o','n','/','o','f','f',' ',' ',
+		 0x00,0,0,0 },
+
+		{'R','u','n',' ','m','e','n','u',':',' ',' ',' ',' ',' ',' ',' ',
+		 'R','e','t','u','r','n',' ','t','o',' ','m','a','i','n',' ',' ',
+		 0x00,0,0,0 },
+
+
+
+//Show menu
+////////////////////////
+		{'S','h','o','w',' ','m','e','n','u',' ',' ',' ',' ',' ',' ',' ',
+		 'P','a','n',' ','p','o','s','i','t','i','o','n',' ',' ',' ',' ',
+		 0x00,0,0,0 },
+
+		{'S','h','o','w',' ','m','e','n','u',' ',' ',' ',' ',' ',' ',' ',
+		 'T','i','l','t',' ','p','o','s','i','t','i','o','n',' ',' ',' ',
+		 0x00,0,0,0 },
+
+		{'S','h','o','w',' ','m','e','n','u',' ',' ',' ',' ',' ',' ',' ',
+		 'E','r','r','o','r',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',
+		 0x00,0,0,0 },
+
+		{'S','h','o','w',' ','m','e','n','u',' ',' ',' ',' ',' ',' ',' ',
+		 'R','e','t','u','r','n',' ','t','o',' ','m','a','i','n',' ',' ',
+		 0x00,0,0,0 },
+
+//Options menu
+////////////////////////
+		{'O','p','t','i','o','n','s',' ','m','e','n','u',' ',' ',' ',' ',
+		 'S','e','t',' ','p','a','n',' ','o','f','f','s','e','t',' ',' ',
+		 0x00,0,0,0 },
+
+		{'O','p','t','i','o','n','s',' ','m','e','n','u',' ',' ',' ',' ',
+		 'S','e','t',' ','t','i','l','t',' ','o','f','f','s','e','t',' ',
+		 0x00,0,0,0 },
+
+		{'O','p','t','i','o','n','s',' ','m','e','n','u',' ',' ',' ',' ',
+		 'S','e','t',' ','p','a','n',' ','p','i','d','k',' ',' ',' ',' ',
+		 0x00,0,0,0 },
+
+		{'O','p','t','i','o','n','s',' ','m','e','n','u',' ',' ',' ',' ',
+		 'S','e','t',' ','t','i','l','t',' ','p','i','d','k',' ',' ',' ',
+		 0x00,0,0,0 },
+
+		{'O','p','t','i','o','n','s',' ','m','e','n','u',' ',' ',' ',' ',
+		 'S','e','t',' ','k','a','n','i','n',' ','p','i','d',' ',' ',' ',
+		 0x00,0,0,0 },
+
+		{'O','p','t','i','o','n','s',' ','m','e','n','u',' ',' ',' ',' ',
+		 'R','e','t','u','r','n',' ','t','o',' ','m','a','i','n',' ',' ',
+		 0x00,0,0,0 },
+
+// Functions
+///////////////
+
+		{'C','o','n','t','r','o','l','l','e','r',' ','s','t','a','r','t',
+		 'P','r','e','s','s',' ','t','o',' ','r','e','t','u','r','n',' ',
+		 0x00,0,0,0 },
+
+		{'C','o','n','t','r','o','l','l','e','r',' ','s','t','o','p','!',
+		 'P','r','e','s','s',' ','t','o',' ','r','e','t','u','r','n',' ',
+		 0x00,0,0,0 },
+
+		{'D','i','r','e','c','t',' ','C','o','n','t','r','o','l','!',' ',
+		 'P','a','n',' ','a','c','t','i','v','e','!',' ',' ',' ',' ',' ',
+		 0x00,0,0,0 },
+
+		{'D','i','r','e','c','t',' ','C','o','n','t','r','o','l','!',' ',
+		 'T','i','l','t',' ','a','c','t','i','v','e','!',' ',' ',' ',' ',
+		 0x00,0,0,0 },
+
+		{'S','e','t',' ','p','o','s','i','t','i','o','n',':',' ',' ',' ',
+		 'P','a','n',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',
+		 0x00,0,0,0 },
+
+		{'S','e','t',' ','p','o','s','i','t','i','o','n',':',' ',' ',' ',
+		 'T','i','l','t',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',
+		 0x00,0,0,0 },
+
+		{'A','C','T','I','O','N',' ','A','B','O','R','T','E','D','!',' ',
+		 'P','r','e','s','s',' ','t','o',' ','r','e','t','u','r','n',' ',
+		 0x00,0,0,0 },
+
+// Show variable
+///////////////
+
+		{'P','a','n',' ','p','o','s','i','t','i','o','n',':',' ',' ',' ',
+		 ' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',
+		 0x13,0,0,0 },
+
+		{'T','i','l','t',' ','p','o','s','i','t','i','o','n',':',' ',' ',
+		 ' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',
+		 0x13,0,0,0 },
+
+///////////////
+
+		{'I','n','v','a','l','i','d',' ','I','n','p','u','t',' ',' ',' ',
+		 ' ',' ','T','r','y',' ','A','g','a','i','n','.','.','.',' ',' ',
+		 0x00,0,0,0 },
+
+		{'S','e','t',' ','t','h','e',' ','T','i','m','e',':',' ',' ',' ',
+		 ' ',' ',' ',' ','h','h',':','m','m',':','s','s',' ',' ',' ',' ',
+	     0x14,0,1,0 },
+
+		{'C','u','r','r','e','n','t',' ','T','i','m','e',':',' ',' ',' ',
+		 ' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',
+		 0x14,0,0,0 },
+
+		{'S','e','t',' ','S','c','a','l','e',':',' ',' ',' ',' ',' ',' ',
+		 ' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',
+		 0x10,0,1,0 },
+
+		{'S','e','t',' ','O','f','f','s','e','t',':',' ',' ',' ',' ',' ',
+		 ' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',
+		 0x10,0,1,0 },
+
+		{'K','n','o','b',' ','V','a','l','u','e',':',' ',' ',' ',' ',' ',
+		 ' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ',
+		 0x18,0,0,0 }
 };
 
 INT8U current_image[36];
@@ -72,11 +207,41 @@ extern xSemaphoreHandle scale_sem;
 extern xSemaphoreHandle scale_update_sem;
 
 enum gui_states {
-	MAIN,
-	CONTROL,
-	POSITION,
-	CONTROL_PID,
-	X_Y
+	INIT,
+	IMAGE_MAIN_RUN,
+	IMAGE_MAIN_SHOW,
+	IMAGE_MAIN_OPTIONS,
+	IMAGE_RUN_START,
+	IMAGE_RUN_STOP,
+	IMAGE_RUN_JOG,
+	IMAGE_RUN_SET,
+	IMAGE_RUN_AUTO,
+	IMAGE_RUN_RETURN,
+	IMAGE_SHOW_PAN,
+	IMAGE_SHOW_TILT,
+	IMAGE_SHOW_ERROR,
+	IMAGE_SHOW_RETURN,
+	IMAGE_OPTIONS_PAN,
+	IMAGE_OPTIONS_TILT,
+	IMAGE_OPTIONS_PAN_PID,
+	IMAGE_OPTIONS_TILT_PID,
+	IMAGE_OPTIONS_KANIN,
+	IMAGE_OPTIONS_RETURN,
+	IMAGE_START_FUNCTION,
+	IMAGE_STOP_FUNCTION,
+	IMAGE_JOG_PAN,
+	IMAGE_JOG_TILT,
+	IMAGE_SET_PAN,
+	IMAGE_SET_TILT,
+	IMAGE_ABORTED,
+	SHOW_PAN_POS,
+	SHOW_TILT_POS,
+	ENTER_COMMAND,
+	SET_TIME,
+	SHOW_TIME,
+	SET_SCALE,
+	SET_OFFSET,
+	SHOW_KNOB
 };
 
 /*****************************   Functions   *******************************/
@@ -84,109 +249,343 @@ enum gui_states {
 void gui_task(void *pvParameters)
 {
 	INT8U received;
-	INT8U gui_state = MAIN;
+	INT32U pos;
+	INT8U pos100;
+	INT8U pos10;
+	INT8U pos1;
+	INT8U gui_state = INIT;
+	INT8U display_number = 0;
 
-	new_image(MAIN);
+	set_image(WELCOME_MSG);
+	xQueueSend(LCD_image_queue,&current_image,10000);
 	while (1)
 	{
-		switch (gui_state)
-		{
-		case MAIN:
-			if (xQueueReceive(GUI_queue,&received,1000))
-			{
-				if (received == 'R')
-				{
-					gui_state = CONTROL;
-					new_image(CONTROL);
-				}
-				if (received == 'L')
-				{
-					gui_state = POSITION;
-					new_image(POSITION);
-				}
-			}
-			break;
-		case CONTROL:
-			if (xQueueReceive(GUI_queue,&received,1000))
-			{
-				if (received == 'R')
-				{
-					gui_state = POSITION;
-					new_image(POSITION);
-				}
-				if (received == 'L')
-				{
-					gui_state = MAIN;
-					new_image(MAIN);
-				}
-				if (received == '#')
-				{
-					gui_state = CONTROL_PID;
-					new_image(CONTROL_PID);
-				}
-			}
-			break;
-		case POSITION:
-			if (xQueueReceive(GUI_queue,&received,1000))
-			{
-				if (received == 'R')
-				{
-					gui_state = MAIN;
-					new_image(MAIN);
-				}
-				if (received == 'L')
-				{
-					gui_state = CONTROL;
-					new_image(CONTROL);
-				}
-				if (received == '#')
-				{
-					gui_state = X_Y;
-					new_image(X_Y);
-				}
-			}
-			break;
-		case CONTROL_PID:
-			if (xQueueReceive(GUI_queue,&received,1000))
-			{
-				if (received == '*')
-				{
-					gui_state = CONTROL;
-					new_image(CONTROL);
-				}
-			}
-			break;
-		case X_Y:
-			if (xQueueReceive(GUI_queue, &received,1000))
-			{
-				if (received == '*')
-				{
-					gui_state = POSITION;
-					new_image(POSITION);
-				}
 
-				if (received == 'R')
-				{
-					write_char('1');
-					write_char('2');
-					current_image[NEXT_CURSOR_POS] = 0x1A;
-					write_char('3');
-					current_image[CHAR_POS] = 0x1A;
-					write_char('4');
-					write_char('5');
-					current_image[NEXT_CURSOR_POS] = 0x12;
-					write_char('6');
-					current_image[CHAR_POS] = 0x12;
-				}
+		if (xQueueReceive(GUI_queue, &received, 10000))
+		{
+			if (received != gui_state)
+			{
+				gui_state = received;
+				display_number = 0;
 			}
-			break;
-		default:
-			break;
+			switch (gui_state)
+			{
+				case INIT:
+					new_image(INIT);
+					break;
+
+				case IMAGE_MAIN_RUN:
+				case IMAGE_MAIN_SHOW:
+				case IMAGE_MAIN_OPTIONS:
+				case IMAGE_RUN_START:
+				case IMAGE_RUN_STOP:
+				case IMAGE_RUN_JOG:
+				case IMAGE_RUN_SET:
+				case IMAGE_RUN_AUTO:
+				case IMAGE_RUN_RETURN:
+				case IMAGE_SHOW_PAN:
+				case IMAGE_SHOW_TILT:
+				case IMAGE_SHOW_ERROR:
+				case IMAGE_SHOW_RETURN:
+				case IMAGE_OPTIONS_PAN:
+				case IMAGE_OPTIONS_TILT:
+				case IMAGE_OPTIONS_PAN_PID:
+				case IMAGE_OPTIONS_TILT_PID:
+				case IMAGE_OPTIONS_KANIN:
+				case IMAGE_OPTIONS_RETURN:
+				case IMAGE_START_FUNCTION:
+				case IMAGE_STOP_FUNCTION:
+				case IMAGE_JOG_PAN:
+				case IMAGE_JOG_TILT:
+				case IMAGE_SET_PAN:
+				case IMAGE_SET_TILT:
+				case IMAGE_ABORTED:
+					new_image(gui_state);
+					break;
+
+				case SHOW_PAN_POS:
+					position_convert();
+					pos = get_msg_state(SSM_POS_DEG_PAN);
+					pos1 = pos % 10;
+					pos10 = pos % 100 / 10;
+					pos100 = pos / 100;
+					switch(display_number)
+					{
+						case 0:
+							new_image(gui_state);
+							display_number++;
+							break;
+
+						case 1:
+							write_char(pos100 + 48);
+							display_number++;
+							break;
+						case 2:
+							write_char(pos10 + 48);
+							display_number++;
+							break;
+						case 3:
+							current_image[NEXT_CURSOR_POS] = 0x13;
+							write_char(pos1 + 48);
+							current_image[CHAR_POS] = 0x13;
+							display_number = 1;
+						default:
+							display_number = 1;
+							break;
+					}
+
+					break;
+				case SHOW_TILT_POS:
+					position_convert();
+					pos = get_msg_state(SSM_POS_DEG_TILT);
+					pos1 = pos % 10;
+					pos10 = pos % 100 / 10;
+					pos100 = pos / 100;
+					switch(display_number)
+					{
+						case 0:
+							new_image(gui_state);
+							display_number++;
+							break;
+
+						case 1:
+							write_char(pos100 + 48);
+							display_number++;
+							break;
+						case 2:
+							write_char(pos10 + 48);
+							display_number++;
+							break;
+						case 3:
+							current_image[NEXT_CURSOR_POS] = 0x13;
+							write_char(pos1 + 48);
+							current_image[CHAR_POS] = 0x13;
+							display_number = 1;
+						default:
+							display_number = 1;
+							break;
+					}
+
+					break;
+
+				default:
+					break;
+			}
 		}
 	}
 }
+/*
+			case INIT:
+				if (xQueueReceive(GUI_queue, &received, 10000))
+				{
+					if (received == CMD_EVENT)
+					{
+						gui_state = ENTER_COMMAND;
+						new_image(COMMAND_PROMPT);
+					}
+				}
+				break;
 
+			case IMAGE_MAIN_RUN:
+			case IMAGE_MAIN_SHOW:
+			case IMAGE_MAIN_OPTIONS:
+			case IMAGE_RUN_START:
+			case IMAGE_RUN_STOP:
+			case IMAGE_RUN_JOG:
+			case IMAGE_RUN_SET:
+			case IMAGE_RUN_AUTO:
+			case IMAGE_RUN_RETURN:
+			case IMAGE_SHOW_PAN:
+			case IMAGE_SHOW_TILT:
+			case IMAGE_SHOW_ERROR:
+			case IMAGE_SHOW_RETURN:
+			case IMAGE_OPTIONS_PAN:
+			case IMAGE_OPTIONS_TILT:
+			case IMAGE_OPTIONS_PAN_PID:
+			case IMAGE_OPTIONS_TILT_PID:
+			case IMAGE_OPTIONS_KANIN:
+			case IMAGE_OPTIONS_RETURN:
 
+				new_image(gui_state);
+
+				break;
+
+			case ENTER_COMMAND:
+				if (xQueueReceive(GUI_queue, &received, 10000))
+				{
+					switch(received)
+					{
+					case ERROR_EVENT:
+						new_image(ERROR_MSG);
+						vTaskDelay(1000 / portTICK_RATE_MS);
+						new_image(COMMAND_PROMPT);
+						break;
+
+					case CMD_EVENT:
+						new_image(COMMAND_PROMPT);
+						break;
+
+					case SET_TIME_EVENT:
+						gui_state = SET_TIME;
+						new_image(TIME_PROMPT);
+						break;
+
+					case SHOW_TIME_EVENT:
+						gui_state = SHOW_TIME;
+						new_image(CURRENT_TIME);
+						break;
+
+					case SET_SCALE_EVENT:
+						gui_state = SET_SCALE;
+						new_image(SCALE_PROMPT);
+						break;
+
+					case SET_OFFSET_EVENT:
+						gui_state = SET_OFFSET;
+						new_image(OFFSET_PROMPT);
+						break;
+
+					case SHOW_KNOB_EVENT:
+						gui_state = SHOW_KNOB;
+						new_image(KNOB_VALUE);
+						break;
+
+					default:
+						if(current_image[NEXT_CURSOR_POS] < 32)
+						{
+							write_char(received);
+						}
+						break;
+					}
+				}
+				break;
+
+			case SET_TIME:
+				if (xQueueReceive(GUI_queue, &received, 10000))
+				{
+					switch(received)
+					{
+					case ERROR_EVENT:
+						new_image(ERROR_MSG);
+						vTaskDelay(1000 / portTICK_RATE_MS);
+						new_image(TIME_PROMPT);
+						break;
+
+					case CMD_EVENT:
+						gui_state = ENTER_COMMAND;
+						new_image(COMMAND_PROMPT);
+						break;
+
+					case SHOW_TIME_EVENT:
+						gui_state = SHOW_TIME;
+						new_image(CURRENT_TIME);
+						break;
+
+					default:
+						if (current_image[NEXT_CURSOR_POS] == 0x16 || current_image[NEXT_CURSOR_POS] == 0x19) 	// positioner svarende til de to colonner
+						{
+							current_image[NEXT_CURSOR_POS]++;				// næste cursor skal være 1 position længere fremme
+							write_char(received);
+							current_image[CHAR_POS]++;					// næste karakter der skal skrives skal også være 1 position længere fremme
+						}
+						else
+							write_char(received);
+
+						break;
+					}
+				}
+				break;
+
+			case SHOW_TIME:
+				if (xQueueReceive(GUI_queue, &received, 500 / portTICK_RATE_MS))
+				{
+					if(received == CMD_EVENT)
+					{
+						gui_state = ENTER_COMMAND;
+						new_image(COMMAND_PROMPT);
+					}
+				}
+				else if(xSemaphoreTake(rtc_update_sem,10000 / portTICK_RATE_MS))
+				{
+					INT8U sec = get_msg_state(SSM_RTC_SEC);
+					INT8U min = get_msg_state(SSM_RTC_MIN);
+					INT8U hour = get_msg_state(SSM_RTC_HOUR);
+					INT8U colon = ':';
+
+					if( sec & 0x01)
+						colon = ' ';
+
+					write_char(hour / 10 + '0');
+					write_char(hour % 10 + '0');
+					write_char(colon);
+					write_char(min / 10 + '0');
+					write_char(min % 10 + '0');
+					write_char(colon);
+					write_char(sec / 10 + '0');
+
+					current_image[NEXT_CURSOR_POS] = 0x14;
+					write_char(sec % 10 + '0');
+					current_image[CHAR_POS] = 0x13;
+
+				}
+				break;
+
+			case SET_SCALE:
+				if (xQueueReceive(GUI_queue, &received, 500 / portTICK_RATE_MS))
+				{
+					switch(received)
+					{
+					case CMD_EVENT:
+						gui_state = ENTER_COMMAND;
+						new_image(COMMAND_PROMPT);
+						break;
+
+					case SET_OFFSET_EVENT:
+						gui_state = SET_OFFSET;
+						new_image(OFFSET_PROMPT);
+						break;
+
+					default:
+						write_char(received);
+						break;
+					}
+				}
+
+				break;
+
+			case SET_OFFSET:
+				if (xQueueReceive(GUI_queue, &received, 500 / portTICK_RATE_MS))
+				{
+					switch(received)
+					{
+					case CMD_EVENT:
+						gui_state = ENTER_COMMAND;
+						new_image(COMMAND_PROMPT);
+						break;
+
+					case SHOW_KNOB_EVENT:
+						gui_state = SHOW_KNOB;
+						new_image(KNOB_VALUE);
+						break;
+
+					default:
+						write_char(received);
+						break;
+					}
+				}
+
+				break;
+
+			case SHOW_KNOB:
+
+				break;
+
+			default:
+				break;
+		}
+	}
+}
+*/
 void set_image(INT8U image)
 {
 	for(int i = 0; i < 36; i++)
@@ -209,6 +608,7 @@ void write_char(INT8U character)
 	current_image[CHAR_POS]++;
 	current_image[NEXT_CURSOR_POS]++;
 }
+
 
 void show_knob()
 {
