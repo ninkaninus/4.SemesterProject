@@ -24,6 +24,7 @@
 #include "Modules/LCD/lcd.h"
 #include "Modules/Tasking/tmodel.h"
 #include "Modules/Tasking/messages.h"
+#include "Modules/Converter/Convert.h"
 #include "GUI/gui.h"
 #include "FreeRTOS.h"
 #include "task.h"
@@ -303,8 +304,8 @@ void gui_task(void *pvParameters)
 					break;
 
 				case SHOW_PAN_POS:
-					pos = (get_msg_state(SSM_POS_PAN) - 1730) / 3;
-					//pos = 123;
+					position_convert();
+					pos = get_msg_state(SSM_POS_DEG_PAN);
 					pos1 = pos % 10;
 					pos10 = pos % 100 / 10;
 					pos100 = pos / 100;
@@ -335,10 +336,8 @@ void gui_task(void *pvParameters)
 
 					break;
 				case SHOW_TILT_POS:
-					pos = (get_msg_state(SSM_POS_TILT) - 1190) / 3;
-					//pos++;// = 123;
-//					if (pos> 200)
-//						pos = 0;
+					position_convert();
+					pos = get_msg_state(SSM_POS_DEG_TILT);
 					pos1 = pos % 10;
 					pos10 = pos % 100 / 10;
 					pos100 = pos / 100;

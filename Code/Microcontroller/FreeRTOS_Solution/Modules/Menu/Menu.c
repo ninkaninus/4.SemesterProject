@@ -418,6 +418,7 @@ void send_image(INT8U besked)
 
 void MENU_task(void *pvParameters)
 {
+	INT8U input = 0;
 	if( xQueueReceive( MENU_queue, &( input ), 1000 ))
 	{
 	}
@@ -429,7 +430,7 @@ void MENU_task(void *pvParameters)
 		static INT8U super_state = 0;
 		static INT8U sub_state = 1;
 		INT8U event = 0;
-		INT8U input = 0;
+
 
 		if( xSemaphoreTake( menu_input_sem, 100 ))
 		{
