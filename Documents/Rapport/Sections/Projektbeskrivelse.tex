@@ -1,21 +1,13 @@
 \section{Projektbeskrivelse}
-
-\section{Indledning}
 Der er til dette projekt ønsket et system som kan tracke et objekt som er i bevægelse.\\
 Et sådan system kan bruges til tracking af lydkilder, personer og/eller afstandsmåling, fælles for disse former for tracking er at de grundlæggende er styret af et pan-tilt system.
-
+\subsection{Indledning}
 Dette projekt vil fokusere på at følge himmellegemer med en platform magen til et observatorium. Dette bliver implementeret ved at give systemet et horisontalt koordinatsæt, enten udregnet via en computer, eller via et numerisk tastatur som er blevet udleveret.\\
 Ved input fra en computer, vil der være mulighed for at lave en applikation, der automatisk følger et himmellegeme, ved at ændre koordinatsættet kontinuert.
 Systemet vil vise data på et LCD som er blevet udleveret, her vil det være muligt at observere hvilke nuværende koordinatsæt systemet har.\\
 XXXX Eventuelt nævne menu systemet herunder.\\
 
-DETTE SKAL STÅ ET ANDET STED\\
-Pan-tilt systemet styres af en Field Programmable Gate Array (FPGA), som sender to Pulse-width modulation (PWM) signaler til et par H-broer som styrer motorene på hhv. panorerings- og tilt-rammen.
-FPGA’en skal modtage kommandoer fra den udleverede TIVA microprocessor via en Serial Peripheral Interface (SPI) forbindelse.
-Her har brugeren mulighed for at styre, samt få feedback af systemparametre.
-DETTE SKAL STÅ ET ANDET STED\\
-
-\section{Problemformulering}
+\subsection{Problemformulering}
 Med dette project håber vi at finde ud af nyttige metoder til at styre et pan og tilt system ved brug af polære koordinater, som er nyttige i denne sammenhæng fordi der er nemme at omregne til og fra i forhold til andre koordinat systemer, samt meget intuitiv at benytte til et drejende system. Til dette er vi givet et pan og tilt system der har visse begrænsninger i dens mekaniske bevægelser. Vi skal derfor også finde en metode til at sikre at der ikke sker mekaniske uheld ved at systemet går ud over sine grænser.
 \\
 Når disse er opfyldt skal det undersøges om det er muligt at lave en matematisk model af systemet og dens opførsel, således at denne kan benyttes til at skabe et closed-loop kontrol system.\\
@@ -23,11 +15,11 @@ Når disse er opfyldt skal det undersøges om det er muligt at lave en matematis
 Efter at systemet er modeleret, skal der bygges en brugbar applikation til systemet, dette projekt vil derfor forsøge at implementere en platform hvorpå man kan montere et spejlrefleks kamera og tage billeder af himmellegemer.\\
 Dette projekt vil derfor fokusere høj nøjagtighed.\\
 
-\section{Kravspecifikation}
+\subsection{Kravspecifikation}
 
 Hvis pan-tilt systemet skal pege på den internationale rumstation som bevæger sig i en afstand omkring 400 km væk fra jorden, og systemet er upræcist og bare peger en enkelt grad forkert, vil den næsten pege 7 km ved siden af.
 
-\subsection{Arbejds- og fagområder}
+\subsubsection{Arbejds- og fagområder}
 Pan-Tilt projektet bliver udarbejdet for at give en bredere og bedre forståelse for det 4. semesters fag, derfor er der valgt nogle arbejds- og fag- områder som sørger for at projektet kommer til at have indhold fra hvert fag.\\
 4. semester fagene består af:
 \begin{itemize}[noitemsep]
@@ -37,7 +29,7 @@ Pan-Tilt projektet bliver udarbejdet for at give en bredere og bedre forståelse
 	\item Digital Programmerbar Elektronik (DIG)
 \end{itemize}
 
-\subsection{Obligatoriske Krav}
+\subsubsection{Obligatoriske Krav}
 
 \begin{itemize}[noitemsep]
 	\item COS/EMP
@@ -58,7 +50,7 @@ Pan-Tilt projektet bliver udarbejdet for at give en bredere og bedre forståelse
 	\end{itemize}
 \end{itemize}
 
-\subsection{Primære opgaver}
+\subsubsection{Primære opgaver}
 
 Som krav til systemet skal det kunne tage et input i form af et horizontalt koordinatsæt, som systemet så omsætter til angulære koordinater således dette kan benyttes af systemet. Yderligere er det nødvendigt at systemet kan tage manuelt indtastning af koordinater som alternativt input.
 
@@ -68,32 +60,7 @@ Der skal laves en PID controler, som beskrevet i REG, som er foruden både overs
 
 Samtidig skal der laves et stykke funktionelt digitalt programmeret elektronik, i form af et FPGA board, der skal fungerer som en ``slave'' for microcontrolleren og give denne information om positionen af systemet samt benytte denne til at sætte hastighed or retning på motorerne. Denne skal også fungerer som en sikkerhed der endegyldigt sikre at der ikke kan ske uheld ved at systemet kører ud over sine mekaniske begrændsninger.
 
-%\begin{itemize}
-%	\item Skal pege på et bestemt punkt på himlen givet ved astronomiske koordinater omregnet til angulære koordinater.
-%	\item Manuelt input af koordinater
-%	\item COS/EMP
-%	\begin{itemize}[noitemsep]
-%		\item Feedback på LCD med nuværende position i astronomiske koordinater
-%		\item Input fra knapper på EMP board
-%		\item UART-forbindelse til en terminal på en computer
-%		\item UART-protokol
-%	\end{itemize}
-%	\item REG
-%	\begin{itemize}[noitemsep]
-%		\item PID-controller
-%		\item Intet overshoot eller steady state fejl
-%		\item 0-180 grader på 5 sekunder
-%		\item skal ramme koordinater inden for 1 grad
-%	\end{itemize}
-%	\item DIG
-%	\begin{itemize}[noitemsep]
-%		\item FPGA'en skal udelukkende være en slave som microcontrolleren kan spørge om oplysninger og ændre tilstand på
-%		\item Sikkerhed der forhindrer motoren i at køre den forkerte vej (retning og ticks skal stemme overens)
-%		\item Sikkerhed der forhindrer Pan/Tilt-systemet i at gå ud over sine mekaniske begrænsninger
-%	\end{itemize}		
-%\end{itemize}
-
-\subsection{Sekundære opgaver}
+\subsubsection{Sekundære opgaver}
 
 De sekundære krav til systemet som helhed, og tilsvarende applikation, er at dette kan udregne baner for himmellegemer og hente live oplysninger fra internettet om legemers position. Yderligere skal systemet kunne styres ved brug af en direkte kontrol af position uden brug af koordinater, og et kamera skal monteres i pan tilt systemet. Endeligt skal et bluetooth modul kunne benyttes til UART kommunikation.
 
@@ -102,28 +69,3 @@ Til COS/EMP fagene er det sekundære krav at systemet kan overvåges gennem UART
 Det sekundære krav til REG er at PID controlleren er i stand til at selvkalibrerer til et givent system.
 
 Til DIG er det sekundære krav at denne er i stand til at omregne til omregne systemets koordinater til grader.
-
-%\begin{itemize}[noitemsep]
-%	\item Udledning af koordinater (applikation)
-%	\begin{itemize}[noitemsep]
-%		\item ligninger for himmellegemer
-%		\item Live oplysninger fra internettet
-%	\end{itemize}
-%	\item Jog funktion
-%	\item Bluetooth til UART
-%	\item Montering af kamera
-%	
-%	\item COS/EMP
-%	\begin{itemize}[noitemsep]
-%		\item Overvågning af systemet igennem UART
-%	\end{itemize}
-%	\item REG
-%	\begin{itemize}[noitemsep]
-%		\item Selvkalibrerende PID controller
-%		\item Et nogenlunde præcist open loop system
-%	\end{itemize}
-%	\item DIG
-%	\begin{itemize}[noitemsep]
-%		\item FPGA'en skal omregne koordinaterne til grader
-%	\end{itemize}		
-%\end{itemize}
