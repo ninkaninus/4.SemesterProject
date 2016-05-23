@@ -1,2 +1,7 @@
 \section{Systembeskrivelse}
+
+Pan-tilt systemet styres af en Field Programmable Gate Array (FPGA), som sender to Pulse-width modulation (PWM) signaler til et par H-broer som styrer motorene på hhv. panorerings- og tilt-rammen.
+FPGA’en skal modtage kommandoer fra den udleverede TIVA microprocessor via en Serial Peripheral Interface (SPI) forbindelse.
+Her har brugeren mulighed for at styre, samt få feedback af systemparametre.
+
 EMG30\cite{emg30Data} er en motor med en indbygget gearing på 1:30, og to hall-sensorer til at give feedback omkring dens omdrejningshastighed. Den er forbundet til rammerne med bælter some har en udveksling på 1:6. Hver motor bliver styret af FPGA'en med PWM igennem en H-bro, der giver mulighed for at kontrollere omdrejningsretningen.
