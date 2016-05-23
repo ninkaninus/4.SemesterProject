@@ -1,11 +1,29 @@
 \section{Projektbeskrivelse}
-Der er til dette projekt ønsket et system som kan tracke et objekt som er i bevægelse.\\
-Et sådan system kan bruges til tracking af lydkilder, personer og/eller afstandsmåling, fælles for disse former for tracking er at de grundlæggende er styret af et pan-tilt system.
+\begin{wrapfigure}[50]{TR}{0.5\textwidth}
+	\centering
+		\includegraphics[scale=0.2]{Billeder/opstilling.jpg}
+\caption{Opstilling af panorerings- og tilt-system med motorer og hall sensorer tilføjet.}
+\label{fig:Opstilling}
+\end{wrapfigure}
 \subsection{Indledning}
-Dette projekt vil fokusere på at følge himmellegemer med en platform magen til et observatorium. Dette bliver implementeret ved at give systemet et horisontalt koordinatsæt, enten udregnet via en computer, eller via et numerisk tastatur som er blevet udleveret.\\
-Ved input fra en computer, vil der være mulighed for at lave en applikation, der automatisk følger et himmellegeme, ved at ændre koordinatsættet kontinuert.
-Systemet vil vise data på et LCD som er blevet udleveret, her vil det være muligt at observere hvilke nuværende koordinatsæt systemet har.\\
-XXXX Eventuelt nævne menu systemet herunder.\\
+Der er blevet tildelt et panorerings- og tilt-system, hvor tilt rammen er monteret på pan rammen.\\
+Et sådan system bruges ofte til, observatorier, lysudstyr, overvågningskameraer iblandt mange andre applikationer.
+Til følgende beskrivelse af systemet er der ønsket en valgfri meningsfyldt applikation, systemet kan ses på figur \ref{fig:Opstilling}.\\
+For at pan rammen ikke river ledningerne i stykker til tilt rammen, er der tilføjet en stopklods, derfor har pan rammen en begrænsning, hvor tilt rammen er ubegrænset i dens bevægelser.\\
+til rammerne er der tilføjet to EMG30\cite{emg30Data}, en på hhv pan og tilt rammerne.\\
+På rammerne er også tilføjet 2 hall sensorer, en på pan, og en på tilt. 
+
+
+
+
+
+
+
+
+%Dette projekt vil fokusere på at følge himmellegemer med en platform magen til et observatorium. Dette bliver implementeret ved at give systemet et horisontalt koordinatsæt, enten udregnet via en computer, eller via et numerisk tastatur som er blevet udleveret.\\
+%Ved input fra en computer, vil der være mulighed for at lave en applikation, der automatisk følger et himmellegeme, ved at ændre koordinatsættet kontinuert.
+%Systemet vil vise data på et LCD som er blevet udleveret, her vil det være muligt at observere hvilke nuværende koordinatsæt systemet har.\\
+%XXXX Eventuelt nævne menu systemet herunder.\\
 
 \subsection{Problemformulering}
 Med dette project håber vi at finde ud af nyttige metoder til at styre et pan og tilt system ved brug af polære koordinater, som er nyttige i denne sammenhæng fordi der er nemme at omregne til og fra i forhold til andre koordinat systemer, samt meget intuitiv at benytte til et drejende system. Til dette er vi givet et pan og tilt system der har visse begrænsninger i dens mekaniske bevægelser. Vi skal derfor også finde en metode til at sikre at der ikke sker mekaniske uheld ved at systemet går ud over sine grænser.
