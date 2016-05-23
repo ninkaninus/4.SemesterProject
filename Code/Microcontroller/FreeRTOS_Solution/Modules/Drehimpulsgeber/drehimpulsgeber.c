@@ -42,7 +42,7 @@
 /*****************************   Constants   *******************************/
 
 /*****************************   Variables   *******************************/
-extern xQueueHandle menu_queue;
+extern xQueueHandle MENU_queue;
 /*****************************   Functions   *******************************/
 void dreh_init(void) {
 	// Enable the GPIO port that is used for Numpad
@@ -122,12 +122,12 @@ void dreh_task(void *pvParameters)
 			if (val == 1)
 			{
 				Turn = 'R';
-				xQueueSend(menu_queue, &Turn, 10 / portTICK_RATE_MS);
+				xQueueSend(MENU_queue, &Turn, 10 / portTICK_RATE_MS);
 			}
 			else if (val == -1)
 			{
 				Turn = 'L';
-					xQueueSend(menu_queue, &Turn, 10 / portTICK_RATE_MS);
+					xQueueSend(MENU_queue, &Turn, 10 / portTICK_RATE_MS);
 			}
 			countTwo = 0;
 		}

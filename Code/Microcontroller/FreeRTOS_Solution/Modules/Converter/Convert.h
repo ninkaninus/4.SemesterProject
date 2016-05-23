@@ -34,4 +34,6 @@
 
 void convert_and_secure(void);
 
+void position_convert(void);
+
 #endif /* CONVERT_H_ */

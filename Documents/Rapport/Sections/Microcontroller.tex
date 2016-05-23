@@ -2,22 +2,20 @@
 
 Denne sektion kommer omkring det forskellige moduler, som vores mikroprocesser håndtere. Udover dette konmmer vi også igennem hvilket styresystem vi har valgt og hvorfor.
 
-\subsection{OS}
-Det er vigtigt i enhver kode situation, der inkluderer flere tasks, at kunne skifte mellem dem på en fornuftig måde; Dette gøres med en scheduler. Når der skal implementeres en scheduler skal det overvejes hvorvidt det er nødvendigt at lave en designet specielt til projektet, eller om der en en eksisterende der er i stand til at udfører opgaven tilstrækkeligt. I dette project har vi to muligheder til rådighed: FreeRTOS\cite{FreeRTOSorg} eller RTCS.
-
-
+\subsection{Operativ System}
+når der skal skiftes mellem flere tasks som en processor skal udføre er det vigtigt at kunne skifte mellem dem på en fornuftig måde, dette udføres ved hjælp af en schedulerings algoritme. Når der skal implementeres en schedulerings algoritme skal det overvejes hvorvidt det er nødvendigt at lave en designet specielt til projektet, eller om der en en eksisterende der er i stand til at udfører opgaven tilstrækkeligt. I dette project har vi to muligheder til rådighed: FreeRTOS\cite{FreeRTOSorg} eller RTCS.
 
 \subsubsection{FreeRTOS}
 
-FreeRTOS \cite{FreeRTOSorg} er et realtid operativsystem (RTOS), som er en standard løsning som bliver brugt i en mikroprocesser. FreeRTOS giver os muligheden for at bruge preemptiv skedulering, Det vil sige at CPU'en kan sprænge i mellem task og hoppe ud af en task efter behov. Dette bliver styret ud af hvilken prioritet taskén har eller om der en anden task, der for et interrupt den skal holde øje med.
+FreeRTOS \cite{FreeRTOSorg} er et realtids operativsystem (RTOS), som er en standard løsning som bliver brugt i en mikroprocesser. FreeRTOS giver os muligheden for at bruge preemptiv skedulering, Det vil sige at CPU'en kan sprænge i mellem task og hoppe ud af en task efter behov. Dette bliver styret ud af hvilken prioritet taskén har eller om der en anden task, der for et interrupt den skal holde øje med.
 \\
-Udover dette har freeRTOS også mange andre funktioner dette projekt kan udnytte. Der er mulighed for at oprette køer, som vil blive nævnt som queues. Disse queues kan man sende events og data til ved hjælp af en funktion der hedder xQueueSend. Hvor der så samtidig med at der en der kan tage noget fra denne queue. 
+Udover dette har freeRTOS også mange andre funktioner dette projekt kan udnytte. Der er mulighed for at oprette køer, som vil blive nævnt som queues. Disse queues kan man sende events og data til ved hjælp af en funktion der hedder xQueueSend. 
 \\
-For at kunne gøre det muligt at flere task's skal kunne til gå disse queue's, dette kan gøres ved at bruge noget det hedder en semafor, som gør at kun en task der har adgang til queue'en indtil semaforen bliver frigjort igen. For at ungå at at styre systemet ikke bliver fastlåst i denne semafor for evigt sætte man en tid, den kan være inde i semaforen.
+FreeRTOS kan lave semaforer som, gør det muligt at flere tasks skal kunne til gå disse queues, disse semaforer gør at kun en task der har adgang til queue'en indtil semaforen bliver frigjort igen. For at ungå at at styre systemet ikke bliver fastlåst i denne semafor for evigt indsættes der en tid, den kan være inde i semaforen.
 \\
-For at nogle af disse ting kan bliver aktiveret skal der først oprettes en xQueueHandle og xSemaphoreHandle. Hvorefter de bliver kreeret hved hjælp af xQueueCreate og xSemaphoreCreateMutex. For at bruge xQueueCreate skal der også bruges størrelse af queue'en og hvilken parameter den skal indeholde.
+Når queues og semaforer skal kre af disse ting kan bliver aktiveret skal der først oprettes en xQueueHandle og xSemaphoreHandle. Hvorefter de bliver kreeret hved hjælp af xQueueCreate og xSemaphoreCreateMutex. For at bruge xQueueCreate skal der også bruges størrelse af queue'en og hvilken parameter den skal indeholde.
 \\
-FreeRTOS tilbyder også et shared state memory(SSM), Dette gør det muligt at CPU'en kan hoppe i mellem de forskellige task. F.eks. at det kommer et nød event på UART, som kunne være "STOP\textunderscore EVENT". Dette event gør at den med det samme går over til den case hvor eventet er, og gør som der står, som i dette tilfælde er at bremse motoren.
+FreeRTOS tilbyder også et shared state memory (SSM), dette gør det muligt at CPU'en kan hoppe i mellem de forskellige task. F.eks. at det kommer et nød event på UART, som kunne være "STOP\textunderscore EVENT". Dette event gør at den med det samme går over til den case hvor eventet er, og gør som der står, som i dette tilfælde er at bremse motoren.
 
 \subsubsection{RTCS}
 
@@ -25,15 +23,15 @@ Run To Complete Scheduler (RTCS) er en måde at køre ens styresystem på. Den k
 \\
 Den har mulighed for at oprette semafoere, som gør at det er kun en queue som kan have adgang til queue'en. For at tilføje data til en queue skal funktion put\textunderscore queue. wait\textunderscore sem bruges til at tilføje en semafor til den specifikke queue.
 
-\subsubsection{Del konklusion}
+\subsubsection{Valg af OS}
 
-Efter vi har set på disse to valg muligheder kan vi se at RTCS vil være næmmere at få til at virker, men at det heller ikke er lige så sikkert, som freeRTOS. Den største begrundelse for at vi vælger at arbjede med freeRTOS over RTCS er at den køre preemtiv. Dette gøre det muligt vis der kommer et vigtigt interrupt at den kan tage CPU'en fra den proces den er i gang med og flytte den over til den mere vigtige proces.
+Efter vi har set på disse to valg muligheder kan vi se at RTCS vil være næmmere at få til at virker, men at det heller ikke er lige så sikkert, som freeRTOS. Den største begrundelse for at vi vælger at arbjede med freeRTOS over RTCS er at den køre preemtiv. Dette gøre det muligt vis der kommer et vigtigt interrupt at den kan tage CPU'en fra den proces den er i gang med og flytte den over det den mere vigtige proces.
 
 \subsection{Tasks}
 
 \subsubsection{UI}
 
-Den centrale task i systemet er det menu styrede UI system. Denne har primært til opgave at give brugeren mulighed for manuelt at justere og starte eller stoppe systemet, samt at vise vigtige oplysninger såsom nuværende position. Denne styres med drehimpulsgeber og numpad'et, som begge lægger events ind i dens input kø.
+Den centrale task i systemet er det menu styrede UI system. Denne har primært til opgave at give brugeren mulighed for manuelt at justere, starte eller stoppe systemet, samt at vise vigtige oplysninger såsom nuværende position. Denne styres med drehimpulsgeber og numpad'et, som begge lægger events ind i dens input kø.
 
 \begin{figure}[H]
 			\begin{center}
@@ -111,6 +109,23 @@ Dette keypad kan blive brugt til at sende data eller manuelt indsætte nogle væ
 
 
 
+\subsubsection{DrehImpulsGeber}
+
+Ved at skrue på drehimpulsgeber kan man inkrementere eller dekrementere en variabel eller sende et event.
+Drehimpulsgeberen er en roterende knap som også kan trykkes ned.\\
+Drehimpulsgeberen kan sende 30 pulser per rotation.
+
+\begin{figure}[ht]
+			\begin{center}
+			\includegraphics[scale=0.40]{Billeder/DrehImpulsGeber_events.jpg}
+			\end{center}
+			\caption{Drehimpulsgeber states}
+			\label{fig:Impulsgeber}
+		\end{figure}
+
+for at finde ud af hvilken retning der bliver skruet på impulsgeberen, kigges der på de tidligere states af switchen.
+eksempelvist hvis der kigges på figur \ref{fig:Impulsgeber} ses det at hvis ben B er højt, og A samtiddig er høj, OG B så falder først og A stadig er høj, så er rotationen en rotation mod uret.
+
 
 \subsection{Serial Peripheral Interface}
 \label{subsec:SPI}
@@ -125,8 +140,8 @@ Til SSI modulet er der 3 forskellige data formater:
 			\begin{center}
 			\includegraphics[scale=1]{Billeder/TI_Synchronous_Serial_Frame_Format.jpg}
 			\end{center}
-			\label{fig:TIFrameFormat}
 			\caption{TI Synchronous Serial Frame Format (Single transfer)}
+			\label{fig:TIFrameFormat}
 		\end{figure}
 
 	\item Freescale SPI
@@ -134,8 +149,8 @@ Til SSI modulet er der 3 forskellige data formater:
 			\begin{center}
 			\includegraphics[scale=1]{Billeder/FS_Frame_Format.jpg}
 			\end{center}
-			\label{fig:FSFrameFormat}
 			\caption{FreeScale Frame Format (Single Transfer)}
+			\label{fig:FSFrameFormat}
 		\end{figure}
 		  
 	\item Microwire
@@ -143,8 +158,8 @@ Til SSI modulet er der 3 forskellige data formater:
 			\begin{center}
 			\includegraphics[scale=0.8]{Billeder/MW_Frame_format.jpg}
 			\end{center}
-			\label{fig:MWFrameFormat}
 			\caption{Micro Wire Frame Format (Single Transfer)}
+			\label{fig:MWFrameFormat}
 		\end{figure}
 \end{itemize}
 
@@ -193,16 +208,15 @@ Selve udregningen af outputtet sker ved, at controlleren med jævne mellemrum ki
 	\label{fig:Riemann}
 \end{figure}
 
-Når de tre termer er fundet, summeres de for at finde det endelige output fra udregningen. Dette output er i sig selv ikke brugbart til at finde en duty cycle som motoren skal reguleres med. Man er nødt til at definere et interval som outputtet kan operere indenfor. På den måde kan man, ved at finde ud af hvor outputtet befinder sig i intervallet, mappe denne position til en duty cycle mellem 0 og 255. På figur \ref{fig:Mapping} kan man se en visualisering af denne mapping. Hvis outputtet er negativt betyder det at retningen skal ændres på motoren, men det ændrer ikke noget på hvilken duty cycle, der skal sendes i sidste ende.\\
+Når de tre termer er fundet, summeres de for at finde det endelige output fra udregningen. Dette output er i sig selv ikke brugbart til at finde en duty cycle som motoren skal reguleres med. Man er nødt til at definere et interval som outputtet kan operere indenfor. På den måde kan man, ved at finde ud af hvor outputtet befinder sig i intervallet, mappe denne position til en duty cycle mellem 0 og 255. På figur \ref{fig:Mapping} kan man se en visualisering af denne mapping. Hvis outputtet er negativt betyder det at retningen skal ændres på motoren, men det ændrer ikke noget på hvilken duty cycle, der skal sendes i sidste ende.
 
-\begin{wrapfigure}[17]{TR}{0.5\textwidth}
+\begin{wrapfigure}{R}{0.5\textwidth}
 	\begin{center}
-		\includegraphics[width=0.5\textwidth]{Billeder/Mapping.png}
+	\includegraphics[scale=0.8]{Billeder/Mapping.png}
 	\end{center}		
 	\caption{Her ses hvordan PID-outputtet mappes til en tilsvarende duty cycle}
 	\label{fig:Mapping}	
 \end{wrapfigure}
-
 \paragraph{Duty Cycle}
 
 Det har en ret stor betydning hvilke duty cycles man kan sætte som output. Med duty cycles under 15 $\%$ kan man, for eksempel næsten ikke slæbe systemet rundt, og når man over 75 $\%$ kan systemet justere så voldsomt at selve platformen, rammerne er monteret på, begynder at flytte sig rundt på bordet. Af den grund blev der sat et interval mellem 15 $\%$ og 60 $\%$ som controlleren kunne justere indenfor. For at forhindre systemet i at oscillere omkring set point'et med en duty cycle på 15 $\%$ låses motoren, når fejlen er 0.
@@ -223,13 +237,13 @@ Et problem med PID-controlleren er integral windup. Integral windup er, når are
 
 PID task'en har to tilstande: idle og running. I idle-tilstanden ventes der på et \texttt{PID\_START\_EVENT}, der skifter tilstanden til running. I running-tilstanden køres funktionen \texttt{PID\_update()} med faste intervaller. Denne funktion sørger for at hente set point og den fysiske position af rammerne for både pan- og tilt-systemet. Det kræver kommunikation med SPI-task'en der fungerer som bindeledet til selve systemet. Kommunikationen er styret fuldstændig af PID-task'en, der bare benytter de services som SPI-task'en tilbyder. Når \texttt{PID\_update()} bliver kaldt, beregnes outputtet for pan-systemet og derefter for tilt-systemet. Når det er sket sendes et \texttt{SET\_PWM\_EVENT} til SPI-task'en som sender informationen videre til FPGA'en. Efter eventet er sendt sover PID-tasken i 5 ms, hvorefter den sender et \texttt{GET\_POS\_EVENT} til SPI-task'en, som henter den nuværende position af både pan- og tilt-systemet fra FPGA'en og gemmer den i shared state memory. Når den er færdig med det sendes et \texttt{PID\_UPDATE\_EVENT} tilbage til PID-task'en som starter cycklusen forfra. Hele processen kan ses på figur \ref{fig:PID_update}.
 
-\begin{wrapfigure}[20]{TR}{0.5\textwidth}
+\begin{figure}[ht]
 	\begin{center}
-		\includegraphics[width=0.5\textwidth]{Billeder/PID_update.png}
+	\includegraphics[scale=0.5]{Billeder/PID_update.png}
 	\end{center}		
 	\caption{Her ses en visualisering af den cyklus som PID-task'en styrer, når den er i running-tilstanden}
 	\label{fig:PID_update}
-\end{wrapfigure}
+\end{figure}
 
 \paragraph{Filter}
 En alternativ måde at gribe implementeringen an på, er at lave controlleren som et filter. Det kan lade sig gøre ved at mappe overføringsfunktionen over i z-domænet og den vej igennem finde filterkoefficienterne. Denne metodik tillader implementeringen af andre controller-typer som fx lead- og lag-controllere, da lettere man kan implementerer flere slags overføringsfunktioner.
@@ -242,11 +256,47 @@ PID-controllleren blev implementeret med en sample frekvens på 200 Hz. Dette af
 
 \subsubsection{Koordinat oversættelse}
 
-Da pan og tilt rammen har en præcision på en tredjedel grad, og det samtidigt er et primært krav at denne skal kunne fungerer med input i form af polære koordinater, er det nødvendigt at have en koordinat oversættelse fra de inputtede koordinater. Denne oversættelse skal nødvendigvis tage højde for at de fysiske begrændsninger systemet har. Oversættelsen skal derfor lave en oversættelse i pan delen der afspejler at denne kun kan bevæge sig lidt over 180 grader uden at der opstår problemer med de ledninger der styrer tilt delen. Dette er dog slet ikke nok til at lave et effektivt teleskop system.
-\\
-Løsningen til dette er at tilt delen bliver spejlet omkring origo når systemet forsøger at pege mod et punkt der ligger i området mellem 90 og 270 grader. Grunden til at systemet kan bevæge sig 90 grader til hver side, omend dette kan virke irrationelt, er at dette er positionen af den hall sensor der benyttes til at nulstille koordinat systemet på FPGA'en. Nulpunktet i tilt delen af teleskop systemet er positioneret direkte opad, da dette både gjorde det mindre kompliceret at spejle det, og samtidig passede bedre overens med det polære koordinat system. Der kunne argumenteres for at det ville være nemmere også at sætte dennes nulpunkt der hvor hall sensoren nulstiller FPGA'en, men dette blev valgt fordi det er mere modulært at gå efter et system der mere matematisk intuitivt.
-\\
-En stor fordel ved denne koordinat oversættelse er at den eliminerer nødvendigheden for et sikkerhedssystem på microcontrolleren. Dette er naturligt en del af koordinat oversættelsen, da alt mellem 90 og 270 grader på pan systemet, som er de områder hvor der kan ske mekaniske skader, slet ikke er aktuelt, på grund af spejlingen af koordinaterne. Det skal dog noteres at dette ikke eliminerer behovet for et sikkerhedssystem på FPGA'en, som der stadig er brug for i tilfælde af et der forekommer problemer med microcontrolleren, så som en løs forbindelse, en fejl der får hele microprocessoren til at fryse, eller overshoot der går ud over den sikkerheds grændse der er blevet besluttet.
+Da pan og tilt rammen har en præcision på en tredjedel grad, og det samtidigt er et primært krav at denne skal kunne fungerer med input i form af spheriske koordinater, er det nødvendigt at have en koordinat oversættelse fra de inputtede koordinater som er i horizontale koordinater, se figur \ref{fig:Horizontal}. Denne oversættelse skal nødvendigvis tage højde for at de fysiske begrændsninger systemet har. Oversættelsen skal derfor lave en oversættelse i pan delen der afspejler at denne kun kan bevæge sig lidt over 180 grader uden at der opstår problemer med de ledninger der styrer tilt delen. Dette er dog slet ikke nok til at lave et effektivt teleskop system.
+\begin{figure}[!h]
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{Billeder/Horizontal.png}
+	\end{center}		
+	\caption{Her ses hvordan det horizontale koordinat system fungerer}
+	\label{fig:Horizontal}
+\end{figure}
+
+Mens pan delen kun har 180 graders frihed har tilt delen fuld frihed. Dette betyder at vi kan udnytte denne til at tilgås det område som pan delen ikke kan tilgå. Dette gøres ved blot at spejle tilt delen omkring origo hvis denne skal pege over i dette område, hvilket kan ses i praksis ved at figur \ref{fig:tilt_spejl} er den spejlede version af figur \ref{fig:tilt_spejl1}. Nulpunktet for pan og tilt systemet er lokeret som på figur \ref{fig:Nulpunkt}. 
+
+\begin{figure}[!h]
+    \centering
+    \begin{subfigure}[b]{0.3\textwidth}
+       \includegraphics[width=0.8\textwidth]{Billeder/Tilt45deg.jpg}
+        \caption{}
+        \label{fig:tilt_spejl1}
+    \end{subfigure}
+  \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=0.8\textwidth]{Billeder/Nulpunkt.jpg}
+        \caption{}
+        \label{fig:Nulpunkt}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.3\textwidth}
+        \includegraphics[width=0.8\textwidth]{Billeder/Tilt315deg.jpg}
+        \caption{}
+        \label{fig:tilt_spejl}
+    \end{subfigure}
+   \caption{Her demonstreres hvordan en spejling foregår. Til venstre ses systemet i position pan: 0$^{\circ}$ tilt: 45$^{\circ}$, i midten ses origo ved pan: 0$^{\circ}$, tilt: 0$^{\circ}$, og til højre ses hvad der sker når vi forsøger at bevæge systemet over i det område som pan systemet ikke kan komme over i, ved pan: 180$^{\circ}$, tilt: 45$^{\circ}$.}
+\end{figure}
+
+Denne position er valgt fordi den passer bedst overens med det spheriske koordinat system, som kan ses på figur \ref{fig:Spherical}. Alternativt kunne det pladseres således at pan delen havde sigt nulpunkt i kanten  af dens bevægelsesområde, men dette blev fravalgt da den sensor der benyttes til at indstille systemet ligger på denne position. Grunden til at dette ikke er gjort for tilt systemet er at denne retning både gør det nemmere at spejle det omkring origo, samt at det passer bedre med vores spheriske koordinat system.
+%Løsningen til dette er at tilt delen bliver spejlet omkring origo når systemet forsøger at pege mod et punkt der ligger i området mellem 90 og 270 grader i forhold til det valgte nulpunkt ved hall sensoren. Grunden til at systemet kan bevæge sig 90 grader til hver side, omend dette kan virke irrationelt, er at dette er positionen af den hall sensor der benyttes til at nulstille koordinat systemet på FPGA'en. Nulpunktet i tilt delen af teleskop systemet er positioneret direkte opad, da dette både gjorde det mindre kompliceret at spejle det, og samtidig passede bedre overens med det polære koordinat system. Der kunne argumenteres for at det ville være nemmere også at sætte dennes nulpunkt der hvor hall sensoren nulstiller FPGA'en, men dette blev valgt fordi det er mere modulært at gå efter et system der mere matematisk intuitivt.
+\begin{figure}[!hb]
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{Billeder/Spherical.png}
+	\end{center}		
+	\caption{Her ses hvordan det valgte spheriske koordinat system fungerer. Der er flere mulige baser for spheriske koordinater, men dette er det mest matematisk rigtige, hvilket er grundet til at dette blev valgt.}
+	\label{fig:Spherical}
+\end{figure}
+En stor fordel ved denne koordinat oversættelse er at den eliminerer nødvendigheden for et sikkerhedssystem på microcontrolleren. Dette er naturligt en del af koordinat oversættelsen, da alt mellem 90 og 270 grader på pan systemet, som er de områder hvor der kan ske mekaniske skader, slet ikke er aktuelt, på grund af spejlingen af koordinaterne. Det skal dog noteres at dette ikke eliminerer behovet for et sikkerhedssystem på FPGA'en, som der stadig er brug for i tilfælde af et der forekommer problemer med microcontrolleren, så som en løs forbindelse, en fejl der får hele microprocessoren til at fryse, eller overshoot der går ud over den sikkerheds grænse der er blevet besluttet.
 
 
 
