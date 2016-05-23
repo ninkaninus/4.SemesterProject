@@ -56,7 +56,8 @@ void convert_and_secure(void)
 {
 	INT32U pan = 	get_msg_state(SSM_SP_DEG_PAN);
 	INT32U tilt =	get_msg_state(SSM_SP_DEG_TILT);
-
+	INT8U pan_modulus = pan % 10;
+	INT8U tilt_modulus = tilt % 10;
 
 	while (pan >= 3600)
 	{
@@ -103,8 +104,6 @@ void convert_and_secure(void)
 		}
 
 
-		INT8U pan_modulus = pan % 10;
-		INT8U tilt_modulus = tilt % 10;
 		pan = pan / 10 * 3;
 		tilt = tilt / 10 * 3;
 		switch (pan_modulus)
@@ -162,19 +161,19 @@ void position_convert(void)
 	INT32U pan = 	get_msg_state(SSM_POS_PAN);
 	INT32U tilt =	get_msg_state(SSM_POS_TILT);
 
-	if (pan <= 2540)
+	if (pan >= 2000)
 		pan = pan - 2000;
 	else
-	{
 		pan = 3*360 - (2000 - pan);
-	}
-	if (tilt <= 2270)
+
+	if (tilt >= 1730)
 		tilt = tilt - 1730;
 	else
 	{
 		tilt = 3*360 - (1730 - tilt);
 	}
 
+	pan++;
 	pan  = pan/3;
 	tilt = tilt/3;
 
