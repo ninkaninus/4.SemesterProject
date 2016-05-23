@@ -195,7 +195,7 @@ Selve udregningen af outputtet sker ved, at controlleren med jævne mellemrum ki
 
 Når de tre termer er fundet, summeres de for at finde det endelige output fra udregningen. Dette output er i sig selv ikke brugbart til at finde en duty cycle som motoren skal reguleres med. Man er nødt til at definere et interval som outputtet kan operere indenfor. På den måde kan man, ved at finde ud af hvor outputtet befinder sig i intervallet, mappe denne position til en duty cycle mellem 0 og 255. På figur \ref{fig:Mapping} kan man se en visualisering af denne mapping. Hvis outputtet er negativt betyder det at retningen skal ændres på motoren, men det ændrer ikke noget på hvilken duty cycle, der skal sendes i sidste ende.\\
 
-\begin{wrapfigure}[15]{TR}{0.5\textwidth}
+\begin{wrapfigure}[17]{TR}{0.5\textwidth}
 	\begin{center}
 		\includegraphics[width=0.5\textwidth]{Billeder/Mapping.png}
 	\end{center}		
