@@ -39,10 +39,10 @@
 #define O_MIN			-200000
 #define I_MAX			5000000
 #define I_MIN			-5000000
-#define DC_MAX			150
+#define DC_MAX			100
 #define DC_MIN			40
-#define K1				307
-#define K2				300		// 0.0027 * 10000
+#define K1				1307
+#define K2				1300		// 0.0027 * 10000
 #define KP1				2*K1
 #define KI1				1*K1
 #define KD1				1*K1
@@ -80,9 +80,9 @@ void init_pid()
 	pan_sys.integral = 0;
 	pan_sys.prev_error = 0;
 
-	pan_sys_2.Kp = KP1*K1*4;
-	pan_sys_2.Ki = KI1*K1*4;
-	pan_sys_2.Kd = KD1*K1*4;
+	pan_sys_2.Kp = KP1*3;
+	pan_sys_2.Ki = KI1*3;
+	pan_sys_2.Kd = KD1*K1*3;
 	pan_sys_2.gain = K1;
 	pan_sys_2.integral = 0;
 	pan_sys_2.prev_error = 0;
@@ -94,9 +94,9 @@ void init_pid()
 	tilt_sys.integral = 0;
 	tilt_sys.prev_error = 0;
 
-	tilt_sys_2.Kp = KP2*K2*4;
-	tilt_sys_2.Ki = KI2*K2*4;
-	tilt_sys_2.Kd = KD2*K2*4;
+	tilt_sys_2.Kp = KP2*4;
+	tilt_sys_2.Ki = KI2*4;
+	tilt_sys_2.Kd = KD2*4;
 	tilt_sys_2.gain = 0;
 	tilt_sys_2.integral = 0;
 	tilt_sys_2.prev_error = 0;

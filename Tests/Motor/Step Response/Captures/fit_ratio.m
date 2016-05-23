@@ -21,7 +21,7 @@ for j = 1:n
     end
     
     for k = 1:n
-         test = new_vector(length(new_vector)-n-1+k);
+         test = new_vector(length(new_vector)-n-20+k);
          temp = abs(avg - test);
          err = err + temp;
     end

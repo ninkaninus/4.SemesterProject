@@ -174,6 +174,7 @@ void get_position()
 	data = SPI_read();
 	put_msg_state(SSM_POS_PAN,data);
 
+
 	data &= 0x0FFF;
 	INT8U temp = data >> 8;
 	uart0_putc(temp);
