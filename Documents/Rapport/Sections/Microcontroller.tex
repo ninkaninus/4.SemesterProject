@@ -256,11 +256,28 @@ PID-controllleren blev implementeret med en sample frekvens på 200 Hz. Dette af
 
 \subsubsection{Koordinat oversættelse}
 
-Da pan og tilt rammen har en præcision på en tredjedel grad, og det samtidigt er et primært krav at denne skal kunne fungerer med input i form af polære koordinater, er det nødvendigt at have en koordinat oversættelse fra de inputtede koordinater. Denne oversættelse skal nødvendigvis tage højde for at de fysiske begrændsninger systemet har. Oversættelsen skal derfor lave en oversættelse i pan delen der afspejler at denne kun kan bevæge sig lidt over 180 grader uden at der opstår problemer med de ledninger der styrer tilt delen. Dette er dog slet ikke nok til at lave et effektivt teleskop system.
+Da pan og tilt rammen har en præcision på en tredjedel grad, og det samtidigt er et primært krav at denne skal kunne fungerer med input i form af spheriske koordinater, er det nødvendigt at have en koordinat oversættelse fra de inputtede koordinater som er i horizontale koordinater, se figur \ref{fig:Horizontal}. Denne oversættelse skal nødvendigvis tage højde for at de fysiske begrændsninger systemet har. Oversættelsen skal derfor lave en oversættelse i pan delen der afspejler at denne kun kan bevæge sig lidt over 180 grader uden at der opstår problemer med de ledninger der styrer tilt delen. Dette er dog slet ikke nok til at lave et effektivt teleskop system.
 \\
-Løsningen til dette er at tilt delen bliver spejlet omkring origo når systemet forsøger at pege mod et punkt der ligger i området mellem 90 og 270 grader. Grunden til at systemet kan bevæge sig 90 grader til hver side, omend dette kan virke irrationelt, er at dette er positionen af den hall sensor der benyttes til at nulstille koordinat systemet på FPGA'en. Nulpunktet i tilt delen af teleskop systemet er positioneret direkte opad, da dette både gjorde det mindre kompliceret at spejle det, og samtidig passede bedre overens med det polære koordinat system. Der kunne argumenteres for at det ville være nemmere også at sætte dennes nulpunkt der hvor hall sensoren nulstiller FPGA'en, men dette blev valgt fordi det er mere modulært at gå efter et system der mere matematisk intuitivt.
-\\
-En stor fordel ved denne koordinat oversættelse er at den eliminerer nødvendigheden for et sikkerhedssystem på microcontrolleren. Dette er naturligt en del af koordinat oversættelsen, da alt mellem 90 og 270 grader på pan systemet, som er de områder hvor der kan ske mekaniske skader, slet ikke er aktuelt, på grund af spejlingen af koordinaterne. Det skal dog noteres at dette ikke eliminerer behovet for et sikkerhedssystem på FPGA'en, som der stadig er brug for i tilfælde af et der forekommer problemer med microcontrolleren, så som en løs forbindelse, en fejl der får hele microprocessoren til at fryse, eller overshoot der går ud over den sikkerheds grændse der er blevet besluttet.
+Mens pan delen kun har 180 graders frihed har tilt delen fuld frihed. Dette betyder at vi kan udnytte denne til at tilgås det område som pan delen ikke kan tilgå. Dette gøres ved blot at spejle tilt delen omkring origo hvis denne skal pege over i dette område, hvilket kan ses i praksis ved figur \ref{fig:tilt_spejl}.
+
+\begin{figure}[!ht]
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{Billeder/Horizontal.png}
+	\end{center}		
+	\caption{Her ses en visualisering af den cyklus som PID-task'en styrer, når den er i running-tilstanden}
+	\label{fig:Horizontal}
+\end{figure}
+
+Nulpunktet for pan og tilt systemet er lokeret som på figur \ref{fig:nulpunkt}. Denne position er valgt fordi den passer bedst overens med det spheriske koordinat system, som kan ses på figur \ref{fig:Spherical}. Alternativt kunne det pladseres således at pan delen havde sigt nulpunkt i kanten  af dens bevægelsesområde, men dette blev fravalgt da den sensor der benyttes til at indstille systemet ligger på denne position. Grunden til at dette ikke er gjort for tilt systemet er at denne retning både gør det nemmere at spejle det omkring origo, samt at det passer bedre med vores spheriske koordinat system.
+%Løsningen til dette er at tilt delen bliver spejlet omkring origo når systemet forsøger at pege mod et punkt der ligger i området mellem 90 og 270 grader i forhold til det valgte nulpunkt ved hall sensoren. Grunden til at systemet kan bevæge sig 90 grader til hver side, omend dette kan virke irrationelt, er at dette er positionen af den hall sensor der benyttes til at nulstille koordinat systemet på FPGA'en. Nulpunktet i tilt delen af teleskop systemet er positioneret direkte opad, da dette både gjorde det mindre kompliceret at spejle det, og samtidig passede bedre overens med det polære koordinat system. Der kunne argumenteres for at det ville være nemmere også at sætte dennes nulpunkt der hvor hall sensoren nulstiller FPGA'en, men dette blev valgt fordi det er mere modulært at gå efter et system der mere matematisk intuitivt.
+\begin{figure}[!hb]
+	\begin{center}
+		\includegraphics[width=0.5\textwidth]{Billeder/Spherical.png}
+	\end{center}		
+	\caption{Her ses en visualisering af den cyklus som PID-task'en styrer, når den er i running-tilstanden}
+	\label{fig:Spherical}
+\end{figure}
+En stor fordel ved denne koordinat oversættelse er at den eliminerer nødvendigheden for et sikkerhedssystem på microcontrolleren. Dette er naturligt en del af koordinat oversættelsen, da alt mellem 90 og 270 grader på pan systemet, som er de områder hvor der kan ske mekaniske skader, slet ikke er aktuelt, på grund af spejlingen af koordinaterne. Det skal dog noteres at dette ikke eliminerer behovet for et sikkerhedssystem på FPGA'en, som der stadig er brug for i tilfælde af et der forekommer problemer med microcontrolleren, så som en løs forbindelse, en fejl der får hele microprocessoren til at fryse, eller overshoot der går ud over den sikkerheds grænse der er blevet besluttet.
 
 
 
