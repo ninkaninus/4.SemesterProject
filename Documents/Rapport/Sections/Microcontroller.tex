@@ -3,8 +3,7 @@
 Denne sektion kommer omkring det forskellige moduler, som vores mikroprocesser håndtere. Udover dette konmmer vi også igennem hvilket styresystem vi har valgt og hvorfor.
 
 \subsection{OS}
-Det er vigtigt i enhver kode situation, der inkluderer flere tasks, at kunne skifte mellem dem på en fornuftig måde; Dette gøres med en scheduler. Når der skal implementeres en scheduler skal det overvejes hvorvidt det er nødvendigt at lave en designed specielt til projektet, eller om der en en eksisterende der er i stand til at udfører opgaven tilstrækkeligt. I dette project har vi to muligheder til rådighed: FreeRTOS eller RTCS.
-
+Det er vigtigt i enhver kode situation, der inkluderer flere tasks, at kunne skifte mellem dem på en fornuftig måde; Dette gøres med en scheduler. Når der skal implementeres en scheduler skal det overvejes hvorvidt det er nødvendigt at lave en designet specielt til projektet, eller om der en en eksisterende der er i stand til at udfører opgaven tilstrækkeligt. I dette project har vi to muligheder til rådighed: FreeRTOS eller RTCS.
 
 
 \subsubsection{FreeRTOS}
@@ -15,7 +14,7 @@ Udover dette har freeRTOS også mange andre funktioner dette projekt kan udnytte
 \\
 For at kunne gøre det muligt at flere task's skal kunne til gå disse queue's, dette kan gøres ved at bruge noget det hedder en semafor, som gør at kun en task der har adgang til queue'en indtil semaforen bliver frigjort igen. For at ungå at at styre systemet ikke bliver fastlåst i denne semafor for evigt sætte man en tid, den kan være inde i semaforen.
 \\
-For at nogle af disse ting kan bliver aktiveret skal der føre oprettes en xQueueHandle og xSemaphoreHandle. Hvorefter de bliver kreeret hved hjælp af xQueueCreate og xSemaphoreCreateMutex. For at bruge xQueueCreate skal der også bruges størrelse af queue'en og hvilken parameter den skal indeholde.
+For at nogle af disse ting kan bliver aktiveret skal der først oprettes en xQueueHandle og xSemaphoreHandle. Hvorefter de bliver kreeret hved hjælp af xQueueCreate og xSemaphoreCreateMutex. For at bruge xQueueCreate skal der også bruges størrelse af queue'en og hvilken parameter den skal indeholde.
 \\
 FreeRTOS tilbyder også et shared state memory(SSM), Dette gør det muligt at CPU'en kan hoppe i mellem de forskellige task. F.eks. at det kommer et nød event på UART, som kunne være "STOP\textunderscore EVENT". Dette event gør at den med det samme går over til den case hvor eventet er, og gør som der står, som i dette tilfælde er at bremse motoren.
 
@@ -25,7 +24,7 @@ Run To Complete Scheduler (RTCS) er en måde at køre ens styresystem på. Den k
 \\
 Den har mulighed for at oprette semafoere, som gør at det er kun en queue som kan have adgang til queue'en. For at tilføje data til en queue skal funktion put\textunderscore queue. wait\textunderscore sem bruges til at tilføje en semafor til den specifikke queue.
 
-\subsubsection{Delkonklusion}
+\subsubsection{Del konklusion}
 
 Efter vi har set på disse to valg muligheder kan vi se at RTCS vil være næmmere at få til at virker, men at det heller ikke er lige så sikkert, som freeRTOS. Den største begrundelse for at vi vælger at arbjede med freeRTOS over RTCS er at den køre preemtiv. Dette gøre det muligt vis der kommer et vigtigt interrupt at den kan tage CPU'en fra den proces den er i gang med og flytte den over det den mere vigtige proces.
 
@@ -111,6 +110,23 @@ Dette keypad kan blive brugt til at sende data eller manuelt indsætte nogle væ
 
 
 
+\subsubsection{DrehImpulsGeber}
+
+Ved at skrue på drehimpulsgeber kan man inkrementere eller dekrementere en variabel eller sende et event.
+Drehimpulsgeberen er en roterende knap som også kan trykkes ned.\\
+Drehimpulsgeberen kan sende 30 pulser per rotation.
+
+\begin{figure}[ht]
+			\begin{center}
+			\includegraphics[scale=0.40]{Billeder/DrehImpulsGeber_events.jpg}
+			\end{center}
+			\caption{Drehimpulsgeber states}
+			\label{fig:Impulsgeber}
+		\end{figure}
+
+for at finde ud af hvilken retning der bliver skruet på impulsgeberen, kigges der på de tidligere states af switchen.
+eksempelvist hvis der kigges på figur \ref{fig:Impulsgeber} ses det at hvis ben B er højt, og A samtiddig er høj, OG B så falder først og A stadig er høj, så er rotationen en rotation mod uret.
+
 
 \subsection{Serial Peripheral Interface}
 \label{subsec:SPI}
@@ -125,8 +141,8 @@ Til SSI modulet er der 3 forskellige data formater:
 			\begin{center}
 			\includegraphics[scale=1]{Billeder/TI_Synchronous_Serial_Frame_Format.jpg}
 			\end{center}
-			\label{fig:TIFrameFormat}
 			\caption{TI Synchronous Serial Frame Format (Single transfer)}
+			\label{fig:TIFrameFormat} (Single transfer)}
 		\end{figure}
 
 	\item Freescale SPI
@@ -134,8 +150,8 @@ Til SSI modulet er der 3 forskellige data formater:
 			\begin{center}
 			\includegraphics[scale=1]{Billeder/FS_Frame_Format.jpg}
 			\end{center}
-			\label{fig:FSFrameFormat}
 			\caption{FreeScale Frame Format (Single Transfer)}
+			\label{fig:FSFrameFormat}
 		\end{figure}
 		  
 	\item Microwire
@@ -143,8 +159,8 @@ Til SSI modulet er der 3 forskellige data formater:
 			\begin{center}
 			\includegraphics[scale=0.8]{Billeder/MW_Frame_format.jpg}
 			\end{center}
-			\label{fig:MWFrameFormat}
 			\caption{Micro Wire Frame Format (Single Transfer)}
+			\label{fig:MWFrameFormat}
 		\end{figure}
 \end{itemize}
 
