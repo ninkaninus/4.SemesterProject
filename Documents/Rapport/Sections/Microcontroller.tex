@@ -1,4 +1,4 @@
-\section{Microcontroller}
+\section{Micro Processing Unit}
 
 Denne sektion kommer omkring de forskellige moduler, som mikroprocessoren håndterer, samt hvilket styresystem der anvendes.
 
@@ -23,7 +23,7 @@ Run To Complete Scheduler (RTCS) er en anden måde at køre ens styresystem på.
 \\
 Den har mulighed for at oprette semafoere, som gør at det er kun en queue som kan have adgang til queue'en. For at tilføje data til en queue skal funktion put\textunderscore queue. wait\textunderscore sem bruges til at tilføje en semafor til den specifikke queue.
 
-\subsubsection{Valg af OS}
+\subsubsection{Valg af Operativsystem}
 
 Efter vi har set på disse to valg muligheder kan vi se at RTCS vil være næmmere at få til at virker, fordi det ikke er så komplicert og har ikke lige så mange udvidelser. RTCS tilbyder dog ikke de samme sikkerhed udvidelser som freeRTOS gør. Den største begrundelse for at vi vælger at arbejde med freeRTOS over RTCS er at den køre preemtivt. Dette gøre det muligt hvis der kommer et vigtigt interrupt at den kan tage CPU'en fra den proces den er i gang med og flytte den over det den mere vigtige proces.
 
