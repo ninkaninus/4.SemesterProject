@@ -39,10 +39,12 @@ Ved at have en intern data- og addresse-bus kan alle modulerne kobles op på den
 \end{figure}
 
 \paragraph*{Implementering}
-SPI modulet er blevet implementeret som en løsning bestående af en 16-bit grænseflade til MPU'en. Og en intern databus, hvorpå modulerene addresseres direkte igennem de øverste 4 bit i SPI datagrammet. SPI modulet fungerer ved en tilstandsmaskine som er vist på figur \ref{fig:FPGA_SPI_State} og de forskellige tilstande er beskrevet herunder. \\
+SPI modulet er blevet implementeret som en løsning bestående af en 16-bit grænseflade til MPU'en. Og en intern databus, hvorpå modulerene addresseres direkte igennem de øverste 4 bit i SPI datagrammet. SPI modulet fungerer ved en tilstandsmaskine som er vist på figur \ref{fig:FPGA_SPI_State} og de forskellige tilstande er som følgende:\\
 SPI starter i tilstanden \textit{WaitForSSLow}, hvor der ventes på at SS signalet går lavt og kommunikationen derved er startet. Når SS går lavt skiftes der til tilstanden \textit{WaitForAdr}. \\ 
 I denne tilstand ventes der på at MPU'en overfører de fire første bit i datagrammet, som repræsenterer addressen på det ønskede interne modul, og sender disse ud på addressebussen. Når de er modtaget skiftes der til tilstanden \textit{LoadUdBuf} \\
-I denne tilstand loades data fra databussen ind i udbufferet så de er klar til at blive sendt afsted når MPU'en clocker SPI igen. Dernæst skiftes der til tilstanden \textit{WaitForDatabits}. I denne tilstand ventes der på at MPU'en clocker de sidste 12 databits ud. Når disse er modtaget skiftes der til tilstanden \textit{WE0}, hvor WE sættes til nul, hvilket fortæller det addresserede modul at det kan læse gyldig data ind fra databussen. Derefter skiftes der til tilstanden \textit{WaitForSSHigh}, hvor WE sættes høj igen så modulerne ikke længere læser på databussen. Og der ventes på at SS sættes høj igen og datatransmissionen derved er slut. Så skiftes der til tilstanden \textit{WaitForSSLow} og det hele kører forfra igen.
+I denne tilstand loades data fra databussen ind i udbufferet så de er klar til at blive sendt afsted når MPU'en clocker SPI igen.\\
+Dernæst skiftes der til tilstanden \textit{WaitForDatabits}. \\
+I denne tilstand ventes der på at MPU'en clocker de sidste 12 databits ud. Når disse er modtaget skiftes der til tilstanden \textit{WE0}, hvor WE sættes til nul, hvilket fortæller det addresserede modul at det kan læse gyldig data ind fra databussen. \\ Derefter skiftes der til tilstanden \textit{WaitForSSHigh}, hvor WE sættes høj igen så modulerne ikke længere læser på databussen. Og der ventes på at SS sættes høj igen og datatransmissionen derved er slut. Så skiftes der til tilstanden \textit{WaitForSSLow} og det hele kører forfra igen.
 
 \begin{figure}[ht]
 	\begin{center}
@@ -54,6 +56,28 @@ I denne tilstand loades data fra databussen ind i udbufferet så de er klar til 
 
 
 \subsection{MotorController}
+Motor Controller har til formål at styrer en motor. Modulet skal kunne starte og stoppe motoren, styrer retningen af motoren, styrer hastigheden af motoren samt implementerer en sikkerhed så motoren ikke ødelægger pan delen af systemet, hvis der kommer forkert input til motorcontrolleren.
+
+\subsubsection{Designmål}
+Liste over ting som motorcontrollen skal kunne:
+\begin{itemize}
+	\item Være generisk så dens parametre kan tweakes til flere motorer
+	\item Slå motorbremsen til og fra.
+	\item Skifte retning på motoren
+	\item Kunne stoppe motoren fra at drive pan- og til-rammerne ud over deres fysiske begrænsninger.
+\end{itemize}
+
+\subsubsection{Implementation}
+Motor controlleren er implementeret som en tilstandsmaskine som vist på figur \ref{fig:FPGA_MotorController_State} og beskrevet som følgende:\\
+\textit{Idle} dette er den tilstand som systemet starter i.
+
+\begin{figure}[ht]
+	\begin{center}
+		\includegraphics[scale=0.5]{Billeder/FPGA_Motorcontroller_state.png}
+	\end{center}
+\caption{State machine diagram over de states som MotorController modulet går igennem}
+\label{fig:FPGA_MotorController_State}
+\end{figure}
 
 \subsection{PWM Driver}
 
@@ -100,7 +124,6 @@ En clock-periode med FPGA'ens krystal på 50 MHz er $20ns$ lang, så hvis man t�
 \end{figure}
 
 \subsection{Positions modul}
-\label{subsec:TicksToDeg}
 
 For at kunne ramme et punkt på himlen, bliver microcontrolleren nødt til at vide hvilken position pan-tilt systemet står i.
 For at kende denne position, er der to hall sensorer på EMG30 motoren.
@@ -127,6 +150,7 @@ Hvis hall sensor 2 så bliver høj først, så er det en rotation med uret.\\
 Hvis hall sensor 1 bliver høj først, så er det en rotation mod uret.\\
 
 \subsection{Diverse undermoduler}
+Her beskrives diverse små undermoduler der ikke er store nok til at have en sektion for sig selv, men som stadigvæk tilføjer mindre funktionaliteter til FPGA'en.
 
 \subsubsection{NumberToBCD}
 
