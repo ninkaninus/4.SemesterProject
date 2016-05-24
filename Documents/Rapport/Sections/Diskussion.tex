@@ -4,7 +4,7 @@ Forsøget på at udvikle et pan og tilt system der er i stand til at følge sate
 \\
 De mekaniske grændser i systemet er der taget højde for, da der både er en sikkerheds feature i FPGA'en der stopper enhver fejl der får systemet til at gå ud over sine grændser, og et koordinat oversættelses system der sikrer at systemet aldrig forsøger at gå ud over sine grændser. Der kunne aktiveres det redundante sikkerheds system der ligger i koordinat oversættelsen, men dette blev besluttet ikke var nødvendigt, da dette blot ville mindske det område der er tilgængeligt for pan og tilt systemet.
 \\
-blabla fpga blabla XXXX
+I FPGA'en blev der stødt på det problem at der ikke eksisterer mulighed for at tristate interne signaler. Da hele det interne databus system er opbygget omkring netop dette, blev det nødvendigt at skifte over til at kører et format med to seperate databusser til at sende og modtage. Dette tilføjer en lille smule mere kompleksitet til den interne addressering, men fjerner en hel masse unødvendige fejlbeskeder i Xilinx. Og giver mulighed for at kunne simulerer vhdl koden korrekt.
 \\
 Den næste iteration ville indebærer at systemet blev modelleret med et fuld zoomet kamera, hvilket ville kræve en ny model af systemet og aktiveringen af sikkerheds featuren i koordinat systemet. Yderligere skal der så tilføjes en del vægt justering, da masse midtpunktet ville flytte sig meget ved et sådanne zoom, hvilket har enorm betydning på kontrol systemet. En GUI interface applikation på client computeren ville også være et ideélt forslag til næste iteration.
 
