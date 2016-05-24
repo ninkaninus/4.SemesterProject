@@ -42,12 +42,12 @@ architecture Behavioral of SPI_Slave3 is
 
 	type States is (Wait_for_SS_low, --Wait for the SS line to turn low and initiate a transfer
 	                Wait_for_Adr, --Wait for the four address bits to have been transfered
-						 Wait_state1, --Allow the device some time to transfer the data
+						 --Wait_state1, --Allow the device some time to transfer the data
 						 Load_UdBuf, --Load in data from the device selected by the address
 						 Wait_for_Databits, --Wait for all the data to have been transfered 
 						 Set_WE0, --Read in the data, because write enable is off
-						 Wait_state2,
-						 Set_WE1, --Set write enable high again
+						 --Wait_state2,
+						 --Set_WE1, --Set write enable high again
 						 Wait_for_SS_high); --Wait for SS to turn high again and end the data transfer
 						 
 	signal State: States := Wait_for_SS_low;
@@ -112,13 +112,14 @@ begin
 				--Wait for the address to be transfered, once transfered then put it out on the address bus
 	         when Wait_for_Adr =>
 					if Sclk_Cnt = 3 and xSClk = "00" then
-						State <= Wait_state1;
+						--State <= Wait_state1;
+						State <= Load_Udbuf;
 						AdrBus <= Adr;
 					end if;
 				
 				--Wait an extra cycle to allow the connected modules to react to the address
-				when Wait_state1 =>            -- Extra wait state 
-					State <= Load_UdBuf;	               
+				--when Wait_state1 =>            -- Extra wait state 
+					--State <= Load_UdBuf;	               
 				
 				--Load the output buffer with the data from the databus. 
 				--Reversing the bit order since we are communicating with MSB first, but UdBuf is clocked out from the other end.
@@ -136,19 +137,21 @@ begin
 				--WE goes low to enable the slave to clock out the data to the databus
 				when Set_WE0 =>
 					WE_net <= '0';	
-					State <= Wait_state2;
+					--State <= Wait_state2;
+					--State <= Set_WE1;
+					State <= Wait_for_SS_high;
 					
-				when Wait_state2 =>
-					State <= Set_WE1;
+				--when Wait_state2 =>
+					--State <= Set_WE1;
 				
 				--WE goes high so data kan be loaded onto the databus again from the devices
-				when Set_WE1 =>
-					WE_net <= '1';
-					State <= Wait_for_SS_high;
+				--when Set_WE1 =>
+					--WE_net <= '1';
+					--State <= Wait_for_SS_high;
 				
 				--Wait for the datasignal to go high again
 				when Wait_for_SS_high =>
-					--		=> (others => '0');
+					WE_net <= '1';
 					if xSS = "01" then
 						State <= Wait_for_SS_low;
 					end if;
