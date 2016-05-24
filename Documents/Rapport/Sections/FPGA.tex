@@ -1,5 +1,5 @@
 \section{FPGA}
-FPGA'en fungerer som en del af den hardware der styrer pan/tilt-systemet. FPGA'ens opgaver er bl.a. dataopsamling fra hall sensorene på motorerne, sende styre signaler til H-broerne, genererer pwm signaler, implementerer en form for sikkerhedsbegrænsning på hvor meget pan og tilt kan dreje rundt samt at kommunikerer med MPU'en. Afsnittet er delt op i separate beskrivelse af de  \\
+FPGA'en fungerer som en del af den hardware der styrer pan/tilt-systemet. FPGA'ens opgaver er bl.a. dataopsamling fra hall sensorene på motorerne, sende styre signaler til H-broerne, genererer pwm signaler, implementerer en form for sikkerhedsbegrænsning på hvor meget pan og tilt kan dreje rundt samt at kommunikerer med MPU'en. Afsnittet er delt op i separate beskrivelse af de moduler som FPGA'en er bygget op af. \\
 
 \subsection{SPI}
 Der skal foregå en kommunikation mellem microcontrolleren og FPGA'en. Til dette formål er der i opgaven specificieret at grænsefladen SPI skal bruges. Grænsefladens overordnede virkemåde er beskrevet nærmere i afsnit \ref{subsec:SPI}. I dette afsnit vil der blive beskrevet fordele og ulemper ved forskellige måder at implementerer denne grænseflade i FPGA'en. Dernæst vil der blive foretaget en dybere gennemgang af den valgte implementation. Og konkluderes på, hvordan denne implementation har fungeret rent praktisk.
