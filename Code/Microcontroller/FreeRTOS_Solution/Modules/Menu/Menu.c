@@ -102,13 +102,20 @@
 #define SHOW_PAN_POS			27
 #define SHOW_TILT_POS			28
 
+// defines til start og stop events til pid
+#define PID_START_EVENT			12
+#define PID_STOP_EVENT			13
+
 extern xQueueHandle GUI_queue;
 extern xQueueHandle MENU_queue;
+extern xQueueHandle PID_queue;
 
 extern xSemaphoreHandle menu_input_sem;
 
 void run_start_function(void)
 {
+	INT8U address = PID_START_EVENT;
+	xQueueSend(PID_queue,&address,100);
 	send_image(IMAGE_START_FUNCTION);
 	INT8U input;
 	//do stuff
@@ -122,6 +129,8 @@ void run_start_function(void)
 
 void run_stop_function(void)
 {
+	INT8U address = PID_STOP_EVENT;
+	xQueueSend(PID_queue,&address,100);
 	send_image(IMAGE_STOP_FUNCTION);
 	INT8U input;
 	//do stuff
