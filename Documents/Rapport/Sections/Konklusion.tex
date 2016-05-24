@@ -1,2 +1,6 @@
 \section{Konklusion}
-Der er lavet et system, som trake objekter ude i rummet, så som den internationale rumstation, satelitter, solen og diverse planeter. Dette er gjort muligt ved hjælp af en PID controler [ref variabler]. Ved hjælp af vores PID controler er det gjort muligt at have en præcision på $1/3$, som er den højste præcision som de udlevert encodes kan give. Ved hjælp af koordiat oversættelse \ref{subsec:koordinat} gør det muligt at tage s
+Der er lavet et system, som trake objekter ude i rummet, så som den internationale rumstation, satelitter, solen og diverse planeter. Dette er gjort muligt ved hjælp af en PID controler [ref variabler], som er blevet modelleret gennem matlab og simulink og grey box princippet, hvor vi har fundet de variabler der skulle bruges gennem step response tests. Ved hjælp af vores PID controler er det gjort muligt at have en præcision på $1/3$ grad, som er den højste præcision som de udlevert encodes kan give. Denne controller er samtidig hurtig nok til at opfylde vores krav om hastighed, omend den ikke kunne opfylde vores krav til overshoot, som også var bygget på et meget håbefyldt grundlag.
+
+Det er samtidig lykkedes at opfylde de opgaver vi havde som krav til FPGA'en, således at denne kan holde styr på både position, motor PWM, samt at kommunikerer gennem SPI.
+
+Ved hjælp af koordiat oversættelse \ref{subsec:koordinat} gør det muligt at tage de horizontale koordinater som er meget praktiske til at beskrive himmellegemer med, og omdanne dem til det koordinatsæt der giver bedst mening for selve systemet.
