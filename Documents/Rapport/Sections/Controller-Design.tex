@@ -295,4 +295,26 @@ Det sidste skridt, er at bestemme et passende gain, så den endelige respons for
 
 Med kameraet monteret er den statiske friktion i systemet ret stor. Derfor er det svært at flytte systemet, når fejlen er meget lille. For at komme ud over denne begrænsning kan man øge gain'et for systemet. Det har dog den bivirkning at systemet regulerer meget kraftigt. En måde at forhindre denne situation er at sætte en øvre grænse for hvilken duty cycle, der må reguleres med. Dette gør systemet langsommere, men så længe settling time stadigvæk er under de 5 sekunder, gør det ikke noget.
 
-Ud fra root locus plottet bestemmes et gain, der tages udgangspunkt i. Et gain på 0.005 til tilt-systemet giver et respons som på figur XXXX ref, og et gain på 0.008 giver responset på figur XXXX ref. 
+Ud fra root locus plottet bestemmes et gain, der tages udgangspunkt i. Et gain på 0.005 til tilt-systemet giver et respons som på figur \ref{fig:Ideal_Response_Tilt}, og et gain på 0.008 til pan-systemet giver responset på figur \ref{fig:Ideal_Response_Pan}. 
+
+\begin{figure}[t!]
+    \centering
+    \begin{subfigure}[t]{0.49\textwidth}
+     \centering
+        \includegraphics[width=1\textwidth]{Billeder/Ideal_Response_Tilt.png}
+        \caption{Her ses responsen for tilt-systemet med et gain på 0.005}
+        \label{fig:Ideal_Response_Tilt}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.49\textwidth}
+     \centering
+        \includegraphics[width=1\textwidth]{Billeder/Ideal_Response_Pan.PNG}
+        \caption{Her ses responsen for pan-systemet med et gain på 0.008}
+        \label{fig:Ideal_Response_Pan}
+    \end{subfigure}
+    \caption{Her ses det ideelle step respons for systemerne}
+\end{figure}
+
+\subsubsection{Justering af Gain}
+
+For at finde et gain, der kan bruges til små justeringer ned til et tick, øges gain'et lidt efter lidt indtil systemet opfører sig som ønket under forsøg. Den øvre grænse for duty cyclen sættes også ned løbende, indtil systemet ikke regulerer for hårdt længere. Når der er fundet passende værdier til både gain og duty cycle-grænse, simuleres systemet igen i simulink, for at se om projektmålene stadigvæk overholdes. Forsøgene viste at gain'et helst skulle være større end 0.13 for at systemet kunne bevæge sig et tick ad gangen indenfor 5 sekunder. På figur XXXX ref her kan man se sammenligningen mellem simuleringen og målinger fra 0 til 540 ticks.
+
