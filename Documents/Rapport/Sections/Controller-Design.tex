@@ -20,7 +20,7 @@ På figur \ref{fig:Blok_Model} kan man se de vigtigste elementer i kontrolløkke
 \end{itemize}
 
 Modelleringen af systemet viste at motoren og pan/tilt-systemet kunne approksimeres nogenlunde som et 1.-ordenssystem.
-Hvis man tager udgangspunkt i grey box-modellen af systemet, kan man lave et closed-loop-system, der ser ud som på figur \ref{fig:GB_Model}. På denne model er H-broen modelleret som et gain på 12. PWM-signalet kan variere fra $-1$ til $1$. Encoderen og positionsmodulet fungerer i praksis lidt som en integrator i den forstand at alle ticks summeres op og giver en relativ position. Der er ikke noget gain igennem feedback-løkken da set point'et til controlleren også opgives i ticks. Det vides på forhånd at et tick svarer til $1/3$ af en grad (Se reference i afsnit \ref{subsec:TicksToDeg}), så for at holde kontrolsystemet simpelt, foretages den omregning inden set point'et gives til controlleren. På den måde skal controlleren kun regne i ticks.
+Hvis man tager udgangspunkt i grey box-modellen af systemet, kan man lave et closed-loop-system, der ser ud som på figur \ref{fig:GB_Model}. På denne model er H-broen modelleret som et gain på 12. PWM-signalet kan variere fra $-1$ til $1$. Encoderen og positionsmodulet fungerer i praksis lidt som en integrator i den forstand at alle ticks summeres op og giver en relativ position. Der er ikke noget gain igennem feedback-løkken da set point'et til controlleren også opgives i ticks. Det vides på forhånd at et tick svarer til $1/3$ af en grad (XXXX se reference her), så for at holde kontrolsystemet simpelt, foretages den omregning inden set point'et gives til controlleren. På den måde skal controlleren kun regne i ticks.
 
 \begin{figure}[ht]
 	\begin{center}
@@ -316,5 +316,50 @@ Ud fra root locus plottet bestemmes et gain, der tages udgangspunkt i. Et gain p
 
 \subsubsection{Justering af Gain}
 
-For at finde et gain, der kan bruges til små justeringer ned til et tick, øges gain'et lidt efter lidt indtil systemet opfører sig som ønket under forsøg. Den øvre grænse for duty cyclen sættes også ned løbende, indtil systemet ikke regulerer for hårdt længere. Når der er fundet passende værdier til både gain og duty cycle-grænse, simuleres systemet igen i simulink, for at se om projektmålene stadigvæk overholdes. Forsøgene viste at gain'et helst skulle være større end 0.13 for at systemet kunne bevæge sig et tick ad gangen indenfor 5 sekunder. På figur XXXX ref her kan man se sammenligningen mellem simuleringen og målinger fra 0 til 540 ticks.
+For at finde et gain, der kan bruges til små justeringer ned til et tick, øges gain'et lidt efter lidt indtil systemet opfører sig som ønket under forsøg. Den øvre grænse for duty cyclen sættes også ned løbende, indtil systemet ikke regulerer for hårdt længere. Når der er fundet passende værdier til både gain og duty cycle-grænse, simuleres systemet igen i simulink, for at se om projektmålene stadigvæk overholdes. Forsøgene viste at gain'et helst skulle være større end 0.13 for at systemet kunne bevæge sig et tick ad gangen indenfor 5 sekunder. På figur \ref{fig:Simulated_Tilt}, \ref{fig:Measured_Tilt}, \ref{fig:Simulated_Pan} og \ref{fig:Measured_Pan} kan man se sammenligningen mellem simuleringer og målinger fra 0 til 540 ticks.
 
+\begin{figure}[t!]
+    \centering
+    \begin{subfigure}[t]{0.8\textwidth}
+     \centering
+        \includegraphics[width=1\textwidth]{Billeder/Simulated_Response_Tilt.png}
+        \caption{Her ses det simulerede respons til tilt-systemet fra simulink}
+        \label{fig:Simulated_Tilt}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.8\textwidth}
+     \centering
+        \includegraphics[width=1\textwidth]{Billeder/Measured_Response_Tilt.PNG}
+        \caption{Her ses det målte respons fra tilt-systemet fra 0 til 90 grader}
+        \label{fig:Measured_Tilt}
+    \end{subfigure}
+    \caption{Her ses sammenligningen af det simulerede og det målte tilt-system, ved et gain på 0.13 og en maximum duty cycle på 39 $\%$}
+\end{figure}
+
+
+Simuleringen er lavet i simulink med og kan ses på figur \ref{fig:Simulink}. For at simulere at duty cyclen er låst fra 16 til 39 $\%$ skiftes der imellem to PID-controllere med de samme konstanter, der henholdsvis så er låst i intervallerne $0.16$ til $0.39$ og $-0.16$ til $-0.39$. Dette skift laves så, når fejlen $E(s)$ skifter fortegn.
+
+
+\begin{figure}[t!]
+    \centering
+    \begin{subfigure}[t]{0.8\textwidth}
+     \centering
+        \includegraphics[width=1\textwidth]{Billeder/Simulated_Response_Pan.png}
+        \caption{Her ses det simulerede respons til pan-systemet fra simulink}
+        \label{fig:Simulated_Pan}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.8\textwidth}
+     \centering
+        \includegraphics[width=1\textwidth]{Billeder/Measured_Response_Pan.PNG}
+        \caption{Her ses det målte respons fra pan-systemet fra 0 til 90 grader}
+        \label{fig:Measured_Pan}
+    \end{subfigure}
+    \caption{Her ses det ideelle step respons for systemerne}
+\end{figure}
+
+
+\begin{figure}
+\centering
+        \includegraphics[width=1\textwidth]{Billeder/Simulink.PNG}
+        \caption{Her ses blokdiagrammet for kontrolsystemet i simulink.}
+        \label{fig:Simulink}
+\end{figure}
