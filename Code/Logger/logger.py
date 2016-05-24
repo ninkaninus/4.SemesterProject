@@ -7,7 +7,9 @@ import sys
 
 degrees_per_radian = 180.0 / math.pi
 
-placeToMove = "0000"
+panPos = "0000"
+tiltPos = "0000"
+nameOfFile = "Default"
 
 axisToMove = "\\st"
 
@@ -16,38 +18,39 @@ print(ser.name)  # check which port was really used
 
 ser.write(bytearray(map(ord,"\\sg")))
 
-time.sleep(3)
-
 temp = 0
 
 if len(sys.argv) > 3:
-    if sys.argv[1] == "PAN":
-        axisToMove = "\\sp"
 
-    placeToMove = sys.argv[2]
+    nameOfFile = sys.argv[1]
 
-    nameOfFile = sys.argv[3]
+    panPos = sys.argv[2]
+
+    tiltPos = sys.argv[3]
 
 f = open(nameOfFile + ".txt","w")
 
+print("PAN: " + panPos + "\n" + "TILT: " + tiltPos)
+
 try:
-    dataToWrite = 0
-    ser.write(bytearray(map(ord,axisToMove + placeToMove)))
+    ser.write(bytearray(map(ord,"\\st" + tiltPos)))
+    ser.write(bytearray(map(ord,"\\sp" + panPos)))
+
     startTime = time.clock()
     while True:
-        temp = ser.read(2)
+        temp = ser.read(4)
 
-        dataToWrite = (temp[0] << 8) | temp[1]
+        #print(temp)
 
         timeNow = datetime.now()
 
-        temp = '{},{:d}\n'.format(time.clock() - startTime, dataToWrite)
+        temp = '{:7.6f},{:d},{:d}\n'.format(time.clock() - startTime, (temp[0] << 8) | temp[1], (temp[2] << 8) | temp[3])
 
         f.write(temp)
 
         f.flush()
 
-        print(dataToWrite)
+        print(temp)
 
 except KeyboardInterrupt:
     pass
