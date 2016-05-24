@@ -1,17 +1,17 @@
 \section{Systembeskrivelse}
 Denne sektion vil beskrive hvordan systemet er sat op, samt hvilke chips og boards der er udleveret.
-Til projektet er der anvendt det tildelte pan tilt system som har påmonteret et protection board, 2 hall sensorer 2 h-broer og 2 motorer, der sidder på hhv pan og tilt.\\
+Til projektet er der anvendt det tildelte pan/tilt-system som har påmonteret et protection board, 2 hall sensorer, 2 h-broer og 2 motorer, der sidder på hhv. pan og tilt.\\
 Til at styre denne opstilling er der udleveret èt stk Field Programmable Gate Array (FPGA) og èn Micro processor unit (MPU).
 \\
 
 \subsection{Fysiske begrænsninger}
 
-I alle mekaniske systemer er der en række begrænsninger der bestemmer hvad systemet er i stand til uden at gå i stykker. Det udleverede pan og tilt system har fysiske begrænsninger i form af både range of motion og de bælter der forbinder de to motorer med den fysiske ramme. Bælterne kan kamme over hvis de bliver tilført for stor kraftmoment, og rammen har kun 180 graders frihed på den ene akse, grundet ledninger der nødvendigvis skal være forbundet til den anden akse.
+I alle mekaniske systemer er der en række begrænsninger, der bestemmer hvad systemet er i stand til uden at gå i stykker. Det udleverede pan- og tilt-system har fysiske begrænsninger i form af både range of motion, og de bælter der forbinder de to motorer med den fysiske ramme. Bælterne kan kamme over hvis de bliver tilført for stort kraftmoment, og rammen har ikke meget mere end 180 graders frihed på den ene akse, grundet ledninger der nødvendigvis skal være forbundet til den anden akse.
 
 \subsection{Micro Processor Unit}
-Det udleverede Launchpad board som er et EK-TM4C123GXL board, er fra Texas Instruments, den har en påmonteret MPU som er af modellen TM4C123GH6PM, denne er en Arm Cortex M4 chip \cite{TM4C123GH6PMDatasheet}.\\
-Launchpad boardet får strøm gennem micro usb porten som sidder i øverste venstre hjørne som ses på figur \ref{fig:TivaLaunchPad}.\\
-Micro usb porten bruges samtidig til at programmere boarded ved hjælp af et Integrated development environment (IDE) til dette projekt blev Code Composer Studio \textsuperscript{\texttrademark} anvendt som er Texas Instruments egen IDE.
+Det udleverede Launchpad board som er et EK-TM4C123GXL board, er fra Texas Instruments. Den har en påmonteret MPU som er af modellen TM4C123GH6PM, denne er en Arm Cortex M4 chip \cite{TM4C123GH6PMDatasheet}.\\
+Launchpad boardet får strøm gennem micro USB porten som sidder i øverste venstre hjørne som ses på figur \ref{fig:TivaLaunchPad}.\\
+Micro USB porten bruges samtidig til at programmere boardet ved hjælp af et Integrated Development Environment (IDE). Til dette projekt blev Code Composer Studio \textsuperscript{\texttrademark} anvendt, som er Texas Instruments egen IDE.
 
 \begin{figure}[!ht]
 	\begin{center}
@@ -21,7 +21,7 @@ Micro usb porten bruges samtidig til at programmere boarded ved hjælp af et Int
 \label{fig:TivaLaunchPad}
 \end{figure}
 
-Launchpad boarded kan tilføjes til et embedded programmerings board som blev udleveret i starten af semesteret som inkluderer et keypad, et lcd og en drehimpulsgeber, samt en SPI udgang som anvendes til projektet, se figur \ref{fig:EMP_BOARD} og se vedlagt USB disk for at finde datablad, for mere information.
+Launchpad boardet kan tilføjes til et embedded programmerings-board som blev udleveret i starten af semesteret som inkluderer et keypad, et LCD og en drehimpulsgeber, samt en SPI-udgang som anvendes til projektet, se figur \ref{fig:EMP_BOARD} og se vedlagt USB disk for at finde datablad, for mere information.
 
 \begin{figure}[!ht]
 	\begin{center}
@@ -35,7 +35,7 @@ Launchpad boarded kan tilføjes til et embedded programmerings board som blev ud
 
 Det udleverede board er en Nexys 2 af mærket Digilent, chippen som sidder på boardet er en Spartan-3E FPGA.
 
-Nexys 2 boardet har 4x 7-segments displays, med 8 switches og 4 buttons. samtidig er der 3 porte som bliver brugt til projektet: JA,JC og JD, se figur \ref{fig:Nexys2Board} samt USB for at finde datablad og mere information.
+Nexys 2 boardet har fire 7-segment displays, med 8 switches og 4 knapper. Samtidig er der 3 porte som bliver brugt til projektet: JA,JC og JD, se figur \ref{fig:Nexys2Board} samt USB for at finde datablad og mere information.
 
 \begin{figure}[!ht]
 	\begin{center}
@@ -46,7 +46,7 @@ Nexys 2 boardet har 4x 7-segments displays, med 8 switches og 4 buttons. samtidi
 \end{figure}
 
 \subsection{Tilslutninger}
-Pan og tilt motorerne er tilsluttet et protection board.\\
+Pan- og tilt-motorerne er tilsluttet et protection board.\\
 Protection boardet er tilsluttet de 2 H-broer samt FPGA'ens JC port.
 De 2 H-broer er tilsluttet port JD på FPGA'en.
 FPGA'ens JA port er tilsluttet MPU'ens port B som også er SPI (Se afsnit \ref{subsec:SPI}).
