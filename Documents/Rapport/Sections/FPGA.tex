@@ -13,7 +13,7 @@ Dette var den første implementation der blev overvejet. Her sendes data mellem 
 \paragraph*{16-bit pakker med 4-bit addressering}
 Denne implementering involverer at man bruger 16-bit per overførsel. De øverste 4-bit bliver brugt til at addresserer, hvilket modul inde i FPGA'en der ønskes kommunikation med. Og de resterende 12-bit kan bruges til at overfører data med. En 4-bit addresser giver mulighed for at kunne addresserer op til 16 moduler i FPGA'en.
 
-\subsubsection{Kommunikation internt mellem moduler}
+\subsubsection{Kommunikation internt med moduler}
 Når datapakkerne fra SPI er modtaget i FPGA'en skal de på en eller anden måde tolkes. Og ud fra denne tolkning skal der enten sendes data til et modul eller hentes data fra et modul. Her beskrives de to måder der er blevet overvejet til at håndterer den interne kommunikation mellem FPGA'ens moduler.
 
 \paragraph*{Master Controller}
@@ -193,5 +193,12 @@ Disse er implementeret i form af en state machine der benytter et fire bit shift
 Når man kigger på, hvilke behov der er i forhold til kommunikation med FPGA'en så kan det ses at der kun foregår dataudvekslinger mellemm FPGA og MPU dvs. at MPU'en enten henter en værdi ud af FPGA'en eller sætter en værdi i denne. Der er derfor ikke behov for en protokol der kan tage imod deciderede kommandoer og udfører komplekse ting i FPGA'en, men nærmere behov for at der hurtigt kan sættes/hentes en værdi. Hele SPI interfacet skal kun fungerer som en udvidelses af den funktionalitet der allerede ligger i MPU'en dvs. at der skrives til et register for at få en enhed til at gøre noget eller læses fra et register for at få en værdi ud af en enhed. På den måde behøver grænsefladen set fra MPU'ens side ikke være særligt avanceret. Ved at kigge på dette behov blev det besluttet at et 16-bit datagram format, hvor de første 4 bit angiver en addresse på et modul, ville være tilstrækkeligt. Da FPGA'en kører med en clockfrekvens på 50MHz og SPI clocken vil kører væsentligt langsommere. Så er det muligt at implementerer protokollen således at data kan hentes fra FPGA'en, i samme datagram udveksling som addressen på det modul dataen skal hentes ud fra bliver modtaget. Da der både bliver clocked data ud fra MPU'en samtidig med at data bliver clocked ind fra FPGA'en. Så skal FPGA'en sende addressen ud når de første 4 bit er modtaget og sætte et write signal som tillader det modul der har addressen at sende sin data ud på databussen.\\
 I selve FPGA'en er det blevet valgt at implementerer to databusser. En til data der kommer fra moduler og skal ud på SPI. Og en til data der kommer fra SPI og skal ind til et modul. Dette er gjort fot at undgå at bruge et INOUT signal internt i FPGA'en da der ikke forefindes hardware til at tristatte interne signaler. Så i sidste ende får man warnings i Xilinx og det bliver lavet om til logiske kredse som har nogenlunde samme funktionalitet, men så kan man ligeså godt designe det sådan til at starte med.\\
 Der eksisterer et sæt motorcontroller og positionsmodul til hver motor. Disse moduler har forskellige addresser og fungerer som seperate enheder. De har også hver deres grænser defineret for motoren da pan og tilt ikke har samme grader af bevægelsesfrihed.\\
-Af extra features er der implementeret sådan så at det er muligt altid at se hvilken position pan eller til står i. Da dette vises på de fire syvsegment-displays der sidder på udviklingsboardet. Det er muligt at skifte mellem hvilken værdi der vises på displayet ved at skifte på en kontakt på boardet.
+Af extra features er der implementeret sådan så at det er muligt altid at se hvilken position pan eller til står i. Da dette vises på de fire syvsegment-displays der sidder på udviklingsboardet. Det er muligt at skifte mellem hvilken værdi der vises på displayet ved at skifte på en kontakt på boardet. Hele implementeringen af FPGA'en kan ses som et blokdiagram på figur \ref{fig:FPGA_Final}.
 
+\begin{figure}[ht]
+	\begin{center}
+		\includegraphics[scale=0.5]{Billeder/FPGA_Final.png}
+	\end{center}
+\caption{Blok diagram over modulerne i FPGA'en. Eksterne inputs er røde. Interne signaler er sorte. Eksterne outputs er gule. Databussen er lilla. Interne moduler er grå. Intern logic er lilla. Ekstern enhed er grøn}
+\label{fig:FPGA_Final}
+\end{figure}
