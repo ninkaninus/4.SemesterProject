@@ -335,9 +335,7 @@ For at finde et gain, der kan bruges til små justeringer ned til et tick, øges
     \caption{Her ses sammenligningen af det simulerede og det målte tilt-system, ved et gain på 0.13 og en maximum duty cycle på 39 $\%$}
 \end{figure}
 
-
-Simuleringen er lavet i simulink med og kan ses på figur \ref{fig:Simulink}. For at simulere at duty cyclen er låst fra 16 til 39 $\%$ skiftes der imellem to PID-controllere med de samme konstanter, der henholdsvis så er låst i intervallerne $0.16$ til $0.39$ og $-0.16$ til $-0.39$. Dette skift laves så, når fejlen $E(s)$ skifter fortegn.
-
+Afvigelserne imellem de simulerede og de målter responser kan skyldes at systemet er simuleret som om det var kontinuert, ligesom at der i PID-blokken fra Simulink bruges et filter til differentieringsledet. Den endelige konfiguration kan ses i tabel \ref{tab:Results}.
 
 \begin{figure}[t!]
     \centering
@@ -356,6 +354,7 @@ Simuleringen er lavet i simulink med og kan ses på figur \ref{fig:Simulink}. Fo
     \caption{Her ses det ideelle step respons for systemerne}
 \end{figure}
 
+Simuleringen er lavet i simulink med og kan ses på figur \ref{fig:Simulink}. For at simulere at duty cyclen er låst fra 16 til 39 $\%$ skiftes der imellem to PID-controllere med de samme konstanter, der henholdsvis så er låst i intervallerne $0.16$ til $0.39$ og $-0.16$ til $-0.39$. Dette skift laves så, når fejlen $E(s)$ skifter fortegn.
 
 \begin{figure}
 \centering
@@ -363,3 +362,15 @@ Simuleringen er lavet i simulink med og kan ses på figur \ref{fig:Simulink}. Fo
         \caption{Her ses blokdiagrammet for kontrolsystemet i simulink.}
         \label{fig:Simulink}
 \end{figure}
+
+\begin{table}[]
+\centering
+\caption{Her ses den endelige konfiguration af systemet}
+\label{tab:Results}
+\begin{tabular}{|l|l|l|l|l|l|l|}
+\hline
+     & $K_{P}$ & $K_{I}$ & $K_{D}$ & Gain & DC min & DC max \\ \hline
+Tilt & 8  & 16 & 1  & 0.13 & 16\%   & 39\%   \\ \hline
+Pan  & 2  & 1  & 1  & 0.13 & 16\%   & 39\%   \\ \hline
+\end{tabular}
+\end{table}
