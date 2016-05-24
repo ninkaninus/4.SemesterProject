@@ -48,7 +48,7 @@ test = 1/s*G
 
 %%
 
-sys = G1*C*0.03;
+sys = G1*C*0.100;
 %sys2 = G*C_Design2;
 %sys4 = G*C_Design4;
 
@@ -57,7 +57,7 @@ sys=feedback(sys,1);
 %sys4=feedback(sys4,1)
 
 
-step(sys,5)
+step(sys,5);
 %%
 
 DC = dcgain((s-p(2))*(s-p(3)));
