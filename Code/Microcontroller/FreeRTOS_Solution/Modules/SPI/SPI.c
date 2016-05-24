@@ -175,13 +175,6 @@ void get_position()
 	put_msg_state(SSM_POS_PAN,data);
 
 
-//	data &= 0x0FFF;
-//	INT8U temp = data >> 8;
-//	uart0_putc(temp);
-//	temp = data;
-//	uart0_putc(temp);
-
-	data = 0;
 	//vTaskDelay(2 / portTICK_RATE_MS);
 
 	SPI_write(ADDR_TILT_POS);

@@ -62,38 +62,38 @@ W1 = fit_ratio(ratio,W1);
 
 %%
 figure(1)
-plot(Time1,W1);
-hold on;
-plot(Time2,W2);
-hold on;
-plot(Time3,W3);
-hold on;
-plot(Time4,W4);
-hold on;
-plot(Time5,W5);
-hold on;
-plot(Time6,W6);
-hold on;
-plot(Time7,W7);
-hold on;
-plot(Time8,W8);
-hold on;
-plot(Time9,W9);
-hold on;
-plot(Time10,W10);
-hold on;
-plot(Time11,W11);
-hold on;
-plot(Time12,W12);
+plot(Time14,W14);
 hold on;
 %plot(Time13,W13);
 hold on;
-plot(Time14,W14);
+plot(Time12,W12);
+hold on;
+plot(Time11,W11);
+hold on;
+plot(Time10,W10);
+hold on;
+plot(Time9,W9);
+hold on;
+plot(Time8,W8);
+hold on;
+plot(Time7,W7);
+hold on;
+plot(Time6,W6);
+hold on;
+plot(Time5,W5);
+hold on;
+plot(Time4,W4);
+hold on;
+plot(Time3,W3);
+hold on;
+plot(Time2,W2);
+hold on;
+plot(Time1,W1);
 
 
 xlabel('Time[s]');ylabel('rad/s');
 xlim([0 1]);ylim([0 700]);
 title('Step Response at various duty cycles');
-legend('20','40','60','80','100','120','140','160','180','200','220','240','255')
+legend('255','240','220','200','180','160','140','120','100','80','60','40','20')
 grid on;
 

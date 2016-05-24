@@ -41,7 +41,7 @@ Y(s)=R(s)\frac{12K_{c}K}{s(\tau s+1)+12K_{c}K}-T_{d}(s)\frac{\tau s+1}{s(\tau s+
 \begin{itemize}
 
 \item Steady state fejl på 0
-\item Overshoot $<$ 15 $\%$
+\item Overshoot $<$ 5 $\%$
 \item Settling time $<$ 5 sekunder
 
 \end{itemize}
@@ -96,13 +96,13 @@ Percent Overshoot (P.O.) er defineret som den procentdel systemets største resp
 P.O.=100*e^{-\dfrac{\zeta\pi}{\sqrt{1-\zeta^2}}}
 \end{equation}
 
-For at få 15 $\%$ overshoot eller derunder kan det beregnes at $\zeta$ skal være større end 0.517. Det vil sige at polerne skal placeres indenfor det skraverede område på figur \ref{fig:Overshoot} for at opfylde designmålene. Det er værd at nævne igen, at dette kun viser opførslen for et 2-ordens-system, så man kan ikke præcist beskrive opførslen for vores system på denne måde. Til gengæld kan man, hvis man tænker sig om under controller-designet, komme meget tæt på. Det er dog stadigvæk smart at vælge polplaceringer med en god margen op til grænseværdien for at være på den sikre side.
+For at få 5 $\%$ overshoot eller derunder kan det beregnes at $\zeta$ skal være større end 0.690. Det vil sige at polerne skal placeres indenfor det skraverede område på figur \ref{fig:Overshoot} for at opfylde designmålene. Det er værd at nævne igen, at dette kun viser opførslen for et 2-ordens-system, så man kan ikke præcist beskrive opførslen for vores system på denne måde. Til gengæld kan man, hvis man tænker sig om under controller-designet, komme meget tæt på. Det er dog stadigvæk smart at vælge polplaceringer med en god margen op til grænseværdien for at være på den sikre side.
 
 \begin{figure}[ht]
 	\begin{center}
-		\includegraphics[scale=0.5]{Billeder/Overshoot.PNG}
+		\includegraphics[width=0.8\textwidth]{Billeder/Overshoot.PNG}
 	\end{center}
-\caption{Det skraverede område viser alle punkter med en $\zeta$-værdi over 0.517. Denne værdi svarer også til en vinkel til den reelle akse på 58.87 grader til begge sider}
+\caption{Det skraverede område viser alle punkter med en $\zeta$-værdi over 0.690. Denne værdi svarer også til en vinkel til den reelle akse på 46.37 grader til begge sider}
 \label{fig:Overshoot}
 \end{figure}
 
@@ -257,16 +257,32 @@ Som beskrevet tidligere, kan man se på PID-controlleren som to nuller og en pol
 
 Med denne metode har man en masse frihed til at vælge PID-konstanterne og samtidig få et respons, der opfylder projektets mål. Det vil sige at der er mange mulige løsninger, så ved at eksperimentere en smule med placeringerne, mens man holder øje med step responsen (igen er rltool et meget nyttigt redskab), kan man finde de konstanter, der bedst opfylder kravene. En af de løsninger der gav de bedste resultater var ved at placere to nuller i $s=-4$. Det giver formlen $(s+4)^2=s^2+8s+16$ som kan aflæses til konstanterne $K_{P}=8$, $K_{I}=16$ og $K_{D}=1$. 
 
+\begin{figure}[ht]
+	\begin{center}
+		\includegraphics[scale=0.45]{Billeder/Tilt_Rlocus.PNG}
+	\end{center}
+\caption{Her ses root locus plottet for vores tilt-system med en PID-controller med $K_{P}=8$, $K_{I}=16$, $K_{D}=1$ og et gain på 0.01}
+\label{fig:Tilt_rlocus}
+\end{figure}
+
 \subsubsection{Pan-system}
 
-Controlleren til pan systemet designes på samme måde som for tilt-systemet. Tidskonstanten er aflæst til 0.44 og DC-gain'et er $505/12$ (se figur \ref{fig:Pan_Response}). 
+Controlleren til pan systemet designes på samme måde som for tilt-systemet. Tidskonstanten er aflæst til 0.44 og DC-gain'et er $530/12$ (se figur \ref{fig:Pan_Response}). 
 
 \begin{equation}\label{eq:pan_tf}
-\frac{\omega(s)}{V_{a}(s)}=\frac{505/12}{0.44s+1}
+\frac{\omega(s)}{V_{a}(s)}=\frac{530/12}{0.44s+1}
 \end{equation}
 
 \begin{equation}\label{eq:pan_ol_tf}
-\frac{Y(s)}{R(s)}=\frac{K_{P}s+K_{I}+K_{D}s^2}{s}\cdot\frac{505}{s(0.44s+1)}
+\frac{Y(s)}{R(s)}=\frac{K_{P}s+K_{I}+K_{D}s^2}{s}\cdot\frac{530}{s(0.44s+1)}
 \end{equation}
 
 Pan-systemet tilføjer en pol i $-1/0.45=-2.22$. Dette gør det lidt sværere at holde closed-loop polerne på højre side af denne open-loop pol. Men hvis man placerer begge nullerne fra PID-controlleren i $s=-1$ kan man få et respons der ser fornuftigt ud. Dette giver formlen $(s+1)^2=s^2+2s+1$ som kan aflæses til konstanterne $K_{P}=2$, $K_{I}=1$ og $K_{D}=1$. 
+
+\begin{figure}[ht]
+	\begin{center}
+		\includegraphics[scale=0.45]{Billeder/Pan_Rlocus.PNG}
+	\end{center}
+\caption{Her ses root locus plottet for vores pan-system med en PID-controller med $K_{P}=2$, $K_{I}=1$, $K_{D}=1$ og et gain på 0.01}
+\label{fig:Tilt_rlocus}
+\end{figure}

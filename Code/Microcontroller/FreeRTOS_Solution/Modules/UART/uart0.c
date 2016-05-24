@@ -179,6 +179,8 @@ void UART5_rx_isr()
 	}
 }
 
+
+
 void UART0_task(void *pvParameters)
 {
 	INT8U received;
@@ -342,6 +344,33 @@ void UART0_task(void *pvParameters)
 			break;
 
 		case GET:
+			if (xQueueReceive(uart0_rx_queue, &received, 50000 / portTICK_RATE_MS))
+			{
+				switch(received)
+				{
+				case 'p':
+					temp = get_msg_state(SSM_POS_PAN);
+					temp &= 0x0FFF;
+					received = temp >> 8;
+					uart0_putc(received);
+					uart0_putc(temp);
+					uart_state = IDLE;
+					break;
+
+				case 't':
+					temp = get_msg_state(SSM_POS_TILT);
+					temp &= 0x0FFF;
+					received = temp >> 8;
+					uart0_putc(received);
+					uart0_putc(temp);
+					uart_state = IDLE;
+					break;
+
+				default:
+					uart_state = IDLE;
+					break;
+				}
+			}
 			break;
 		case WAIT:
 			break;
