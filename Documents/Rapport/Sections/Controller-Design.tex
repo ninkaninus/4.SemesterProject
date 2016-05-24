@@ -41,14 +41,14 @@ Y(s)=R(s)\frac{12K_{c}K}{s(\tau s+1)+12K_{c}K}-T_{d}(s)\frac{\tau s+1}{s(\tau s+
 \begin{itemize}
 
 \item Steady state fejl på 0
-\item Overshoot $<$ 5 $\%$
-\item Settling time $<$ 5 sekunder
+\item Overshoot $<$ 5 $\%$ XXXX
+\item Settling time $<$ 5 sekunder 
 
 \end{itemize}
 
 \subsection{2.-ordenssystem}
 
-Når man designer en controller, kan det være praktisk at approksimere hele systemet som et ideelt 2-ordens-system (\ref{eq:SO_system}). Disse systemer er meget veldefinerede og forholdsvis lette at beregne på. Parametre som overshoot, settling time, rise time m.m. kan beregnes analytisk og kan give et godt udgangspunkt til ens valg af controller. $\omega_{n}$ er systemets naturlige frekvens og $\zeta$ er systemets damping ratio - jo større en damping ratio, jo bedre en dæmpning af systemets respons har man.
+Når man designer en controller, kan det være praktisk at approksimere hele systemet som et ideelt 2-ordens-system (ligning \eqref{eq:SO_system}). Disse systemer er meget veldefinerede og forholdsvis lette at beregne på. Parametre som overshoot, settling time, rise time m.m. kan beregnes analytisk og kan give et godt udgangspunkt til ens valg af controller. $\omega_{n}$ er systemets naturlige frekvens og $\zeta$ er systemets damping ratio - jo større en damping ratio, jo bedre en dæmpning af systemets respons har man.
 
 \begin{equation}\label{eq:SO_system}
 Y(s)=\frac{\omega_{n}^2}{s^2+2\zeta\omega_{n}s+\omega_{n}^2}
@@ -63,14 +63,14 @@ Hele ideen med at benytte et 2-ordens-system til den indledende analyse, er at m
 	\label{fig:SO_system}
 \end{figure}
 
-På figur \ref{fig:SO_system} kan man se hvordan man alene ud fra polernes placering kan beskrive en masse om damping ratio og den naturlige frekvens. En ting der ikke fremgår af figuren, er at damping ratio også fortæller noget om, om polerne er komplekse konjugerede eller reelle. Hvis $1>\zeta>0$ er polerne komplekse; hvis $\zeta=1$ ligger der to reelle poler oven i hinanden; hvis $\zeta>1$ er polerne reelle og unikke. Disse tre situationer bliver også ofte beskrevet som henholdsvis underdæmpet, kritisk dæmpet og overdæmpet.
+På figur \ref{fig:SO_system} kan man se hvordan man, alene ud fra polernes placering, kan beskrive en masse om damping ratio og den naturlige frekvens. En ting der ikke fremgår af figuren, er at damping ratio også fortæller noget om, om polerne er komplekse konjugerede eller reelle. Hvis $1>\zeta>0$ er polerne komplekse; hvis $\zeta=1$ ligger der to reelle poler oven i hinanden; hvis $\zeta>1$ er polerne reelle og unikke. Disse tre situationer bliver også ofte beskrevet som henholdsvis underdæmpet, kritisk dæmpet og overdæmpet.
 
 
 
 
 \subsubsection{Steady State Fejl}
 
-For at undersøge om systemet kan drive fejlen i 0, er det nødvendigt at finde et udtryk for $E(s)$, som kan ses på figur \ref{fig:GB_Model}, og ved hjælp af \textit{Final Value Theorem} (\ref{eq:FVT}), finde ud af hvad der er tilbage, når systemet går i steady state. $E(s)$ kan udledes på samme måde som (\ref{eq:GB_tf}) blev det.
+For at undersøge om systemet kan drive fejlen i 0, er det nødvendigt at finde et udtryk for $E(s)$, som kan ses på figur \ref{fig:GB_Model}, og ved hjælp af \textit{Final Value Theorem} (\ref{eq:FVT}), finde ud af hvad der er tilbage, når systemet går i steady state. $E(s)$ kan fra blokdiagrammet på figur (\ref{eq:GB_tf}).
 
 \begin{equation} \label{eq:FVT}
 lim_{t \to \infty} f(t) = lim_{s \to 0} sF(s)
@@ -80,7 +80,9 @@ lim_{t \to \infty} f(t) = lim_{s \to 0} sF(s)
 E(s)=R(s)\frac{s(\tau s+1)}{s(\tau s+1)+12K_{c}K}-T_{d}(s)\frac{\tau s+1}{s(\tau s+1)+12K_{c}K}
 \end{equation}
 
-Ved et step-input ($R(s)=A/s$) bliver fejlen drevet i 0, så længe der ikke er nogen disturbance ($T_{d}=0$). Til gengæld vil der, lige så snart der er en disturbance til stede, være en steady state fejl. I ligning (\ref{eq:td_ess}) kan man se resultatet af et disturbance step-input ($T_{d}=A/s$). I virkeligheden vil man kunne se ubalance i tilt-systemet, for eksempel, som en step-disturbance. Hvis man monterer ekstra vægt og flytter tyngdepunktet væk fra rotationsaksen, vil tyngdekraften modarbejde systemet i nogle positioner og hjælpe systemet i andre. Denne ubalance tilføjer et nyt moment, der påvirker systemet og kan også godt ses som en ny vinkelhastighed, som det er modelleret i figur \ref{fig:GB_Model}.
+Ved et step-input ($R(s)=A/s$) bliver fejlen drevet i 0, så længe der ikke er nogen disturbance ($T_{d}=0$). Til gengæld vil der, lige så snart der er en disturbance til stede, være en steady state fejl. I ligning (\ref{eq:td_ess}) kan man se resultatet af et disturbance step-input ($T_{d}=A/s$). I virkeligheden vil man kunne se ubalance i tilt-systemet, for eksempel som en step-disturbance.
+
+Hvis man monterer ekstra vægt og flytter tyngdepunktet væk fra rotationsaksen, vil tyngdekraften modarbejde systemet i nogle positioner og hjælpe systemet i andre. Denne ubalance tilføjer et nyt kraftmoment, der påvirker systemet og kan også godt ses som en ny vinkelhastighed, som det er modelleret i figur \ref{fig:GB_Model}.
 
 \begin{equation}\label{eq:td_ess}
 e_{ss}=lim_{s \to 0} sE(s)=-\frac{A}{12K_{c}K}
@@ -90,13 +92,13 @@ Det kan altså konkluderes, at man er nødt til at have mindst en integrator i c
 
 \subsubsection{Overshoot}
 
-Percent Overshoot (P.O.) er defineret som den procentdel systemets største respons afviger fra den ønskede værdi - det er et udtryk for, hvor meget systemet skyder forbi målet når det påvirkes af et step input. Ved hjælp af lidt algebra, differentiering og et par laplace-transformeringer, kan man udlede ligning (\ref{eq:P.O.}) fra (\ref{eq:SO_system}) (se Modern Control Systems\cite{ModernControlSystem}), og på den måde finde ud af, hvor meget overshoot systemet har udelukkende ud fra damping ratio. En anden måde at se på problemet, er at man, ved at finde $\zeta$ til et bestemt overshoot, også kan finde den vinkel til de komplekse polers placering, hvor man får netop den mængde overshoot - store vinkler giver stort overshoot og omvendt (se figur \ref{fig:SO_system}). Man kan altså ud fra denne udregning definere et klart område, hvor alle polplaceringer vil opfylde ens krav til overshoot. 
+Percent Overshoot (P.O.) er defineret som den procentdel systemets største respons afviger fra den ønskede værdi. Dette er et udtryk for, hvor meget systemet skyder forbi målet, når det påvirkes af et step input. Ved hjælp af lidt algebra, differentiering og et par laplace-transformeringer, kan man udlede ligning (\ref{eq:P.O.}) fra (\ref{eq:SO_system} XXXX sidetal i bog) (se Modern Control Systems\cite{ModernControlSystem}), og på den måde finde ud af, hvor meget overshoot systemet har udelukkende ud fra damping ratio. En anden måde at se på problemet, er at man, ved at finde $\zeta$ til et bestemt overshoot, også kan finde den vinkel til de komplekse polers placering, hvor man får netop den mængde overshoot - store vinkler giver stort overshoot og omvendt (se figur \ref{fig:SO_system}). Man kan altså ud fra denne udregning definere et klart område, hvor alle polplaceringer vil opfylde ens krav til overshoot. 
 
 \begin{equation}\label{eq:P.O.}
 P.O.=100*e^{-\dfrac{\zeta\pi}{\sqrt{1-\zeta^2}}}
 \end{equation}
 
-For at få 5 $\%$ overshoot eller derunder kan det beregnes at $\zeta$ skal være større end 0.690. Det vil sige at polerne skal placeres indenfor det skraverede område på figur \ref{fig:Overshoot} for at opfylde designmålene. Det er værd at nævne igen, at dette kun viser opførslen for et 2-ordens-system, så man kan ikke præcist beskrive opførslen for vores system på denne måde. Til gengæld kan man, hvis man tænker sig om under controller-designet, komme meget tæt på. Det er dog stadigvæk smart at vælge polplaceringer med en god margen op til grænseværdien for at være på den sikre side.
+For at få 5 $\%$ overshoot eller derunder kan det beregnes at $\zeta$ skal være større end 0.690. Det vil sige at polerne skal placeres indenfor det skraverede område på figur \ref{fig:Overshoot} for at opfylde designmålene. Det er værd at nævne igen, at dette kun viser opførslen for et 2-ordens-system, så man kan ikke præcist beskrive opførslen for vores system på denne måde, da det er et 3.ordenssystem med flere nuller. Til gengæld kan man, hvis man tænker sig om under controller-designet, komme meget tæt på. Det er dog stadigvæk smart at vælge polplaceringer med en god margen op til grænseværdien for at være på den sikre side.
 
 \begin{figure}[ht]
 	\begin{center}
@@ -108,7 +110,7 @@ For at få 5 $\%$ overshoot eller derunder kan det beregnes at $\zeta$ skal vær
 
 \subsubsection{Settling Time}
 
-Settling time er defineret som den tid det tager systemet at falde til ro inden for 2 procent af den ønskede værdi. Hvis man kigger på formlen for impulsresponsen (ligning \ref{eq:impulse_response})  til et 2-ordens-system i tidsdomænet, kan det ses at den dæmpende faktor for systemet er $e^{-\zeta\omega_{n}t}$ - settling time så beskrives ved $e^{-\zeta\omega_{n}T_{s}}<0.02$ og herfra kan man udlede ligning (\ref{eq:settling_time}).
+Settling time er defineret som den tid det tager systemet at falde til ro, inden for 2 procent af den ønskede værdi. Hvis man kigger på formlen for impulsresponsen (ligning \ref{eq:impulse_response})  til et 2-ordens-system i tidsdomænet, kan det ses at den dæmpende faktor for systemet er $e^{-\zeta\omega_{n}t}$. Settling time kan derfor beskrives ved $e^{-\zeta\omega_{n}T_{s}}<0.02$ og herfra kan man udlede ligning (\ref{eq:settling_time}).
 
 \begin{equation}\label{eq:impulse_response}
 y(t)=\frac{\omega_{n}}{\beta}e^{-\zeta\omega_{n}t}Sin(\omega_{n}\beta t)
@@ -126,16 +128,16 @@ y(t)=\frac{\omega_{n}}{\beta}e^{-\zeta\omega_{n}t}Sin(\omega_{n}\beta t)
 T_{s}=\frac{4}{\omega_{n}\zeta}
 \end{equation}
 
-For at få en settling time på under $5s$ kan det ud fra (\ref{eq:settling_time}) bestemmes at $\omega_{n}\zeta > 0.8$. Det vil med andre ord sige at polerne skal befinde sig til venstre for -0.8 - her refereres der igen til figur \ref{fig:SO_system}. Ligesom det var tilfældet for overshoot-kriterierne, er det også her en god ide at vælge sine poler med en god margen til grænseværdien.
+For at få en settling time på under $5s$ kan det ud fra ligning \eqref{eq:settling_time} bestemmes at $\omega_{n}\zeta > 0.8$. Det vil med andre ord sige at polerne skal befinde sig til venstre for -0.8 - her refereres der igen til figur \ref{fig:SO_system}. Ligesom det var tilfældet for overshoot-kriterierne, er det også her en god ide at vælge sine poler med en god margen til grænseværdien.
 
 \subsubsection{Delkonklusion}
 
 For at overholde designmålene vedrørende settling time, overshoot og steady state fejl, kan det følgende konkluderes:
 
 \begin{itemize}
-\item Damping ratio for et 2.-ordenssystem skal være større end $0.517$.
+\item Damping ratio for et 2.-ordenssystem skal være større end $0.690$.
 \item Produktet $\omega_{n}\zeta$ for et 2.-ordenssystem skal være større end $0.8$. Dette produkt svarer til den reelle komponent af to komplekse poler.
-\item For at holde steady state fejlen i 0, skal man have en controller med et integrator led. Derfor skal det undersøges hvordan en I-, en PI- og en PID-controller påvirker systemet. P- og PD-controllere ignoreres pga af kravet til steady state fejlen.
+\item For at holde steady state fejlen i 0, skal man have en controller med et integrator led. Derfor skal det undersøges hvordan en I-, ID-, PI- og PID-controller påvirker systemet. P- og PD-controllere ignoreres pga af kravet til steady state fejlen.
 \end{itemize}
 
 Grænserne skal ses som et absolut minimumskrav, da systemet ikke er et ideelt 2.ordenssystem. Der skal helst være en god margen.
@@ -146,7 +148,7 @@ I denne sektion vil det blive undersøgt, hvilke forskellige controller-typer (I
 
 \subsubsection{I Controller}
 
-En I-controller er et integrator-led med et gain - integratoren svarer til at placere endnu en pol i origo. For at undersøge hvordan denne controller vil opføre sig, kan man bruge root locus metoden for at se, hvordan polerne flytter sig, når controller-gainet øges. 
+En I-controller er et integrator-led med et gain. Integratoren svarer til at placere endnu en pol i origo. For at undersøge hvordan denne controller vil opføre sig, kan man bruge root locus metoden for at se, hvordan polerne flytter sig, når controller-gainet øges. 
 
 \begin{equation}\label{eq:I_OpenLoop}
 Y(s)=K_{I}\cdot\frac{1}{s}\cdot\frac{12K}{s(s\tau+1)}
@@ -160,13 +162,13 @@ For at plotte root locus i matlab skal man bare bruge open loop overføringsfunk
      \centering
         \includegraphics[width=1\textwidth]{Billeder/I_rlocus.PNG}
         \caption{Her ses root locus plottet for vores system med en ID-controller.}
-        \label{fig:ID_rlocus}
+        \label{fig:I_rlocus}
     \end{subfigure}
     \begin{subfigure}[t]{0.49\textwidth}
      \centering
         \includegraphics[width=1\textwidth]{Billeder/ID_rlocus.PNG}
         \caption{Her ses root locus plottet for vores system med en I-controller. Det er tydeligt at systemet aldrig kan stabiliseres med et gain alene. Dette plot er lavet med en tidskonstant på 0.12 sekunder, hvilket vil svare til en pol i -8.33.}
-        \label{fig:I_rlocus}
+        \label{fig:ID_rlocus}
     \end{subfigure}
     \caption{Her ses root locus plottet for vores system med en ID-controller og I-controller.}
 \end{figure}
@@ -195,17 +197,8 @@ Y(s)=\frac{K_{P}s+K_{I}}{s}\cdot\frac{12K}{s(s\tau+1)}
 
 Ud fra root locus beregninger kan det bevises at nullets placering skal ligge til højre for $-0.93$ for at de to branches fra polerne i origo mødes på den reelle akse. (XXXX Skal beviset udpensles med ligninger eller er det fint bare at sige det passer?). $K_{P}$ skal med andre ord helst være større end $K_{I}$. Til gengæld må $K_{P}$ heller ikke blive for meget større end $K_{I}$ (knap $2.6$ gange) fordi det gør systemet for langsomt, da break-in punktet kommer til at ligge på den forkerte side af $0.8$, som er $\omega_{n}\zeta$-grænsen for en settling time under 5 sekunder. 
 
-\begin{equation}
-1+G\frac{(s+I/P)K}{s^2(\tau s+1)}=0
-\end{equation}
+XXXX figur her.
 
-\begin{equation}
-G=-\frac{s^2(\tau s+1)}{(s+I/P)K}
-\end{equation}
-
-\begin{equation}
-\frac{dG}{ds}=0
-\end{equation}
 
 \subsubsection{PID Controller}
 
@@ -213,15 +206,18 @@ G=-\frac{s^2(\tau s+1)}{(s+I/P)K}
 Y(s)=\frac{K_{P}s+K_{I}+K_{D}s^2}{s}\cdot\frac{12K}{s(s\tau+1)}
 \end{equation}
 
-Med PI-controlleren er margenen for P- og I-konstanterne og gainet ret snæver, hvis projektets designmål skal overholdes. PID-controlleren giver lidt mere råderum, men man tager også et skridt længere væk fra den ideelle 2.-ordensmodel. Differentieringsledet D tilføjer nemlig et ekstra nul til ligningen. Med to nuller er der ikke længere to branches, der går mod uendelig langs en lodret asymptote når gainet øges. Der er nu kun en branch der går mod minus uendelig, og det foregår langs den reelle akse. Dette har tre klare fordele:
+
+XXXX tættere eller længere væk fra model?
+
+Med PI-controlleren er margenen for P- og I-konstanterne og gainet ret snæver, hvis projektets designmål skal overholdes. PID-controlleren giver lidt mere råderum, men man tager også et skridt længere væk fra den ideelle 2.-ordensmodel. Differentieringsledet D tilføjer nemlig et ekstra nul til ligningen. Med to nuller er der ikke længere to branches, der går mod (XXXX reference til figur PI) uendelig langs en lodret asymptote når gainet øges. Der er nu kun en branch der går mod minus uendelig, og det foregår langs den reelle akse. Dette har tre klare fordele:
 
 \begin{itemize}
-	\item 	En af polerne fra det modellerede 3-ordens-system glider væk fra de to andre poler ved højere gain. På den måde kan man lettere negligere effekten fra den i modellen.
+	\item 	En af polerne fra det modellerede 3-ordens-system glider væk fra de to andre poler ved højere gain. På den måde kan man lettere negligere effekten fra den i modellen. Dette bringer os tættere på 2.ordensmodellen.
 	\item  	Man kan altid sørge for at de to dominante poler befinder sig på den 				   	reelle akse (mindre overshoot), hvis de to tilføjede nuller også er reelle og gainet er tilpas stort. 
 	\item  	Man kan få de to dominante poler længere væk fra den imaginære akse 					(hurtigere settling time).
 \end{itemize}
 
-I de root locus-plots der har være vist indtil videre, har der været brugt en tidskonstant på 0.12 sekunder - denne værdi stammer fra forsøg på tilt-systemet. Med denne tidskonstant får man en pol på $-1/0.12=-8.33$. Hvis begge nuller placeres til højre for $-8.33$ vil den ene branch følge den reelle akse til venstre for $-8.33$ mod uendelig. På den måde kan man, med et forholdsvist lille gain, skubbe closed-loop-polen fra tidskonstanten så langt ud ad den reelle akse, at den ikke har nogen stor indflydelse på systemet. Det kan også lade sig gøre, hvis et af nullerne eller begge to er til venstre for $-8.33$, det kræver bare et noget større gain.
+I de root locus-plots der har være vist indtil videre, har der været brugt en tidskonstant på 0.12 sekunder - denne værdi stammer fra tidlige forsøg på tilt-systemet. Med denne tidskonstant får man en pol på $-1/0.12=-8.33$. Hvis begge nuller placeres til højre for $-8.33$ vil den ene branch følge den reelle akse til venstre for $-8.33$ mod uendelig. På den måde kan man, med et forholdsvist lille gain, skubbe closed-loop-polen fra tidskonstanten så langt ud ad den reelle akse, at den ikke har nogen stor indflydelse på systemet. Det kan også lade sig gøre, hvis et af nullerne eller begge to er til venstre for $-8.33$, det kræver bare et noget større gain.
 
 \begin{figure}[ht]
 	\begin{center}
@@ -249,7 +245,7 @@ Controlleren til tilt-systemet designes efter at kameraet skal være monteret. M
 \frac{\omega(s)}{V_{a}(s)}=\frac{605/12}{0.13s+1}
 \end{equation}
 
-Ud fra ovenstånde ligning kan open loop overføringsfunktionen nu findes. Denne overføringsfunktion (\ref{eq:tilt_ol_tf}) kan bruges til at lave de root locus plots som PID-konstanterne designes efter.
+Ud fra ovenstånde ligning kan open loop overføringsfunktionen nu findes. Denne overføringsfunktion ligning \eqref{eq:tilt_ol_tf} kan bruges til at lave de root locus plots som PID-konstanterne designes efter.
 
 \begin{equation}\label{eq:tilt_ol_tf}
 \frac{Y(s)}{R(s)}=\frac{K_{P}s+K_{I}+K_{D}s^2}{s}\cdot\frac{605}{s(0.13s+1)}
@@ -316,7 +312,7 @@ Ud fra root locus plottet bestemmes et gain, der tages udgangspunkt i. Et gain p
 
 \subsubsection{Justering af Gain}
 
-For at finde et gain, der kan bruges til små justeringer, ned til et tick, øges gain'et lidt efter lidt indtil systemet opfører sig som ønket under forsøg. Den øvre grænse for duty cyclen sættes også ned løbende, indtil systemet ikke regulerer for hårdt længere. Når der er fundet passende værdier til både gain og duty cycle-grænse, simuleres systemet igen i simulink, for at se om projektmålene stadigvæk overholdes. Forsøgene viste at gain'et helst skulle være større end 0.13 for at systemet kunne bevæge sig et tick ad gangen indenfor 5 sekunder. På figur XXXX ref her kan man se sammenligningen mellem simuleringen og målinger fra 0 til 540 ticks.
+For at finde et gain, der kan bruges til små justeringer, ned til et tick, øges gain'et lidt efter lidt indtil systemet opfører sig som ønket under forsøg. Den øvre grænse for duty cyclen sættes også ned løbende, indtil systemet ikke regulerer for hårdt længere. Når der er fundet passende værdier til både gain og duty cycle-grænse, simuleres systemet igen i simulink, for at se om projektmålene stadigvæk overholdes. Forsøgene viste at gain'et helst skulle være større end 0.13 for at systemet kunne bevæge sig et tick ad gangen indenfor 5 sekunder. På figur \ref{fig:Simulated_Tilt}, \ref{fig:Measured_Tilt}, \ref{fig:Simulated_Pan} og \ref{fig:Measured_Pan} kan man se sammenligningen mellem simuleringen og målinger fra 0 til 540 ticks.
 
 \begin{figure}[t!]
     \centering
