@@ -2,7 +2,7 @@
 FPGA'en fungerer som en del af den hardware der styrer pan/tilt-systemet. FPGA'ens opgaver er bl.a. dataopsamling fra hall sensorene på motorerne, sende styre signaler til H-broerne, genererer pwm signaler, implementerer en form for sikkerhedsbegrænsning på hvor meget pan og tilt kan dreje rundt samt at kommunikerer med MPU'en. Afsnittet er delt op i separate beskrivelse af de moduler som FPGA'en er bygget op af. \\
 
 \subsection{SPI}
-Der skal foregå en kommunikation mellem microcontrolleren og FPGA'en. Til dette formål er der i opgaven specificieret at grænsefladen SPI skal bruges. Grænsefladens overordnede virkemåde er beskrevet nærmere i afsnit \ref{subsec:SPI}. I dette afsnit vil der blive beskrevet fordele og ulemper ved forskellige måder at implementerer denne grænseflade i FPGA'en. Dernæst vil der blive foretaget en dybere gennemgang af den valgte implementation. Og konkluderes på, hvordan denne implementation har fungeret rent praktisk.
+Der skal foregå en kommunikation mellem microcontrolleren og FPGA'en. Til dette formål er der i opgaven specificieret at grænsefladen SPI skal bruges. Grænsefladens overordnede virkemåde er beskrevet nærmere i afsnit \ref{subsec:SPI}. Microcontrolleren fungerer som master i denne kommunikation. I dette afsnit vil der blive beskrevet fordele og ulemper ved forskellige måder at implementerer denne grænseflade i FPGA'en. Dernæst vil der blive foretaget en dybere gennemgang af den valgte implementation. Og konkluderes på, hvordan denne implementation har fungeret rent praktisk.
 
 \subsubsection{Kommunikation med MPU}
 Kommunikationen fra FPGA'en til MPU'en foregår over SPI, men da SPI kun er en grænseflade. Skal der defineres, hvordan de datapakker der sendes frem og tilbage tolkes. Til at gøre dette er det blevet overvejet to forskellige metoder som er beskrevet i de følgende afsnit.
@@ -52,31 +52,6 @@ I denne tilstand ventes der på at MPU'en clocker de sidste 12 databits ud. Når
 	\end{center}
 \caption{State machine diagram over de states som SPI modulet går igennem}
 \label{fig:FPGA_SPI_State}
-\end{figure}
-
-
-\subsection{MotorController}
-Motor Controller har til formål at styrer en motor. Modulet skal kunne starte og stoppe motoren, styrer retningen af motoren, styrer hastigheden af motoren samt implementerer en sikkerhed så motoren ikke ødelægger pan delen af systemet, hvis der kommer forkert input til motorcontrolleren.
-
-\subsubsection{Designmål}
-Liste over ting som motorcontrollen skal kunne:
-\begin{itemize}
-	\item Være generisk så dens parametre kan tweakes til flere motorer
-	\item Slå motorbremsen til og fra.
-	\item Skifte retning på motoren
-	\item Kunne stoppe motoren fra at drive pan- og til-rammerne ud over deres fysiske begrænsninger.
-\end{itemize}
-
-\subsubsection{Implementation}
-Motor controlleren er implementeret som en tilstandsmaskine som vist på figur \ref{fig:FPGA_MotorController_State} og beskrevet som følgende:\\
-\textit{Idle} dette er den tilstand som systemet starter i.
-
-\begin{figure}[ht]
-	\begin{center}
-		\includegraphics[scale=0.5]{Billeder/FPGA_Motorcontroller_state.png}
-	\end{center}
-\caption{State machine diagram over de states som MotorController modulet går igennem}
-\label{fig:FPGA_MotorController_State}
 \end{figure}
 
 \subsection{PWM Driver}
@@ -149,6 +124,35 @@ Når hall sensor 1 er lav, og hall sensor 2 er lav\\
 Hvis hall sensor 2 så bliver høj først, så er det en rotation med uret.\\
 Hvis hall sensor 1 bliver høj først, så er det en rotation mod uret.\\
 
+\subsection{MotorController}
+Motor Controller har til formål at styrer en motor. Modulet skal kunne starte og stoppe motoren, styrer retningen af motoren, styrer hastigheden af motoren samt implementerer en sikkerhed så motoren ikke ødelægger pan delen af systemet, hvis der kommer forkert input til motorcontrolleren.
+
+\subsubsection{Designmål}
+Liste over ting som motorcontrollen skal kunne:
+\begin{itemize}
+	\item Være generisk så dens parametre kan tweakes til flere motorer
+	\item Slå motorbremsen til og fra.
+	\item Skifte retning på motoren
+	\item Kunne stoppe motoren fra at drive pan- og til-rammerne ud over deres fysiske begrænsninger.
+\end{itemize}
+
+\subsubsection{Implementation}
+Motor controlleren tager et input fra den fælles interne databus og har en addresse tildelt der er generisk, så der er mulighed for at ændre denne. Der er også forbindelse til en knap som kan sbruges til at styrerer modulet. Modulet er implementeret som en tilstandsmaskine som vist på figur \ref{fig:FPGA_MotorController_State} og er beskrevet som følgende:\\
+\textit{Idle} dette er den tilstand som systemet starter i. Her sørges der for at motoren ikke kører. Der ventes på at knappen bliver trykket ned. Når dette sker skiftes der til tilstanden \textit{ZeroRelease}.\\
+I denne tilstand ventes der på at knappen bliver sluppet igen for at undgå at inputet fra knappen overføres til næste tilstand. Når knappen bliver sluppet skiftes tilstanden til \textit{ZeroMotor}.\\ 
+I denne tilstand er det muligt at nulstille motorens position ved hjælp af knappen. Når knappen trykkes ned så kører motoren i en retning og når knappen slippes og trykkes igen så kører motoren den anden retning. Dette fortsætter indtil at modulet registrer at der er gået forbi index hall sensoren. Når dette sker så signaleres andre moduler om at motoren er færdig med at nulstille og tilstanden skifter til \textit{PostZero}.\\
+Denne tilstand er til for at det er muligt at vælge, hvornår at FPGA'en overlader kontrollen af motorerne til det der kommer ind fra databussen. Der ventes på at knappen trykkes ned og når dette sker så skiftes der til tilstanden \textit{RunMode}. \\
+I denne tilstand så styres motoren af det der kommer ind til modulet via den interne databus. Der tjekkes hele tiden på om motorens position går ud over de grænser som der er defineret den skal holde sig inden for. Hvis der bliver gået ud over disse grænser ændres så skiftes tilstanden til \textit{EmergencyMode}.\\
+I denne tilstand slår modulet motorbremsen til og låser motorerne fast. Efterfølgende input fra databussen ignoreres og der ventes på at knappen bliver trykket ned. Når dette sker så skiftes tilstanden tilbage til \textit{Init} og motoren skal nulstilles på ny.
+
+\begin{figure}[ht]
+	\begin{center}
+		\includegraphics[scale=0.5]{Billeder/FPGA_Motorcontroller_state.png}
+	\end{center}
+\caption{State machine diagram over de states som MotorController modulet går igennem}
+\label{fig:FPGA_MotorController_State}
+\end{figure}
+
 \subsection{Diverse undermoduler}
 Her beskrives diverse små undermoduler der ikke er store nok til at have en sektion for sig selv, men som stadigvæk tilføjer mindre funktionaliteter til FPGA'en.
 
@@ -186,5 +190,8 @@ Ved hver af de brugte knapper er der et modul der holder styr på outputtet af k
 Disse er implementeret i form af en state machine der benytter et fire bit shift register der afhænger af input til at ændre tilstand. Når knappen bliver trykket ned i fire clock pulser i træk skifter state machinen over i den tilstand der svarer til at alle output er tændt. Puls signalet bliver slukket næste clock puls, mens debounce signalet bliver slukket når knappen ikke har været trykket ned i fire signaler i træk. Toggle signalet bliver selvsigende slukket næste gang der bliver trykket på knappen i fire clock signaler i træk, hvor pulse og debounce naturligvis også bliver aktiveret.
 
 \subsection{Endeligt design}
-Når man kigger på, hvilke behov der er i forhold til kommunikation med FPGA'en så kan det ses at der kun foregår dataudvekslinger mellemm FPGA og MPU dvs. at MPU'en enten henter en værdi ud af FPGA'en eller sætter en værdi i denne. Der er derfor ikke behov for en protokol der kan tage imod deciderede kommandoer og udfører komplekse ting i FPGA'en, men nærmere behov for at der hurtigt kan sættes/hentes en værdi. Hele SPI interfacet skal kun fungerer som en udvidelses af den funktionalitet der allerede ligger i MPU'en dvs. at der skrives til et register for at få en enhed til at gøre noget eller læses fra et register for at få en værdi ud af en enhed. På den måde behøver grænsefladen set fra MPU'ens side ikke være særligt avanceret. Ved at kigge på dette behov blev det besluttet at et 16-bit datagram format, hvor de første 4 bit angiver en addresse på et modul, ville være tilstrækkeligt. Da FPGA'en kører med en clockfrekvens på 50MHz og SPI clocken vil kører væsentligt langsommere. Så er det muligt at implementerer protokollen således at data kan hentes fra FPGA'en, i samme datagram udveksling som addressen på det modul dataen skal hentes ud fra bliver modtaget. Da der både bliver clocked data ud fra MPU'en samtidig med at data bliver clocked ind fra FPGA'en. Så skal FPGA'en sende addressen ud når de første 4 bit er modtaget og sætte et write signal som tillader det modul der har addressen at sende sin data ud på databussen. Et eksempel herpå kan ses i figur \ref{fig:FPGA_Transfer}.\\
-I selve FPGA'en er det blevet valgt at implementerer to databusser. En til data der kommer fra moduler og skal ud på SPI. Og en til data der kommer fra SPI og skal ind til et modul. Dette er gjort fot at undgå at bruge et INOUT signal internt i FPGA'en da der ikke forefindes hardware til at tristatte interne signaler. Så i sidste ende får man warnings i Xilinx og det bliver lavet om til logiske kredse. Som har nogenlunde samme funktionalitet, men så kan man ligeså godt designe det sådan til at starte med. XXXXIkke færdig skrevet
+Når man kigger på, hvilke behov der er i forhold til kommunikation med FPGA'en så kan det ses at der kun foregår dataudvekslinger mellemm FPGA og MPU dvs. at MPU'en enten henter en værdi ud af FPGA'en eller sætter en værdi i denne. Der er derfor ikke behov for en protokol der kan tage imod deciderede kommandoer og udfører komplekse ting i FPGA'en, men nærmere behov for at der hurtigt kan sættes/hentes en værdi. Hele SPI interfacet skal kun fungerer som en udvidelses af den funktionalitet der allerede ligger i MPU'en dvs. at der skrives til et register for at få en enhed til at gøre noget eller læses fra et register for at få en værdi ud af en enhed. På den måde behøver grænsefladen set fra MPU'ens side ikke være særligt avanceret. Ved at kigge på dette behov blev det besluttet at et 16-bit datagram format, hvor de første 4 bit angiver en addresse på et modul, ville være tilstrækkeligt. Da FPGA'en kører med en clockfrekvens på 50MHz og SPI clocken vil kører væsentligt langsommere. Så er det muligt at implementerer protokollen således at data kan hentes fra FPGA'en, i samme datagram udveksling som addressen på det modul dataen skal hentes ud fra bliver modtaget. Da der både bliver clocked data ud fra MPU'en samtidig med at data bliver clocked ind fra FPGA'en. Så skal FPGA'en sende addressen ud når de første 4 bit er modtaget og sætte et write signal som tillader det modul der har addressen at sende sin data ud på databussen.\\
+I selve FPGA'en er det blevet valgt at implementerer to databusser. En til data der kommer fra moduler og skal ud på SPI. Og en til data der kommer fra SPI og skal ind til et modul. Dette er gjort fot at undgå at bruge et INOUT signal internt i FPGA'en da der ikke forefindes hardware til at tristatte interne signaler. Så i sidste ende får man warnings i Xilinx og det bliver lavet om til logiske kredse som har nogenlunde samme funktionalitet, men så kan man ligeså godt designe det sådan til at starte med.\\
+Der eksisterer et sæt motorcontroller og positionsmodul til hver motor. Disse moduler har forskellige addresser og fungerer som seperate enheder. De har også hver deres grænser defineret for motoren da pan og tilt ikke har samme grader af bevægelsesfrihed.\\
+Af extra features er der implementeret sådan så at det er muligt altid at se hvilken position pan eller til står i. Da dette vises på de fire syvsegment-displays der sidder på udviklingsboardet. Det er muligt at skifte mellem hvilken værdi der vises på displayet ved at skifte på en kontakt på boardet.
+
