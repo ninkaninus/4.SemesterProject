@@ -47,18 +47,18 @@ Control systemet tager kontinuært variabler fra Shared State Memory, og benytte
 
 \begin{figure}[h]
 \centering
-\begin{subfigure}[b]{0.5\textwidth}
-	\includegraphics[scale=0.35]{Billeder/Taskdiagram1.png}
+\begin{subfigure}[t]{0.3\textwidth}
+	\includegraphics[width=1\textwidth]{Billeder/Taskdiagram1.png}
 	\caption{Task diagrammet over de dele af systemet der centreres over menu'en. Der gives input til UI task'en som så videre giver information hvor der er brug for det, i dette tilfælde Display tasken, Shared State Memory og UART transmit.}
 	\label{fig:task1}
     \end{subfigure}
-    \begin{subfigure}[b]{0.5\textwidth}
-\includegraphics[scale=0.35]{Billeder/Taskdiagram2.png}
+    \begin{subfigure}[t]{0.3\textwidth}
+\includegraphics[width=1\textwidth]{Billeder/Taskdiagram2.png}
 	\caption{Task diagrammet over UART receive. Informationen gemmes i Shared State Memory.}
 	\label{fig:task2}
     \end{subfigure}
-    \begin{subfigure}[b]{0.5\textwidth}
-	\includegraphics[scale=0.35]{Billeder/Taskdiagram3.png}
+    \begin{subfigure}[t]{0.3\textwidth}
+	\includegraphics[width=1\textwidth]{Billeder/Taskdiagram3.png}
 	\caption{Task diagrammet over kontrol systemet. De værdier den skal bruge kommer fra SPI task'en og eller fra Shared State Memory.}
 	\label{fig:task3}
     \end{subfigure}
@@ -308,17 +308,17 @@ Mens pan delen kun har 180 graders frihed har tilt delen fuld frihed. Dette bety
 \begin{figure}[!h]
     \centering
     \begin{subfigure}[b]{0.3\textwidth}
-       \includegraphics[width=0.8\textwidth]{Billeder/Tilt45deg.jpg}
+       \includegraphics[width=1\textwidth]{Billeder/Tilt45deg.jpg}
         \caption{}
         \label{fig:tilt_spejl1}
     \end{subfigure}
   \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=0.8\textwidth]{Billeder/Nulpunkt.jpg}
+        \includegraphics[width=1\textwidth]{Billeder/Nulpunkt.jpg}
         \caption{}
         \label{fig:Nulpunkt}
     \end{subfigure}
     \begin{subfigure}[b]{0.3\textwidth}
-        \includegraphics[width=0.8\textwidth]{Billeder/Tilt315deg.jpg}
+        \includegraphics[width=1\textwidth]{Billeder/Tilt315deg.jpg}
         \caption{}
         \label{fig:tilt_spejl}
     \end{subfigure}
