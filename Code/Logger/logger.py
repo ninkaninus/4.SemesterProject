@@ -38,7 +38,14 @@ try:
 
     startTime = time.clock()
     while True:
-        temp = ser.read(4)
+
+        ser.write(bytearray(map(ord,"\\gp")))
+
+        temp = ser.read(2)
+
+        ser.write(bytearray(map(ord,"\\gt")))
+
+        temp += ser.read(2)
 
         #print(temp)
 
