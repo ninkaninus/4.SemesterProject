@@ -318,6 +318,8 @@ PID-controllleren blev implementeret med en sample frekvens på 200 Hz. Dette af
 
 \subsubsection{Koordinat oversættelse}
 
+\label{subsec:koordinat}
+
 Da pan og tilt rammen har en præcision på en tredjedel grad, og det samtidigt er et primært krav at denne skal kunne fungerer med input i form af spheriske koordinater, er det nødvendigt at have en koordinat oversættelse fra de inputtede koordinater som er i horizontale koordinater, se figur \ref{fig:Horizontal}. Denne oversættelse skal nødvendigvis tage højde for at de fysiske begrændsninger systemet har. Oversættelsen skal derfor lave en oversættelse i pan delen der afspejler at denne kun kan bevæge sig lidt over 180 grader uden at der opstår problemer med de ledninger der styrer tilt delen. Dette er dog slet ikke nok til at lave et effektivt teleskop system.
 \begin{figure}[!h]
 	\begin{center}
