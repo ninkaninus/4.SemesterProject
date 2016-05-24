@@ -154,13 +154,22 @@ Y(s)=K_{I}\cdot\frac{1}{s}\cdot\frac{12K}{s(s\tau+1)}
 
 For at plotte root locus i matlab skal man bare bruge open loop overføringsfunktionen (ligning \ref{eq:I_OpenLoop}). På figur \ref{fig:I_rlocus} ses det med al tydelighed at systemet aldrig bliver stabilt med en I-controller, da polerne ikke kan trækkes over på den negative side af $j\omega$-aksen. Af denne grund kan en ren I-controller ikke bruges.
 
-\begin{wrapfigure}[18]{TL}{0.5\textwidth}	
-	\begin{center}
-	\includegraphics[width=0.5\textwidth]{Billeder/I_rlocus.PNG}
-	\end{center}
-\caption{Her ses root locus plottet for vores system med en I-controller. Det er tydeligt at systemet aldrig kan stabiliseres med et gain alene. Dette plot er lavet med en tidskonstant på 0.12 sekunder, hvilket vil svare til en pol i -8.33.}
-\label{fig:I_rlocus}
-\end{wrapfigure}
+\begin{figure}[t!]
+    \centering
+    \begin{subfigure}[t]{0.49\textwidth}
+     \centering
+        \includegraphics[width=1\textwidth]{Billeder/I_rlocus.PNG}
+        \caption{Her ses root locus plottet for vores system med en ID-controller.}
+        \label{fig:ID_rlocus}
+    \end{subfigure}
+    \begin{subfigure}[t]{0.49\textwidth}
+     \centering
+        \includegraphics[width=1\textwidth]{Billeder/ID_rlocus.PNG}
+        \caption{Her ses root locus plottet for vores system med en I-controller. Det er tydeligt at systemet aldrig kan stabiliseres med et gain alene. Dette plot er lavet med en tidskonstant på 0.12 sekunder, hvilket vil svare til en pol i -8.33.}
+        \label{fig:I_rlocus}
+    \end{subfigure}
+    \caption{Her ses root locus plottet for vores system med en ID-controller og I-controller.}
+\end{figure}
 
 \subsubsection{ID Controller}
 
@@ -173,13 +182,6 @@ Y(s)=\frac{K_{D}s^2+K_{I}}{s}\cdot\frac{12K}{s(s\tau+1)}
 \begin{equation}\label{eq:quad}
 \dfrac{0\pm\sqrt{0-4K_{D}K_{I}}}{2K_{D}}
 \end{equation}
-
-\begin{wrapfigure}[17]{TL}{0.5\textwidth}
-	\includegraphics[width=0.5\textwidth]{Billeder/ID_rlocus.PNG}
-	\centering
-\caption{Her ses root locus plottet for vores system med en ID-controller.}
-\label{fig:ID_rlocus}
-\end{wrapfigure}
 
 Denne controller kan heller ikke bruges, da ingen af de to branches fra polerne i origo nogensinde kommer over på den venstre side af den imaginære akse (se figur \ref{fig:ID_rlocus}).
 
