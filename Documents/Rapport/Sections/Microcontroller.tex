@@ -1,6 +1,6 @@
 \section{Microcontroller}
 
-Denne sektion kommer omkring det forskellige moduler, som vores mikroprocesser håndtere. Udover dette konmmer vi også igennem hvilket styresystem vi har valgt og hvorfor.
+Denne sektion kommer omkring de forskellige moduler, som mikroprocessoren håndterer, samt hvilket styresystem der bruges.
 
 \subsection{Operativ System}
 når der skal skiftes mellem flere tasks som en processor skal udføre er det vigtigt at kunne skifte mellem dem på en fornuftig måde, dette udføres ved hjælp af en schedulerings algoritme. Når der skal implementeres en schedulerings algoritme skal det overvejes hvorvidt det er nødvendigt at lave en designet specielt til projektet, eller om der en en eksisterende der er i stand til at udfører opgaven tilstrækkeligt. I dette project har vi to muligheder til rådighed: FreeRTOS\cite{FreeRTOSorg} eller RTCS.
@@ -29,19 +29,49 @@ Efter vi har set på disse to valg muligheder kan vi se at RTCS vil være næmme
 
 \subsection{Tasks}
 
-\subsubsection{UI}
+Der er blevet lavet et task diagram under udviklingen af programet til microcontroleren. Kommunikation mellem tasksne foregår gennem både queues og Shared State Memory. Shared state memory benyttes når der skal sendes data i form af ændring af variabler mellem tasksne, mens queues benyttes til at sende beskeder i form af events eller beskeder. Denne metode blev valgt fordi opstår situationer hvor flere tasks skal bruge de samme informationer, og deres eventuelle ændringer af dem påvirker de andre tasks der skal have kendskab til samme variable.
+\\
+Af samme årsag benyttes der en samaphor til at begrændse adgangen til disse, så der ikke opstår synchonicerings fejl.
+\\
+Den centrale task er UI'en. Denne styrer en menu, der har til opgave at give mulighed for manuelt at sætte variabler, såsom tid og position, samt at starte og stoppe vores control system, og kommunikerer tilbage gennem UART transmit. De tasks som er bygget op omkring denne kan ses i figur \ref{fig:task1}.
+\\
+Da der er flere forskellige tasks der skal have adgang til de samme værdier der bliver sat af UART bliver værdierne der tages gennem denne sat i shared state memory, som det ses på figur \ref{fig:task2}.
+\\
+Display tasken holder selvsigende styr på hvad der skal vises, som den får besked om fra UI'en. Denne får input fra menu'en der dikterer hvad den skal give videre til LCD.
+\\
+Geber og Keypad tasksne holder styr på hver deres input, og sender resultaterne i en fælles indgangs kø til UI'en.
+\\
+Control systemet tager kontinuært variabler fra Shared State Memory, og benytter disse til at opdaterer det mål den går efter, på både x og y aksen. Den kommunikerer så frem og tilbage med SPI tasken, som kommunikerer med vores FPGA. Task diagrammet for denne kan ses i figur \ref{fig:task3}.
+\\
+Årsagen til at dette layout er blevet valgt er at det vurderes at control systemet ikke skal være afhængig af input fra UI'en, så det ikke er nødvendigt at benytte menuen til at give den nye koordinater. Ved at sepererer den fra UI'en er det muligt for den at kører selvstændigt, uden at den yderligere skal checke en kø for nye koordinater hele tiden.
 
-Den centrale task i systemet er det menu styrede UI system. Denne har primært til opgave at give brugeren mulighed for manuelt at justere, starte eller stoppe systemet, samt at vise vigtige oplysninger såsom nuværende position. Denne styres med drehimpulsgeber og numpad'et, som begge lægger events ind i dens input kø.
-
-\begin{figure}[H]
-			\begin{center}
-			\includegraphics[scale=0.4]{Billeder/Taskdiagram.PNG}
-			\end{center}
-			\caption{Task diagram over mikroprocesseren}
-			\label{fig:Taskdiagram}
+\begin{figure}[h]
+\centering
+\begin{subfigure}[b]{0.5\textwidth}
+	\includegraphics[scale=0.35]{Billeder/Taskdiagram1.png}
+	\caption{Task diagrammet over de dele af systemet der centreres over menu'en. Der gives input til UI task'en som så videre giver information hvor der er brug for det, i dette tilfælde Display tasken, Shared State Memory og UART transmit.}
+	\label{fig:task1}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.5\textwidth}
+\includegraphics[scale=0.35]{Billeder/Taskdiagram2.png}
+	\caption{Task diagrammet over UART receive. Informationen gemmes i Shared State Memory.}
+	\label{fig:task2}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.5\textwidth}
+	\includegraphics[scale=0.35]{Billeder/Taskdiagram3.png}
+	\caption{Task diagrammet over kontrol systemet. De værdier den skal bruge kommer fra SPI task'en og eller fra Shared State Memory.}
+	\label{fig:task3}
+    \end{subfigure}
+\label{fig:taskdiagram}
+%\caption{Vores task diagram tager udgangspunkt i en UI der sender besked til et display, hvilket benyttes til at vise en menu der kan bruges til at opdaterer diverse parametre og mål, hvilket så gives videre til det implementerede control system gennem Shared State Memory.}
 \end{figure}
 
-I figur \ref{fig:Taskdiagram} kan vi se vores task diagram over modulerne i mikroprocesseren.
+
+\subsubsection{UI}
+
+Den centrale task i systemet er det menu styrede UI system. Denne har primært til opgave at give brugeren mulighed for manuelt at justere, starte eller stoppe systemet, samt at vise vigtige oplysninger såsom nuværende position. Menu'en styres med drehimpulsgeber og keypad'et, som begge lægger events ind i dens input kø. Den giver events videre til GUI tasken, som styrer de forskellige menuer og display funktioner.
+
+
 
 \subsubsection{UART}
 
@@ -59,6 +89,10 @@ For at gøre det nemmer har vi lavet en lille protokol, som skal overholdes før
 			\caption{UART commands}
 			\label{fig:UARTCMD}
 \end{figure}
+
+\subsubsection{Display}
+
+Display task'en tager input fra UI task'en og bruger dem til at vælge fra en tabel over prædefinerede billeder der så sendes til LCD task'en. Disse prædefinerede billeder kan så redigeres hvis der er brug for dette, hvilket er tilfældet hvis der skal vises en dynamisk værdi.
 
 \subsubsection{LCD}
 

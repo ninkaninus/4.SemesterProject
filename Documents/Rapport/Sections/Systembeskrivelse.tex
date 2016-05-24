@@ -1,9 +1,12 @@
 \section{Systembeskrivelse}
 Til projektet er der anvendt det tildelte pan tilt system som har påmonteret de 2 hall sensorer samt h-broer som styrer motorerne som sidder på hhv pan og tilt.\\
-Til at styre denne opsætning er der udleveret èt stk Field Programmable Gate Array (FPGA) og èn Microprocessor unit.\\
+Til at styre denne opsætning er der udleveret èt stk Field Programmable Gate Array (FPGA) og èn Microprocessor unit.
+\\
+På FPGA'en \cite{Nexys2Datasheet} er der 4 knapper, 8 switches, og 4 7-segment displays som bliver anvendt i projektet.
 
-På FPGA'en er der 4 knapper, 8 switches, og 4 7-segment displays som bliver anvendt i projektet, se figur XXXXX evt reference til datablad
-
-På Microcontrolleren er der 2 knapper, et keypad, et lcd og en drehimpulsgeber, samt en SPI udgang som bliver anvendt, se figur XXXXX evt reference til datablad
+På Microcontrolleren (MPU) model TM4C123GH6PM fra Texas Instruments som er et ARM 3 cortex processor board \cite{TM4C123GH6PMDatasheet} er der 2 knapper, et keypad, et lcd og en drehimpulsgeber, samt en SPI udgang som bliver anvendt, se figur XXXXX evt reference til datablad
 
 FPGA'en vil styre motorerne med et Pulse-width modulation (PWM) signal som sendes til h-broerne som bestemmer hvilken retning strømmen skal sendes til motoren så de både kan køre med og mod uret.
+
+
+%Besskrive hvorfra vi år koordinatsættet (hvor på nettet)
