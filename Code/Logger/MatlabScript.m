@@ -14,7 +14,15 @@ tilt1 = fileID1(:,3);
 
 pan1 = pan1 - pan1(1);
 tilt1 = tilt1 - tilt1(1);
+%%
 
+plot(time,tilt)
+grid on;
+title('Simulated 540 tick step tilt');
+xlabel('Time[s]');ylabel('Ticks');
+xlim([0 3.5]);ylim([0 600]);
+
+%%
 figure(1)
 subplot(2,2,1)
 plot(time, pan)

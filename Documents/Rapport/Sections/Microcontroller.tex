@@ -1,37 +1,37 @@
 \section{Microcontroller}
 
-Denne sektion kommer omkring de forskellige moduler, som mikroprocessoren håndterer, samt hvilket styresystem der bruges.
+Denne sektion kommer omkring de forskellige moduler, som mikroprocessoren håndterer, samt hvilket styresystem der anvendes.
 
 \subsection{Operativ System}
-når der skal skiftes mellem flere tasks som en processor skal udføre er det vigtigt at kunne skifte mellem dem på en fornuftig måde, dette udføres ved hjælp af en schedulerings algoritme. Når der skal implementeres en schedulerings algoritme skal det overvejes hvorvidt det er nødvendigt at lave en designet specielt til projektet, eller om der en en eksisterende der er i stand til at udfører opgaven tilstrækkeligt. I dette project har vi to muligheder til rådighed: FreeRTOS\cite{FreeRTOSorg} eller RTCS.
+når der skal skiftes mellem flere tasks som en processor skal udføre er det vigtigt at kunne skifte mellem dem på en fornuftig måde; Dette udføres ved hjælp af en schedulerings algoritme. Når der skal implementeres en schedulerings algoritme skal det overvejes hvorvidt det er nødvendigt at lave en designet specielt til projektet, eller om der en en eksisterende der er i stand til at udfører opgaven tilstrækkeligt. I dette project har vi to muligheder til rådighed: FreeRTOS\cite{FreeRTOSorg} eller RTCS.
 
 \subsubsection{FreeRTOS}
 
-FreeRTOS \cite{FreeRTOSorg} er et realtids operativsystem (RTOS), som er en standard løsning som bliver brugt i en mikroprocesser. FreeRTOS giver os muligheden for at bruge preemptiv skedulering, Det vil sige at CPU'en kan sprænge i mellem task og hoppe ud af en task efter behov. Dette bliver styret ud af hvilken prioritet taskén har eller om der en anden task, der for et interrupt den skal holde øje med.
+FreeRTOS \cite{FreeRTOSorg} er et realtids operativsystem (RTOS), der er en standard løsning som bliver brugt i en mikroprocesser. FreeRTOS giver os muligheden for at bruge preemptiv skedulering, hvilket vil sige at CPU'en kan springe imellem tasks og hoppe ud af en task efter behov. Dette bliver styret ud af hvilken prioritet task'en har eller om der en anden task, der for et interrupt den skal holde øje med.
 \\
 Udover dette har freeRTOS også mange andre funktioner dette projekt kan udnytte. Der er mulighed for at oprette køer, som vil blive nævnt som queues. Disse queues kan man sende events og data til ved hjælp af en funktion der hedder xQueueSend. 
 \\
-FreeRTOS kan lave semaforer som, gør det muligt at flere tasks skal kunne til gå disse queues, disse semaforer gør at kun en task der har adgang til queue'en indtil semaforen bliver frigjort igen. For at ungå at at styre systemet ikke bliver fastlåst i denne semafor for evigt indsættes der en tid, den kan være inde i semaforen.
+FreeRTOS kan lave semaforer, som gør det muligt at flere tasks skal kunne tilgå disse queues, disse semaforer gør at kun en task der har adgang til queue'en indtil semaforen bliver frigjort igen. For at ungå at styre systemet ikke bliver fastlåst i denne semafor for evigt indsættes der en tid, den kan være inde i semaforen.
 \\
-Når queues og semaforer skal kre af disse ting kan bliver aktiveret skal der først oprettes en xQueueHandle og xSemaphoreHandle. Hvorefter de bliver kreeret hved hjælp af xQueueCreate og xSemaphoreCreateMutex. For at bruge xQueueCreate skal der også bruges størrelse af queue'en og hvilken parameter den skal indeholde.
+Queues og semaforer bliver oprettet ef xQueueHandle og xSemaphoreHandle. Hvorefter de bliver kreeret hved hjælp af xQueueCreate og xSemaphoreCreateMutex. For at bruge xQueueCreate skal der også bruges størrelse af queue'en og hvilken parameter den skal indeholde.
 \\
 FreeRTOS tilbyder også et shared state memory (SSM), dette gør det muligt at CPU'en kan hoppe i mellem de forskellige task. F.eks. at det kommer et nød event på UART, som kunne være "STOP\textunderscore EVENT". Dette event gør at den med det samme går over til den case hvor eventet er, og gør som der står, som i dette tilfælde er at bremse motoren.
 
 \subsubsection{RTCS}
 
-Run To Complete Scheduler (RTCS) er en måde at køre ens styresystem på. Den køre som en non preemtiv skedulering, det vil sige at lige så snart CPU'en har forbindelse til en proces/task, så kan den ikke hoppe ud af denne proces/task. I dette system kan der oprettes queue's.
+Run To Complete Scheduler (RTCS) er en anden måde at køre ens styresystem på. Den kører som en non preemtiv skedulering, hvilket vil sige at lige så snart CPU'en har forbindelse til en proces/task, så kan den ikke hoppe ud af denne proces/task. Dette system kan der også oprettes queue's.
 \\
 Den har mulighed for at oprette semafoere, som gør at det er kun en queue som kan have adgang til queue'en. For at tilføje data til en queue skal funktion put\textunderscore queue. wait\textunderscore sem bruges til at tilføje en semafor til den specifikke queue.
 
 \subsubsection{Valg af OS}
 
-Efter vi har set på disse to valg muligheder kan vi se at RTCS vil være næmmere at få til at virker, fordi det ikke er så komplicert og har ikke lige så mange udvidelser. RTCS tilbyder ikke de samme sikkerhed udvidelser, som freeRTOS gør. Den største begrundelse for at vi vælger at arbjede med freeRTOS over RTCS er at den køre preemtiv. Dette gøre det muligt vis der kommer et vigtigt interrupt at den kan tage CPU'en fra den proces den er i gang med og flytte den over det den mere vigtige proces.
+Efter vi har set på disse to valg muligheder kan vi se at RTCS vil være næmmere at få til at virker, fordi det ikke er så komplicert og har ikke lige så mange udvidelser. RTCS tilbyder dog ikke de samme sikkerhed udvidelser som freeRTOS gør. Den største begrundelse for at vi vælger at arbejde med freeRTOS over RTCS er at den køre preemtivt. Dette gøre det muligt hvis der kommer et vigtigt interrupt at den kan tage CPU'en fra den proces den er i gang med og flytte den over det den mere vigtige proces.
 
 \subsection{Tasks}
 
-Der er blevet lavet et task diagram under udviklingen af programet til microcontroleren. Kommunikation mellem tasksne foregår gennem både queues og Shared State Memory. Shared state memory benyttes når der skal sendes data i form af ændring af variabler mellem tasksne, mens queues benyttes til at sende beskeder i form af events eller beskeder. Denne metode blev valgt fordi opstår situationer hvor flere tasks skal bruge de samme informationer, og deres eventuelle ændringer af dem påvirker de andre tasks der skal have kendskab til samme variable.
+Der er blevet lavet et task diagram under udviklingen af programet til microcontroleren. Kommunikation mellem tasks'ne foregår gennem både queues og Shared State Memory. Shared state memory benyttes når der skal sendes data i form af ændring af variabler mellem tasksne, mens queues benyttes til at sende beskeder i form af events eller beskeder. Denne metode blev valgt fordi opstår situationer hvor flere tasks skal bruge de samme informationer, og deres eventuelle ændringer af dem påvirker de andre tasks der skal have kendskab til samme variable.
 \\
-Af samme årsag benyttes der en samaphor til at begrændse adgangen til disse, så der ikke opstår synchonicerings fejl.
+Af samme årsag benyttes der en samaphor til at begrænse adgangen til disse, så der ikke opstår synchonicerings fejl.
 \\
 Den centrale task er UI'en. Denne styrer en menu, der har til opgave at give mulighed for manuelt at sætte variabler, såsom tid og position, samt at starte og stoppe vores control system, og kommunikerer tilbage gennem UART transmit. De tasks som er bygget op omkring denne kan ses i figur \ref{fig:task1}.
 \\
@@ -45,26 +45,50 @@ Control systemet tager kontinuært variabler fra Shared State Memory, og benytte
 \\
 Årsagen til at dette layout er blevet valgt er at det vurderes at control systemet ikke skal være afhængig af input fra UI'en, så det ikke er nødvendigt at benytte menuen til at give den nye koordinater. Ved at sepererer den fra UI'en er det muligt for den at kører selvstændigt, uden at den yderligere skal checke en kø for nye koordinater hele tiden.
 
-\begin{figure}[!ht]
-\centering
-\begin{subfigure}[t]{0.3\textwidth}
+\begin{figure}[ht]
+			\begin{center}
 	\includegraphics[width=0.99\textwidth]{Billeder/Taskdiagram1.png}
+			\end{center}
 	\caption{Task diagrammet over de dele af systemet der centreres over menu'en. Der gives input til UI task'en som så videre giver information hvor der er brug for det, i dette tilfælde Display tasken, Shared State Memory og UART transmit.}
 	\label{fig:task1}
-    \end{subfigure}
-    \begin{subfigure}[t]{0.3\textwidth}
-	\includegraphics[width=0.99\textwidth]{Billeder/Taskdiagram2.png}
+\end{figure}
+
+\begin{figure}[ht]
+			\begin{center}
+\includegraphics[width=0.99\textwidth]{Billeder/Taskdiagram2.png}
+			\end{center}
 	\caption{Task diagrammet over UART receive. Informationen gemmes i Shared State Memory.}
 	\label{fig:task2}
-    \end{subfigure}
-    \begin{subfigure}[t]{0.3\textwidth}
-	\includegraphics[width=0.99\textwidth]{Billeder/Taskdiagram3.png}
+\end{figure}
+
+\begin{figure}[ht]
+			\begin{center}
+\includegraphics[width=0.99\textwidth]{Billeder/Taskdiagram3.png}
+			\end{center}
 	\caption{Task diagrammet over kontrol systemet. De værdier den skal bruge kommer fra SPI task'en og eller fra Shared State Memory.}
 	\label{fig:task3}
-    \end{subfigure}
-\label{fig:taskdiagram}
-%\caption{Vores task diagram tager udgangspunkt i en UI der sender besked til et display, hvilket benyttes til at vise en menu der kan bruges til at opdaterer diverse parametre og mål, hvilket så gives videre til det implementerede control system gennem Shared State Memory.}
 \end{figure}
+
+%\begin{figure}[!ht]
+%\centering
+%\begin{subfigure}[t]{0.3\textwidth}
+%	\includegraphics[width=0.99\textwidth]{Billeder/Taskdiagram1.png}
+%	\caption{Task diagrammet over de dele af systemet der centreres over menu'en. Der gives input til UI task'en som så videre %giver information hvor der er brug for det, i dette tilfælde Display tasken, Shared State Memory og UART transmit.}
+%	\label{fig:task1}
+%    \end{subfigure}
+%    \begin{subfigure}[t]{0.3\textwidth}
+%	\includegraphics[width=0.99\textwidth]{Billeder/Taskdiagram2.png}
+%	\caption{Task diagrammet over UART receive. Informationen gemmes i Shared State Memory.}
+%	\label{fig:task2}
+%    \end{subfigure}
+%    \begin{subfigure}[t]{0.3\textwidth}
+%	\includegraphics[width=0.99\textwidth]{Billeder/Taskdiagram3.png}
+%	\caption{Task diagrammet over kontrol systemet. De værdier den skal bruge kommer fra SPI task'en og eller fra Shared State Memory.}
+%	\label{fig:task3}
+%    \end{subfigure}
+%\label{fig:taskdiagram}
+%\caption{Vores task diagram tager udgangspunkt i en UI der sender besked til et display, hvilket benyttes til at vise en menu der kan bruges til at opdaterer diverse parametre og mål, hvilket så gives videre til det implementerede control system gennem Shared State Memory.}
+%\end{figure}
 
 
 \subsubsection{UI}
@@ -75,12 +99,12 @@ Den centrale task i systemet er det menu styrede UI system. Denne har primært t
 
 \subsubsection{UART}
 
-UART står for universal asynchronous receiver/transmitter. Dette laver kommunikation mellem to enheder. Så hver enhed skal være i stand til at bruge funktion UART. UART transmittere data i form af bytes og deler dem op i bits og sender dem. Modtager skal så kunne samle dem sammen igen til bytes for at læse det.
-Vores Uart pinde sider på port A, derved skal sysctl aktiveres på port A før den virker. Uart har en init. funktion som bliver kaldt en gang hvor alle registre bliver sat up som, f.eks. send og modtag. Der bliver også sat en baut rate, som skal være den samme for sender og modtager.
+UART står for universal asynchronous receiver/transmitter. Dette laver kommunikation mellem to enheder; Så hver enhed skal være i stand til at bruge funktion UART. UART transmittere data i form af bytes og deler dem op i bits og sender dem. Modtager skal så kunne samle dem sammen igen til bytes for at læse det.
+Vores Uart pinde sidder på port A, derved skal sysctl aktiveres på port A før den virker. Uart har en init() funktion som bliver kaldt en gang hvor alle registre bliver sat up som, f.eks. send og modtag. Der bliver også sat en baut rate, som skal være den samme for sender og modtager.
 \\
-For at sende data kalder vi funktion uart0\textunderscore putc som tager en karakter. Dette kan både være tal og bogstaver. Der en funktion der hedder uart0\textunderscore rx\textunderscore rdy som venter på at den modstager noget.
+For at sende data kalder vi funktion uart0\textunderscore putc som tager en karakter som input. Dette kan både være tal og bogstaver. Der er en funktion der hedder uart0\textunderscore rx\textunderscore rdy som venter på at den modstager noget.
 \\
-For at gøre det nemmer har vi lavet en lille protokol, som skal overholdes før der sendes noget over UART. I figur \ref{fig:UARTCMD} kan ses en liste over de forskellige commands. Et eks. på en UART kald kunne være \texttt{\char`\\}st1803 , som vil sætte tilt delen i 180,3 grader.
+For at gøre det nemmere har vi lavet en lille protokol, som skal overholdes før der sendes noget over UART. I figur \ref{fig:UARTCMD} kan ses en liste over de forskellige commands. Et eks. på en UART kald kunne være \texttt{\char`\\}st1803 , som vil sætte tilt delen i 180,3 grader.
 
 \begin{figure}[ht]
 			\begin{center}
@@ -92,7 +116,7 @@ For at gøre det nemmer har vi lavet en lille protokol, som skal overholdes før
 
 \subsubsection{Display}
 
-Display task'en tager input fra UI task'en og bruger dem til at vælge fra en tabel over prædefinerede billeder der så sendes til LCD task'en. Disse prædefinerede billeder kan så redigeres hvis der er brug for dette, hvilket er tilfældet hvis der skal vises en dynamisk værdi.
+Display task'en tager input fra UI task'en og bruger dem til at vælge fra en tabel over prædefinerede billeder der så sendes til LCD task'en. Disse prædefinerede billeder kan så redigeres hvis der er brug for dette, hvilket er tilfældet hvis der skal vises en dynamisk værdi, som ved show-pan og show-tilt menu mulighederne.
 
 \subsubsection{LCD}
 
@@ -119,7 +143,7 @@ Selve LCD-tasken arbejder sammen med resten af systemet ved at afkode et særlig
 
 \subsubsection{Keypad}
 
-Det udleverede Kit har et tilhørende keypad med 12 knapper fra 0 til 9 og *,\#. Dette keypad virker som knapper, det er derfor nødvendigt at definere hvad de forskellige knapper skal gøre. For at gøre det simpelt bliver hver knap det som der står på keypad'et. figur \ref{fig:Keypadpins} viser hvordan dens pins er tilsluttet.
+Det udleverede Kit har et tilhørende keypad med 12 knapper fra 0 til 9, samt * pg\#. Dette keypad virker som knapper, det er derfor nødvendigt at definere hvad de forskellige knapper skal gøre. For at gøre det simpelt bliver hver knap det som der står på keypad'et. figur \ref{fig:Keypadpins} viser hvordan dens pins er tilsluttet.
 \begin{figure}[ht]
 	\begin{center}
 		\includegraphics[scale=0.7]{Billeder/Keypadpins.PNG}
@@ -137,7 +161,7 @@ Den har to porte til knyttet som er PORT A og PORT E. Det betyder at vi kan læs
 \end{figure}
 
 
-På figur \ref{fig:Keypad} kan vi se at vi har givet de forskellige knapper unikke værdier. Dette gøres fordi vi har et array som indeholder alle fysikske værdier på keypad’et, som bliver placeret i den plads i array som kan ses på figur \ref{fig:Keypad} . For at finde en karakter kigger vi først på alle X værdier (port A) igennem og ser om en Y værdi (port E) er aktiv og ud fra hvilken X og Y værdi kan vi finde ud fra hvilket plads i arrayet, som blivet definert i figur \ref{fig:Keypad}
+På figur \ref{fig:Keypad} kan vi se at vi har givet de forskellige knapper unikke værdier. Dette gøres fordi vi har et array som indeholder alle fysiske værdier på keypad’et, som bliver placeret i den plads i array som kan ses på figur \ref{fig:Keypad} . For at finde en karakter kigger vi først på alle X værdier (port A) igennem og ser om en Y værdi (port E) er aktiv og ud fra hvilken X og Y værdi kan vi finde ud fra hvilket plads i arrayet, som blivet definert i figur \ref{fig:Keypad}
 \\
 Dette keypad kan blive brugt til at sende data eller manuelt indsætte nogle værdier i mens programmet kører.
 

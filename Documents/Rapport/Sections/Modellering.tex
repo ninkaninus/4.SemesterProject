@@ -2,13 +2,13 @@
 I denne sektion vil der blive udarbejdet matematiske modeller for alle dele af systemet. Der vil være tale om et elektronisk system (motor og feedback), der er koblet til et mekanisk system (motorakslen, rammerne og den udveksling der forbinder dem). 
 
 \subsection{Motor}
-Motoren består af en rotor med flere XXXX poler, og en stator med en permanent magnet. Den permanente magnet sørger for at feltet, der påvirker rotoren, er nogenlunde konstant - dette forsimpler udregningen af motormomentet $T_{m}$, da det er lineært afhængigt af magnetfeltet og strømmen $i_{a}$ igennem rotorvindingerne se ligning \ref{eq:motormoment}. Motorkonstanten $K_{m}$ er afhængig af permeabiliteten i det magnetiske materiale og kan bestemmes eksperimentielt - se reference \cite{azevedo2013} XXXX.
+Motoren består af en rotor med flere 6 poler, og en stator med en permanent magnet. Den permanente magnet sørger for at feltet, der påvirker rotoren, er nogenlunde konstant - dette forsimpler udregningen af motormomentet $T_{m}$, da det er lineært afhængigt af magnetfeltet og strømmen $i_{a}$ igennem rotorvindingerne se ligning \ref{eq:motormoment}. Motorkonstanten $K_{m}$ er afhængig af permeabiliteten i det magnetiske materiale og kan bestemmes eksperimentielt - se reference \cite{azevedo2013} XXXX.
 
 \begin{equation}\label{eq:motormoment}
 T_{m}=K_{m}i_{a}(t)
 \end{equation}
 
-Den elektroniske del af motoren kan modelleres simpelt som en modstand $R_{a}$, som beskriver den samlede modstand i vindingerne, i serie med en spole $L_{a}$, som beskriver motorens induktans. Problemet med denne model er at den ikke tager højde for den modsatrettede spænding, der genereres i motorvindingerne, når rotoren er i bevægelse. Denne spænding er lineært afhængig af rotorens omdrejningshastighed og kan modelleres som en spændingskilde i serie med modstanden og spolen se figur \ref{fig:motor_sch}. $V_{b}=K_{e}\omega(t)$, hvor $V_{b}$ er den modsatrettede spænding, $K_{e}$ er motorens elektriske konstant og $w(t)$ er omdrejningshastigheden i rad/s.\\
+Den elektroniske del af motoren kan modelleres simpelt som en modstand $R_{a}$, der beskriver den samlede modstand i vindingerne, i serie med en spole $L_{a}$, som beskriver motorens induktans. Problemet med denne model er at den ikke tager højde for den modsatrettede spænding, der genereres i motorvindingerne, når rotoren er i bevægelse. Denne spænding er lineært afhængig af rotorens omdrejningshastighed og kan modelleres som en spændingskilde i serie med modstanden og spolen se figur \ref{fig:motor_sch}. $V_{b}=K_{e}\omega(t)$, hvor $V_{b}$ er den modsatrettede spænding, $K_{e}$ er motorens elektriske konstant og $w(t)$ er omdrejningshastigheden i rad/s.\\
 
 
 

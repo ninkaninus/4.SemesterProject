@@ -80,7 +80,7 @@ På figur \ref{fig:Afbalancering} kan man med den blå graf se stepresponset for
 
 %På figur \ref{fig:Balanced_Response} ses sammenligningen mellem tilt-systemet før og efter afbalancering. Det endelige resultat er stadigvæk ikke ideelt, men det er en del tættere på modellen.
 
-\begin{figure}[!hb]
+\begin{figure}[ht]
 	\begin{center}
 		\includegraphics[width=0.8\textwidth]{Billeder/balanced_vs_unbalanced.png}
 	\end{center}
@@ -92,9 +92,9 @@ På figur \ref{fig:Afbalancering} kan man med den blå graf se stepresponset for
 
 En af antagelserne der bliver gjort i modellen af systemet, er at der findes en nogenlunde lineær sammenhæng imellem duty cycle og omdrejningshastigheden. For at påvise denne sammenhæng kan man plotte hastigheden, når motoren har nået steady state, ved forskellige duty cycles. 
 
-XXXX Do your stuffs here Jonas
+Dette vises på figur \ref{fig:RPM_DC}, hvor man kan observere at stepresponet setler ved ca 50 rad/s højere for hver gange vi øger duty cyclen med 20 (på en skala fra 0-255).
 
-Hvis man plotter step responsen ved forskellige duty cycles (figur \ref{fig:RPM_DC}), kan det også påvises at tidskonstanten forbliver nogenlunde konstant. 
+Her kan man også se at hvis man plotter step responsen ved forskellige duty cycles (figur \ref{fig:RPM_DC}), kan det påvises at tidskonstanten forbliver nogenlunde konstant. 
 
 \begin{figure}[!ht]
 	\begin{center}

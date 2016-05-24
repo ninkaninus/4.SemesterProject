@@ -56,12 +56,12 @@ Y(s)=\frac{\omega_{n}^2}{s^2+2\zeta\omega_{n}s+\omega_{n}^2}
 
 Hele ideen med at benytte et 2-ordens-system til den indledende analyse, er at man kan finde de områder i s-planet, hvor systemet vil holde sig inden for designmålene, så længe systemets poler placeres der. Disse antagelser gælder naturligvis kun præcist for et 2-ordens-system uden nuller, men det kan sagtens være en udemærket approksimering, hvis man har et system af højere orden med to dominante poler der ligger tæt på $j\omega$-aksen. Som tommelfinger-regel kan man godt tillade sig at kalde to poler for dominante, hvis de er 5 gange tættere på den imaginære akse end resten af polerne. Grunden til at man kigger mest på de dominante poler, er at jo længere man kommer væk fra $j\omega$-aksen jo hurtigere aftager effekten på systemet fra polerne over tid. Derfor ender det med at være de langsomme poler, der dominerer systemets respons.
 
-\begin{wrapfigure}[11]{TR}{0.5\textwidth}	
-	\includegraphics[scale=0.5]{Billeder/Damping_Ratio.PNG}
+\begin{figure}[!ht]
 	\centering
+	\includegraphics[scale=0.5]{Billeder/Damping_Ratio.PNG}
 	\caption{Her kan man se hvordan damping ratio og den naturlige frekvens påvirker polernes placering i et 2-ordens-system.}
 	\label{fig:SO_system}
-\end{wrapfigure}
+\end{figure}
 
 På figur \ref{fig:SO_system} kan man se hvordan man alene ud fra polernes placering kan beskrive en masse om damping ratio og den naturlige frekvens. En ting der ikke fremgår af figuren, er at damping ratio også fortæller noget om, om polerne er komplekse konjugerede eller reelle. Hvis $1>\zeta>0$ er polerne komplekse; hvis $\zeta=1$ ligger der to reelle poler oven i hinanden; hvis $\zeta>1$ er polerne reelle og unikke. Disse tre situationer bliver også ofte beskrevet som henholdsvis underdæmpet, kritisk dæmpet og overdæmpet.
 
@@ -291,9 +291,9 @@ Pan-systemet tilføjer en pol i $-1/0.45=-2.22$. Dette gør det lidt sværere at
 
 \subsection{Gain}
 
-Det sidste skridt, er at bestemme et passende gain, så den endelige respons for systemerne tilfredsstiller projektets krav. De vigtigste ting at tage højde for er settling time, overshoot og hvor hårdt der reguleres med systemet. Hvis motorerne trækker for hårdt i rammerne kan bælterne kamme over og remskiverne kan rotere en lille smule på akslerne, da de bare er klemt fast med en sætskrue. 
+Det sidste skridt er at bestemme et passende gain, så den endelige respons for systemerne tilfredsstiller projektets krav. De vigtigste ting at tage højde for er settling time, overshoot og hvor hårdt der reguleres med systemet. Hvis motorerne trækker for hårdt i rammerne kan bælterne kamme over og remskiverne kan rotere en lille smule på akslerne, da de bare er klemt fast med en sætskrue. 
 
-Med kameraet monteret er den statiske friktion i systemet ret stor. Derfor er det svært at flytte systemet, når fejlen er meget lille. For at komme ud over denne begrænsning kan man øge gain'et for systemet. Det har dog den bivirkning at systemet regulerer meget kraftigt. En måde at forhindre denne situation er at sætte en øvre grænse for hvilken duty cycle, der må reguleres med. Dette gør systemet langsommere, men så længe settling time stadigvæk er under de 5 sekunder, gør det ikke noget.
+Med kameraet monteret er den statiske friktion i systemet ret stor, samtig med at denne bidrager med et stort inertimoment der modvirker acceleration. Derfor er det svært at flytte systemet, når fejlen er meget lille. For at komme ud over denne begrænsning kan man øge gain'et for systemet. Det har dog den bivirkning at systemet regulerer meget kraftigt. En måde at forhindre denne situation er at sætte en øvre grænse for hvilken duty cycle, der må reguleres med. Dette gør systemet langsommere, men så længe settling time stadigvæk er under de 5 sekunder gør det ikke noget, da dette er vores krav til systemet.
 
 Ud fra root locus plottet bestemmes et gain, der tages udgangspunkt i. Et gain på 0.005 til tilt-systemet giver et respons som på figur \ref{fig:Ideal_Response_Tilt}, og et gain på 0.008 til pan-systemet giver responset på figur \ref{fig:Ideal_Response_Pan}. 
 
@@ -316,5 +316,61 @@ Ud fra root locus plottet bestemmes et gain, der tages udgangspunkt i. Et gain p
 
 \subsubsection{Justering af Gain}
 
-For at finde et gain, der kan bruges til små justeringer ned til et tick, øges gain'et lidt efter lidt indtil systemet opfører sig som ønket under forsøg. Den øvre grænse for duty cyclen sættes også ned løbende, indtil systemet ikke regulerer for hårdt længere. Når der er fundet passende værdier til både gain og duty cycle-grænse, simuleres systemet igen i simulink, for at se om projektmålene stadigvæk overholdes. Forsøgene viste at gain'et helst skulle være større end 0.13 for at systemet kunne bevæge sig et tick ad gangen indenfor 5 sekunder. På figur XXXX ref her kan man se sammenligningen mellem simuleringen og målinger fra 0 til 540 ticks.
+For at finde et gain, der kan bruges til små justeringer, ned til et tick, øges gain'et lidt efter lidt indtil systemet opfører sig som ønket under forsøg. Den øvre grænse for duty cyclen sættes også ned løbende, indtil systemet ikke regulerer for hårdt længere. Når der er fundet passende værdier til både gain og duty cycle-grænse, simuleres systemet igen i simulink, for at se om projektmålene stadigvæk overholdes. Forsøgene viste at gain'et helst skulle være større end 0.13 for at systemet kunne bevæge sig et tick ad gangen indenfor 5 sekunder. På figur XXXX ref her kan man se sammenligningen mellem simuleringen og målinger fra 0 til 540 ticks.
 
+\begin{figure}[t!]
+    \centering
+    \begin{subfigure}[t]{0.8\textwidth}
+     \centering
+        \includegraphics[width=1\textwidth]{Billeder/Simulated_Response_Tilt.png}
+        \caption{Her ses det simulerede respons til tilt-systemet fra simulink}
+        \label{fig:Simulated_Tilt}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.8\textwidth}
+     \centering
+        \includegraphics[width=1\textwidth]{Billeder/Measured_Response_Tilt.PNG}
+        \caption{Her ses det målte respons fra tilt-systemet fra 0 til 90 grader}
+        \label{fig:Measured_Tilt}
+    \end{subfigure}
+    \caption{Her ses sammenligningen af det simulerede og det målte tilt-system, ved et gain på 0.13 og en maximum duty cycle på 39 $\%$}
+\end{figure}
+
+Afvigelserne imellem de simulerede og de målter responser kan skyldes at systemet er simuleret som om det var kontinuert, ligesom at der i PID-blokken fra Simulink bruges et filter til differentieringsledet. Den endelige konfiguration kan ses i tabel \ref{tab:Results}.
+
+\begin{figure}[t!]
+    \centering
+    \begin{subfigure}[t]{0.8\textwidth}
+     \centering
+        \includegraphics[width=1\textwidth]{Billeder/Simulated_Response_Pan.png}
+        \caption{Her ses det simulerede respons til pan-systemet fra simulink}
+        \label{fig:Simulated_Pan}
+    \end{subfigure}
+    \begin{subfigure}[b]{0.8\textwidth}
+     \centering
+        \includegraphics[width=1\textwidth]{Billeder/Measured_Response_Pan.PNG}
+        \caption{Her ses det målte respons fra pan-systemet fra 0 til 90 grader}
+        \label{fig:Measured_Pan}
+    \end{subfigure}
+    \caption{Her ses det ideelle step respons for systemerne}
+\end{figure}
+
+Simuleringen er lavet i simulink med og kan ses på figur \ref{fig:Simulink}. For at simulere at duty cyclen er låst fra 16 til 39 $\%$ skiftes der imellem to PID-controllere med de samme konstanter, der henholdsvis så er låst i intervallerne $0.16$ til $0.39$ og $-0.16$ til $-0.39$. Dette skift laves så, når fejlen $E(s)$ skifter fortegn.
+
+\begin{figure}
+\centering
+        \includegraphics[width=1\textwidth]{Billeder/Simulink.PNG}
+        \caption{Her ses blokdiagrammet for kontrolsystemet i simulink.}
+        \label{fig:Simulink}
+\end{figure}
+
+\begin{table}[]
+\centering
+\caption{Her ses den endelige konfiguration af systemet}
+\label{tab:Results}
+\begin{tabular}{|l|l|l|l|l|l|l|}
+\hline
+     & $K_{P}$ & $K_{I}$ & $K_{D}$ & Gain & DC min & DC max \\ \hline
+Tilt & 8  & 16 & 1  & 0.13 & 16\%   & 39\%   \\ \hline
+Pan  & 2  & 1  & 1  & 0.13 & 16\%   & 39\%   \\ \hline
+\end{tabular}
+\end{table}

@@ -17,31 +17,19 @@ Til rammerne er der tilføjet to EMG30\cite{emg30Data}, en på hhv pan og tilt r
 På rammerne er også tilføjet 2 hall sensorer, en på pan, og en på tilt. 
 
 
-%Dette projekt vil fokusere på at følge himmellegemer med en platform magen til et observatorium. Dette bliver implementeret ved at give systemet et horisontalt koordinatsæt, enten udregnet via en computer, eller via et numerisk tastatur som er blevet udleveret.\\
-%Ved input fra en computer, vil der være mulighed for at lave en applikation, der automatisk følger et himmellegeme, ved at ændre koordinatsættet kontinuert.
-%Systemet vil vise data på et LCD som er blevet udleveret, her vil det være muligt at observere hvilke nuværende koordinatsæt systemet har.\\
-%XXXX Eventuelt nævne menu systemet herunder.\\
-
 \subsection{Problemformulering}
 
-Vil det være muligt at lave et system som er præcist nok til at tage billeder af: bestemte stjerner, månen, solen og satellitter.\\
-hvilken form for controller vil være mest optimal til et præcist men ikke nødvendigvis hurtigt system.
+Vil det være muligt at lave et system som er præcist nok til at tage billeder af: bestemte stjerner, månen, solen og satellitter?\\
+Hvilken form for controller vil være mest optimal til et præcist, og ikke nødvendigvis hurtigt, system?
 
 \begin{itemize}
 	\item Hvordan kan et pan/tilt-system styres med koordinater som input?
 	\item Hvordan det sikres at systemet ikke går udenfor sine mekaniske begrænser under anvendelse?
 \end{itemize}
 
-%Med dette project håber vi at finde ud af nyttige metoder til at styre et pan og tilt system ved brug af polære koordinater, som er nyttige i denne sammenhæng fordi der er nemme at omregne til og fra i forhold til andre koordinat systemer, samt meget intuitiv at benytte til et drejende system. Til dette er vi givet et pan og tilt system der har visse begrænsninger i dens mekaniske bevægelser. Vi skal derfor også finde en metode til at sikre at der ikke sker mekaniske uheld ved at systemet går ud over sine grænser.
-%\\
-%Når disse er opfyldt skal det undersøges om det er muligt at lave en matematisk model af systemet og dens opførsel, således at denne kan benyttes til at skabe et closed-loop kontrol system.\\
-
-%Efter at systemet er modeleret, skal der bygges en brugbar applikation til systemet, dette projekt vil derfor forsøge at implementere en platform hvorpå man kan montere et spejlrefleks kamera og tage billeder af himmellegemer.\\
-%Dette projekt vil derfor fokusere høj nøjagtighed.\\
-
 \subsection{Kravspecifikation}
 
-Hvis pan-tilt systemet skal pege på den internationale rumstation som bevæger sig i en afstand omkring 400 km væk fra jorden, og peger en enkelt grad forkert, vil den næsten pege 7 km ved siden af.
+Hvis pan-tilt systemet skal pege på den internationale rumstation som bevæger sig i en afstand omkring 400 km væk fra jorden, og peger en enkelt grad forkert, vil den næsten pege 7 km ved siden af. Derfor er det vigtigeste krav i dette project at vi ingen steady state fejl har, nettop fordi selv den mindste fejl giver så stor en afvigelse.
 
 \subsubsection{Arbejds- og fagområder}
 Pan-Tilt projektet bliver udarbejdet for at give en bredere og bedre forståelse for det 4. semesters fag, derfor er der valgt nogle arbejds- og fag- områder som sørger for at projektet kommer til at have indhold fra hvert fag.\\
@@ -80,9 +68,9 @@ Som krav til systemet skal det kunne tage et input i form af et horizontalt koor
 
 Som en del af COS/EMP faget sættes der som krav at systemet skal kunne give feedback gennem LCD komponenten i form af den nuværende position i astronomiske koordinater. Der skal kunne tages input fra knapper på EMP bordet, og en UART forbindelse, med tilsvarende UART protokol, skal kunne forbinde boardet med en computer.
 
-Der skal laves en PID controler, som beskrevet i REG, som er foruden både overshoot og steady state fejl. Yderligere skal denne kunne bevæge sig 180 grader og stoppe på under fem sekunder, med en usikkerhed på højst én grad.
+Der skal laves en PID controler, som beskrevet i REG, der er foruden både overshoot og steady state fejl. Yderligere skal denne kunne bevæge sig 180 grader og stoppe på under fem sekunder, med en usikkerhed på højst én grad.
 
-Samtidig skal der laves et stykke funktionelt digitalt programmeret elektronik, i form af et FPGA board, der skal fungerer som en ``slave'' for microcontrolleren og give denne information om positionen af systemet samt benytte denne til at sætte hastighed or retning på motorerne. Denne skal også fungerer som en sikkerhed der endegyldigt sikre at der ikke kan ske uheld ved at systemet kører ud over sine mekaniske begrændsninger.
+Samtidig skal der laves et stykke funktionelt digitalt programmeret elektronik, i form af et FPGA board, der skal fungerer som en ``slave'' for microcontrolleren og give denne information om positionen af systemet samt benytte denne til at sætte hastighed og retning på motorerne. Denne skal også fungerer som en sikkerhed der endegyldigt sikrer at der ikke kan ske uheld ved at systemet kører ud over sine mekaniske begrændsninger.
 
 \subsubsection{Sekundære opgaver}
 
@@ -92,4 +80,4 @@ Til COS/EMP fagene er det sekundære krav at systemet kan overvåges gennem UART
 
 Det sekundære krav til REG er at PID controlleren er i stand til at selvkalibrerer til et givent system.
 
-Til DIG er det sekundære krav at denne er i stand til at omregne til omregne systemets koordinater til grader.
+Til DIG er det sekundære krav at denne er i stand til at omregne systemets koordinater til grader.
