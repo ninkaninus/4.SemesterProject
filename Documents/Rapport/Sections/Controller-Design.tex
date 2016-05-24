@@ -288,3 +288,11 @@ Pan-systemet tilføjer en pol i $-1/0.45=-2.22$. Dette gør det lidt sværere at
 \caption{Her ses root locus plottet for vores pan-system med en PID-controller med $K_{P}=2$, $K_{I}=1$, $K_{D}=1$ og et gain på 0.01}
 \label{fig:Pan_rlocus}
 \end{figure}
+
+\subsection{Gain}
+
+Det sidste skridt, er at bestemme et passende gain, så den endelige respons for systemerne tilfredsstiller projektets krav. De vigtigste ting at tage højde for er settling time, overshoot og hvor hårdt der reguleres med systemet. Hvis motorerne trækker for hårdt i rammerne kan bælterne kamme over og remskiverne kan rotere en lille smule på akslerne, da de bare er klemt fast med en sætskrue. 
+
+Med kameraet monteret er den statiske friktion i systemet ret stor. Derfor er det svært at flytte systemet, når fejlen er meget lille. For at komme ud over denne begrænsning kan man øge gain'et for systemet. Det har dog den bivirkning at systemet regulerer meget kraftigt. En måde at forhindre denne situation er at sætte en øvre grænse for hvilken duty cycle, der må reguleres med. Dette gør systemet langsommere, men så længe settling time stadigvæk er under de 5 sekunder, gør det ikke noget.
+
+Ud fra root locus plottet bestemmes et gain, der tages udgangspunkt i. Et gain på 0.005 til tilt-systemet giver et respons som på figur XXXX ref, og et gain på 0.008 giver responset på figur XXXX ref. 

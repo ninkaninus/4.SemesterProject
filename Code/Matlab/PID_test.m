@@ -19,9 +19,11 @@ z2 = -sol(2);
 
 s = tf('s');
 
-K =  605/12;
+%K =  605/12;
+K = 605*1.91/12;
 T = 0.13;
-K1 = 530/12;
+%K1 = 530/12;
+K1=530*1.91/12;
 T1 = 0.44;
 
 Gp=12*K/(T*s+1);
@@ -48,7 +50,7 @@ test = 1/s*G
 
 %%
 
-sys = G1*C*0.100;
+sys = G*C*0.005;
 %sys2 = G*C_Design2;
 %sys4 = G*C_Design4;
 
@@ -56,8 +58,13 @@ sys=feedback(sys,1);
 %sys2=feedback(sys2,1)
 %sys4=feedback(sys4,1)
 
+figure(2)
+[p t]=step(sys,5);
 
-step(sys,5);
+plot(t,p)
+title('Step Response for Tilt System');
+xlabel('Time[s]');ylabel('Ticks');
+grid on;
 %%
 
 DC = dcgain((s-p(2))*(s-p(3)));
