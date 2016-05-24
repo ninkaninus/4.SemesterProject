@@ -38,7 +38,20 @@ Ved at have en intern data- og addresse-bus kan alle modulerne kobles op på den
 \label{fig:FPGA_Databus}
 \end{figure}
 
-\paragraph*{•}
+\paragraph*{Implementering}
+SPI modulet er blevet implementeret som en løsning bestående af en 16-bit grænseflade til MPU'en. Og en intern databus, hvorpå modulerene addresseres direkte igennem de øverste 4 bit i SPI datagrammet. SPI modulet fungerer ved en tilstandsmaskine som er vist på figur \ref{fig:FPGA_SPI_State} og de forskellige tilstande er beskrevet herunder. \\
+SPI starter i tilstanden \textit{WaitForSSLow}, hvor der ventes på at SS signalet går lavt og kommunikationen derved er startet. Når SS går lavt skiftes der til tilstanden \textit{WaitForAdr}. \\ 
+I denne tilstand ventes der på at MPU'en overfører de fire første bit i datagrammet, som repræsenterer addressen på det ønskede interne modul, og sender disse ud på addressebussen. Når de er modtaget skiftes der til tilstanden \textit{LoadUdBuf} \\
+I denne tilstand loades data fra databussen ind i udbufferet så de er klar til at blive sendt afsted når MPU'en clocker SPI igen. Dernæst skiftes der til tilstanden \textit{WaitForDatabits}. I denne tilstand ventes der på at MPU'en clocker de sidste 12 databits ud. Når disse er modtaget skiftes der til tilstanden \textit{WE0}, hvor WE sættes til nul, hvilket fortæller det addresserede modul at det kan læse gyldig data ind fra databussen. Derefter skiftes der til tilstanden \textit{WaitForSSHigh}, hvor WE sættes høj igen så modulerne ikke længere læser på databussen. Og der ventes på at SS sættes høj igen og datatransmissionen derved er slut. Så skiftes der til tilstanden \textit{WaitForSSLow} og det hele kører forfra igen.
+
+\begin{figure}[ht]
+	\begin{center}
+		\includegraphics[scale=0.5]{Billeder/FPGA_SPI_State.png}
+	\end{center}
+\caption{State machine diagram over de states som SPI modulet går igennem}
+\label{fig:FPGA_SPI_State}
+\end{figure}
+
 
 \subsection{MotorController}
 
