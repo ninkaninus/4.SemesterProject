@@ -29,7 +29,7 @@ Efter vi har set på disse to valg muligheder kan vi se at RTCS vil være næmme
 
 \subsection{Tasks}
 
-Der er blevet lavet et task diagram XXXX ref her under udviklingen af programet til microcontrolleren. Kommunikation mellem tasks foregår gennem både queues og Shared State Memory. Shared state memory benyttes når der skal sendes data i form af ændring af variabler mellem tasks, mens queues benyttes til at sende beskeder i form af events eller data. Denne metode blev valgt fordi opstår situationer hvor flere tasks skal bruge de samme informationer, og deres eventuelle ændringer af dem påvirker de andre tasks, der skal have kendskab til samme variable.
+Der er blevet lavet et task diagram(se figur \ref{fig:task1}, \ref{fig:task2} og \ref{fig:task3}) her under udviklingen af programet til microcontrolleren. Kommunikation mellem tasks foregår gennem både queues og Shared State Memory. Shared state memory benyttes når der skal sendes data i form af ændring af variabler mellem tasks, mens queues benyttes til at sende beskeder i form af events eller data. Denne metode blev valgt fordi opstår situationer hvor flere tasks skal bruge de samme informationer, og deres eventuelle ændringer af dem påvirker de andre tasks, der skal have kendskab til samme variable.
 \\
 Af samme årsag benyttes der en semafor til at begrænse adgangen til disse, så der ikke opstår synkroniseringsfejl.
 \\
