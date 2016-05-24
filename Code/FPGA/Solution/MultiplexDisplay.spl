@@ -1,7 +1,0 @@
-[Inputs]
-Clk_50MHz
-=Bcd[15:0]=
-[Outputs]
-=Seg[1:8]=
-=An[3:0]=
-[BiDir]

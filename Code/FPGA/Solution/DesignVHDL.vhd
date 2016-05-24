@@ -87,10 +87,12 @@ architecture Behavioral of DesignVHDL is
 	signal M2_Tilt_Zeroed : STD_LOGIC;
 	
 	--BCD
-	signal NTB_M1_Pan_Ticks_BCD : STD_LOGIC_VECTOR(15 downto 0);
-	signal NTB_M2_Tilt_Ticks_BCD : STD_LOGIC_VECTOR(15 downto 0);
+	--signal NTB_M1_Pan_Ticks_BCD : STD_LOGIC_VECTOR(15 downto 0);
+	--signal NTB_M2_Tilt_Ticks_BCD : STD_LOGIC_VECTOR(15 downto 0);
 
-	signal Bcd_To_Display : STD_LOGIC_VECTOR(15 downto 0);
+	signal Number_To_Display : STD_LOGIC_VECTOR(11 downto 0);
+	
+	signal BCD_To_Display : STD_LOGIC_VECTOR(15 downto 0);
 	
 	--Retarded Conversion
 	signal Retarded_Conversion : STD_LOGIC_VECTOR(0 to 7);
@@ -198,18 +200,18 @@ begin
 		MotorZeroed=>M2_Tilt_Zeroed
 	);
 	
-	NTB_M1_Pan_Ticks : entity work.NumberToBcd
-		port map(
-		Clk=>Clk,
-		Number=>M1_Pan_Ticks,
-		BcdOut=>NTB_M1_Pan_Ticks_BCD
-	);
+--	NTB_M1_Pan_Ticks : entity work.NumberToBcd
+--		port map(
+--		Clk=>Clk,
+--		Number=>M1_Pan_Ticks,
+--		BcdOut=>NTB_M1_Pan_Ticks_BCD
+--	);
 	
-	NTB_M2_Tilt_Ticks : entity work.NumberToBcd
+	NumberToBcd : entity work.NumberToBcd
 		port map(
 		Clk=>Clk,
-		Number=>M2_Tilt_Ticks,
-		BcdOut=>NTB_M2_Tilt_Ticks_BCD
+		Number=>Number_To_Display,
+		BcdOut=>BCD_To_Display
 	);
 	
 	DisplayMultiplexer : entity work.MultiplexDisplay
@@ -221,9 +223,9 @@ begin
 	);
 	
 	--Display Mux Mux2x16_1
-	with Toggle_Display select Bcd_To_Display <=
-		NTB_M1_Pan_Ticks_BCD when '0',
-		NTB_M2_Tilt_Ticks_BCD when '1',
+	with Toggle_Display select Number_To_Display <=
+		M1_Pan_Ticks when '0',
+		M2_Tilt_Ticks when '1',
 		(others=>'X') when others;
 		
 	--Databus to slave mux Mux2x12_4

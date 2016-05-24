@@ -1,8 +1,0 @@
-[Inputs]
-Clk
-HallA
-HallB
-HallIndex
-[Outputs]
-=DataBusToSlave[11:0]=
-[BiDir]

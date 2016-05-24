@@ -1,6 +1,0 @@
-[Inputs]
-Clk
-=Number[11:0]=
-[Outputs]
-=BcdOut[15:0]=
-[BiDir]

@@ -1,7 +1,0 @@
-[Inputs]
-Sel
-=Input0[1:0]=
-=Input1[1:0]=
-[Outputs]
-=DataOut[1:0]=
-[BiDir]
