@@ -20,7 +20,7 @@ På figur \ref{fig:Blok_Model} kan man se de vigtigste elementer i kontrolløkke
 \end{itemize}
 
 Modelleringen af systemet viste at motoren og pan/tilt-systemet kunne approksimeres nogenlunde som et 1.-ordenssystem.
-Hvis man tager udgangspunkt i grey box-modellen af systemet, kan man lave et closed-loop-system, der ser ud som på figur \ref{fig:GB_Model}. På denne model er H-broen modelleret som et gain på 12. PWM-signalet kan variere fra $-1$ til $1$. Encoderen og positionsmodulet fungerer i praksis lidt som en integrator i den forstand at alle ticks summeres op og giver en relativ position. Der er ikke noget gain igennem feedback-løkken da set point'et til controlleren også opgives i ticks. Det vides på forhånd at et tick svarer til $1/3$ af en grad (XXXX se reference her), så for at holde kontrolsystemet simpelt, foretages den omregning inden set point'et gives til controlleren. På den måde skal controlleren kun regne i ticks.
+Hvis man tager udgangspunkt i grey box-modellen af systemet, kan man lave et closed-loop-system, der ser ud som på figur \ref{fig:GB_Model}. På denne model er H-broen modelleret som et gain på 12. PWM-signalet kan variere fra $-1$ til $1$. Encoderen og positionsmodulet fungerer i praksis lidt som en integrator i den forstand at alle ticks summeres op og giver en relativ position. Der er ikke noget gain igennem feedback-løkken da set point'et til controlleren også opgives i ticks. Det vides på forhånd at et tick svarer til $1/3$ af en grad (Se reference i afsnit \ref{subsec:TicksToDeg}), så for at holde kontrolsystemet simpelt, foretages den omregning inden set point'et gives til controlleren. På den måde skal controlleren kun regne i ticks.
 
 \begin{figure}[ht]
 	\begin{center}
