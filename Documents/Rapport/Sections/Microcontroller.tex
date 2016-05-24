@@ -3,7 +3,7 @@
 Denne sektion kommer omkring de forskellige moduler, som mikroprocessoren håndterer, samt hvilket styresystem der anvendes.
 
 \subsection{Operativ System}
-Når der skal skiftes mellem flere tasks som en processor skal udføre, er det vigtigt at kunne skifte mellem dem på en fornuftig måde; Dette udføres ved hjælp af en schedulerings algoritme. Når der skal implementeres en schedulerings algoritme skal det overvejes hvorvidt det er nødvendigt at lave én designet specielt til projektet, eller om der en en eksisterende der er i stand til at udføre opgaven tilstrækkeligt. I dette project har vi to muligheder til rådighed: FreeRTOS\cite{FreeRTOSorg} og en Run To Complete Scheduler (RTCS).
+Når der skal skiftes mellem flere tasks som en processor skal udføre, er det vigtigt at kunne skifte mellem dem på en fornuftig måde; Dette udføres ved hjælp af en schedulerings algoritme. Når der skal implementeres en schedulerings algoritme skal det overvejes hvorvidt det er nødvendigt at lave én designet specielt til projektet, eller om der en en eksisterende der er i stand til at udføre opgaven tilstrækkeligt. I dette project har vi to muligheder til rådighed: FreeRTOS\cite{FreeRTOSorg}XXXX og en Run To Complete Scheduler (RTCS).
 
 \subsubsection{FreeRTOS}
 
@@ -232,7 +232,7 @@ Da Freescale er den eneste SPI iblandt de tre SSI moduler er det den, der blev v
 
 For at lave et Freescale setup skal SSI modulet deaktiveres, og så kan microcontrolleren sættes som master, ved at skrive nul til control registret.
 Derefter skal clock configurations registret sættes til 0 så system clocken bruges.
-Da der ønskes en 2 Mbps clock bruges ligning \eqref{eq:clock}, som kan findes i \cite{TM4C123GH6PMDatasheet} side 953.
+Da der ønskes en 2 Mbps clock bruges ligning \eqref{eq:clock}, som kan findes i \cite{TM4C123GH6PMDatasheet}XXXX side 953.
 
 \begin{align}
 \begin{split}
