@@ -13,7 +13,7 @@ Dette var den første implementation der blev overvejet. Her sendes data mellem 
 \paragraph*{16-bit pakker med 4-bit addressering}
 Denne implementering involverer at man bruger 16-bit per overførsel. De øverste 4-bit bliver brugt til at addresserer, hvilket modul inde i FPGA'en der ønskes kommunikation med. Og de resterende 12-bit kan bruges til at overfører data med. En 4-bit addresser giver mulighed for at kunne addresserer op til 16 moduler i FPGA'en.
 
-\subsubsection{Kommunikation internt med moduler}
+\subsubsection{Kommunikation internt mellem moduler}
 Når datapakkerne fra SPI er modtaget i FPGA'en skal de på en eller anden måde tolkes. Og ud fra denne tolkning skal der enten sendes data til et modul eller hentes data fra et modul. Her beskrives de to måder der er blevet overvejet til at håndterer den interne kommunikation mellem FPGA'ens moduler.
 
 \paragraph*{Master Controller}
