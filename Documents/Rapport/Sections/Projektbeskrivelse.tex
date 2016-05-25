@@ -1,5 +1,13 @@
 \section{Projektbeskrivelse}
 
+\subsection{Indledning}
+Der er blevet tildelt et panorerings- og tilt-system, hvor tilt rammen er monteret på pan rammen. se Figur \ref{fig:Opstilling}\\
+Et sådan system bruges til, observatorier, lysudstyr, overvågningskameraer iblandt mange andre applikationer.\\
+Til følgende beskrivelse af systemet er der ønsket en valgfri meningsfyldt applikation.\\
+For at pan-rammen ikke ødelægger ledningerne til tilt-rammen, er der tilføjet en stopklods, der forhindre pan-rammen i at gå udover denne begrænsning - tilt-rammen er ubegrænset i dens bevægelser.\\
+Til rammerne er der tilføjet to EMG30\cite{emg30Data}, en på hhv. pan- og tilt-rammerne.\\
+På rammerne er også monteret 2 hall sensorer, en på pan, og en på tilt. 
+
 \begin{figure}[H]
 	\begin{center}
 		\includegraphics[scale=0.15]{Billeder/opstilling.jpg}
@@ -7,15 +15,6 @@
 		\label{fig:Opstilling}
 	\end{center}
 \end{figure}
-
-\subsection{Indledning}
-Der er blevet tildelt et panorerings- og tilt-system, hvor tilt rammen er monteret på pan rammen.\\
-Et sådan system bruges ofte til, observatorier, lysudstyr, overvågningskameraer iblandt mange andre applikationer.\\
-Til følgende beskrivelse af systemet er der ønsket en valgfri meningsfyldt applikation, systemet kan ses på figur \ref{fig:Opstilling}.\\
-For at pan-rammen ikke river ledningerne i stykker til tilt-rammen, er der tilføjet en stopklods, der forhindre pan-rammen i at gå udover denne begrænsning - tilt-rammen er ubegrænset i dens bevægelser.\\
-Til rammerne er der tilføjet to EMG30\cite{emg30Data}XXXX, en på hhv. pan- og tilt-rammerne.\\
-På rammerne er også monteret 2 hall sensorer, en på pan, og en på tilt. 
-
 
 \subsection{Problemformulering}
 
@@ -64,7 +63,7 @@ Pan/Tilt-projektet bliver udarbejdet for at give en bredere og bedre forståelse
 
 \subsubsection{Primære opgaver}
 
-Som krav til systemet skal det kunne tage et input i form af et horisontalt koordinatsæt, som systemet så omsætter til sfæriske koordinater, således dette kan benyttes af systemet. Yderligere er det nødvendigt at systemet kan tage manuelt indtastning af koordinater som alternativt input.
+Som krav til systemet skal det kunne tage et input i form af et horisontalt koordinatsæt, som systemet så omsætter til sfæriske koordinatsæt, en vinkel for pan og en vinkel for tilt. Yderligere er det nødvendigt at systemet kan tage manuelt indtastning af koordinatsæt som alternativt input.
 
 Som en del af COS/EMP faget sættes der som krav, at systemet skal kunne give feedback gennem LCD komponenten i form af den nuværende position i horisontale koordinater. Der skal kunne tages input fra knapper på EMP board'et, og en UART-forbindelse, med tilsvarende UART-protokol, skal kunne forbinde board'et med en computer.
 

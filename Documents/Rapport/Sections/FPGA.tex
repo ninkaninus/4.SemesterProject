@@ -99,13 +99,30 @@ En clock-periode med FPGA'ens krystal på 50 MHz er $20ns$ lang, så hvis man t�
 \end{figure}
 
 \subsection{Positions modul}
-
-For at kunne ramme et punkt på himlen, bliver microcontrolleren nødt til at vide hvilken position pan-tilt-systemet står i.
+XXXX Læs igennem tak.
+For at kunne ramme et punkt på himlen, bliver MPU'en nødt til at vide hvilken position pan-tilt systemet står i.
 For at kende denne position, er der to hall sensorer på EMG30 motoren.
 Disse sensorer sidder 90 grader forskudt, når motoren har kørt en omgang (Den indre rotor) har hall sensorerne sendt høj 3 gange hver.
 Hver gang en hall sensor går fra høj til lav, eller lav til høj, vil et register i FPGA'en inkrementere et register med 1.\\
 
+På en indre rotor omdrejning, fås der 12 encoder ticks.
+På en output shaft rotation er der 30 indre rotor omdrejninger.
+output shaft gear ratio til pan og tilt ramme er 1:3
+
+\begin{equation}
+ticks = 12*30*3 = 1080
+\end{equation}
+
+En rotation på pan og tilt er derfor 1080.
+
+ved at dividere 360 grader med antal encoder tics fås hvor mange grader et tick er:
+\begin{equation}
+\frac{360}{1080} = \frac{1}{3}
+\end{equation}
+
 For at kunne finde ud af hvilken vej motoren kører, kigges der på hvordan hall sensorerne går høj og lav i forhold til hinanden.
+
+
 
 \begin{figure}[ht]
 	\begin{center}
@@ -115,14 +132,20 @@ For at kunne finde ud af hvilken vej motoren kører, kigges der på hvordan hall
 \caption{Her ses et billede af hvordan hall sensorerne går høj og lav i forhold til hinanden}
 \end{figure}
 
-Rotation.
-Når hall sensor 1 er høj, og hall sensor 2 er høj\\
-Hvis så hall sensor 2 bliver lav først, så er det en rotation med uret.\\
-Og hvis hall sensor 1 bliver lav først, så er det mod uret.\\
+Hvis hall sensor 1 er høj, og hall sensor 2 er høj:\\
+	\begin{itemize}
+	\item Hvis så hall sensor 2 bliver lav først, så er det en rotation med uret.\\
+	\item Og hvis hall sensor 1 bliver lav først, så er det mod uret.\\
+	\end{itemize}
 
-Når hall sensor 1 er lav, og hall sensor 2 er lav\\
-Hvis hall sensor 2 så bliver høj først, så er det en rotation med uret.\\
-Hvis hall sensor 1 bliver høj først, så er det en rotation mod uret.\\
+Hvis hall sensor 1 er lav, og hall sensor 2 er lav\\
+	\begin{itemize}
+\item Hvis hall sensor 2 så bliver høj først, så er det en rotation med uret.\\
+	\item Hvis hall sensor 1 bliver høj først, så er det en rotation mod uret.\\
+	\end{itemize}
+
+
+
 
 \subsection{MotorController}
 Motor Controller har til formål at styrer en motor. Modulet skal kunne starte og stoppe motoren, styrer retningen af motoren, styrer hastigheden af motoren samt implementerer en sikkerhed så motoren ikke ødelægger pan delen af systemet, hvis der kommer forkert input til motorcontrolleren.
