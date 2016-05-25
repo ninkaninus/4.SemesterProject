@@ -173,7 +173,7 @@ Til SSI modulet er der 3 forskellige data formater:
 			\label{fig:FSFrameFormat}
 		\end{figure}
 	
-Da Freescale er den eneste SPI iblandt de tre SSI moduler, og kravet til projektet var at der skulle kommunikeres via SPI, er det det som bliver anvendt.
+Da Freescale kan ses i figur \ref{fig:FSFrameFormat} er den eneste SPI iblandt de tre SSI moduler, og kravet til projektet var at der skulle kommunikeres via SPI, er det det som bliver anvendt.
 
 		\begin{figure}[ht]
 			\begin{center}
@@ -183,7 +183,7 @@ Da Freescale er den eneste SPI iblandt de tre SSI moduler, og kravet til projekt
 			\caption{Setup af Freescale SPI}
 		\end{figure}
 
-For at opsætte Freescale skal SSI modulet deaktiveres, og så kan MPU'en sættes som master, ved at skrive nul til control registret.
+For at opsætte Freescale, kan ses i figur \ref{fig:SPI_Setup} skal SSI modulet deaktiveres, og så kan MPU'en sættes som master, ved at skrive nul til control registret.
 Derefter skal clock configurations registret sættes til 0 så system clocken bruges.
 Da der ønskes en 2 Mbps clock bruges ligning \eqref{eq:clock}, som kan findes i \cite{TM4C123GH6PMDatasheet}XXXX side 953.
 
