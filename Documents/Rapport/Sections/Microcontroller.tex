@@ -248,7 +248,7 @@ Et problem med PID-controlleren er integral windup. Integral windup er, når are
 
 \paragraph{Deadband}
 
-For at kompenserer for at systemet har diskrete koordinater, hvilket resulterer i at systemet ofte fortsætter frem og tilbage over den ønskede position, benyttes der et deadband. Denne er implementeret ved at systemet aktiverer en motor bremse hvis der måles at systemet er i den position der ønskes. Dette forhindrer at systemet gentagende gange fortsætter forbi den ønskede position, da deadbandet låser systemet hvis der er så lidt hastighed, at den kan bevæge sig gennem det tick der forsøges at ramme. Såfremt der er så meget hastighed i systemet, at den blot fortsætter igennem bremsen bliver denne blot slået fra igen når systemer kommer ud på den anden side, hvorved controlleren frit kan korrigere for steady state fejl.
+For at kompensere for at systemet har diskrete koordinater, hvilket resulterer i at systemet ofte fortsætter frem og tilbage over den ønskede position, benyttes der et deadband. Denne er implementeret ved at systemet aktiverer en motor bremse hvis der måles at systemet er i den position der ønskes. Dette forhindrer at systemet gentagne gange fortsætter forbi den ønskede position, da deadbandet låser systemet hvis der er så lidt hastighed, at den kan bevæge sig gennem det tick der forsøges at ramme. Såfremt der er så meget hastighed i systemet, at den blot fortsætter igennem bremsen bliver denne blot slået fra igen når systemer kommer ud på den anden side, hvorved controlleren frit kan korrigere for steady state fejl.
 
 \subsubsection{PID Task}
 
