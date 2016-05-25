@@ -69,7 +69,7 @@ På figur \ref{fig:SO_system} ses hvordan polernes placering, beskriver en masse
 
 \subsubsection{Steady State Fejl}
 
-For at undersøge om systemet sørge for en steady state fejl på 0, er det nødvendigt at finde et udtryk for $E(s)$, som ses på figur \ref{fig:GB_Model}, og ved hjælp af \textit{Final Value Theorem} (\ref{eq:FVT}), er det muligt at finde ud af hvad der er tilbage, når systemet går i steady state. XXXX*Giver det her mening* $E(s)$ ses på blokdiagrammet på figur (\ref{eq:GB_tf}).
+For at undersøge om systemet sørger for en steady state fejl på 0, er det nødvendigt at finde et udtryk for $E(s)$, som ses på figur \ref{fig:GB_Model}, og ved hjælp af \textit{Final Value Theorem} (\ref{eq:FVT}), er det muligt at finde fejlen, når systemet går i steady state. $E(s)$ ses på blokdiagrammet på figur (\ref{eq:GB_tf}).
 
 \begin{equation} \label{eq:FVT}
 lim_{t \to \infty} f(t) = lim_{s \to 0} sF(s)
@@ -97,7 +97,7 @@ Percent Overshoot (P.O.) er defineret som den procentdel systemets største resp
 P.O.=100*e^{-\dfrac{\zeta\pi}{\sqrt{1-\zeta^2}}}
 \end{equation}
 
-For at få 5 $\%$ overshoot eller derunder kan det beregnes at $\zeta$ skal være større end 0.690 XXXX*Hvordan????*. Det vil sige at polerne skal placeres indenfor det skraverede område på figur \ref{fig:Overshoot} for at opfylde designmålene. dette viser opførslen for et 2-ordens-system, så dette kan ikke præcist beskrive opførslen for dette system på denne måde, da det er et 3.ordenssystem med flere nuller. Til gengæld er det muligt at, komme meget tæt på. Det er dog stadigvæk vigtigt at vælge polplaceringer med en god margen op til grænseværdien for at være på den sikre side.
+For at få 5 $\%$ overshoot eller derunder kan det beregnes at $\zeta$ skal være større end 0.690. Det vil sige at polerne skal placeres indenfor det skraverede område på figur \ref{fig:Overshoot} for at opfylde designmålene. dette viser opførslen for et 2-ordens-system, så dette kan ikke præcist beskrive opførslen for dette system på denne måde, da det er et 3.ordenssystem med flere nuller. Til gengæld er det muligt at, komme meget tæt på. Det er dog stadigvæk vigtigt at vælge polplaceringer med en god margen op til grænseværdien for at være på den sikre side.
 
 \begin{figure}[ht]
 	\begin{center}
@@ -139,7 +139,7 @@ For at overholde designmålene vedrørende settling time, overshoot og steady st
 \item For at holde steady state fejlen i 0, er det nødvendigt at have en controller med et integrator led. Derfor skal det undersøges hvordan en I-, ID-, PI- og PID-controller påvirker systemet. P- og PD-controllere ignoreres pga af kravet til steady state fejlen.
 \end{itemize}
 
-Grænserne ses som et absolut minimumskrav, da systemet ikke er et ideelt 2.ordenssystem. Der skal helst være en god margen. XXXX hvad er en god margen? hvor meget?
+Grænserne ses som et absolut minimumskrav, da systemet ikke er et ideelt 2.ordenssystem. Der skal helst være en tilpas stor margen.
 
 \subsection{Controller-typer}
 
@@ -194,10 +194,16 @@ En PI controller har også en proportionel del, der summeres med integratoren. D
 Y(s)=\frac{K_{P}s+K_{I}}{s}\cdot\frac{12K}{s(s\tau+1)}
 \end{equation}
 
-Ud fra root locus beregninger kan det bevises at nullets placering skal ligge til højre for $-0.93$ for at de to branches fra polerne i origo mødes på den reelle akse. (XXXX Skal beviset udpensles med ligninger eller er det fint bare at sige det passer?). $K_{P}$ skal med andre ord helst være større end $K_{I}$. Til gengæld må $K_{P}$ heller ikke blive for meget større end $K_{I}$ (knap $2.6$ gange) fordi det gør systemet for langsomt, da break-in punktet kommer til at ligge på den forkerte side af $0.8$, som er $\omega_{n}\zeta$-grænsen for en settling time under 5 sekunder. 
+Ud fra root locus beregninger kan det bevises at nullets placering skal ligge til højre for $-0.93$ for at de to branches fra polerne i origo mødes på den reelle akse. (XXXX Skal beviset udpensles med ligninger eller er det fint bare at sige det passer?). $K_{P}$ skal med andre ord helst være større end $K_{I}$. Til gengæld må $K_{P}$ heller ikke blive for meget større end $K_{I}$ (knap $2.6$ gange) fordi det gør systemet for langsomt, da break-in punktet kommer til at ligge på den forkerte side af $0.8$, som er $\omega_{n}\zeta$-grænsen for en settling time under 5 sekunder. På figuren herunder kan root locus-plottet for PI-controlleren ses.
 
 XXXX figur her.
-
+\begin{figure}[!ht]
+	\begin{center}
+		\includegraphics[scale=0.45]{Billeder/PI_rlocus.PNG}
+	\end{center}
+\caption{Her ses root locus plottet for vores tilt-system med en PI-controller. Med visse gains er det muligt at få placeret closed-loop-polerne indenfor det ønskede område, men jo større gain'et bliver, jo længere forsvinder to af polerne ud langs asymptoter ved 90 og 270 grader.}
+\label{fig:PI_rlocus}
+\end{figure}
 
 \subsubsection{PID Controller}
 
@@ -208,7 +214,7 @@ Y(s)=\frac{K_{P}s+K_{I}+K_{D}s^2}{s}\cdot\frac{12K}{s(s\tau+1)}
 
 XXXX tættere eller længere væk fra model?
 
-Med PI-controlleren er margenen for P- og I-konstanterne og gainet ret lille, hvis projektets designmål skal overholdes. PID-controlleren giver lidt mere råderum, men man tager også et skridt længere væk fra den ideelle 2.-ordensmodel. Differentieringsledet D tilføjer nemlig et ekstra nul til ligningen. Med to nuller er der ikke længere to branches, der går mod (XXXX reference til figur PI) uendelig langs en lodret asymptote når gainet øges. Der er nu kun en branch der går mod minus uendelig, og det foregår langs den reelle akse. Dette har tre klare fordele:
+Med PI-controlleren er margenen for P- og I-konstanterne og gainet ret lille, hvis projektets designmål skal overholdes. PID-controlleren giver lidt mere råderum, men man tager også et skridt længere væk fra den ideelle 2.-ordensmodel. Differentieringsledet D tilføjer nemlig et ekstra nul til ligningen. Med to nuller er der ikke længere to branches, der går mod (se figur \ref{fig:PI_rlocus}) uendelig langs en lodret asymptote når gainet øges. Der er nu kun en branch der går mod minus uendelig, og det foregår langs den reelle akse. Dette har tre klare fordele:
 
 \begin{itemize}[noitemsep]
 	\item 	En af polerne fra det modellerede 3-ordens-system glider væk fra de to andre poler ved højere gain. På den måde kan man lettere negligere effekten fra den i modellen. Dette bringer os tættere på 2.ordensmodellen.
@@ -216,7 +222,7 @@ Med PI-controlleren er margenen for P- og I-konstanterne og gainet ret lille, hv
 	\item  	Man kan få de to dominante poler længere væk fra den imaginære akse 					(hurtigere settling time).
 \end{itemize}
 
-I de root locus-plots der har været vist indtil videre XXXX referer til dem, har der været brugt en tidskonstant på 0.12 sekunder - denne værdi stammer fra tidlige forsøg på tilt-systemet. Med denne tidskonstant er der en pol i $-1/0.12=-8.33$. Hvis begge nuller placeres til højre for $-8.33$ vil den ene branch følge den reelle akse til venstre for $-8.33$ mod uendelig. På den måde kan er det muligt, med et forholdsvist "XXXX hvad er forholdsvist lille gain?" lille gain, skubbe closed-loop-polen fra tidskonstanten så langt ud ad den reelle akse, at den ikke har nogen stor indflydelse på systemet. Det kan også lade sig gøre, hvis et af nullerne eller begge to er til venstre for $-8.33$, det kræver bare et noget større gain "XXXX Hvor meget?".
+I de root locus-plots der har været vist indtil videre (figur \ref{fig:I_rlocus}, \ref{fig:ID_rlocus} og \ref{fig:PI_rlocus}), har der været brugt en tidskonstant på 0.12 sekunder - denne værdi stammer fra tidlige forsøg på tilt-systemet. Med denne tidskonstant er der en pol i $-1/0.12=-8.33$. Hvis begge nuller placeres til højre for $-8.33$ vil den ene branch følge den reelle akse til venstre for $-8.33$ mod uendelig. På den måde kan er det muligt, med et forholdsvist "XXXX hvad er forholdsvist lille gain?" lille gain, skubbe closed-loop-polen fra tidskonstanten så langt ud ad den reelle akse, at den ikke har nogen stor indflydelse på systemet. Det kan også lade sig gøre, hvis et af nullerne eller begge to er til venstre for $-8.33$, det kræver bare et noget større gain "XXXX Hvor meget?".
 
 \begin{figure}[!ht]
 	\begin{center}
