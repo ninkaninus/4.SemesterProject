@@ -9,7 +9,7 @@ Kommunikationen fra FPGA'en til MPU'en foregår over SPI, men da SPI kun er en g
 
 \paragraph*{8-bit pakker med kommunikationsprotokol}
 Dette var den første implementation der blev overvejet. Her sendes data mellem FPGA og MPU i pakker af størrelsen 8-bit. Der skal så fastsættes en kommunikationsprotokol der består af telegrammer med et bestemt antal bytes i.\\
-I hver ende skal der være en controller der kan afkode de telegrammer der kommer ind. Og ud fra det bestemme hvad der skal foretages i FPGA'en. Fordelen ved denne implementering er at alt afhængig af hvordan telegrammerne designes så kan der både implementeres crc-check af beskederne samt en masse kommandoer "XXXX Er det kun ved 8-bit pakker eller er det generet?". Ulempen er at man skal opstille en protokol for kommunikationen og at der skal overføres flere pakker før at der reelt set sker noget samt at selve kommunikationen bliver mere kompliceret.
+I hver ende skal der være en controller der kan afkode de telegrammer der kommer ind. Og ud fra det bestemme hvad der skal foretages i FPGA'en. Fordelen ved denne implementering er at alt afhængig af hvordan telegrammerne designes så kan der både implementeres crc-check af beskederne samt en masse kommandoer. Ulempen er at man skal opstille en protokol for kommunikationen og at der skal overføres flere pakker før at der reelt set sker noget samt at selve kommunikationen bliver mere kompliceret.
 
 \paragraph*{16-bit pakker med 4-bit adressering}
 Denne implementering involverer at man bruger 16-bit per overførsel. De øverste 4-bit bliver brugt til at adressere, hvilket modul inde i FPGA'en der ønskes kommunikation med. Og de resterende 12-bit kan bruges til at overføre data med. En 4-bit adresserer giver mulighed for at have op til 16 adresser i FPGA'en.
@@ -161,7 +161,7 @@ I denne tilstand ventes der på at knappen bliver sluppet igen for at undgå at 
 I denne tilstand er det muligt at nulstille motorens position ved hjælp af knappen. Når knappen trykkes ned så kører motoren i en retning og når knappen slippes og trykkes igen så kører motoren den anden retning. Dette fortsætter indtil at modulet registrer at der er gået forbi index hall sensoren. Når dette sker så signaleres andre moduler om at motoren er færdig med at nulstille og tilstanden skifter til \textit{PostZero}.\\
 Denne tilstand er til for at det er muligt at vælge, hvornår at FPGA'en overlader kontrollen af motorerne til det der kommer ind fra databussen. Der ventes på at knappen trykkes ned og når dette sker så skiftes der til tilstanden \textit{RunMode}. \\
 I denne tilstand så styres motoren af det der kommer ind til modulet via den interne databus. Der tjekkes hele tiden på om motorens position går ud over de grænser som der er defineret den skal holde sig inden for. Hvis der bliver gået ud over disse grænser ændres så skiftes tilstanden til \textit{EmergencyMode}.\\
-I denne tilstand slår modulet motorbremsen "XXXX Hvilken motorbrems" til og låser motorerne fast. Efterfølgende input fra databussen ignoreres og der ventes på at knappen bliver trykket ned. Når dette sker så skiftes tilstanden tilbage til \textit{Init} og motoren skal nulstilles på ny.
+I denne tilstand slår modulet motorbremsen til, og låser motorerne fast. Efterfølgende input fra databussen ignoreres og der ventes på at knappen bliver trykket ned. Når dette sker så skiftes tilstanden tilbage til \textit{Init} og motoren skal nulstilles på ny.
 
 \begin{figure}[ht]
 	\begin{center}
