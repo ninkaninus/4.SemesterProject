@@ -39,7 +39,7 @@ Ved at have en intern data- og adresse-bus kan alle modulerne kobles op på den 
 \label{fig:FPGA_Databus}
 \end{figure}
 
-\paragraph*{Implementering}
+\subsubsection{Implementering}
 SPI modulet er blevet implementeret som en løsning bestående af en 16-bit grænseflade til MPU'en. Og en intern databus, hvorpå modulerne adresseres direkte igennem de øverste 4 bit i SPI datagrammet. SPI modulet fungerer som en tilstandsmaskine denne er vist på figur \ref{fig:FPGA_SPI_State} og de forskellige tilstande er som følgende:\\
 SPI starter i tilstanden \textit{WaitForSSLow}, hvor der ventes på at SS signalet går lavt og kommunikationen derved er startet. Når SS XXXX Hvad er SS signalet? går lavt skiftes der til tilstanden \textit{WaitForAdr}. \\ 
 I denne tilstand ventes der på at MPU'en overfører de fire første bit i datagrammet, som repræsenterer addressen på det ønskede interne modul, og sender disse ud på adressebussen. Når de er modtaget skiftes der til tilstanden \textit{LoadUdBuf} \\
