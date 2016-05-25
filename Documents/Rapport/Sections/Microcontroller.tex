@@ -1,5 +1,4 @@
 \section{Micro Processing Unit}
-
 Denne sektion kommer omkring de forskellige moduler, som mikroprocessoren håndterer, samt hvilket styresystem der anvendes.
 
 \subsection{Operativ System}
@@ -7,35 +6,34 @@ Når der skal skiftes mellem flere tasks som en processor skal udføre, er det v
 
 \subsubsection{FreeRTOS}
 
-FreeRTOS \cite{FreeRTOSorg} er et realtids operativsystem (RTOS), der er en standard løsning som bliver brugt i en mikroprocessor. FreeRTOS giver os muligheden for at bruge preemptiv skedulering, hvilket vil sige at CPU'en kan springe imellem tasks, og hoppe ud af dem efter behov. Dette bliver styret ud fra hvilken prioritet task'en har, eller om der en anden task, der får et interrupt, den skal holde øje med.
+FreeRTOS \cite{FreeRTOSorg} er et realtids operativsystem (RTOS), der er en standard løsning som bliver brugt i en mikroprocessor. FreeRTOS giver tilføjer muligheden for at bruge præemptiv skedulering, hvilket vil sige at CPU'en kan stoppe den nuværende task, og køre en eventuelt vigtigere task og derefter vende tilbage til forrige task senere. Hvornår der skal skiftes tasks bliver styret ud fra hvilken prioritet task'en har, eller om der en anden task, der får et interrupt, som CPU'en skal holde øje med.
 \\
-Udover dette har freeRTOS også mange andre funktioner dette projekt kan udnytte. Der er mulighed for at oprette køer, som vil blive nævnt som queues. Disse queues kan man sende events og data til ved hjælp af en funktion der hedder xQueueSend. 
+Udover dette er der er mulighed for at oprette køer, som vil blive nævnt som queues. Disse queues kan der sendes events og data til ved hjælp af en funktion der hedder xQueueSend. 
 \\
-FreeRTOS kan lave semaforer, som gør det muligt at flere tasks skal kunne tilgå disse queues, disse semaforer gør at kun en task der har adgang til queue'en indtil semaforen bliver frigjort igen. For at ungå at styre systemet ikke bliver fastlåst i denne semafor for evigt indsættes der en tid, den kan være inde i semaforen.
+FreeRTOS kan oprette semaforer, som gør det muligt at flere tasks skal kunne tilgå samme queues, disse semaforer gør at kun en task har adgang til queue'en ad gangen indtil semaforen bliver frigjort igen. For at undgå at styre systemet ikke bliver fastlåst i denne semafor for evigt indsættes der en tid, den kan holde semaforen.
 \\
-Queues og semaforer bliver oprettet ef xQueueHandle og xSemaphoreHandle. Hvorefter de bliver kreeret ved hjælp af xQueueCreate og xSemaphoreCreateMutex. For at bruge xQueueCreate skal der også bruges størrelse af queue'en og hvilken parameter den skal indeholde.
+Queues og semaforer bliver oprettet af hhv. xQueueHandle og xSemaphoreHandle. Hvorefter de bliver oprettet ved hjælp af xQueueCreate og xSemaphoreCreateMutex. For at bruge xQueueCreate skal der også bruges længden af queue'en og hvilken parameter den skal indeholde.
 \\
-FreeRTOS tilbyder også et Shared State Memory (SSM), dette gør det muligt at CPU'en kan hoppe imellem de forskellige tasks. F.eks. hvis der kommer et event på UART, som kunne være "STOP\textunderscore EVENT". Dette event gør, at den med det samme går over til den case hvor eventet er, og gør som der står, som i dette tilfælde er at bremse motoren.
 
 \subsubsection{RTCS}
 
-Run To Complete Scheduler (RTCS) er en anden måde at køre ens styresystem på. Den kører som en non preemtiv skedulering, hvilket vil sige at lige så snart CPU'en har forbindelse til en proces/task, så kan den ikke hoppe ud af denne proces/task. I dette system kan der også oprettes queue's.
+Run To Complete Scheduler (RTCS) er et andet operativ system. RTCS kører som en non preemtiv skedulering, hvilket vil sige at lige så snart CPU'en har forbindelse til en proces/task, så kan den ikke stoppes. I dette system kan der også oprettes queue's.
 \\
-Den har mulighed for at oprette semaforer, som gør at det er kun en task som kan have adgang til queue'en. For at tilføje data til en queue skal funktionen put\textunderscore queue kaldes. Funktionen wait\textunderscore sem bruges til at tilføje en semafor til den specifikke queue.
+RTCS har samtidig mulighed for at oprette semaforer, som gør at det er kun en task som kan have adgang til en queue. For at tilføje data til en queue skal funktionen put\textunderscore queue kaldes. Funktionen wait\textunderscore sem bruges til at tilføje en semafor til den specifikke queue.
 
 \subsubsection{Valg af Operativsystem}
 
-Efter vi har set på disse to valg muligheder kan vi se at RTCS vil være næmmere at få til at virker, fordi det ikke er så komplicert og har ikke lige så mange udvidelser. RTCS tilbyder dog ikke de samme sikkerhed udvidelser som freeRTOS gør. Den største begrundelse for at vi vælger at arbejde med freeRTOS over RTCS er, at den kører preemptiv skedulering. Dette gøre det muligt, hvis der kommer et vigtigt interrupt, at den kan tage CPU'en fra den proces den er i gang med, og flytte den over til den vigtigste proces.
+Hvis de 2 diskuterede operativ systemer sammenlignes, ses det at RTCS er nemmere at implementere da det ikke er et indviklet styresystem, RTCS tilbyder dog ikke samme sikkerheds udvidelser som freeRTOS gør. Den største begrundelse for at freeRTOS er valgt til dette projekt er at der er implementeret preemptiv skedulering. Dette gøre det muligt, hvis der kommer et vigtigt interrupt, at operativ systemet kan tage CPU'ens nuværende proces og skifte ud med en anden måske vigtigere proces.
 
 \subsection{Tasks}
 
-Der er blevet lavet et task diagram(se figur \ref{fig:task1}, \ref{fig:task2} og \ref{fig:task3}) her under udviklingen af programet til microcontrolleren. Kommunikation mellem tasks foregår gennem både queues og Shared State Memory. Shared state memory benyttes når der skal sendes data i form af ændring af variabler mellem tasks, mens queues benyttes til at sende beskeder i form af events eller data. Denne metode blev valgt fordi opstår situationer hvor flere tasks skal bruge de samme informationer, og deres eventuelle ændringer af dem påvirker de andre tasks, der skal have kendskab til samme variable.
+Der er blevet lavet et task diagram(se figur \ref{fig:task1}, \ref{fig:task2} og \ref{fig:task3}) under udviklingen af programmet til MPU'en. Kommunikation mellem tasks foregår gennem både queues og Shared State Memory. Shared state memory benyttes når der skal sendes data i form af ændring af variabler mellem tasks, mens queues benyttes til at sende beskeder i form af events eller data. Denne metode blev valgt fordi opstår situationer hvor flere tasks skal bruge de samme informationer, og deres eventuelle ændringer af dem påvirker de andre tasks, der skal have kendskab til samme variable.
 \\
 Af samme årsag benyttes der en semafor til at begrænse adgangen til disse, så der ikke opstår synkroniseringsfejl.
 \\
-Den centrale task er Menu'en. Denne styrer en menu, der har til opgave at give mulighed for manuelt at sætte variabler, såsom tid og position, samt at starte og stoppe vores kontrolsystem, og kommunikere tilbage gennem UART transmit. De tasks som er bygget op omkring denne kan ses i figur \ref{fig:task1}.
+Den centrale task er Menu'en. Denne har til opgave at give brugeren mulighed for manuelt at ændre variabler, såsom tid og position, samt at starte og stoppe kontrolsystemet, og at kommunikere tilbage gennem UART transmit. De tasks som er bygget op omkring denne kan ses i figur \ref{fig:task1}.
 \\
-Da der er flere forskellige tasks, der skal have adgang til de samme værdier der bliver sat af UART bliver værdierne, der tages gennem denne, sat i shared state memory, som det ses på figur \ref{fig:task2}.
+Da der er flere forskellige tasks, som skal have adgang til de samme værdier der bliver sat af UART bliver værdierne placeret i shared state memory, som det ses på figur \ref{fig:task2}.
 \\
 Display task'en holder selvsigende styr på hvad der skal vises, som den får besked om fra Menu'en. Denne får input fra keypad'en og drehimpulsgeberen, der dikterer hvad den skal give videre til LCD.
 \\
@@ -68,28 +66,6 @@ Control systemet tager med jævne mellemrum variabler fra Shared State Memory, o
 	\caption{Task diagrammet over kontrol systemet. De værdier den skal bruge kommer fra SPI task'en og eller fra Shared State Memory.}
 	\label{fig:task3}
 \end{figure}
-
-%\begin{figure}[!ht]
-%\centering
-%\begin{subfigure}[t]{0.3\textwidth}
-%	\includegraphics[width=0.99\textwidth]{Billeder/Taskdiagram1.png}
-%	\caption{Task diagrammet over de dele af systemet der centreres over menu'en. Der gives input til UI task'en som så videre %giver information hvor der er brug for det, i dette tilfælde Display task'en, Shared State Memory og UART transmit.}
-%	\label{fig:task1}
-%    \end{subfigure}
-%    \begin{subfigure}[t]{0.3\textwidth}
-%	\includegraphics[width=0.99\textwidth]{Billeder/Taskdiagram2.png}
-%	\caption{Task diagrammet over UART receive. Informationen gemmes i Shared State Memory.}
-%	\label{fig:task2}
-%    \end{subfigure}
-%    \begin{subfigure}[t]{0.3\textwidth}
-%	\includegraphics[width=0.99\textwidth]{Billeder/Taskdiagram3.png}
-%	\caption{Task diagrammet over kontrol systemet. De værdier den skal bruge kommer fra SPI task'en og eller fra Shared State Memory.}
-%	\label{fig:task3}
-%    \end{subfigure}
-%\label{fig:taskdiagram}
-%\caption{Vores task diagram tager udgangspunkt i en UI der sender besked til et display, hvilket benyttes til at vise en menu der kan bruges til at opdaterer diverse parametre og mål, hvilket så gives videre til det implementerede control system gennem Shared State Memory.}
-%\end{figure}
-
 
 \subsubsection{Menu}
 
@@ -129,7 +105,7 @@ Den fysiske opsætning af LCD'et kan ses på figur \ref{fig:LCD}, og viser bland
 			\label{fig:LCD}
 \end{figure}
 
-Selve LCD-task'en arbejder sammen med resten af systemet ved at afkode et særligt image-format (se figur \ref{fig:LCD_array}), så det vises korrekt på skærmen. Dette image bliver sendt fra display-task'en og indeholder oplysninger om, hvilke karakterer, hvis nogen, der skal skrives til alle 32 synlige adresser på displayet. Udover de 32 karakterer, er der også fire kontrolfelter, som fortæller task'en, hvor cursoren skal placeres efter karaktererne er skrevet ud; om cursoren skal blinke eller bare highlighte nuværende adresse med en streg under karakteren. Det sidste felt bliver sat til at vise adressen, hvor næste karakter skal skrives, når alle 32 karakterer er blevet skrevet første gang. På den måde kan LCD-task'en afgøre om den skal skrive et helt image fra starten, eller bare tilføje en ny karakter til et image der allerede er vist på displayet. Med dette setup kan LCD-task'en finde ud af hvilken ny karakter, der skal tilføjes ud fra den første kontrol-bit, samt hvor cursoren skal placeres efter den er skrevet - hvis den næste adresse, der skal skrives på, er mere end en plads væk, skal cursoren flyttes aktivt. Manipuleringen af images og kontrol-bits foregår i display-task'en - LCD-task'en afkoder bare images, når de bliver tilføjet til dens input-kø.
+Selve LCD-task'en arbejder sammen med resten af systemet ved at afkode et særligt image-format (se figur \ref{fig:LCD_array}), så det vises korrekt på skærmen. Dette image bliver sendt fra display-task'en og indeholder oplysninger om, hvilke karakterer, hvis nogen, der skal skrives til alle 32 synlige adresser på displayet. Udover de 32 karakterer, er der også fire kontrolfelter, som fortæller task'en, hvor cursoren skal placeres efter karaktererne er skrevet ud; om cursoren skal blinke eller bare highlighte nuværende adresse med en streg under karakteren. Det sidste felt bliver sat til at vise adressen, hvor næste karakter skal skrives, når alle 32 karakterer er blevet skrevet første gang. På den måde kan LCD-task'en afgøre om der skal skrives et helt image fra starten, eller bare tilføje en ny karakter til et image der allerede er vist på displayet. Med dette setup kan LCD-task'en finde ud af hvilken ny karakter, der skal tilføjes ud fra den første kontrol-bit, samt hvor cursoren skal placeres efter den er skrevet - hvis den næste adresse, der skal skrives på, er mere end en plads væk, skal cursoren flyttes aktivt. Manipuleringen af images og kontrol-bits foregår i display-task'en - LCD-task'en afkoder bare images, når de bliver tilføjet til dens input-kø.
 
 
 \begin{figure}[ht]
@@ -160,10 +136,8 @@ Den har to porte til knyttet som er PORT A og PORT E. Det betyder at vi kan læs
 \end{figure}
 
 
-På figur \ref{fig:Keypad} kan vi se at vi har givet de forskellige knapper unikke værdier. Dette gøres fordi vi har et array som indeholder alle fysiske placeringer på keypad’et, som bliver placeret i den plads i array som kan ses på figur \ref{fig:Keypad} . For at finde en karakter kigger vi først på alle X værdier (port A) igennem og ser om en Y værdi (port E) er aktiv og ud fra hvilken X og Y værdi kan vi finde ud fra hvilket plads i arrayet, som blivet defineret i figur \ref{fig:Keypad}
+På figur \ref{fig:Keypad} ses de forskellige knappers unikke værdier. Der er til dette oprettet et array hvori placeringerne for hver unik knap er tilføjet, dette ses på figur \ref{fig:Keypad}. For at finde den dertilhørende karakter, findes først x værdierne og derefter y værdierne, herefter kan pladsen i arrayet findes.
 \\
-Dette keypad kan blive brugt til at sende data eller manuelt indsætte nogle værdier imens programmet kører.
-
 
 
 \subsubsection{DrehImpulsGeber}
@@ -180,28 +154,17 @@ Drehimpulsgeberen kan sende 30 pulser per rotation.
 			\label{fig:Impulsgeber}
 		\end{figure}
 
-For at finde ud af hvilken retning der bliver skruet på impulsgeberen, kigges der på de tidligere states af switchen.
+For at finde ud af hvilken retning der bliver skruet på impulsgeberen, kigges der på de tidligere states af impulsgeberen.
 eksempelvist hvis der kigges på figur \ref{fig:Impulsgeber} ses det at værdien af B ved henholdsvis en rising eller falling edge på A afhænger af retningen drehimpulsgeberen drejer. Dette bruges til at bestemme hvilket input der skal registeres.
 
 
 \subsection{Serial Peripheral Interface}
 \label{subsec:SPI}
 
-Microcontrolleren (TM4C123GH6PM) der blev udleveret dette semester  indeholder 4 SSI (Synchronous Serial Interface) da disse 4 interfaces alle er ens, med undtagelse af deres pins, er SSI0 blevet valgt som interface, dvs. port A pin 2 er til SSI0Clk (modulets clock), pin 3 er SSI0Fss (frame signalet), pin 4 er SSI0Rx (modtagelse) og pin 5 er SSI0Tx (afsendelse).
+Microcontrolleren (TM4C123GH6PM) der blev udleveret dette semester  indeholder 4 SSI (Synchronous Serial Interface) da disse 4 interfaces alle er ens, med undtagelse af deres pins, er SSI2 blevet valgt som interface, dvs. port B pin 4 er til SSI0Clk (modulets clock), pin 5 er SSI0Fss (frame signalet), pin 6 er SSI0Rx (modtagelse) og pin 7 er SSI0Tx (afsendelse).
 
 Til SSI modulet er der 3 forskellige data formater:
 
-\begin{itemize}
-	\item Texas Instruments Synchronous Serial
-		\begin{figure}[ht]
-			\begin{center}
-			\includegraphics[scale=1]{Billeder/TI_Synchronous_Serial_Frame_Format.jpg}
-			\end{center}
-			\caption{TI Synchronous Serial Frame Format (Single transfer)}
-			\label{fig:TIFrameFormat}
-		\end{figure}
-
-	\item Freescale SPI
 		\begin{figure}[ht]
 			\begin{center}
 			\includegraphics[scale=1]{Billeder/FS_Frame_Format.jpg}
@@ -209,18 +172,8 @@ Til SSI modulet er der 3 forskellige data formater:
 			\caption{FreeScale Frame Format (Single Transfer)}
 			\label{fig:FSFrameFormat}
 		\end{figure}
-		  
-	\item Microwire
-		\begin{figure}[ht]
-			\begin{center}
-			\includegraphics[scale=0.8]{Billeder/MW_Frame_format.jpg}
-			\end{center}
-			\caption{Micro Wire Frame Format (Single Transfer)}
-			\label{fig:MWFrameFormat}
-		\end{figure}
-\end{itemize}
-
-Da Freescale er den eneste SPI iblandt de tre SSI moduler er det den, der blev valgt.
+	
+Da Freescale er den eneste SPI iblandt de tre SSI moduler, og kravet til projektet var at der skulle kommunikeres via SPI, er det det som bliver anvendt.
 
 		\begin{figure}[ht]
 			\begin{center}
@@ -230,7 +183,7 @@ Da Freescale er den eneste SPI iblandt de tre SSI moduler er det den, der blev v
 			\caption{Setup af Freescale SPI}
 		\end{figure}
 
-For at lave et Freescale setup skal SSI modulet deaktiveres, og så kan microcontrolleren sættes som master, ved at skrive nul til control registret.
+For at opsætte Freescale skal SSI modulet deaktiveres, og så kan MPU'en sættes som master, ved at skrive nul til control registret.
 Derefter skal clock configurations registret sættes til 0 så system clocken bruges.
 Da der ønskes en 2 Mbps clock bruges ligning \eqref{eq:clock}, som kan findes i \cite{TM4C123GH6PMDatasheet}XXXX side 953.
 
@@ -243,21 +196,21 @@ CPSDVSR &= 8
 \label{eq:clock}
 \end{align}
 
-Så sættes kontrol registret for SSI0 til 0xF da bit 3:0 angiver data størrelse, 0xF er så 16-bit data. Samtidig bliver Freescale SPI sat op, da bit 4 og 5 bestemmer frame formatet, og hvis de begge er lave betyder det at Freescale er valgt. 
+Så sættes kontrol registret for SSI2 til 0xF da bit 3:0 angiver data størrelse, 0xF er så 16-bit data. Samtidig bliver Freescale SPI sat op, da bit 4 og 5 bestemmer frame formatet, og hvis de begge er lave betyder det at Freescale er valgt. 
 og igen sættes bit 1 i kontrol registret for SSI1 til høj så SSI'en er aktiveret.
 
 \subsection{PID-Controller}
 
-PID-controllerens opgave består i at beregne sig frem til et passende PWM-signal, til at regulere motoren med, ud fra forskellen imellem motorens ønskede og faktiske position. Dette PWM-signal skal drive fejlen i 0 på en måde, der opfylder projektets designmål. Beregningen er styret af de tre konstanter $K_{P}$, $K_{I}$ og $K_{D}$, som man, igennem en analyse af systemets opførsel, beregner sig frem til. Denne analyse antager et ideelt system, hvor man hele tiden med uendeligt små tidsintervaller kan justere controllerens output. Det er ikke muligt at implementere en controller i den form, så der vil være en forskel på den programmerede og den modellerede controllers opførsel.
+PID-controllerens opgave består i at beregne sig frem til et passende PWM-signal, til at regulere motoren med, ud fra forskellen imellem motorens ønskede og faktiske position. Dette PWM-signal skal drive fejlen i 0 på en måde, der opfylder projektets designmål. Beregningen er styret af de tre konstanter $K_{P}$, $K_{I}$ og $K_{D}$, som igennem en analyse af systemets opførsel, beregner sig frem til XXXX Ref til beregningssektion. Denne analyse antager et ideelt system, hvor man hele tiden med uendeligt små tidsintervaller kan justere controllerens output. Det er ikke muligt at implementere en controller i den form, så der vil være en forskel på den programmerede og den modellerede controllers opførsel.
 
 
-\subsubsection{Basal Virkemåde}
+\subsubsection{Fundamental funktion}
 
-Selve udregningen af outputtet sker ved, at controlleren med jævne mellemrum kigger på setpointet for en motor, og sammenligner det med motorens faktiske position. Dette giver en fejlværdi, der løbende holdes øje med. 
+Selve beregning af outputtet sker ved, at controlleren med jævne mellemrum kigger på set-point'et for en motor, og sammenligner det med motorens faktiske position. Dette giver en fejlværdi, der løbende holdes øje med. 
 \begin{itemize}
-\item For at finde proportionaltermet ganges konstanten $K_{P}$ på fejlværdien
-\item For at finde integraltermet ganges konstanten $K_{I}$ på en løbende summering af arealet under fejlen. Dette areal findes ved at gange $dt$ på fejlen, og så lægge det til hver gang udregningen køres igennem. På figur \ref{fig:Riemann} kan man se, hvordan integralet hele tiden vokser, så længe en fejl er til stede.
-\item For at finde differentialtermet ganges konstanten $K_{D}$ på forskellen imellem den nuværende fejl og den forrige fejl delt med dt. Det svarer til at beregne $\Delta e/\Delta t$.
+	\item For at finde proportionaltermet ganges konstanten $K_{P}$ på fejlværdien
+	\item For at finde integraltermet ganges konstanten $K_{I}$ på en løbende summering af arealet under fejlen. Dette areal findes ved at gange $dt$ på fejlen, og så lægge det til hver gang udregningen køres igennem. På figur \ref{fig:Riemann} kan man se, hvordan integralet hele tiden vokser, så længe en fejl er til stede.
+	\item For at finde differentialtermet ganges konstanten $K_{D}$ på forskellen imellem den nuværende fejl og den forrige fejl delt med dt. Det svarer til at beregne $\Delta e/\Delta t$.
 \end{itemize}
 
 \begin{figure}[ht]
@@ -268,7 +221,7 @@ Selve udregningen af outputtet sker ved, at controlleren med jævne mellemrum ki
 	\label{fig:Riemann}
 \end{figure}
 
-Når de tre termer er fundet, summeres de for at finde det endelige output fra udregningen. Dette output er i sig selv ikke brugbart til at finde en duty cycle som motoren skal reguleres med. Man er nødt til at definere et interval som outputtet kan operere indenfor. På den måde kan man, ved at finde ud af hvor outputtet befinder sig i intervallet, mappe denne position til en duty cycle mellem 0 og 255. På figur \ref{fig:Mapping} kan man se en visualisering af denne mapping. Hvis outputtet er negativt betyder det at retningen skal ændres på motoren, men det ændrer ikke noget på hvilken duty cycle, der skal sendes i sidste ende.
+Når de tre termer er fundet, summeres de for at finde det endelige output fra udregningen. Dette output er i sig selv ikke brugbart til at finde en duty cycle som motoren skal reguleres med. der skal defineres et interval som outputtet kan operere indenfor. På den måde er det muligt, at mappe positionen til en duty cycle mellem 0 og 255 ved at finde ud af hvor outputtet befinder sig i intervallet. På figur \ref{fig:Mapping} ses en visualisering af denne mapping. Hvis outputtet er negativt betyder det at retningen skal ændres på motoren, men det ændrer ikke noget på hvilken duty cycle, der skal sendes i sidste ende.
 
 \begin{wrapfigure}{R}{0.5\textwidth}
 	\begin{center}
@@ -279,27 +232,28 @@ Når de tre termer er fundet, summeres de for at finde det endelige output fra u
 \end{wrapfigure}
 \paragraph{Duty Cycle}
 
-Det har en ret stor betydning hvilke duty cycles man kan sætte som output. Med duty cycles under 15 $\%$ kan man, for eksempel næsten ikke slæbe systemet rundt, og når man over 75 $\%$ kan systemet justere så voldsomt at selve platformen, rammerne er monteret på, begynder at flytte sig rundt på bordet. Af den grund blev der sat et interval mellem 15 $\%$ og 39 $\%$ som controlleren kunne justere indenfor. For at forhindre systemet i at oscillere omkring set point'et med en duty cycle på 15 $\%$ låses motoren, når fejlen er 0.
+Det har en ret stor betydning hvilke duty cycles der kan sætte som output. Med duty cycles under 15 $\%$ kan motoren, næsten ikke slæbe systemet rundt, og hvis duty cycle er over 75 $\%$ kan systemet justere så voldsomt, at selve platformen som rammerne er monteret på, begynder at flytte sig rundt på bordet grundet en hård opbremsning. Af den grund blev der tilføjet et interval mellem 15 $\%$ og 39 $\%$ som controlleren kunne justere indenfor. For at forhindre systemet i at oscillere omkring set-point'et med en duty cycle på 15 $\%$ låses motoren XXXX hvordan?, når fejlen er 0.
 
-\paragraph{Skalering}
+\paragraph{Skalering af beregninger}
 
-Et problem ved at bruge FreeRTOS som platform er, at det ikke er muligt at regne med floating point tal. Microcontrolleren kan fint arbejde med dem, da den har et floating point unit, men port mappet til FreeRTOS er lavet til en processor der ikke har en. Det giver problemer når FreeRTOS laver kontekst skift. Den kan ikke finde ud af at gemme floats i memory, når der skiftes imellem tasks. Så hvis der benyttes floats, så trapper styresystemet til et fault interrupt.
+Et problem ved at bruge FreeRTOS som platform er, at det ikke er muligt at regne med floating point tal. MPU'en kan fint arbejde med dem, da den har et floating point unit, men port mappet til FreeRTOS er lavet til en processor der ikke har en. Det giver problemer når FreeRTOS laver kontekst skift. Den kan ikke finde ud af at gemme floats i memory, når der skiftes imellem tasks. Så hvis der benyttes floats, så ender styresystemet i et fault interrupt.
 
-Af den grund er alle udregninger nødt til at foregå på heltal. For at kunne slippe afsted med det, er man nødt til at skalere operanderne i udregningerne, da der tit er tale om kommatal i en eller anden størrelsesorden. Den elegante og mest effektive løsning fås ved at bruge \textit{fixed point} aritmetik. Det kan dog være lidt svært at tyde tallene, når man læser koden, da de bliver konverteret til en størrelse der ikke, ved første øjekast, har nogen relation til det oprindelige tal. En simplere løsning i samme boldgade, som vi også endte med at bruge, er at skalere tallene med størrelsesordner af faktor 10. Det gør tallene ret store, men i kraft af at microcontrolleren arbejder med 32 bits ad gangen, er der ret højt til loftet. Det er også lettere for normale mennesker at arbejde med tal i base 10.
+Af den grund er alle udregninger nødt til at foregå på heltal. For at kunne slippe afsted med det, er alle operander i udregningerne nødt til at blive skaleret, da der tit er tale om kommatal i en eller anden størrelsesorden. Den bedste løsning opnåes ved at bruge \textit{fixed point} aritmetik. Det kan dog være svært at tyde tallene, når man læser koden, da de bliver konverteret til en størrelse der ikke, ved første øjekast, har nogen relation til det oprindelige tal. En simplere løsning i samme boldgade, som blev implementeret, er at skalere tallene med størrelsesordner af faktor 10. Det gør tallene ret store, men i kraft af at MPU'en arbejder med 32 bits ad gangen, er der ret højt til loftet. Det er også lettere for normale mennesker at arbejde med decimal tal.
 
-Det er vigtigt at sørge for at alle termerne bliver skaleret lige meget, så forholdet imellem termerne ikke ændres. De to ting der er nødvendige at skalere er $dt$ og gainet til controlleren, da de begge er i størrelsesorden $10^{-3}$. Det er så her man skal holde tungen lige i munden, for P-termet bliver kun påvirket af gainet, mens både I- og D-termet bliver påvirket af gain og $dt$, men D-termet bliver påvirket af $dt$-skaleringen modsat i forhold til I-termet. Så det vil sige at man, med en skaleringsfaktor på $10^4$, ender med et P-term skaleret med $10^4$, et I-term skaleret med $10^8$ og et D-term skaleret med $10^0$. Det skal der selvfølgelig justeres for, så outputtet giver mening.
+Det er vigtigt at sørge for at alle termerne bliver skaleret lige meget, så forholdet imellem termerne ikke ændres. De to ting der er nødvendige at skalere er $dt$ og gainet til controlleren, da de begge er i størrelsesorden $10^{-3}$. P-termet bliver kun påvirket af gainet, mens både I- og D-termet bliver påvirket af gain og $dt$, men D-termet bliver påvirket af $dt$-skaleringen modsat i forhold til I-termet. Dette betyder at med en skaleringsfaktor på $10^4$, ender med et P-term skaleret med $10^4$, et I-term skaleret med $10^8$ og et D-term skaleret med $10^0$. Det skal der selvfølgelig justeres for, så outputtet giver mening.
 
 \paragraph{Integral Windup}
 
-Et problem med PID-controlleren er integral windup. Integral windup er, når arealet under fejlen vokser sig så stort at I-termet kommer til at dominere outputtet. Det er et stort problem for især langsomme systemer, som bruger lang tid på at drive fejlen i 0. Så længe der er en fejl til stede, vil integralet vokse sig større. Det kan blive så stort at systemet er nødt til, at tilbringe lang tid med en modsatrettet fejl for at komme tilbage til set point; Det er ikke en opførsel man er interesseret i. I de fleste tilfælde er integralets eneste vigtige bidrag at forhindre steady state fejl ved at "trække" systemet på plads, når man er tæt på målet. Af den grund er der mange implementeringer der simpelthen ignorerer integraltermet, når fejlen er over en vis størrelse. En anden mulighed er at sætte et loft på, hvor stort integralet kan blive. Til dette projekt blev begge metoder benyttet, da det viste sig at være ret problematisk at kontrollere integratoren. XXXX gør vi stadig det?
+Et problem med PID-controlleren er integral windup. Integral windup er, når arealet under fejlen vokser sig så stort at I-termet kommer til at dominere outputtet. Det er et stort problem for især langsomme systemer, som bruger lang tid på at drive fejlen i 0. Så længe der er en fejl til stede, vil integralet vokse sig større. Det kan blive så stort at systemet er nødt til, at tilbringe lang tid med en modsatrettet fejl for at komme tilbage til set point; Det er ikke en opførsel man er interesseret i. I de fleste tilfælde er integralets eneste vigtige bidrag at forhindre steady state fejl ved at "trække" systemet på plads, systemet er tæt på målet. Af den grund er der mange implementeringer der ignorerer integraltermet, når fejlen er over en vis størrelse. En anden mulighed er at sætte et loft på, hvor stort integralet kan blive. Til dette projekt blev begge metoder benyttet, da det viste sig at være problematisk at kontrollere integratoren. XXXX gør vi stadig det?
 
 \paragraph{Deadband}
 
-For at kompenserer for at systemet har diskrete koordinater, hvilket resulterer i at systemet ofte glider frem og tilbage forbi den ønskede position, benyttes der et deadband. Denne er implementeret ved at systemet aktiverer en motor bremse hvis der måles at systemet er i den position der ønskes. Dette forhindrer at systemet gentagende glider forbi det område vi ønsker at ramme, da den stopper systemet hvis der er så lidt hastighed, at den kan bevæge sig gennem det tick der forsøges at ramme. Såfremt der er så meget hastighed i systemet, at den blot fortsætter igennem bremsen bliver denne blot slået fra igen når systemer kommer ud på den anden side, hvorved controlleren frit kan justerer for steady state fejl.
+For at kompenserer for at systemet har diskrete koordinater, hvilket resulterer i at systemet ofte fortsætter frem og tilbage over den ønskede position, benyttes der et deadband. Denne er implementeret ved at systemet aktiverer en motor bremse hvis der måles at systemet er i den position der ønskes. Dette forhindrer at systemet gentagende gange fortsætter forbi den ønskede position, da deadbandet låser systemet hvis der er så lidt hastighed, at den kan bevæge sig gennem det tick der forsøges at ramme. Såfremt der er så meget hastighed i systemet, at den blot fortsætter igennem bremsen bliver denne blot slået fra igen når systemer kommer ud på den anden side, hvorved controlleren frit kan korrigere for steady state fejl.
 
 \subsubsection{PID Task}
 
-PID task'en har to tilstande: idle og running. I idle-tilstanden ventes der på et \texttt{PID\_START\_EVENT}, der skifter tilstanden til running. I running-tilstanden køres funktionen \texttt{PID\_update()} med faste intervaller. Denne funktion sørger for at hente set point og den fysiske position af rammerne for både pan- og tilt-systemet. Det kræver kommunikation med SPI-task'en der fungerer som bindeledet til selve systemet. Kommunikationen er styret fuldstændig af PID-task'en, der bare benytter de services som SPI-task'en tilbyder. Når \texttt{PID\_update()} bliver kaldt, beregnes outputtet for pan-systemet og derefter for tilt-systemet. Når det er sket sendes et \texttt{SET\_PWM\_EVENT} til SPI-task'en som sender informationen videre til FPGA'en. Efter eventet er sendt sover PID-task'en i 5 ms, hvorefter den sender et \texttt{GET\_POS\_EVENT} til SPI-task'en, som henter den nuværende position af både pan- og tilt-systemet fra FPGA'en og gemmer den i shared state memory. Når den er færdig med det sendes et \texttt{PID\_UPDATE\_EVENT} tilbage til PID-task'en som starter cycklusen forfra. Hele processen kan ses på figur \ref{fig:PID_update}.
+PID task'en har to tilstande: idle og running. I idle-tilstanden ventes der på et \texttt{PID\_START\_EVENT}, der skifter tilstanden til running. I running-tilstanden køres funktionen \texttt{PID\_update()} med faste intervaller. Denne funktion sørger for at hente set point og den fysiske position af rammerne for både pan- og tilt-systemet. Dette kræver kommunikation med SPI-task'en. Kommunikationen er styret fuldstændig af PID-task'en, der bare benytter de services som SPI-task'en tilbyder. Når \texttt{PID\_update()} bliver kaldt, beregnes outputtet for pan-systemet og derefter for tilt-systemet.\\
+Når outputtet for hhv pan- og tilt-systemet er beregnet, sendes et \texttt{SET\_PWM\_EVENT} til SPI-task'en som sender informationen videre til FPGA'en. Efter eventet er sendt venter PID-task'en i 5 ms, hvorefter den sender et \texttt{GET\_POS\_EVENT} til SPI-task'en, som henter den nuværende position af både pan- og tilt-systemet fra FPGA'en og gemmer den i shared state memory. Når den er færdig med det, sendes et \texttt{PID\_UPDATE\_EVENT} tilbage til PID-task'en som starter cyklusen forfra. Hele processen kan ses på figur \ref{fig:PID_update}.
 
 \begin{figure}[ht]
 	\begin{center}
@@ -314,7 +268,7 @@ En alternativ måde at gribe implementeringen an på, er at lave controlleren so
 
 \subsubsection{Delkonklusion}
 
-PID-controllleren blev implementeret med en sample frekvens på 200 Hz. Dette afspejler ikke helt præcist den modellerede controller, men det er tæt nok på til at kunne opfylde kravene til projektet. Der kunne også have været brugt \textit{fixed point} aritmetik til udregningerne på microcontrolleren, men det blev vurderet at det skabte flere problemer end det løste under udviklingen. Det er noget som kunne tages op igen på et senere tidspunkt. For at slippe af med integral windup blev der sat et loft på hvor stort integralet kunne blive, og det blev slet ikke brugt, når fejlen var over en bestemt størrelse. For at forhindre oscillationer omkring set point låses motoren når fejlen er 0. En filterimplementering blev ikke udforsket, men kunne helt klart være en mulig forbedring af systemet i fremtiden. XXXX Gør den stadig det?
+PID-controllleren blev implementeret med en sample frekvens på 200 Hz XXXX hvorfor 200 hz?. Dette afspejler ikke helt præcist den modellerede controller, men det er tæt nok på til at kunne opfylde kravene til projektet. Der kunne også have været brugt \textit{fixed point} aritmetik til udregningerne på microcontrolleren, men det blev vurderet at det skabte flere problemer end det løste under udviklingen. Det er noget som kunne tages op igen på et senere tidspunkt. For at slippe af med integral windup blev der sat et loft på hvor stort integralet kunne blive, og det blev slet ikke brugt, når fejlen var over en bestemt størrelse. For at forhindre oscillationer omkring set point låses motoren når fejlen er 0. En filterimplementering blev ikke udforsket, men kunne helt klart være en mulig forbedring af systemet i fremtiden. XXXX Gør den stadig det?
 
 \subsection{Løse funktionaliteter}
 
@@ -322,7 +276,7 @@ PID-controllleren blev implementeret med en sample frekvens på 200 Hz. Dette af
 
 \label{subsec:koordinat}
 
-Pan og tilt rammen har en præcision på en tredjedel grad, og da det samtidigt er et primært krav at denne skal kunne fungerer med input i form af sfæriske koordinater, er det nødvendigt at have en koordinat oversættelse fra de inputtede koordinater som er i horizontale koordinater, se figur \ref{fig:Horizontal}. Denne oversættelse skal nødvendigvis tage højde for de fysiske begrænsninger systemet har. Oversættelsen skal derfor lave en oversættelse i pan delen der afspejler at denne kun kan bevæge sig lidt over 180 grader uden at der opstår problemer med de ledninger der styrer tilt delen. Dette er dog slet ikke nok til at lave et effektivt teleskop system.
+Pan og tilt rammen har en præcision på en tredjedel grad, og da det samtidigt er et primært krav at denne skal kunne fungere med input i form af sfæriske koordinater, er det nødvendigt at have en koordinat oversættelse fra de horizontale koordinater, til sfæriske koordinater. se figur \ref{fig:Horizontal}. Denne oversættelse skal tage højde for de fysiske begrænsninger systemet har. Oversættelsen skal derfor lave en oversættelse i pan delen der afspejler at denne kun kan bevæge sig lidt over 180 grader uden at der opstår problemer med de ledninger der styrer tilt delen. Dette er dog slet ikke nok til at lave et effektivt teleskop system XXXX hvorfor ikke?.
 \begin{figure}[!h]
 	\begin{center}
 		\includegraphics[width=0.5\textwidth]{Billeder/Horizontal.png}
@@ -331,7 +285,7 @@ Pan og tilt rammen har en præcision på en tredjedel grad, og da det samtidigt 
 	\label{fig:Horizontal}
 \end{figure}
 
-Mens pan delen kun har 180 graders frihed har tilt delen fuld frihed. Dette betyder at vi kan udnytte denne til at tilgås det område som pan delen ikke kan tilgå. Dette gøres ved blot at spejle tilt delen omkring origo, hvis denne skal pege over i dette område, hvilket kan ses i praksis ved at figur \ref{fig:tilt_spejl} er den spejlede version af figur \ref{fig:tilt_spejl1}. Nulpunktet for pan- og tilt-systemet er lokeret som på figur \ref{fig:Nulpunkt}. 
+Mens pan delen kun har 180 graders frihed har tilt delen fuld frihed. Dette betyder at vi kan udnytte denne til at tilgås det område som pan delen ikke kan tilgå. Dette gøres ved blot at spejle tilt delen omkring origo, dette kan ses på figur \ref{fig:tilt_spejl} samtidig er figur \ref{fig:tilt_spejl} den spejlede version af figur \ref{fig:tilt_spejl1}. Nulpunktet for pan- og tilt-systemet er lokeret som på figur \ref{fig:Nulpunkt}. 
 
 \begin{figure}[!h]
     \centering
@@ -353,8 +307,8 @@ Mens pan delen kun har 180 graders frihed har tilt delen fuld frihed. Dette bety
    \caption{Her demonstreres hvordan en spejling foregår. Til venstre ses systemet i position pan: 0$^{\circ}$ tilt: 45$^{\circ}$, i midten ses origo ved pan: 0$^{\circ}$, tilt: 0$^{\circ}$, og til højre ses hvad der sker når vi forsøger at bevæge systemet over i det område som pan-systemet ikke kan komme over i, ved pan: 180$^{\circ}$, tilt: 45$^{\circ}$.}
 \end{figure}
 
-Denne position er valgt fordi den passer bedst overens med det spheriske koordinat system, som kan ses på figur \ref{fig:Spherical}. Alternativt kunne pan delsens nulpunkt pladseres således at denne havde sit nulpunkt i kanten af dens bevægelsesområde, men dette blev fravalgt da den sensor der benyttes til at indstille systemet ligger på denne position. Grunden til at dette ikke er gjort for tilt-systemet ,er at den valgte retning både gør det nemmere at spejle det omkring origo, samtidig med at det passer bedre med vores sfæriske koordinat system.
-%Løsningen til dette er at tilt delen bliver spejlet omkring origo når systemet forsøger at pege mod et punkt der ligger i området mellem 90 og 270 grader i forhold til det valgte nulpunkt ved hall sensoren. Grunden til at systemet kan bevæge sig 90 grader til hver side, omend dette kan virke irrationelt, er at dette er positionen af den hall sensor der benyttes til at nulstille koordinat systemet på FPGA'en. Nulpunktet i tilt delen af teleskop systemet er positioneret direkte opad, da dette både gjorde det mindre kompliceret at spejle det, og samtidig passede bedre overens med det polære koordinat system. Der kunne argumenteres for at det ville være nemmere også at sætte dennes nulpunkt der hvor hall sensoren nulstiller FPGA'en, men dette blev valgt fordi det er mere modulært at gå efter et system der mere matematisk intuitivt.
+XXXX Hvilken position? Denne position er valgt fordi den passer bedst overens med det spheriske koordinat system, som kan ses på figur \ref{fig:Spherical}. Alternativt kan pan delens nulpunkt placeres således at den har sit nulpunkt i kanten af dens bevægelsesområde, men dette blev fravalgt da den sensor der benyttes til at indstille systemet ligger på denne position. Grunden til at dette ikke er gjort for tilt-systemet ,er at den valgte retning både gør det nemmere at spejle det omkring origo, samtidig med at det passer bedre med det sfæriske koordinat system.
+
 \begin{figure}[!hb]
 	\begin{center}
 		\includegraphics[width=0.5\textwidth]{Billeder/Spherical.png}
@@ -362,7 +316,7 @@ Denne position er valgt fordi den passer bedst overens med det spheriske koordin
 	\caption{Her ses hvordan det valgte sfæriske koordinat system fungerer. Der er flere mulige baser for sfæriske koordinater, men dette er det mest matematisk rigtige, hvilket er grunden til at dette blev valgt.}
 	\label{fig:Spherical}
 \end{figure}
-En stor fordel ved denne koordinat oversættelse er at den eliminerer nødvendigheden for et sikkerhedssystem på microcontrolleren. Dette er naturligt en del af koordinat oversættelsen, da alt mellem 90 og 270 grader på pan systemet, som er det områder hvor der kan ske mekaniske skader, slet ikke er aktuelt, på grund af spejlingen af koordinaterne. Det skal dog noteres at dette ikke eliminerer behovet for et sikkerhedssystem på FPGA'en, som der stadig er brug for i tilfælde af der forekommer problemer med microcontrolleren, så som en løs forbindelse, en fejl der får hele microprocessoren til at fryse, eller overshoot der går ud over den sikkerheds grænse, som er blevet besluttet.
+En stor fordel ved denne koordinat oversættelse er at den eliminerer nødvendigheden for et sikkerhedssystem på MPU'en. Dette er naturligt en del af koordinat oversættelsen, da alt mellem 90 og 270 grader på pan systemet, som er det områder hvor der kan ske mekaniske skader, slet ikke er aktuelt, på grund af spejlingen af koordinaterne. Det skal dog noteres at dette ikke eliminerer behovet for et sikkerhedssystem på FPGA'en, som der stadig er brug for i tilfælde af der forekommer problemer med MPU'en, så som en løs forbindelse, en fejl der får hele MPU'en til at fryse, bælter som kammer over, eller overshoot der går ud over den sikkerheds grænse, som er blevet besluttet.
 
 
 

@@ -1,23 +1,23 @@
 \section{Test}
 
-Det er meget vigtigt at have et robust kontrol system, der er skræddersyet til vores system. Derfor er det stærkt nødvendigt at teste vores system på alle de punkter, der kan have inflydelse på dette. Der er en lang række faktorer, der skal være med i modellen, for at kontrol systemet kan opfører sig som forventet. Den simpleste metode at tage højde for disse, er at måle deres inflydelse, og så eventuelt justere dem hvis dette er muligt.
+Det er vigtigt at have et robust kontrol system, der er skræddersyet til det gældende system. Derfor er det nødvendigt at teste systemet på alle punkter, der kan have indflydelse på om systemet er robust. Der er en lang række faktorer, der skal være med i modellen, for at kontrol systemet opfører sig korrekt. Den simpleste metode at tage højde for disse, er at måle faktorernes indflydelse, og så eventuelt justere dem hvis muligt.
 
 \subsection{Step Respons Tilt}
 
-For at lave en grey box model af motoren, skal step responsen for omdrejningerne i forhold til spændingen over motorterminalerne findes. Det vil, med andre ord, sige at ændringen i motoromdrejningerne over tid skal måles ved en konstant spænding. Da motoren allerede er udstyret med en encoder, er det muligt at måle omdrejningshastigheden fra de to hall sensorer ved hjælp af en logic analyzer. Denne analyzer gør det muligt, at se hvor lang tid der går imellem flankerne på pulserne fra hall sensorerne, og på den måde udregne vinkelhastigheden derfra. 
+For at lave en grey box model af motoren, skal step responset for omdrejningerne i forhold til spændingen over motorterminalerne findes. Det vil, med andre ord, sige at ændringen i motoromdrejningerne over tid skal måles ved en konstant spænding. Da motoren allerede er udstyret med en encoder, er det muligt at måle omdrejningshastigheden fra de to hall sensorer ved hjælp af en logic analyzer. Denne analyzer gør det muligt, at se hvor lang tid der går imellem flankerne på pulserne fra hall sensorerne, og på den måde udregne vinkelhastigheden derfra. 
 Hver hall sensor giver 3 pulser på en omgang; Dette svarer til $2\pi/6$ radianer fra en rising edge til en falling edge og omvendt. Logic analyzeren tilsluttes de to hall sensorer, og måler motorens respons i det øjeblik en konstant spænding på 12V sættes over motorterminalerne. Testen udføres 5 gange for at kunne sammenligne resultaterne. 
 
-Når målingerne fra hall-sensorerne er regnet om til $rad/s$ og slået sammen til ét plot, produceres et plot med meget støj. Ud fra plottet på figur \ref{fig:Ubehandlet} kan man se at støjen er periodisk - det skyldes primært to faktorer: Hvis hall sensorerne ikke sidder præcist 90 grader forskudt, vil afstanden imellem flankerne på signalet heller ikke altid passe med $2\pi/6$ radianer, som det er antaget i udregningen af vinkelhastigheden. Det vil resultere i hastigheder, der enten er for høje eller for lave i forhold til virkeligheden; Denne fejl vil gentage sig periodisk fordi afvigelsen fra $2\pi/6$ radianer altid vil være den samme. Den anden faktor, der har samme effekt på plottet, er polerne i rotoren, so ogsåm altid er forskudt med den samme vinkel.
+Når målingerne fra hall-sensorerne er regnet om til $rad/s$ og slået sammen til ét plot, produceres et plot med meget støj. Ud fra plottet på figur \ref{fig:Ubehandlet} kan man se at støjen er periodisk - det skyldes primært to faktorer: Hvis hall sensorerne ikke sidder præcist 90 grader forskudt, vil afstanden imellem flankerne på signalet heller ikke altid passe med $2\pi/6$ radianer, som det er antaget i udregningen af vinkelhastigheden. Det vil resultere i hastigheder, der enten er for høje eller for lave i forhold til virkeligheden; Denne fejl vil gentage sig periodisk fordi afvigelsen fra $2\pi/6$ radianer altid vil være den samme. Den anden faktor, der har samme effekt på plottet, er polerne i rotoren, som også altid er forskudt med den samme vinkel.
 
 \begin{figure}[!ht]
 	\begin{center}
 		\includegraphics[width=0.8\textwidth]{Billeder/Untreated_Response.png}
 	\end{center}
-\caption{Den målte step respons i rad/s ved 12V konstant spænding. Omdrejningshastigheden er beregnet ud fra tiden imellem flankerne på hall sensor-signalerne. Der er extrapoleret ned til 0 rad/s ud fra hældningen på de første to målinger.}
+\caption{Den målte step respons i rad/s ved 12V konstant spænding. Omdrejningshastigheden er beregnet ud fra tiden imellem flankerne på hall sensor-signalerne. Der er ekstrapoleret ned til 0 rad/s ud fra hældningen på de første to målinger.}
 \label{fig:Ubehandlet}
 \end{figure}
 
-Hvis man nærstuderer figur \ref{fig:Ubehandlet}, kan man se at udsvingene gentager sig selv hver 12. sample. Det passer perfekt med at hver hall sensor har 6 halvperioder, hvor der bliver målt en tid, pr. omgang. Det er med andre ord muligt at justere for fejlen ved at gange en faktor på alle samples, der tager højde for afvigelsen fra de $2\pi/6$ radianer. I matlab kan man relativt simpelt finde de 12 faktorer, ved at undersøge hvor meget 12 fortløbende samples afviger fra gennemsnittet, så længe det bliver gjort i et område hvor responsen har nået steady state. Så er det bare et spørgsmål om at gange faktorerne på alle samples med det rette offset for at justere for fejlen. 
+På figur \ref{fig:Ubehandlet}, kan man se at udsvingene gentager sig selv hver 12. sample. Det passer med at hver hall sensor har 6 halvperioder, hvor der bliver målt en tid, pr. omgang. Det er med andre ord muligt at justere for fejlen ved at gange en faktor på alle samples, der tager højde for afvigelsen fra de $2\pi/6$ radianer. I matlab kan der relativt simpelt findes de 12 faktorer, ved at undersøge hvor meget 12 fortløbende samples afviger fra gennemsnittet, så længe det bliver gjort i et område hvor responsen har nået steady state. Så er det bare et spørgsmål om at gange faktorerne på alle samples med det rette offset for at justere for fejlen. 
 
 \begin{figure}[!ht]
 	\begin{center}
@@ -27,9 +27,9 @@ Hvis man nærstuderer figur \ref{fig:Ubehandlet}, kan man se at udsvingene genta
 \label{fig:Behandlet}
 \end{figure}
 
-På det justerede plot, der kan ses på figur \ref{fig:Behandlet} det noget lettere at aflæse tidskonstanten for systemet. Den eneste store usikkerhed der er tilbage er starttidspunktet for steppet, da det ikke indgår i målingerne fra logic analyzeren, som er en tilnærmet værdi ud fra hældningen af de første par samples ($\Delta\omega/\Delta t$). Plottene på figur \ref{fig:Ubehandlet} og \ref{fig:Behandlet} viser responsen for motoren uden belastning. Den aflæste tidskonstant på figur \ref{fig:Behandlet} er 27.3 ms.
+På det justerede plot, der kan ses på figur \ref{fig:Behandlet} det noget lettere at aflæse tidskonstanten for systemet. Den eneste store usikkerhed der er tilbage er starttidspunktet for steppet, da det ikke indgår i målingerne fra logic analyzeren, som er en tilnærmet værdi ud fra hældningen af de første 2 samples ($\Delta\omega/\Delta t$). Plottene på figur \ref{fig:Ubehandlet} og \ref{fig:Behandlet} viser responsen for motoren uden belastning. Den aflæste tidskonstant på figur \ref{fig:Behandlet} er 27.3 ms.
 
-Samme metode kan bruges til at måle step-responsen for motoren med belastning, så man kan få et billede af hvilken effekt, den ekstra modstand har på systemet. På figur \ref{fig:Combined} kan man se responsen for motoren uden belastning (blå), motoren kun med tilt-rammen (rød), motoren med tilt-rammen og kamerabeslag (gul) og motoren med tilt-rammen, beslag og kamera monteret (lilla). Det er tydeligt at rammernes afbalancering har en stor indflydelse på responsen.
+Samme metode kan bruges til at måle step-responsen for motoren med belastning, så kan der laves billede af hvilken effekt, den ekstra modstand har på systemet. På figur \ref{fig:Combined} ses responsen for motoren uden belastning (blå), motoren kun med tilt-rammen (rød), motoren med tilt-rammen og kamerabeslag (gul) og motoren med tilt-rammen, beslag og kamera monteret (lilla). Det er tydeligt at rammernes afbalancering har en stor indflydelse på responsen XXXX hvor ses det på figuren?.
 
 \begin{figure}[!ht]
 	\begin{center}
@@ -41,7 +41,7 @@ Samme metode kan bruges til at måle step-responsen for motoren med belastning, 
 
 Det kan også ses, at responsen for motoren, når den er forbundet med rammen, følger responsen for motoren uden belastning det første korte stykke tid, hvorefter hastigheden falder markant. En forklaring kunne være slør i forbindelsen mellem motoren og rammen, hvor den fysiske modstand fra rammen først mærkes af motoren, når bælterne er blevet trukket helt i spænd. En anden ting, der også er tydelig, er at selv når der ikke er monteret ekstra udstyr på rammen, så er der stadig en ubalance i rammen, der får hastigheden til at være ujævn over en hel omgang.
 
-Det er stadigvæk muligt at approksimere systemet som et 1.-ordenssystem, men modellen vil udelukkende beskrive, hvor hurtigt systemet reagerer på inputs og ikke så meget om den præcise opførsel. Det vil dog være en rigtig god ide, at få afbalanceret rammerne så godt som muligt og gøre modstanden nogenlunde konstant over en hel omgang, for at modellen kan afspejle virkeligheden så godt som muligt. Med rammen forbundet med motoren er tidskonstanten omkring 125 ms.
+Det er stadigvæk muligt at approksimere systemet som et 1.-ordenssystem, men modellen vil udelukkende beskrive, hvor hurtigt systemet reagerer på inputs og ikke den præcise opførsel. Det vil dog være en god idé, at få afbalanceret rammerne så godt som muligt og gøre modstanden nogenlunde konstant over en hel omgang, for at modellen kan afspejle virkeligheden så godt som muligt. Med rammen forbundet med motoren er tidskonstanten omkring 125 ms.
 
 \subsection{Step Respons Pan}\label{sec:Pan_Response}
 
@@ -61,7 +61,7 @@ Det kan ses på figur \ref{fig:Pan_Response} at responsen er noget langsommere, 
 
 \subsection{Afbalancering}
 
-Der blev erfaret at det var svært at placere det påmonterede kamera så tilt delen af systemet var i balance. Det blev besluttede at prøve at afbalancere systemet ved at tilføje vægt. På figur \ref{fig:Afbalancering} kan man se den tilføjede vægt på systemet
+Der blev erfaret at det var svært at placere det påmonterede kamera så tilt delen af systemet var i balance. Det blev besluttet at prøve at afbalancere systemet ved at tilføje vægt. På figur \ref{fig:Afbalancering} kan man se den tilføjede vægt på systemet.
 
 \begin{figure}[!hb]
 	\begin{center}
@@ -71,14 +71,12 @@ Der blev erfaret at det var svært at placere det påmonterede kamera så tilt d
 	\end{center}
 \end{figure}
 
-Systemerne der er blevet udleveret, er rimelig godt afbalanceret, men efter at der er blevet påmontere 1,400kg kamera er systemet ude af balance, dette kan ses på figur \ref{fig:Balanced_Response} hvor den orange graf er steprespons for systemet påmonteret kamera.\\
+Efter at der er blevet påmonteret 1400g kamera er systemet ude af balance, dette kan ses på figur \ref{fig:Balanced_Response} hvor den orange graf er steprespons for systemet påmonteret kamera.\\
 
-Kameraet vejer med ophænget 1,400kg, men er placeret en lille smule fra omdrejningspunktet, hvilket kunne ses ved at det altid faldt tilbage til et bestemt punkt når systemet blev frigjort fra motoren.
-Ud fra den observation blev der placeredet vægt i den modsatte ende af tilt delen, til systemet ikke faldt tilbage til samme punkt hver gang. Efterfølgende er det blevet vejet til at være 0.17kg.
+Kameraet vejer med ophænget 1400g, men er placeret en lille smule fra omdrejningspunktet, hvilket kunne ses ved at det altid faldt tilbage til et bestemt punkt når systemet blev frigjort fra motoren.
+Ud fra den observation blev der placeredet vægt i den modsatte ende af tilt delen, til systemet ikke faldt tilbage til samme punkt hver gang. Efterfølgende er det blevet vejet til at være 1700g.
 
-På figur \ref{fig:Afbalancering} kan man med den blå graf se stepresponset for tilt delen af systemet efter afbalanceringen. Hvis man sammenligner det med den røde graf på figur\ref{fig:Behandlet} så kan man se at systemet er tæt på at have samme steprespons som efter kameraet blev monteret.\\
-
-%På figur \ref{fig:Balanced_Response} ses sammenligningen mellem tilt-systemet før og efter afbalancering. Det endelige resultat er stadigvæk ikke ideelt, men det er en del tættere på modellen.
+På figur \ref{fig:Afbalancering} kan ses det med den blå graf at stepresponset for tilt delen af systemet efter afbalanceringen. sammenlign med den røde graf på figur\ref{fig:Behandlet} viser at systemet er tæt på at have samme steprespons som efter kameraet blev monteret.\\
 
 \begin{figure}[ht]
 	\begin{center}
@@ -90,11 +88,11 @@ På figur \ref{fig:Afbalancering} kan man med den blå graf se stepresponset for
 
 \subsection{Omdrejningshastighed vs Duty Cycle}
 
-En af antagelserne der bliver gjort i modellen af systemet, er at der findes en nogenlunde lineær sammenhæng imellem duty cycle og omdrejningshastigheden. For at påvise denne sammenhæng kan man plotte hastigheden, når motoren har nået steady state, ved forskellige duty cycles. 
+En af antagelserne der bliver gjort i modellen af systemet, er at der findes en nogenlunde lineær sammenhæng imellem duty cycle og omdrejningshastigheden. For at påvise denne sammenhæng plottes hastigheden, når motoren har nået steady state, ved forskellige duty cycles. 
 
-Dette vises på figur \ref{fig:RPM_DC}, hvor man kan observere at stepresponet settler ved ca 50 rad/s højere for hver gange vi øger duty cyclen med 20 (på en skala fra 0-255).
+Dette vises på figur \ref{fig:RPM_DC}, som viser at stepresponet settler ved ca 50 rad/s højere for hver gang duty cyclen øges med 20 (på en skala fra 0-255).
 
-Her kan man også se at hvis man plotter step responsen ved forskellige duty cycles (figur \ref{fig:RPM_DC}), kan det påvises at tidskonstanten forbliver nogenlunde konstant. 
+Her kan ses det også at hvis der plottes step respons ved forskellige duty cycles (figur \ref{fig:RPM_DC}), kan det påvises at tidskonstanten forbliver nogenlunde konstant. 
 
 \begin{figure}[!ht]
 	\begin{center}

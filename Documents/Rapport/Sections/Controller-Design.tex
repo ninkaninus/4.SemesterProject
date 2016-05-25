@@ -208,15 +208,15 @@ Y(s)=\frac{K_{P}s+K_{I}+K_{D}s^2}{s}\cdot\frac{12K}{s(s\tau+1)}
 
 XXXX tættere eller længere væk fra model?
 
-Med PI-controlleren er margenen for P- og I-konstanterne og gainet ret snæver, hvis projektets designmål skal overholdes. PID-controlleren giver lidt mere råderum, men man tager også et skridt længere væk fra den ideelle 2.-ordensmodel. Differentieringsledet D tilføjer nemlig et ekstra nul til ligningen. Med to nuller er der ikke længere to branches, der går mod (XXXX reference til figur PI) uendelig langs en lodret asymptote når gainet øges. Der er nu kun en branch der går mod minus uendelig, og det foregår langs den reelle akse. Dette har tre klare fordele:
+Med PI-controlleren er margenen for P- og I-konstanterne og gainet ret lille, hvis projektets designmål skal overholdes. PID-controlleren giver lidt mere råderum, men man tager også et skridt længere væk fra den ideelle 2.-ordensmodel. Differentieringsledet D tilføjer nemlig et ekstra nul til ligningen. Med to nuller er der ikke længere to branches, der går mod (XXXX reference til figur PI) uendelig langs en lodret asymptote når gainet øges. Der er nu kun en branch der går mod minus uendelig, og det foregår langs den reelle akse. Dette har tre klare fordele:
 
 \begin{itemize}
-	\item 	En af polerne fra det modellerede 3-ordens-system glider væk fra de to andre poler ved højere gain. På den måde kan man lettere negligere effekten fra den i modellen. Dette bringer os tættere på 2.ordensmodellen.
-	\item  	Man kan altid sørge for at de to dominante poler befinder sig på den 				   	reelle akse (mindre overshoot), hvis de to tilføjede nuller også er reelle og gainet er tilpas stort. 
-	\item  	Man kan få de to dominante poler længere væk fra den imaginære akse 					(hurtigere settling time).
+	\item 	En af polerne fra det modellerede 3-ordens-system glider væk fra de to andre poler ved højere gain. På den måde er det lettere negligere effekten fra den i modellen. Dette bringer os tættere på 2.ordensmodellen.
+	\item  	Sikkerhed for at de to dominante poler befinder sig på den 				   	reelle akse som giver mindre overshoot, hvis de to tilføjede nuller også er reelle og gainet er tilpas stort XXXX Hvor stort er tilpas stort?. 
+	\item  	Sikkerhed for at de to dominante poler er længere væk fra den imaginære akse som giver en hurtigere settling time.
 \end{itemize}
 
-I de root locus-plots der har være vist indtil videre, har der været brugt en tidskonstant på 0.12 sekunder - denne værdi stammer fra tidlige forsøg på tilt-systemet. Med denne tidskonstant får man en pol på $-1/0.12=-8.33$. Hvis begge nuller placeres til højre for $-8.33$ vil den ene branch følge den reelle akse til venstre for $-8.33$ mod uendelig. På den måde kan man, med et forholdsvist lille gain, skubbe closed-loop-polen fra tidskonstanten så langt ud ad den reelle akse, at den ikke har nogen stor indflydelse på systemet. Det kan også lade sig gøre, hvis et af nullerne eller begge to er til venstre for $-8.33$, det kræver bare et noget større gain.
+I de root locus-plots der har været vist indtil videre XXXX referer til dem, har der været brugt en tidskonstant på 0.12 sekunder - denne værdi stammer fra tidlige forsøg på tilt-systemet. Med denne tidskonstant er der en pol i $-1/0.12=-8.33$. Hvis begge nuller placeres til højre for $-8.33$ vil den ene branch følge den reelle akse til venstre for $-8.33$ mod uendelig. På den måde kan er det muligt, med et forholdsvist "XXXX hvad er forholdsvist lille gain?" lille gain, skubbe closed-loop-polen fra tidskonstanten så langt ud ad den reelle akse, at den ikke har nogen stor indflydelse på systemet. Det kan også lade sig gøre, hvis et af nullerne eller begge to er til venstre for $-8.33$, det kræver bare et noget større gain "XXXX Hvor meget?".
 
 \begin{figure}[!ht]
 	\begin{center}
@@ -228,9 +228,7 @@ I de root locus-plots der har være vist indtil videre, har der været brugt en 
 
 \subsection{Delkonklusion}
 
-Det endelige valg af controller falder på PID, da det er den mest fleksible controller i den forstand, at man kan manipulere step responsen meget mere i den retning der ønskes.
-
-%PI-controlleren kan også opfylde projektets designmål, men det er et meget snævert område polerne skal placeres i for det kan lade sig gøre. Med tanke på at controllerens implementering ikke er ideel og at de faktiske system ikke er et 2.-ordenssystem, så giver det ikke mening at vælge PI-controlleren, når man kan designe en PID-controller, der kan placere closed-loop polerne mere solidt i det sikre område. I- og ID-controlleren er ikke en mulighed, da den gør systemet ustabilt.
+Det endelige valg af controller falder på PID, da det er den mest fleksible controller i den forstand, at step responsen er mulig at manipulere meget mere i den retning der ønskes.
 
 \subsection{Endeligt Controller design}
 
@@ -244,15 +242,15 @@ Controlleren til tilt-systemet designes efter at kameraet skal være monteret. M
 \frac{\omega(s)}{V_{a}(s)}=\frac{605/12}{0.13s+1}
 \end{equation}
 
-Ud fra ovenstånde ligning kan open loop overføringsfunktionen nu findes. Denne overføringsfunktion ligning \eqref{eq:tilt_ol_tf} kan bruges til at lave de root locus plots som PID-konstanterne designes efter.
+Ud fra ligning \ref{eq:tilt_tf} kan open loop overføringsfunktionen nu findes.\\ Denne overføringsfunktion ligning \eqref{eq:tilt_ol_tf} kan bruges til at lave de root locus plots som PID-konstanterne designes efter.
 
 \begin{equation}\label{eq:tilt_ol_tf}
 \frac{Y(s)}{R(s)}=\frac{K_{P}s+K_{I}+K_{D}s^2}{s}\cdot\frac{605}{s(0.13s+1)}
 \end{equation}
 
-Som beskrevet tidligere, kan man se på PID-controlleren som to nuller og en pol i origo. Ved at placere de to nuller i et værktøj som rltool fra matlab kan man aflæse konstanterne direkte. Hvis begge nuller placeres på højre side af den ene open loop pol ($-1/0.13=-7.69$), vil closed loop polen der originere fra den, bevæge sig til venstre mod uendelig, som man også kan se på figur \ref{fig:PID_rlocus}. Derfor er strategien at finde to placeringer til nullerne til højre for $-7.69$, der trækker closed loop polerne, der kommer fra origo, ned mod den reelle akse når gainet øges. På den måde kan alle closed loop poler let placeres indenfor det definerede område fra analysen af 2.ordenssystemer, og jo større gainet bliver, jo længere vil den tredje pol bevæge sig væk fra de to andre.
+Som beskrevet tidligere, kan PID-controlleren som to nuller og en pol i origo.\\ Ved at placere nullerne i et værktøj som rltool fra matlab kan konstanterne aflæses direkte. Hvis begge nuller placeres på højre side af den ene open loop pol ($-1/0.13=-7.69$), vil closed loop polen der originere fra den, bevæge sig til venstre mod uendelig, som vist på figur \ref{fig:PID_rlocus}. Derfor er strategien at finde to placeringer til nullerne til højre for $-7.69$, der trækker closed loop polerne, der kommer fra origo, ned mod den reelle akse når gainet øges. På den måde kan alle closed loop poler let placeres indenfor det definerede område fra analysen af 2.ordenssystemer, og jo større gainet bliver, jo længere vil den tredje pol bevæge sig væk fra de to andre.
 
-Med denne metode har man en masse frihed til at vælge PID-konstanterne og samtidig få et respons, der opfylder projektets mål. Det vil sige at der er mange mulige løsninger, så ved at eksperimentere en smule med placeringerne, mens man holder øje med step responsen (igen er rltool et meget nyttigt redskab), kan man finde de konstanter, der bedst opfylder kravene. En af de løsninger der gav de bedste resultater var ved at placere to nuller i $s=-4$. Det giver formlen $(s+4)^2=s^2+8s+16$ som kan aflæses til konstanterne $K_{P}=8$, $K_{I}=16$ og $K_{D}=1$. 
+Med denne metode opnås en masse frihed til at vælge PID-konstanterne og samtidig få et step respons, der opfylder projektets mål. Det vil sige at der er mange mulige løsninger, så ved at eksperimentere en smule med placeringerne, mens man holder øje med step responsen (igen er rltool et meget nyttigt redskab), findes de konstanter, der bedst opfylder kravene. En af de løsninger der gav de bedste resultater var ved at placere to nuller i $s=-4$. Det giver formlen $(s+4)^2=s^2+8s+16$ som kan aflæses til konstanterne $K_{P}=8$, $K_{I}=16$ og $K_{D}=1$. 
 
 \begin{figure}[ht]
 	\begin{center}
@@ -264,7 +262,7 @@ Med denne metode har man en masse frihed til at vælge PID-konstanterne og samti
 
 \subsubsection{Pan-system}
 
-Controlleren til pan-systemet designes på samme måde som for tilt-systemet. Tidskonstanten er aflæst til 0.44 og DC-gain'et er $530/12$ (se figur \ref{fig:Pan_Response}). 
+Controlleren til pan systemet designes på samme måde som for tilt-systemet. Tidskonstanten er aflæst til 0.44 og DC-gain'et er $530/12$ (se figur \ref{fig:Pan_Response}). 
 
 \begin{equation}\label{eq:pan_tf}
 \frac{\omega(s)}{V_{a}(s)}=\frac{530/12}{0.44s+1}
@@ -274,13 +272,13 @@ Controlleren til pan-systemet designes på samme måde som for tilt-systemet. Ti
 \frac{Y(s)}{R(s)}=\frac{K_{P}s+K_{I}+K_{D}s^2}{s}\cdot\frac{530}{s(0.44s+1)}
 \end{equation}
 
-Pan-systemet tilføjer en pol i $-1/0.45=-2.22$. Dette gør det lidt sværere at holde closed-loop polerne på højre side af denne open-loop pol. Men hvis man placerer begge nullerne fra PID-controlleren i $s=-1$ kan man få et respons der ser fornuftigt ud. Dette giver formlen $(s+1)^2=s^2+2s+1$ som kan aflæses til konstanterne $K_{P}=2$, $K_{I}=1$ og $K_{D}=1$. 
+Pan-systemet tilføjer en pol i $-1/0.45=-2.22$. Dette gør det lidt sværere at holde closed-loop polerne på højre side af denne open-loop pol. Men hvis man placerer begge nullerne fra PID-controlleren i $s=-1$ kan et respons der ser fornuftigt ud opnås. Dette giver formlen $(s+1)^2=s^2+2s+1$ som kan aflæses til konstanterne $K_{P}=2$, $K_{I}=1$ og $K_{D}=1$. 
 
 \begin{figure}[ht]
 	\begin{center}
 		\includegraphics[scale=0.45]{Billeder/Pan_Rlocus.PNG}
 	\end{center}
-\caption{Her ses root locus plottet for vores pan-system med en PID-controller med $K_{P}=2$, $K_{I}=1$, $K_{D}=1$ og et gain på 0.01}
+\caption{Her ses root locus plottet for pan-system med en PID-controller med $K_{P}=2$, $K_{I}=1$, $K_{D}=1$ og et gain på 0.01}
 \label{fig:Pan_rlocus}
 \end{figure}
 
@@ -349,7 +347,7 @@ Afvigelserne imellem de simulerede og de målter responser kan skyldes at system
     \caption{Her ses det ideelle step respons for systemerne}
 \end{figure}
 
-Simuleringen er lavet i simulink med og kan ses på figur \ref{fig:Simulink}. For at simulere at duty cyclen er låst fra 16 til 39 $\%$ skiftes der imellem to PID-controllere med de samme konstanter, der henholdsvis så er låst i intervallerne $0.16$ til $0.39$ og $-0.16$ til $-0.39$. Dette skift laves så, når fejlen $E(s)$ skifter fortegn.
+Simuleringen er lavet i simulink og kan ses på figur \ref{fig:Simulink}. For at simulere at duty cyclen er låst fra 16 til 39 $\%$ skiftes der imellem to PID-controllere med de samme konstanter, der henholdsvis så er låst i intervallerne $0.16$ til $0.39$ og $-0.16$ til $-0.39$. Dette skift laves så, når fejlen $E(s)$ skifter fortegn.
 
 \begin{figure}
 \centering
