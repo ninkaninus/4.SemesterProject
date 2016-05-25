@@ -160,7 +160,7 @@ I denne tilstand ventes der på at knappen bliver sluppet igen for at undgå at 
 I denne tilstand er det muligt at nulstille motorens position ved hjælp af knappen. Når knappen trykkes ned så kører motoren i en retning og når knappen slippes og trykkes igen så kører motoren den anden retning. Dette fortsætter indtil at modulet registrer at der er gået forbi index hall sensoren. Når dette sker så signaleres andre moduler om at motoren er færdig med at nulstille og tilstanden skifter til \textit{PostZero}.\\
 Denne tilstand er til for at det er muligt at vælge, hvornår at FPGA'en overlader kontrollen af motorerne til det der kommer ind fra databussen. Der ventes på at knappen trykkes ned og når dette sker så skiftes der til tilstanden \textit{RunMode}. \\
 I denne tilstand så styres motoren af det der kommer ind til modulet via den interne databus. Der tjekkes hele tiden på om motorens position går ud over de grænser som der er defineret den skal holde sig inden for. Hvis der bliver gået ud over disse grænser ændres så skiftes tilstanden til \textit{EmergencyMode}.\\
-I denne tilstand slår modulet motorbremsen "XXXX Hvilken motorbrems" til og låser motorerne fast. Efterfølgende input fra databussen ignoreres og der ventes på at knappen bliver trykket ned. Når dette sker så skiftes tilstanden tilbage til \textit{Init} og motoren skal nulstilles på ny.
+I denne tilstand slår modulet motorbremsen(se datasheet\cite{L6203}) til og låser motorerne fast. Efterfølgende input fra databussen ignoreres og der ventes på at knappen bliver trykket ned. Når dette sker så skiftes tilstanden tilbage til \textit{Init} og motoren skal nulstilles på ny.
 
 \begin{figure}[ht]
 	\begin{center}
