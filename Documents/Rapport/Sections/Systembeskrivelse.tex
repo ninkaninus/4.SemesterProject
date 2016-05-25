@@ -1,6 +1,6 @@
 \section{Systembeskrivelse}
 Denne sektion vil beskrive hvordan systemet er sat op, samt hvilke chips og boards der er udleveret.
-Til projektet er der anvendt det tildelte pan/tilt-system som har påmonteret et protection board, 2 hall sensorer, 2 L6203 h-broer, og 2 motorer, der sidder på hhv. pan og tilt. Disse motorer har en aktiv bremse, der kan bruges ved at slukke begge deres retninger på én gang, mens enable benene er tændt.\\
+Til projektet er der anvendt det tildelte pan/tilt-system som har påmonteret et protection board, 2 hall sensorer, 2 h-broer og 2 motorer, der sidder på hhv. pan og tilt.\\
 Til at styre denne opstilling er der udleveret èt stk Field Programmable Gate Array (FPGA) og èn Micro processor unit (MPU).
 \\
 
@@ -51,7 +51,8 @@ Mere information kan ses i datablad XXXX på vedlagte USB nøgle.
 Kommunikationen mellem MPU og FPGA skal foregå via Serial Peripheral Interface (SPI), som er en dataforbindelse som benytter fuld dupleks, altså hvor data kan sendes og modtages samtidig.
 SPI foregår ved at der er en SPI master, og en eller flere slaver, kommunikationen sker derefter ved at masteren bestemmer hvilken slave som får lov til at sende sin data, for at der ikke opstår data kollision.
 
-XXXX Jonas skriver om CLK, Mosi MISO. i know nothing
+SPI gør brug af fire signaler til at kommunikerer med: MISO, MOSI, Clk og Slave Select.\\ 
+MISO er data ud fra masteren. MOSI er data ind til masteren. Clk er den clock som bestemmer, hvornår data på MISO og MOSI er gyldig og kan clockes ind/ud. Og slave select er et signal der eksisterer per slave og som bruges til at vælge den slave der ønskes kommunikation med.
 
 
 \subsection{Opsætning}
