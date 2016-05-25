@@ -100,7 +100,7 @@ En clock-periode med FPGA'ens krystal på 50 MHz er $20ns$ lang, så hvis man t�
 
 \subsection{Positions modul}
 
-For at kunne ramme et punkt på himlen, bliver microcontrolleren nødt til at vide hvilken position pan-tilt systemet står i.
+For at kunne ramme et punkt på himlen, bliver microcontrolleren nødt til at vide hvilken position pan-tilt-systemet står i.
 For at kende denne position, er der to hall sensorer på EMG30 motoren.
 Disse sensorer sidder 90 grader forskudt, når motoren har kørt en omgang (Den indre rotor) har hall sensorerne sendt høj 3 gange hver.
 Hver gang en hall sensor går fra høj til lav, eller lav til høj, vil et register i FPGA'en inkrementere et register med 1.\\
@@ -149,7 +149,7 @@ I denne tilstand slår modulet motorbremsen til og låser motorerne fast. Efterf
 	\begin{center}
 		\includegraphics[scale=0.5]{Billeder/FPGA_Motorcontroller_state.png}
 	\end{center}
-\caption{State machine diagram over de states som MotorController modulet går igennem}
+\caption{State machine diagram over de states som MotorController modulet går igennem XXXX Skriv kort hvad der sker i de forskellige states.}
 \label{fig:FPGA_MotorController_State}
 \end{figure}
 

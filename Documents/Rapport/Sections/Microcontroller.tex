@@ -37,7 +37,7 @@ Den centrale task er Menu'en. Denne styrer en menu, der har til opgave at give m
 \\
 Da der er flere forskellige tasks, der skal have adgang til de samme værdier der bliver sat af UART bliver værdierne, der tages gennem denne, sat i shared state memory, som det ses på figur \ref{fig:task2}.
 \\
-Display tasken holder selvsigende styr på hvad der skal vises, som den får besked om fra Menu'en. Denne får input fra keypad'en og drehimpulsgeberen, der dikterer hvad den skal give videre til LCD.
+Display task'en holder selvsigende styr på hvad der skal vises, som den får besked om fra Menu'en. Denne får input fra keypad'en og drehimpulsgeberen, der dikterer hvad den skal give videre til LCD.
 \\
 Geber og Keypad tasksne holder styr på hver deres input, og sender resultaterne i en fælles indgangs kø til Menu'en.
 \\
@@ -49,7 +49,7 @@ Control systemet tager med jævne mellemrum variabler fra Shared State Memory, o
 			\begin{center}
 	\includegraphics[width=0.99\textwidth]{Billeder/Taskdiagram1.png}
 			\end{center}
-	\caption{Task diagrammet over de dele af systemet der centreres over menu'en. Der gives input til UI task'en som så videre giver information hvor der er brug for det, i dette tilfælde Display tasken, Shared State Memory og UART transmit.}
+	\caption{Task diagrammet over de dele af systemet der centreres over menu'en. Der gives input til UI task'en som så videre giver information hvor der er brug for det, i dette tilfælde Display task'en, Shared State Memory og UART transmit.}
 	\label{fig:task1}
 \end{figure}
 
@@ -73,7 +73,7 @@ Control systemet tager med jævne mellemrum variabler fra Shared State Memory, o
 %\centering
 %\begin{subfigure}[t]{0.3\textwidth}
 %	\includegraphics[width=0.99\textwidth]{Billeder/Taskdiagram1.png}
-%	\caption{Task diagrammet over de dele af systemet der centreres over menu'en. Der gives input til UI task'en som så videre %giver information hvor der er brug for det, i dette tilfælde Display tasken, Shared State Memory og UART transmit.}
+%	\caption{Task diagrammet over de dele af systemet der centreres over menu'en. Der gives input til UI task'en som så videre %giver information hvor der er brug for det, i dette tilfælde Display task'en, Shared State Memory og UART transmit.}
 %	\label{fig:task1}
 %    \end{subfigure}
 %    \begin{subfigure}[t]{0.3\textwidth}
@@ -93,7 +93,7 @@ Control systemet tager med jævne mellemrum variabler fra Shared State Memory, o
 
 \subsubsection{Menu}
 
-Den centrale task i systemet er det menu styrede UI-system. Denne har primært til opgave at give brugeren mulighed for manuelt at justere, starte eller stoppe systemet, samt at vise vigtige oplysninger som eksempelvis nuværende position. Menuen styres med drehimpulsgeber og keypad'et, som begge lægger events ind i dens input kø. Den giver events videre til GUI tasken, som styrer de forskellige menuer og display funktioner.
+Den centrale task i systemet er det menu styrede UI-system. Denne har primært til opgave at give brugeren mulighed for manuelt at justere, starte eller stoppe systemet, samt at vise vigtige oplysninger som eksempelvis nuværende position. Menuen styres med drehimpulsgeber og keypad'et, som begge lægger events ind i dens input kø. Den giver events videre til GUI task'en, som styrer de forskellige menuer og display funktioner.
 
 
 
@@ -129,7 +129,7 @@ Den fysiske opsætning af LCD'et kan ses på figur \ref{fig:LCD}, og viser bland
 			\label{fig:LCD}
 \end{figure}
 
-Selve LCD-task'en arbejder sammen med resten af systemet ved at afkode et særligt image-format (se figur \ref{fig:LCD_array}), så det vises korrekt på skærmen. Dette image bliver sendt fra display-task'en og indeholder oplysninger om, hvilke karakterer, hvis nogen, der skal skrives til alle 32 synlige adresser på displayet. Udover de 32 karakterer, er der også fire kontrolfelter, som fortæller task'en, hvor cursoren skal placeres efter karaktererne er skrevet ud; om cursoren skal blinke eller bare highlighte nuværende adresse med en streg under karakteren. Det sidste felt bliver sat til at vise adressen, hvor næste karakter skal skrives, når alle 32 karakterer er blevet skrevet første gang. På den måde kan LCD-tasken afgøre om den skal skrive et helt image fra starten, eller bare tilføje en ny karakter til et image der allerede er vist på displayet. Med dette setup kan LCD-tasken finde ud af hvilken ny karakter, der skal tilføjes ud fra den første kontrol-bit, samt hvor cursoren skal placeres efter den er skrevet - hvis den næste adresse, der skal skrives på, er mere end en plads væk, skal cursoren flyttes aktivt. Manipuleringen af images og kontrol-bits foregår i display-task'en - LCD-task'en afkoder bare images, når de bliver tilføjet til dens input-kø.
+Selve LCD-task'en arbejder sammen med resten af systemet ved at afkode et særligt image-format (se figur \ref{fig:LCD_array}), så det vises korrekt på skærmen. Dette image bliver sendt fra display-task'en og indeholder oplysninger om, hvilke karakterer, hvis nogen, der skal skrives til alle 32 synlige adresser på displayet. Udover de 32 karakterer, er der også fire kontrolfelter, som fortæller task'en, hvor cursoren skal placeres efter karaktererne er skrevet ud; om cursoren skal blinke eller bare highlighte nuværende adresse med en streg under karakteren. Det sidste felt bliver sat til at vise adressen, hvor næste karakter skal skrives, når alle 32 karakterer er blevet skrevet første gang. På den måde kan LCD-task'en afgøre om den skal skrive et helt image fra starten, eller bare tilføje en ny karakter til et image der allerede er vist på displayet. Med dette setup kan LCD-task'en finde ud af hvilken ny karakter, der skal tilføjes ud fra den første kontrol-bit, samt hvor cursoren skal placeres efter den er skrevet - hvis den næste adresse, der skal skrives på, er mere end en plads væk, skal cursoren flyttes aktivt. Manipuleringen af images og kontrol-bits foregår i display-task'en - LCD-task'en afkoder bare images, når de bliver tilføjet til dens input-kø.
 
 
 \begin{figure}[ht]
@@ -299,7 +299,7 @@ For at kompenserer for at systemet har diskrete koordinater, hvilket resulterer 
 
 \subsubsection{PID Task}
 
-PID task'en har to tilstande: idle og running. I idle-tilstanden ventes der på et \texttt{PID\_START\_EVENT}, der skifter tilstanden til running. I running-tilstanden køres funktionen \texttt{PID\_update()} med faste intervaller. Denne funktion sørger for at hente set point og den fysiske position af rammerne for både pan- og tilt-systemet. Det kræver kommunikation med SPI-task'en der fungerer som bindeledet til selve systemet. Kommunikationen er styret fuldstændig af PID-task'en, der bare benytter de services som SPI-task'en tilbyder. Når \texttt{PID\_update()} bliver kaldt, beregnes outputtet for pan-systemet og derefter for tilt-systemet. Når det er sket sendes et \texttt{SET\_PWM\_EVENT} til SPI-task'en som sender informationen videre til FPGA'en. Efter eventet er sendt sover PID-tasken i 5 ms, hvorefter den sender et \texttt{GET\_POS\_EVENT} til SPI-task'en, som henter den nuværende position af både pan- og tilt-systemet fra FPGA'en og gemmer den i shared state memory. Når den er færdig med det sendes et \texttt{PID\_UPDATE\_EVENT} tilbage til PID-task'en som starter cycklusen forfra. Hele processen kan ses på figur \ref{fig:PID_update}.
+PID task'en har to tilstande: idle og running. I idle-tilstanden ventes der på et \texttt{PID\_START\_EVENT}, der skifter tilstanden til running. I running-tilstanden køres funktionen \texttt{PID\_update()} med faste intervaller. Denne funktion sørger for at hente set point og den fysiske position af rammerne for både pan- og tilt-systemet. Det kræver kommunikation med SPI-task'en der fungerer som bindeledet til selve systemet. Kommunikationen er styret fuldstændig af PID-task'en, der bare benytter de services som SPI-task'en tilbyder. Når \texttt{PID\_update()} bliver kaldt, beregnes outputtet for pan-systemet og derefter for tilt-systemet. Når det er sket sendes et \texttt{SET\_PWM\_EVENT} til SPI-task'en som sender informationen videre til FPGA'en. Efter eventet er sendt sover PID-task'en i 5 ms, hvorefter den sender et \texttt{GET\_POS\_EVENT} til SPI-task'en, som henter den nuværende position af både pan- og tilt-systemet fra FPGA'en og gemmer den i shared state memory. Når den er færdig med det sendes et \texttt{PID\_UPDATE\_EVENT} tilbage til PID-task'en som starter cycklusen forfra. Hele processen kan ses på figur \ref{fig:PID_update}.
 
 \begin{figure}[ht]
 	\begin{center}
@@ -322,7 +322,7 @@ PID-controllleren blev implementeret med en sample frekvens på 200 Hz. Dette af
 
 \label{subsec:koordinat}
 
-Pan og tilt rammen har en præcision på en tredjedel grad, og da det samtidigt er et primært krav at denne skal kunne fungerer med input i form af sfæriske koordinater, er det nødvendigt at have en koordinat oversættelse fra de inputtede koordinater som er i horizontale koordinater, se figur \ref{fig:Horizontal}. Denne oversættelse skal nødvendigvis tage højde for de fysiske begrændsninger systemet har. Oversættelsen skal derfor lave en oversættelse i pan delen der afspejler at denne kun kan bevæge sig lidt over 180 grader uden at der opstår problemer med de ledninger der styrer tilt delen. Dette er dog slet ikke nok til at lave et effektivt teleskop system.
+Pan og tilt rammen har en præcision på en tredjedel grad, og da det samtidigt er et primært krav at denne skal kunne fungerer med input i form af sfæriske koordinater, er det nødvendigt at have en koordinat oversættelse fra de inputtede koordinater som er i horizontale koordinater, se figur \ref{fig:Horizontal}. Denne oversættelse skal nødvendigvis tage højde for de fysiske begrænsninger systemet har. Oversættelsen skal derfor lave en oversættelse i pan delen der afspejler at denne kun kan bevæge sig lidt over 180 grader uden at der opstår problemer med de ledninger der styrer tilt delen. Dette er dog slet ikke nok til at lave et effektivt teleskop system.
 \begin{figure}[!h]
 	\begin{center}
 		\includegraphics[width=0.5\textwidth]{Billeder/Horizontal.png}
@@ -331,7 +331,7 @@ Pan og tilt rammen har en præcision på en tredjedel grad, og da det samtidigt 
 	\label{fig:Horizontal}
 \end{figure}
 
-Mens pan delen kun har 180 graders frihed har tilt delen fuld frihed. Dette betyder at vi kan udnytte denne til at tilgås det område som pan delen ikke kan tilgå. Dette gøres ved blot at spejle tilt delen omkring origo, hvis denne skal pege over i dette område, hvilket kan ses i praksis ved at figur \ref{fig:tilt_spejl} er den spejlede version af figur \ref{fig:tilt_spejl1}. Nulpunktet for pan og tilt systemet er lokeret som på figur \ref{fig:Nulpunkt}. 
+Mens pan delen kun har 180 graders frihed har tilt delen fuld frihed. Dette betyder at vi kan udnytte denne til at tilgås det område som pan delen ikke kan tilgå. Dette gøres ved blot at spejle tilt delen omkring origo, hvis denne skal pege over i dette område, hvilket kan ses i praksis ved at figur \ref{fig:tilt_spejl} er den spejlede version af figur \ref{fig:tilt_spejl1}. Nulpunktet for pan- og tilt-systemet er lokeret som på figur \ref{fig:Nulpunkt}. 
 
 \begin{figure}[!h]
     \centering
@@ -350,16 +350,16 @@ Mens pan delen kun har 180 graders frihed har tilt delen fuld frihed. Dette bety
         \caption{}
         \label{fig:tilt_spejl}
     \end{subfigure}
-   \caption{Her demonstreres hvordan en spejling foregår. Til venstre ses systemet i position pan: 0$^{\circ}$ tilt: 45$^{\circ}$, i midten ses origo ved pan: 0$^{\circ}$, tilt: 0$^{\circ}$, og til højre ses hvad der sker når vi forsøger at bevæge systemet over i det område som pan systemet ikke kan komme over i, ved pan: 180$^{\circ}$, tilt: 45$^{\circ}$.}
+   \caption{Her demonstreres hvordan en spejling foregår. Til venstre ses systemet i position pan: 0$^{\circ}$ tilt: 45$^{\circ}$, i midten ses origo ved pan: 0$^{\circ}$, tilt: 0$^{\circ}$, og til højre ses hvad der sker når vi forsøger at bevæge systemet over i det område som pan-systemet ikke kan komme over i, ved pan: 180$^{\circ}$, tilt: 45$^{\circ}$.}
 \end{figure}
 
-Denne position er valgt fordi den passer bedst overens med det spheriske koordinat system, som kan ses på figur \ref{fig:Spherical}. Alternativt kunne pan delsens nulpunkt pladseres således at denne havde sit nulpunkt i kanten af dens bevægelsesområde, men dette blev fravalgt da den sensor der benyttes til at indstille systemet ligger på denne position. Grunden til at dette ikke er gjort for tilt systemet ,er at den valgte retning både gør det nemmere at spejle det omkring origo, samtidig med at det passer bedre med vores sfæriske koordinat system.
+Denne position er valgt fordi den passer bedst overens med det spheriske koordinat system, som kan ses på figur \ref{fig:Spherical}. Alternativt kunne pan delsens nulpunkt pladseres således at denne havde sit nulpunkt i kanten af dens bevægelsesområde, men dette blev fravalgt da den sensor der benyttes til at indstille systemet ligger på denne position. Grunden til at dette ikke er gjort for tilt-systemet ,er at den valgte retning både gør det nemmere at spejle det omkring origo, samtidig med at det passer bedre med vores sfæriske koordinat system.
 %Løsningen til dette er at tilt delen bliver spejlet omkring origo når systemet forsøger at pege mod et punkt der ligger i området mellem 90 og 270 grader i forhold til det valgte nulpunkt ved hall sensoren. Grunden til at systemet kan bevæge sig 90 grader til hver side, omend dette kan virke irrationelt, er at dette er positionen af den hall sensor der benyttes til at nulstille koordinat systemet på FPGA'en. Nulpunktet i tilt delen af teleskop systemet er positioneret direkte opad, da dette både gjorde det mindre kompliceret at spejle det, og samtidig passede bedre overens med det polære koordinat system. Der kunne argumenteres for at det ville være nemmere også at sætte dennes nulpunkt der hvor hall sensoren nulstiller FPGA'en, men dette blev valgt fordi det er mere modulært at gå efter et system der mere matematisk intuitivt.
 \begin{figure}[!hb]
 	\begin{center}
 		\includegraphics[width=0.5\textwidth]{Billeder/Spherical.png}
 	\end{center}		
-	\caption{Her ses hvordan det valgte sfæriske koordinat system fungerer. Der er flere mulige baser for sfæriske koordinater, men dette er det mest matematisk rigtige, hvilket er grundet til at dette blev valgt.}
+	\caption{Her ses hvordan det valgte sfæriske koordinat system fungerer. Der er flere mulige baser for sfæriske koordinater, men dette er det mest matematisk rigtige, hvilket er grunden til at dette blev valgt.}
 	\label{fig:Spherical}
 \end{figure}
 En stor fordel ved denne koordinat oversættelse er at den eliminerer nødvendigheden for et sikkerhedssystem på microcontrolleren. Dette er naturligt en del af koordinat oversættelsen, da alt mellem 90 og 270 grader på pan systemet, som er det områder hvor der kan ske mekaniske skader, slet ikke er aktuelt, på grund af spejlingen af koordinaterne. Det skal dog noteres at dette ikke eliminerer behovet for et sikkerhedssystem på FPGA'en, som der stadig er brug for i tilfælde af der forekommer problemer med microcontrolleren, så som en løs forbindelse, en fejl der får hele microprocessoren til at fryse, eller overshoot der går ud over den sikkerheds grænse, som er blevet besluttet.

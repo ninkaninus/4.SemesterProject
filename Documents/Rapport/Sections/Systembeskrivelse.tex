@@ -6,7 +6,9 @@ Til at styre denne opstilling er der udleveret èt stk Field Programmable Gate A
 
 \subsection{Fysiske begrænsninger}
 
-I alle mekaniske systemer er der en række begrænsninger, der bestemmer hvad systemet er i stand til uden at gå i stykker. Det udleverede pan- og tilt-system har fysiske begrænsninger i form af både range of motion, og de bælter der forbinder de to motorer med den fysiske ramme. Bælterne kan kamme over hvis de bliver tilført for stort kraftmoment, og rammen har ikke meget mere end 180 graders frihed på den ene akse, grundet ledninger der nødvendigvis skal være forbundet til den anden akse.
+I alle mekaniske systemer er der en række begrænsninger, der bestemmer hvad systemet er i stand til uden at gå i stykker. Det udleverede pan- og tilt-system har fysiske begrænsninger i form af både range of motion, og de bælter der forbinder de to motorer med den fysiske ramme. Bælterne kan kamme over hvis de bliver tilført for stort kraftmoment, ligesom at den skrue der holder det fast kan glide, og rammen har ikke meget mere end 180 graders frihed på den ene akse, grundet ledninger der nødvendigvis skal være forbundet til den anden akse.
+
+Yderligere er der en begrænsning på præcisionen af systemet, da måden der måles position er ved at bruge en encoder på hver motor, som benytter en magnet med seks poler. Dette betyder, da disse motore har to hall sensorer, at der kan måles et positions skifte tolv gange på en omgang.
 
 \subsection{Micro Processor Unit}
 Det udleverede Launchpad board som er et EK-TM4C123GXL board, er fra Texas Instruments. Den har en påmonteret MPU som er af modellen TM4C123GH6PM, denne er en Arm Cortex M4 chip \cite{TM4C123GH6PMDatasheet}XXXX.\\
