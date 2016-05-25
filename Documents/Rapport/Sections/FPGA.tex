@@ -61,7 +61,7 @@ PWM driveren har til opgave at levere et PWM-signal, med en duty cycle bestemt a
 
 \subsubsection{Designmål}
 
-\begin{itemize}
+\begin{itemize}[noitemsep]
 
 \item PWM frekvens mellem 20 kHz og 25 kHz
 \item 8 bits PWM opløsning
@@ -152,8 +152,8 @@ Motor controlleren har til formål at styre en motor. Modulet skal kunne starte 
 
 \subsubsection{Designmål}
 Liste over ting som motorcontrollen skal kunne:
-\begin{itemize}
-	\item Være generisk så dens parametre kan ændres til flere motorer
+\begin{itemize}[noitemsep]
+	\item Være generisk så dens parametre kan tweakes til flere motorer
 	\item Slå motorbremsen til og fra.
 	\item Skifte retning på motoren
 	\item Kunne stoppe motoren fra at drive pan- og til-rammerne ud over deres fysiske begrænsninger.
@@ -187,11 +187,11 @@ Det er meget brugbart at benytte nettop denne notation til at give decimal tal v
 \\
 Måden dette gøres på er ved brug af en algoritme. Denne fungerer således:
 
-\begin{enumerate}
-	\item Hvis et tal i en kolonne er større end 4 lægges der 3 til.
-	\item Logical shift left
-	\item Hvis der er foretaget $3 \cdot n - 1$ skift, hvor n er antal kollonner, så afsluttes der
-	\item Gå til 1.
+\begin{enumerate}[noitemsep]
+\item Hvis et tal i en kolonne er større end 4 lægges der 3 til.
+\item Logical shift left
+\item Hvis der er foretaget $3 \cdot n - 1$ skift, hvor n er antal kollonner, så afsluttes der
+\item Gå til 1.
 \end{enumerate}
 
 \subsubsection{MultiplexDisplay}
@@ -204,7 +204,7 @@ Den anden funktionalitet er så at tage et input i form af BCD og lave det om ti
 
 Ved hver af de brugte knapper er der et modul der holder styr på outputtet af knappen, og inddelere det i tre forskellige signaler.
 
-\begin{itemize}
+\begin{itemize}[noitemsep]
 \item Pulse
 \item Debounce
 \item Toggle

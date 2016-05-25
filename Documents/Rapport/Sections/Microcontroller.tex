@@ -206,11 +206,19 @@ PID-controllerens opgave består i at beregne sig frem til et passende PWM-signa
 
 \subsubsection{Fundamental funktion}
 
+<<<<<<< a1da3c71211aa1f0e8ce3ef80ea3a2d9e226a806
 Selve beregning af outputtet sker ved, at controlleren med jævne mellemrum kigger på set-point'et for en motor, og sammenligner det med motorens faktiske position. Dette giver en fejlværdi, der løbende holdes øje med. 
 \begin{itemize}
 	\item For at finde proportionaltermet ganges konstanten $K_{P}$ på fejlværdien
 	\item For at finde integraltermet ganges konstanten $K_{I}$ på en løbende summering af arealet under fejlen. Dette areal findes ved at gange $dt$ på fejlen, og så lægge det til hver gang udregningen køres igennem. På figur \ref{fig:Riemann} kan man se, hvordan integralet hele tiden vokser, så længe en fejl er til stede.
 	\item For at finde differentialtermet ganges konstanten $K_{D}$ på forskellen imellem den nuværende fejl og den forrige fejl delt med dt. Det svarer til at beregne $\Delta e/\Delta t$.
+=======
+Selve udregningen af outputtet sker ved, at controlleren med jævne mellemrum kigger på setpointet for en motor, og sammenligner det med motorens faktiske position. Dette giver en fejlværdi som der løbende holdes øje med. 
+\begin{itemize}[noitemsep]
+\item For at finde proportionaltermet ganges konstanten $K_{P}$ på fejlværdien
+\item For at finde integraltermet ganges konstanten $K_{I}$ på en løbende summering af arealet under fejlen. Dette areal findes ved at gange $dt$ på fejlen, og så lægge det til hver gang udregningen køres igennem. På figur \ref{fig:Riemann} kan man se, hvordan integralet hele tiden vokser, så længe en fejl er til stede.
+\item For at finde differentialtermet ganges konstanten $K_{D}$ på forskellen imellem den nuværende fejl og den forrige fejl delt med dt. Det svarer til at beregne $\Delta e/\Delta t$.
+>>>>>>> 4c040d61cb02b5020b302715b7573be9c6725a82
 \end{itemize}
 
 \begin{figure}[ht]

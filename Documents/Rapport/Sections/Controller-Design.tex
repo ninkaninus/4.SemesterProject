@@ -11,7 +11,7 @@ Det endelige mål med kontrolsystemet er, at kunne styre orienteringen af rammer
 
 På figur \ref{fig:Blok_Model} ses de vigtigste elementer i kontrolløkken fra microcontrolleren og ud til selve systemet. Ud fra et modelleringsperspektiv er de fire mest interessante dele af systemet som følger:
 
-\begin{itemize}
+\begin{itemize}[noitemsep]
 \item \textbf{H-bro}: Sørger for at regulere forsyningsspændingen på 12V til motoren alt afhængig af den duty cycle som PWM-modulet sender ud. Duty cycle styrer den gennemsnitlige spænding over motorterminalerne. H-broen kan også vende strømmen igennem motoren for at skifte omdrejningsretningen.
 \item \textbf{Motor og Pan/Tilt-system}: Producerer en omdrejningshastighed, som er relateret til spændingen over motorterminalerne ved overføringsfunktionen beskrevet i ligning (\ref{eq:tf_pan_tilt}).
 \item \textbf{Encoder og Positionsmodul}: To hall sensorer i encoderen genererer pulser, der gør det muligt at bestemme omdrejningsretningen for motoren. Positionsmodulet sørger for at holde styr på pulserne, for at afkode hvilken position motoren har stillet sig i. Dette er muligt ved at starte med at have en fast reference der tælles fra.
@@ -37,7 +37,7 @@ Y(s)=R(s)\frac{12K_{c}K}{s(\tau s+1)+12K_{c}K}-T_{d}(s)\frac{\tau s+1}{s(\tau s+
 
 \subsection{Designmål}
 
-\begin{itemize}
+\begin{itemize}[noitemsep]
 
 \item Steady state fejl på 0
 \item Overshoot $<$ 5 $\%$ XXXX
@@ -133,7 +133,7 @@ For at få en settling time på under $5s$ kan det ud fra ligning \eqref{eq:sett
 
 For at overholde designmålene vedrørende settling time, overshoot og steady state fejl, kan det følgende konkluderes:
 
-\begin{itemize}
+\begin{itemize}[noitemsep]
 \item Damping ratio for et 2.-ordenssystem skal være større end $0.690$.
 \item Produktet $\omega_{n}\zeta$ for et 2.-ordenssystem skal være større end $0.8$. Dette produkt svarer til den reelle komponent af to komplekse poler.
 \item For at holde steady state fejlen i 0, er det nødvendigt at have en controller med et integrator led. Derfor skal det undersøges hvordan en I-, ID-, PI- og PID-controller påvirker systemet. P- og PD-controllere ignoreres pga af kravet til steady state fejlen.
@@ -210,10 +210,10 @@ XXXX tættere eller længere væk fra model?
 
 Med PI-controlleren er margenen for P- og I-konstanterne og gainet ret lille, hvis projektets designmål skal overholdes. PID-controlleren giver lidt mere råderum, men man tager også et skridt længere væk fra den ideelle 2.-ordensmodel. Differentieringsledet D tilføjer nemlig et ekstra nul til ligningen. Med to nuller er der ikke længere to branches, der går mod (XXXX reference til figur PI) uendelig langs en lodret asymptote når gainet øges. Der er nu kun en branch der går mod minus uendelig, og det foregår langs den reelle akse. Dette har tre klare fordele:
 
-\begin{itemize}
-	\item 	En af polerne fra det modellerede 3-ordens-system glider væk fra de to andre poler ved højere gain. På den måde er det lettere negligere effekten fra den i modellen. Dette bringer os tættere på 2.ordensmodellen.
-	\item  	Sikkerhed for at de to dominante poler befinder sig på den 				   	reelle akse som giver mindre overshoot, hvis de to tilføjede nuller også er reelle og gainet er tilpas stort XXXX Hvor stort er tilpas stort?. 
-	\item  	Sikkerhed for at de to dominante poler er længere væk fra den imaginære akse som giver en hurtigere settling time.
+\begin{itemize}[noitemsep]
+	\item 	En af polerne fra det modellerede 3-ordens-system glider væk fra de to andre poler ved højere gain. På den måde kan man lettere negligere effekten fra den i modellen. Dette bringer os tættere på 2.ordensmodellen.
+	\item  	Man kan altid sørge for at de to dominante poler befinder sig på den 				   	reelle akse (mindre overshoot), hvis de to tilføjede nuller også er reelle og gainet er tilpas stort. 
+	\item  	Man kan få de to dominante poler længere væk fra den imaginære akse 					(hurtigere settling time).
 \end{itemize}
 
 I de root locus-plots der har været vist indtil videre XXXX referer til dem, har der været brugt en tidskonstant på 0.12 sekunder - denne værdi stammer fra tidlige forsøg på tilt-systemet. Med denne tidskonstant er der en pol i $-1/0.12=-8.33$. Hvis begge nuller placeres til højre for $-8.33$ vil den ene branch følge den reelle akse til venstre for $-8.33$ mod uendelig. På den måde kan er det muligt, med et forholdsvist "XXXX hvad er forholdsvist lille gain?" lille gain, skubbe closed-loop-polen fra tidskonstanten så langt ud ad den reelle akse, at den ikke har nogen stor indflydelse på systemet. Det kan også lade sig gøre, hvis et af nullerne eller begge to er til venstre for $-8.33$, det kræver bare et noget større gain "XXXX Hvor meget?".
