@@ -9,7 +9,7 @@ Kommunikationen fra FPGA'en til MPU'en foregår over SPI, men da SPI kun er en g
 
 \paragraph*{8-bit pakker med kommunikationsprotokol}
 Dette var den første implementation der blev overvejet. Her sendes data mellem FPGA og MPU i pakker af størrelsen 8-bit. Der skal så fastsættes en kommunikationsprotokol der består af telegrammer med et bestemt antal bytes i.\\
-I hver ende skal der være en controller der kan afkode de telegrammer der kommer ind. Og ud fra det bestemme hvad der skal foretages i FPGA'en. Fordelen ved denne implementering er at alt afhængig af hvordan telegrammerne designes så kan der både implementeres crc-check af beskederne samt en masse kommandoer "XXXX Er det kun ved 8-bit pakker eller er det generet?". Ulempen er at man skal opstille en protokol for kommunikationen og at der skal overføres flere pakker før at der reelt set sker noget samt at selve kommunikationen bliver mere kompliceret.
+I hver ende skal der være en controller der kan afkode de telegrammer der kommer ind. Og ud fra det bestemme hvad der skal foretages i FPGA'en. Fordelen ved denne implementering er at alt afhængig af hvordan telegrammerne designes så kan der både implementeres crc-check af beskederne samt en masse kommandoer. Ulempen er at man skal opstille en protokol for kommunikationen og at der skal overføres flere pakker før at der reelt set sker noget samt at selve kommunikationen bliver mere kompliceret.
 
 \paragraph*{16-bit pakker med 4-bit adressering}
 Denne implementering involverer at man bruger 16-bit per overførsel. De øverste 4-bit bliver brugt til at adressere, hvilket modul inde i FPGA'en der ønskes kommunikation med. Og de resterende 12-bit kan bruges til at overføre data med. En 4-bit adresserer giver mulighed for at have op til 16 adresser i FPGA'en.
@@ -39,9 +39,9 @@ Ved at have en intern data- og adresse-bus kan alle modulerne kobles op på den 
 \label{fig:FPGA_Databus}
 \end{figure}
 
-\subsubsection{Implementering}
+\paragraph*{Implementering}
 SPI modulet er blevet implementeret som en løsning bestående af en 16-bit grænseflade til MPU'en. Og en intern databus, hvorpå modulerne adresseres direkte igennem de øverste 4 bit i SPI datagrammet. SPI modulet fungerer som en tilstandsmaskine denne er vist på figur \ref{fig:FPGA_SPI_State} og de forskellige tilstande er som følgende:\\
-SPI starter i tilstanden \textit{WaitForSSLow}, hvor der ventes på at SS signalet går lavt og kommunikationen derved er startet. Når SS XXXX Hvad er SS signalet? går lavt skiftes der til tilstanden \textit{WaitForAdr}. \\ 
+SPI starter i tilstanden \textit{WaitForSSLow}, hvor der ventes på at Slave Select signalet går lavt og kommunikationen derved er startet. Når SS går lavt skiftes der til tilstanden \textit{WaitForAdr}. \\ 
 I denne tilstand ventes der på at MPU'en overfører de fire første bit i datagrammet, som repræsenterer addressen på det ønskede interne modul, og sender disse ud på adressebussen. Når de er modtaget skiftes der til tilstanden \textit{LoadUdBuf} \\
 I denne tilstand loades data fra databussen ind i udbufferet XXXX ind i wut? så de er klar til at blive sendt afsted når MPU'en clocker SPI igen.\\
 Dernæst skiftes der til tilstanden \textit{WaitForDatabits}. \\
