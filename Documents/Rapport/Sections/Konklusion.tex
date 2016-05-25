@@ -1,6 +1,6 @@
 \section{Konklusion}
 Der er lavet et system, som følger objekter i rummet, såsom den internationale rumstation, satelitter, solen og diverse planeter.\\
-Dette er gjort muligt ved hjælp af en PID controller (se tabel \ref{tab:Results}), som er blevet modelleret gennem matlab, simulink og grey box princippet. Variablene til modellen er fundet ud fra i step respons tests. Ved hjælp af PID controlleren er det gjort muligt at have en præcision på $1/3$ grad (1 tick), som er den højeste præcision som de udleverede motorer er begrænset til. Denne controller er samtidig hurtig nok til at opfylde vores krav om hastighed, overshoot og steady state fejl.
+Dette er gjort muligt ved hjælp af en PID controller (se tabel \ref{tab:Results} på side \pageref{tab:Results}), som er blevet modelleret gennem matlab, simulink og grey box princippet. Variablene til modellen er fundet ud fra i step respons tests. Ved hjælp af PID controlleren er det gjort muligt at have en præcision på $1/3$ grad (1 tick), som er den højeste præcision som de udleverede motorer er begrænset til. Denne controller er samtidig hurtig nok til at opfylde vores krav om hastighed, overshoot og steady state fejl.
 
 Det er samtidig lykkedes at opfylde de krav som blev stillet til FPGA'en, således at denne kan holde en adresse til diverse data som position, motor PWM, samt den kommunikerer med MPU'en via SPI.
 
