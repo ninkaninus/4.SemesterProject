@@ -40,8 +40,14 @@ Y(s)=R(s)\frac{12K_{c}K}{s(\tau s+1)+12K_{c}K}-T_{d}(s)\frac{\tau s+1}{s(\tau s+
 \begin{itemize}[noitemsep]
 
 \item Steady state fejl på 0
-\item Overshoot $<$ 5 $\%$ XXXX
+\item Overshoot $<$ 5 $\%$
 \item Settling time $<$ 5 sekunder 
+
+En steady state fejl på nul er nødvendig for maksimal præcision.
+
+Fem $\%$ overshoot er både hvad der er inde for systemets bevægelsesfrihed, og det er en god og opnåelig grænse.
+
+Settling time på under fem sekunder er uambiciøst, men er valgt fordi hastighed ikke har prioritet.
 
 \end{itemize}
 
@@ -91,7 +97,7 @@ Det skal derfor som minimum være en integrator i controlleren ($K_{c}$), for at
 
 \subsubsection{Overshoot}
 
-Percent Overshoot (P.O.) er defineret som den procentdel systemets største respons afviger fra den ønskede værdi. Dette er et udtryk for, hvor meget systemet skyder forbi målet, når det påvirkes af et step input. Ved hjælp af algebra, differentiering og 2 laplace-transformeringer, er det muligt at udlede ligning (\ref{eq:P.O.}) fra (\ref{eq:SO_system} XXXX sidetal i bog) (se Modern Control Systems\cite{ModernControlSystem}), og på den måde finde ud af, hvor meget overshoot systemet har udelukkende ud fra damping ratio. En anden måde at se på problemet, er at man, ved at finde $\zeta$ til et bestemt overshoot, også kan finde den vinkel til de komplekse polers placering, hvor der fås netop den mængde overshoot - store vinkler giver stort overshoot og omvendt (se figur \ref{fig:SO_system}). Der kan derfor ud fra denne udregning definere et klart område, hvor alle polplaceringer vil opfylde ens krav til overshoot. 
+Percent Overshoot (P.O.) er defineret som den procentdel systemets største respons afviger fra den ønskede værdi. Dette er et udtryk for, hvor meget systemet skyder forbi målet, når det påvirkes af et step input. Ved hjælp af algebra, differentiering og 2 laplace-transformeringer, er det muligt at udlede ligning (\ref{eq:P.O.}) fra (\ref{eq:SO_system}) (se Modern Control Systems\cite{ModernControlSystem} side 311-312), og på den måde finde ud af, hvor meget overshoot systemet har udelukkende ud fra damping ratio. En anden måde at se på problemet, er at man, ved at finde $\zeta$ til et bestemt overshoot, også kan finde den vinkel til de komplekse polers placering, hvor der fås netop den mængde overshoot - store vinkler giver stort overshoot og omvendt (se figur \ref{fig:SO_system}). Der kan derfor ud fra denne udregning definere et klart område, hvor alle polplaceringer vil opfylde ens krav til overshoot. 
 
 \begin{equation}\label{eq:P.O.}
 P.O.=100*e^{-\dfrac{\zeta\pi}{\sqrt{1-\zeta^2}}}
@@ -195,9 +201,8 @@ En PI controller har også en proportionel del, der summeres med integratoren. D
 Y(s)=\frac{K_{P}s+K_{I}}{s}\cdot\frac{12K}{s(s\tau+1)}
 \end{equation}
 
-Ud fra root locus beregninger kan det bevises at nullets placering skal ligge til højre for $-0.93$ for at de to branches fra polerne i origo mødes på den reelle akse. (XXXX Skal beviset udpensles med ligninger eller er det fint bare at sige det passer?). $K_{P}$ skal med andre ord helst være større end $K_{I}$. Til gengæld må $K_{P}$ heller ikke blive for meget større end $K_{I}$ (knap $2.6$ gange) fordi det gør systemet for langsomt, da break-in punktet kommer til at ligge på den forkerte side af $0.8$, som er $\omega_{n}\zeta$-grænsen for en settling time under 5 sekunder. På figuren herunder kan root locus-plottet for PI-controlleren ses.
+Ud fra root locus beregninger kan det bevises at nullets placering skal ligge til højre for $-0.93$ for at de to branches fra polerne i origo mødes på den reelle akse (\cite{ModernControlSystem} side 470-472). $K_{P}$ skal med andre ord helst være større end $K_{I}$. Til gengæld må $K_{P}$ heller ikke blive for meget større end $K_{I}$ (knap $2.6$ gange) fordi det gør systemet for langsomt, da break-in punktet kommer til at ligge på den forkerte side af $0.8$, som er $\omega_{n}\zeta$-grænsen for en settling time under 5 sekunder. På figuren herunder kan root locus-plottet for PI-controlleren ses.
 
-XXXX figur her.
 \begin{figure}[!ht]
 	\begin{center}
 		\includegraphics[scale=0.45]{Billeder/PI_rlocus.PNG}
@@ -211,9 +216,6 @@ XXXX figur her.
 \begin{equation}\label{eq:PID_OpenLoop}
 Y(s)=\frac{K_{P}s+K_{I}+K_{D}s^2}{s}\cdot\frac{12K}{s(s\tau+1)}
 \end{equation}
-
-
-XXXX tættere eller længere væk fra model?
 
 Med PI-controlleren er margenen for P- og I-konstanterne og gainet ret lille, hvis projektets designmål skal overholdes. PID-controlleren giver lidt mere råderum, men man tager også et skridt længere væk fra den ideelle 2.-ordensmodel. Differentieringsledet D tilføjer nemlig et ekstra nul til ligningen. Med to nuller er der ikke længere to branches, der går mod (se figur \ref{fig:PI_rlocus}) uendelig langs en lodret asymptote når gainet øges. Der er nu kun en branch der går mod minus uendelig, og det foregår langs den reelle akse. Dette har tre klare fordele:
 
@@ -237,7 +239,7 @@ I de root locus-plots der har været vist indtil videre, se figur \ref{fig:rootl
 
 Det endelige valg af controller falder på PID, da det er den mest fleksible controller i den forstand, at step responsen er mulig at manipulere meget mere i den retning der ønskes.
 
-\subsection{Endeligt Controller design}
+\subsection{Endeligt Controller design}\label{sec:Controller_Design}
 
 For at bestemme den endelige controller til systemet, laves der root locus plots til både pan- og tilt-systemet. Afsnit \ref{sec:Pan_Response} viser at der er ret stor forskel på de to systemer - derfor skal de have hver deres tilpassede controller.
 

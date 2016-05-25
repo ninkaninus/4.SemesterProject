@@ -64,7 +64,7 @@ Som krav til systemet skal det kunne tage et input i form af et horisontalt koor
 
 Som en del af COS/EMP faget sættes der som krav, at systemet skal kunne give feedback gennem LCD komponenten i form af den nuværende position i horisontale koordinater. Der skal kunne tages input fra knapper på EMP board'et, og en UART-forbindelse, med tilsvarende UART-protokol, skal kunne forbinde board'et med en computer.
 
-Der skal laves en PID-controller, som beskrevet i REG, der er foruden både XXXX overshoot og steady state fejl. Yderligere skal systemet kunne bevæge sig 180 grader og stoppe på under fem sekunder, med en usikkerhed på højest én grad.
+Der skal laves en PID-controller, som beskrevet i REG, der er foruden steady state fejl og har et overshoot under 5 $\%$. Yderligere skal systemet kunne bevæge sig 180 grader og stoppe på under fem sekunder, med en usikkerhed på højest én grad.
 
 Samtidig skal der laves et stykke funktionelt, digitalt programmeret, elektronik, i form af et FPGA board, der skal fungerer som en ``slave'' for microcontrolleren, og give denne information om positionen af systemet samt benytte denne til at sætte hastighed og retning på motorerne. Microcontrolleren skal også fungere som en sikkerhed, der endegyldigt sikrer at der ikke kan ske uheld, ved at systemet kører ud over sine mekaniske begrænsninger.
 
