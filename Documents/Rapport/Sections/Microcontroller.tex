@@ -201,7 +201,7 @@ og igen sættes bit 1 i kontrol registret for SSI1 til høj så SSI'en er aktive
 
 \subsection{PID-Controller}
 
-PID-controllerens opgave består i at beregne sig frem til et passende PWM-signal, til at regulere motoren med, ud fra forskellen imellem motorens ønskede og faktiske position. Dette PWM-signal skal drive fejlen i 0 på en måde, der opfylder projektets designmål. Beregningen er styret af de tre konstanter $K_{P}$, $K_{I}$ og $K_{D}$, som igennem en analyse af systemets opførsel, beregner sig frem til XXXX Ref til beregningssektion. Denne analyse antager et ideelt system, hvor man hele tiden med uendeligt små tidsintervaller kan justere controllerens output. Det er ikke muligt at implementere en controller i den form, så der vil være en forskel på den programmerede og den modellerede controllers opførsel.
+PID-controllerens opgave består i at beregne sig frem til et passende PWM-signal, til at regulere motoren med, ud fra forskellen imellem motorens ønskede og faktiske position. Dette PWM-signal skal drive fejlen i 0 på en måde, der opfylder projektets designmål. Beregningen er styret af de tre konstanter $K_{P}$, $K_{I}$ og $K_{D}$, som igennem en analyse af systemets opførsel, beregner sig frem til (se afsnit \ref{sec:Controller_Design}). Denne analyse antager et ideelt system, hvor man hele tiden med uendeligt små tidsintervaller kan justere controllerens output. Det er ikke muligt at implementere en controller i den form, så der vil være en forskel på den programmerede og den modellerede controllers opførsel.
 
 
 \subsubsection{Fundamental funktion}
