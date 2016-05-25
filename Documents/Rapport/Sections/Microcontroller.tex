@@ -272,9 +272,7 @@ PID-controllleren blev implementeret med en sample frekvens på 200 Hz fordi fre
 
 %Der kunne også have været brugt \textit{fixed point} aritmetik til udregningerne på microcontrolleren, men det blev vurderet at det skabte flere problemer end det løste under udviklingen. Det er noget som kunne tages op igen på et senere tidspunkt. For at slippe af med integral windup blev der sat et loft på hvor stort integralet kunne blive, og det blev slet ikke brugt, når fejlen var over en bestemt størrelse.  En filterimplementering blev ikke udforsket, men kunne helt klart være en mulig forbedring af systemet i fremtiden. XXXX Gør den stadig det?
 
-\subsection{Løse funktionaliteter}
-
-\subsubsection{Koordinat oversættelse}
+\subsection{Koordinat oversættelse}
 
 \label{subsec:koordinat}
 
@@ -309,7 +307,7 @@ Mens pan delen kun har 180 graders frihed har tilt delen fuld frihed. Dette bety
    \caption{Her demonstreres hvordan en spejling foregår. Til venstre ses systemet i position pan: 0$^{\circ}$ tilt: 45$^{\circ}$, i midten ses origo ved pan: 0$^{\circ}$, tilt: 0$^{\circ}$, og til højre ses hvad der sker når vi forsøger at bevæge systemet over i det område som pan-systemet ikke kan komme over i, ved pan: 180$^{\circ}$, tilt: 45$^{\circ}$.}
 \end{figure}
 
-Denne position, som er vist på figur \ref{fig:Nulpunkt}, er valgt fordi den passer bedst overens med det sfæriske koordinat system, som kan ses på figur \ref{fig:Spherical}. Alternativt kan pan delens nulpunkt placeres således at den har sit nulpunkt i kanten af dens bevægelsesområde, men dette blev fravalgt da den sensor der benyttes til at indstille systemet ligger på denne position. Grunden til at dette ikke er gjort for tilt-systemet, er at den valgte retning både gør det nemmere at spejle det omkring origo, samtidig med at det passer bedre med det sfæriske koordinat system.
+XXXX Hvilken position? Denne position er valgt fordi den passer bedst overens med det sfæriske koordinat system, som kan ses på figur \ref{fig:Spherical}. Alternativt kan pan delens nulpunkt placeres således at den har sit nulpunkt i kanten af dens bevægelsesområde, men dette blev fravalgt da den sensor der benyttes til at indstille systemet ligger på denne position. Grunden til at dette ikke er gjort for tilt-systemet ,er at den valgte retning både gør det nemmere at spejle det omkring origo, samtidig med at det passer bedre med det sfæriske koordinat system.
 
 \begin{figure}[!hb]
 	\begin{center}
