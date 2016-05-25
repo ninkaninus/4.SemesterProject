@@ -1,6 +1,5 @@
 \section{Diskussion}
-XXXX dette er nærmere en konklusion end diskussion.
-Forsøget på at udvikle et pan-tilt-system, der er i stand til at følge satelitter og himmellegemer, er blevet opfyldt tilfredsstillende. Der er fundet gode koordinat systemer til både selve systemet og applikationen, og der er lavet en oversætter mellem disse. I forsøget på at skabe en controler med lav steady state fejl og overshoot er der blevet valgt en controller der indeholder både P, I og D.
+Forsøget på at udvikle et pan-tilt-system, der er i stand til at følge satelitter og himmellegemer, er blevet opfyldt tilfredsstillende. Der er fundet gode koordinat systemer til både selve systemet og applikationen, og der er lavet en oversætter mellem disse. I forsøget på at skabe en controler uden steady state fejl, og med lavt overshoot, er der blevet valgt en controller der indeholder både P, I og D.
 
 P delen er blevet brugt af stabilitets årsager, mens I delen benyttes til at fjerne steady state fejlen. D delen bruges for at reducere overshoot, samt at skuppe vores poler ned på den reéle akse, og skuppe en pol langt med venstre, så denne har mindst mulig betydning. Dette betyder at vi nærmer os det 2. ordens system vi modellerer efter, og gør samtidig systemet mere stabilt.
 \\
