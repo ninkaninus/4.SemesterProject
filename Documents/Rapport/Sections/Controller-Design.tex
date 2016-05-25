@@ -170,6 +170,7 @@ For at plotte root locus i matlab bruges open loop overføringsfunktionen (ligni
         \label{fig:ID_rlocus}
     \end{subfigure}
     \caption{Her ses root locus plottet for vores system med en ID-controller og I-controller.}
+    \label{fig:rootlocus}
 \end{figure}
 
 \subsubsection{ID Controller}
@@ -222,7 +223,7 @@ Med PI-controlleren er margenen for P- og I-konstanterne og gainet ret lille, hv
 	\item  	Man kan få de to dominante poler længere væk fra den imaginære akse 					(hurtigere settling time).
 \end{itemize}
 
-I de root locus-plots der har været vist indtil videre (figur \ref{fig:I_rlocus}, \ref{fig:ID_rlocus} og \ref{fig:PI_rlocus}), har der været brugt en tidskonstant på 0.12 sekunder - denne værdi stammer fra tidlige forsøg på tilt-systemet. Med denne tidskonstant er der en pol i $-1/0.12=-8.33$. Hvis begge nuller placeres til højre for $-8.33$ vil den ene branch følge den reelle akse til venstre for $-8.33$ mod uendelig. På den måde kan er det muligt, med et forholdsvist "XXXX hvad er forholdsvist lille gain?" lille gain, skubbe closed-loop-polen fra tidskonstanten så langt ud ad den reelle akse, at den ikke har nogen stor indflydelse på systemet. Det kan også lade sig gøre, hvis et af nullerne eller begge to er til venstre for $-8.33$, det kræver bare et noget større gain "XXXX Hvor meget?".
+I de root locus-plots der har været vist indtil videre, se figur \ref{fig:rootlocus}, har der været brugt en tidskonstant på 0.12 sekunder - denne værdi stammer fra tidlige forsøg på tilt-systemet. Med denne tidskonstant er der en pol i $-1/0.12=-8.33$. Hvis begge nuller placeres til højre for $-8.33$ vil den ene branch følge den reelle akse til venstre for $-8.33$ mod uendelig. På den måde kan er det muligt, med et forholdsvist lille gain, skubbe closed-loop-polen fra tidskonstanten så langt ud ad den reelle akse, at den ikke har nogen stor indflydelse på systemet. Det kan også lade sig gøre, hvis et af nullerne eller begge to er til venstre for $-8.33$, det kræver bare et noget større gain.
 
 \begin{figure}[!ht]
 	\begin{center}
